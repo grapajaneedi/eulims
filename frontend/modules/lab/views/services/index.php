@@ -20,13 +20,18 @@ use yii\helpers\Json;
 $func=new Functions();
 
 $apiUrl="https://eulimsapi.onelab.ph/api/web/v1/labs/search?labcount=0";
-$curl = new curl\Curl();
-$curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
-$response = $curl->get($apiUrl);
-$decode=Json::decode($response);
+$curl = curl_init();			
+curl_setopt($curl, CURLOPT_URL, $apiUrl);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE); 
+curl_setopt($curl, CURLOPT_FTP_SSL, CURLFTPSSL_TRY); 
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+curl_setopt( $curl, CURLOPT_USERAGENT, $apiUrl );
+$response = curl_exec($curl);			
+$data = json_decode($response, true);
 
 $sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','type');
-$lablist= ArrayHelper::map($decode,'lab_id','labname');
+$lablist= ArrayHelper::map($data,'lab_id','labname');
 $this->title = 'Add/ Remove Services';
 $this->params['breadcrumbs'][] = $this->title;
 $services =  Services::find()->all(); 
