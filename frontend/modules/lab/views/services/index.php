@@ -20,13 +20,10 @@ use yii\helpers\Json;
 $func=new Functions();
 
 $apiUrl="https://eulimsapi.onelab.ph/api/web/v1/labs/search?labcount=0";
-$curl = curl_init();			
-curl_setopt($curl, CURLOPT_URL, $apiUrl);
-curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE); 
-curl_setopt($curl, CURLOPT_FTP_SSL, CURLFTPSSL_TRY); 
-curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-curl_setopt ($curl, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+$curl = new curl\Curl();
+$list = $curl->get($apiUrl);
+$data =  json_decode($list);
+
 
 $response = curl_exec($curl);			
 $data = json_decode($response, true);
