@@ -71,7 +71,7 @@ class RequestController extends Controller
         
         $searchModel = new RequestSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->pagination->pageSize=6;
+        $dataProvider->pagination->pageSize=10;
         $GLOBALS['rstl_id']=Yii::$app->user->identity->profile->rstl_id;
         return $this->render('index', [
             'searchModel' => $searchModel,

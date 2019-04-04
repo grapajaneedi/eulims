@@ -5,10 +5,14 @@ namespace frontend\modules\lab\controllers;
 use Yii;
 use common\models\lab\Package;
 use common\models\lab\PackageSearch;
+use common\models\lab\Testnamemethod;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Json;
+use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
+use linslin\yii2\curl;
 
 /**
  * PackageController implements the CRUD actions for Package model.
@@ -144,6 +148,76 @@ class PackageController extends Controller
             return $model->error();
         }
     }
+
+    public function actionGetmethod()
+	{
+       // $id = $_GET['id'];
+        $labid = $_GET['lab_id'];
+        $testname_id = $_GET['testname_id'];
+        //$methodreferenceid = $id;
+     //   $model = new Methodreference();
+
+        // $apiUrl="https://eulimsapi.onelab.ph/api/web/v1/labsampletypes/restore?lab_id=".$labid."&sampletype_id=".$sampletypeid;
+        // $curl = new curl\Curl();
+        // $curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
+        // $response_labsampletype = $curl->get($apiUrl);
+        // $decode_labsampletype=Json::decode($response_labsampletype);
+
+        // foreach ($decode_labsampletype as $labsampletype) {          
+        //     $labsampletypeid = $labsampletype['lab_sampletype_id'];        
+        // }
+
+        // $apiUrl_sampletypetestnames="https://eulimsapi.onelab.ph/api/web/v1/sampletypetestnames/search?testname_id=".$methodreferenceid;
+        // $curl = new curl\Curl();
+        // $curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
+        // $response_sampletypetestnames = $curl->get($apiUrl_sampletypetestnames);
+        // $decode_sampletypetestnames=Json::decode($response_sampletypetestnames);
+
+        // foreach ($decode_sampletypetestnames as $sampletypetestnames) {        
+        //     $sampletypetestname = $sampletypetestnames['sampletype_testname_id'];        
+        // }
+
+        // $testnameQuery = Methodreference::find()
+        // ->leftJoin('tbl_testname_method', 'tbl_testname_method.method_id=tbl_methodreference.method_reference_id')
+        // ->Where(['tbl_testname_method.testname_id'=>$id])->all();
+
+        // $apiUrl="https://eulimsapi.onelab.ph/api/web/v1/methodreferences/restore?id=".$id;
+        // $curl = new curl\Curl();
+        // $curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
+        // $response = $curl->get($apiUrl);
+        // $decode=Json::decode($response,TRUE);
+         $testnamemethod = Testnamemethod::find()->where(['testname_id'=>$testname_id])->all();
+         $testnamedataprovider = new ArrayDataProvider([
+                 'allModels' => $testnamemethod,
+                 'pagination' => [
+                     'pageSize' => 10,
+                 ],
+              
+         ]);
+        //  $testnamemethod = "";
+        //  $testname = "";
+        //  $searchModel = new ServicesSearch();
+        //  $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        //  $sampletype = [];
+        //  $test = [];
+
+         return $this->renderAjax('_method', [
+          //  'model'=>$model,
+            'testnamedataprovider' => $testnamedataprovider,
+            // 'searchModel' => $searchModel,
+            // 'dataProvider' => $dataProvider,
+            // 'sampletype'=>$sampletype,
+            // 'test'=>$test,
+            // 'methodreferenceid'=>$methodreferenceid,
+            // 'labid'=>$labid,
+            // 'sampletypeid'=>$sampletypeid,
+            // 'labsampletypeid'=>$labsampletypeid,
+            // 'sampletypetestname'=>$sampletypetestname,
+            // 'testnamemethod'=>$testnamemethod,
+            // 'testname'=>$testname
+         ]);
+	
+     }
 
     /**
      * Finds the Package model based on its primary key value.

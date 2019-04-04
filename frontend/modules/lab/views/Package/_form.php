@@ -68,9 +68,17 @@ $sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','typ
             ]
         ])
         ?>
+
+        <div  id="methodreference">
+    
+        </div>
+     <div id="form-group pull-right">
+     <div class="form-group pull-right">
+
       <?= Html::textInput('sample_ids', '', ['class' => 'form-control', 'id'=>'sample_ids', 'type'=>'hidden'], ['readonly' => true]) ?>
-<br>
-    <div class="form-group pull-right">
+    
+
+    <div class="methodreference">
     <?php if(Yii::$app->request->isAjax){ ?>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
     <?php } ?>
@@ -78,25 +86,21 @@ $sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','typ
     </div>
 
     <?php ActiveForm::end(); ?>
-    <div class="row" id="methodreference"  style="padding-left:15px;padding-right:15px">
-    </div>
+   
   
 
 </div>
 
+  
 <script type="text/javascript">
     $('#sample-sample_type_id').on('change',function() {
-        alert('boom');
-         var id = $('#sample-sample_type_id').val();
-         temp.push(id);
-    $('#sample_ids').val(id);
         $.ajax({
-            url: '/lab/services/getmethod?id='+$(this).val(),
+            url: '/lab/package/getmethod?id='+$(this).val(),
             method: "GET",
             dataType: 'html',
-            data: sample_type_id: $('#sample-sample_type_id').val()},
+            data: { lab_id: 1,
+            testname_id: $('#sample-sample_type_id').val()},
             beforeSend: function(xhr) {
-               alert("boom");
                $('.image-loader').addClass("img-loader");
                }
             })
@@ -104,6 +108,37 @@ $sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','typ
                 $("#methodreference").html(response); 
                 $('.image-loader').removeClass("img-loader");  
             });
-
     });
 </script>
+
+
+<style type="text/css">
+/* Absolute Center Spinner */
+.img-loader {
+    position: fixed;
+    z-index: 999;
+    /*height: 2em;
+    width: 2em;*/
+    height: 64px;
+    width: 64px;
+    overflow: show;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-image: url('/images/img-loader64.gif');
+    background-repeat: no-repeat;
+}
+/* Transparent Overlay */
+.img-loader:before {
+    content: '';
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3);
+}
+</style>

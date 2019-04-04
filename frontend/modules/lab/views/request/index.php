@@ -74,10 +74,13 @@ if(Yii::$app->user->can('allow-cancel-request')){
         'exportConfig'=>$func->exportConfig("Laboratory Request", "laboratory request", $Header),
         'columns' => [
             ['class' => 'kartik\grid\SerialColumn'],
-            'request_ref_num',
+            ['attribute'=>'request_ref_num',
+             'width' => '180px',
+            ],
             [
                 'label'=>'Request Date',
                 'attribute'=>'request_datetime',
+                'width' => '180px',
                 'value'=>function($model){
                     //return date('d/m/Y H:i:s',strtotime($model->request_datetime));
                     return ($model->request_type_id == 2 && $model->request_datetime == '0000-00-00 00:00:00') ? null : date('d/m/Y H:i:s',strtotime($model->request_datetime));
@@ -90,14 +93,15 @@ if(Yii::$app->user->can('allow-cancel-request')){
                     'pluginOptions' => [
                         'format' => 'yyyy-mm-dd',
                         'todayHighlight' => true
-                    ]
+                    ],
+                    //'contentOptions' => ['style' => 'width: 20%;word-wrap: break-word;white-space:pre-line;'],
                 ]),
             ],
             [
                 'attribute' => 'customer_id', 
                 'label'=>'Customer',
                 'vAlign' => 'middle',
-                'width' => '180px',
+                'width' => '400px',
                
                 'value' => function ($model, $key, $index, $widget) { 
                     return $model->customer ? $model->customer->customer_name : "";
@@ -114,6 +118,7 @@ if(Yii::$app->user->can('allow-cancel-request')){
             [
                 'label'=>'Total',
                 'attribute'=>'total',
+                'width' => '100px',
                 'hAlign'=>'right',
                 'format' => ['decimal', 2],
                
@@ -121,6 +126,7 @@ if(Yii::$app->user->can('allow-cancel-request')){
             [
                 'label'=>'Report Due',
                 'attribute'=>'report_due',
+                'width' => '100px',
                 'hAlign'=>'center'
             ],
             [
@@ -128,6 +134,7 @@ if(Yii::$app->user->can('allow-cancel-request')){
                 'attribute'=>'status_id',
                 'hAlign'=>'center',
                 'format'=>'raw',
+                'width' => '100px',
                 'value'=>function($model){
          
                     $samples_count= Sample::find() 
@@ -158,6 +165,7 @@ if(Yii::$app->user->can('allow-cancel-request')){
                 'label'=>'Report Status',
                 'hAlign'=>'center',
                 'format'=>'raw',
+                'width' => '100px',
                 'value'=>function($model){
                     if($model->testreports){
                         $req = Request::findOne($model->request_id);
@@ -174,6 +182,7 @@ if(Yii::$app->user->can('allow-cancel-request')){
                 'label'=>'Payment Status',
                 'hAlign'=>'center',
                 'format'=>'raw',
+                'width' => '100px',
                 'value'=>function($model){
                     
                     if ($model->payment_status_id==2)

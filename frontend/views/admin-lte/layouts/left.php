@@ -33,17 +33,17 @@ if(Yii::$app->user->isGuest){
     if($CurrentUserDesignation==''){
        $UsernameDesignation=$CurrentUserName;
     }else{
-       $UsernameDesignation=$CurrentUserName.'<br>'.$CurrentUserDesignation;
+       $UsernameDesignation=$CurrentUserName;
     }
-	$unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'));
+	// $unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'));
 	
-	$unresponded = $unresponded_notification->num_notification > 0 ? $unresponded_notification->num_notification : '';
-	//notification will run if the user is already logged in
-	$this->registerJs("
-		setInterval(function(e){
-			get_unresponded_notifications();
-		}, 30000);
-	");
+	// $unresponded = $unresponded_notification->num_notification > 0 ? $unresponded_notification->num_notification : '';
+	// //notification will run if the user is already logged in
+	// $this->registerJs("
+	// 	setInterval(function(e){
+	// 		get_unresponded_notifications();
+	// 	}, 30000);
+	// ");
 
 	/*	function get_unseen_notifications()
 		{
@@ -79,6 +79,7 @@ if(Yii::$app->user->isGuest){
             <div class="pull-left image">
                 <img src="<?= $CurrentUserAvatar ?>" class="img-circle" alt="User Image"/>
             </div>
+           
             <div class="pull-left info">
                 <p><?= $UsernameDesignation ?></p>
 
@@ -87,7 +88,7 @@ if(Yii::$app->user->isGuest){
         </div>
 
         <!-- search form -->
-        <form action="#" method="get" class="sidebar-form">
+        <!-- <form action="#" method="get" class="sidebar-form">
             <div class="input-group">
                 <input type="text" name="q" class="form-control" placeholder="Search..."/>
               <span class="input-group-btn">
@@ -95,7 +96,8 @@ if(Yii::$app->user->isGuest){
                 </button>
               </span>
             </div>
-        </form>
+        </form> -->
+        <br>
         <?php
         $Menu= Package::find()->orderBy(['PackageName'=>SORT_ASC])->all();
         $init=true;

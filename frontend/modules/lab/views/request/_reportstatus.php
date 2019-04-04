@@ -28,7 +28,7 @@ use common\models\system\Profile;
 
 <span style="display:inline-block;">
 
-<?php echo "<font color='#666666'>Request Reference #:</font><br \><b style='font-size:1.25em;'>". $request->request_ref_num."</b>";?>
+
 
 <br>
 </span>
@@ -36,7 +36,7 @@ use common\models\system\Profile;
     'dataProvider' => $testreportdataprovider,
     'summary' => '',
     'panel' => [
-        //'heading'=>'<h3 class="panel-title"> <i class="glyphicon glyphicon-file"></i> Workflow Management</h3>',
+        'heading'=>'<h3 class="panel-title"> <i class="glyphicon glyphicon-file"></i>'. $request->request_ref_num.'</h3>',
         'type'=>'primary',
         'items'=>false,
     ],

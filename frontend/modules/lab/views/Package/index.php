@@ -21,7 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="package-index">
 
- 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
   
@@ -110,7 +109,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'template' => '{view}{update}{delete}',
             'buttons'=>[
                 'view'=>function ($url, $model) {
-                    return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['/lab/package/view','id'=>$model->id]), 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-primary','title' => Yii::t('app', "View Packages<font color='Blue'></font>")]);
+                    return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['/lab/package/view','id'=>$model->id]), 'onclick'=>'LoadModal(this.title, this.value, true, 500);', 'class' => 'btn btn-primary','title' => Yii::t('app', "View Packages<font color='Blue'></font>")]);
                 },
                 'update'=>function ($url, $model) {
                     return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/package/update','id'=>$model->id]),'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-success','title' => Yii::t('app', "Update Packages<font color='Blue'></font>")]);

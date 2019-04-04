@@ -24,6 +24,11 @@ $this->params['breadcrumbs'][] = $this->title;
     <div style="overflow: auto;overflow-y: hidden;height:400px"> 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
+        'panel' => [
+            'type' => GridView::TYPE_PRIMARY,
+            'heading' => '<span class="glyphicon glyphicon-book"></span>  ' . Html::encode($this->title),
+            //'before'=>  Html::button('<span class="glyphicon glyphicon-plus"></span> Create Sample Type Test Name', ['value'=>'/lab/sampletypetestname/create', 'class' => 'btn btn-success modal_services','title' => Yii::t('app', "Create New Sample Type Test Name")]),
+        ],
         //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
