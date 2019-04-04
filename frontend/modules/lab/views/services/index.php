@@ -22,6 +22,9 @@ $func=new Functions();
 $apiUrl="https://eulimsapi.onelab.ph/api/web/v1/labs/search?labcount=0";
 $curl = new curl\Curl();
 $list = $curl->get($apiUrl);
+$curl->setOption(CURLOPT_CUSTOMREQUEST, 'POST');
+$curl->setOption(CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)");
+
 $data =  json_decode($list);
 
 
