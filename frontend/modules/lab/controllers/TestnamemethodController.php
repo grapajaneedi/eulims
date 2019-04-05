@@ -12,6 +12,10 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Json;
+use yii\data\ArrayDataProvider;
+use linslin\yii2\curl;
+
 
 /**
  * TestnamemethodController implements the CRUD actions for Testnamemethod model.
@@ -47,6 +51,29 @@ class TestnamemethodController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+
+    public function actionGetmethod()
+	{
+      
+        $labid = $_GET['lab_id'];
+        $testname_id = $_GET['id'];
+    
+         $testnamemethod = Testnamemethod::find()->where(['testname_id'=>$testname_id])->all();
+         $testnamedataprovider = new ArrayDataProvider([
+                 'allModels' => $testnamemethod,
+                 'pagination' => [
+                     'pageSize' =>false,
+                 ],
+              
+         ]);
+       
+
+         return $this->renderAjax('_method', [
+            'testnamedataprovider' => $testnamedataprovider,    
+            'testname_id'=> $testname_id,
+         ]);
+	
+     }
 
     public function actionWorkflow()
     {

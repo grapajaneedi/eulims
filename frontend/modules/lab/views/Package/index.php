@@ -34,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'panel' => [
                 'type' => GridView::TYPE_PRIMARY,
                 'heading' => '<span class="glyphicon glyphicon-book"></span>  ' . Html::encode($this->title),
-                'before'=> Html::button("<span class='glyphicon glyphicon-plus'></span> Create Package", ["value"=>"/lab/package/create", "class" => "btn btn-success modal_services","title" => Yii::t("app", "Create Package")]),
+                'before'=> Html::button("<span class='glyphicon glyphicon-plus'></span> Create Package", ["value"=>"/lab/package/create", "class" => "btn btn-success modal_method","title" => Yii::t("app", "Create Package")]),
             ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],    

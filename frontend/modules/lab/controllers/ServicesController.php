@@ -57,7 +57,7 @@ class ServicesController extends Controller
         $dataProvider = new ActiveDataProvider([
                 'query' => $samplesQuery,
                 'pagination' => [
-                    'pageSize' => 10,
+                    'pageSize' => false,
                 ],       
         ]);
 
@@ -244,10 +244,15 @@ class ServicesController extends Controller
         $response = $curl->get($apiUrl);
         $decode=Json::decode($response,TRUE);
 
+
+        $count = Testnamemethod::find()->all();
+
+        $testnamemethodcount = count($count);
+
          $testnameDataProvider = new ArrayDataProvider([
                  'allModels' => $decode,
                  'pagination' => [
-                     'pageSize' => 10,
+                     'pageSize' => false,
                  ],
               
          ]);
@@ -271,7 +276,8 @@ class ServicesController extends Controller
             'labsampletypeid'=>$labsampletypeid,
             'sampletypetestname'=>$sampletypetestname,
             'testnamemethod'=>$testnamemethod,
-            'testname'=>$testname
+            'testname'=>$testname,
+            'testnamemethodcount'=>$testnamemethodcount
          ]);
 	
      }

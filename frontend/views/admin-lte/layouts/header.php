@@ -100,15 +100,39 @@ $GLOBALS['rstl_id']= 11;
                 </li>
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="<?= $CurrentUserAvatar ?>" class="user-image" alt="User Image"/>
-                        <span class="hidden-xs"><?= $CurrentUserName ?></span>
+
+                    <?php 
+                        if (Yii::$app->user->isGuest){
+                            $imagename = "no-image.png";
+                        }else{
+                            $CurrentUser = User::findOne(['user_id'=> Yii::$app->user->identity->user_id]);
+                            $imagename = $CurrentUser->profile->image_url;
+                        }
+                     ?>  
+                 <?= Html::img("/uploads/user/photo/".$imagename, [ 
+                    'class' => 'user-image',     
+                    'data-target'=>'#w0'
+                ]) 
+                ?>
+                        
+                    <span class="hidden-xs"><?= $CurrentUserName ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="<?= $CurrentUserAvatar ?>" class="img-circle"
-                                 alt="User Image"/>
-
+                        <?php 
+                        if (Yii::$app->user->isGuest){
+                            $imagename = "no-image.png";
+                        }else{
+                            $CurrentUser = User::findOne(['user_id'=> Yii::$app->user->identity->user_id]);
+                            $imagename = $CurrentUser->profile->image_url;
+                        }
+                     ?>  
+                         <?= Html::img("/uploads/user/photo/".$imagename, [ 
+                            'class' => 'img-circle',     
+                            'data-target'=>'#w0'
+                        ]) 
+                        ?>
                             <p>
                                 <?= $UsernameDesignation ?> 
                             </p>

@@ -15,32 +15,48 @@ use kartik\widgets\DepDrop;
 use kartik\widgets\DatePicker;
 use kartik\datetime\DateTimePicker;
 
+$js=<<<SCRIPT
+
+$("#testname-grid").change(function(){
+    var key = $("input[name='method_id']:checked").val();
+    $("#testnamemethod-method_id").val(key);
+
+});    
+
+  
+
+SCRIPT;
+$this->registerJs($js, $this::POS_READY);
+
 ?>
 
-<div class="row">
-        <div class="col-sm-6">
-        <?= GridView::widget([
-        'dataProvider' => $testnamedataprovider,
+
+<?= GridView::widget([
+        'dataProvider' =>  $testnamedataprovider,
         'pjax' => true,    
-        'condensed' => true,
-        'responsive'=>false,
         'id'=>'testname-grid',
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-products']],
         'containerOptions'=>[
-            'style'=>'overflow:auto; height:380px',
+            'style'=>'overflow:auto; height:500px',
         ],
         'columns' => [
             [
-                'label' => 'Add',
-                'format' => 'raw', 
-                'contentOptions' => ['style' => 'width: 5%;word-wrap: break-word;white-space:pre-line;'],  
-                'value' => function($data) {     
-                    return "<span class='btn btn-primary glyphicon glyphicon-plus' id='offer' onclick=deleteworkflow(".$data->method_id.")></span>";
-                 }          
+                'class' =>  '\kartik\grid\RadioColumn',
+                'name' => 'method_id',
+                'showClear' => true,
+                'headerOptions' => ['class' => 'text-center'],
+                'contentOptions' => ['class' => 'text-center','style'=>'max-width:20px;'],
+                'radioOptions' => function ($model) {
+                    return [
+                        'value' => $model['method_id'],
+                        'checked' => $model['method_id'],
+                    ];
+                },
             ],
             [     
                 'label' => 'Method',
                 'format' => 'raw',
+               // 'width'=> '150px',
                 'contentOptions' => ['style' => 'width: 30%;word-wrap: break-word;white-space:pre-line;'],  
                 'value' => function($data) {
                     $method_query = Methodreference::find()->where(['method_reference_id'=>$data->method_id])->one();
@@ -80,12 +96,6 @@ use kartik\datetime\DateTimePicker;
                         return "";
                     }
                  }                
-            ]
+            ],
        ],
     ]); ?>
-        </div>
-            <div class="col-sm-6">
-            
-      
-        </div>
-</div>

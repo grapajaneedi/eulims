@@ -79,13 +79,20 @@ class InfoController extends Controller
      */
     public function actionView($id)
     {
+       // $image = realpath(dirname(__FILE__)).'\..' . '\assets\photo\\';
          if(\Yii::$app->request->isAjax){
+
+          
             return $this->renderAjax('view', [
                 'model' => $this->findModel($id),
             ]);
          }else{
+
+            $x = 1;
              return $this->render('view', [
                 'model' => $this->findModel($id),
+               
+              //  'images'=>$image
             ]); 
          }
     }
@@ -149,7 +156,7 @@ class InfoController extends Controller
     public function actionUpdate($id)
     {
         Yii::$app->params['uploadPath'] = realpath(dirname(__FILE__)).'\..' . '\assets\photo\\';
-        
+        $x = realpath(dirname(__FILE__)).'\..' . '\assets\photo\\';
         $model = $this->findModel($id);
         if(Yii::$app->user->can('access-his-profile') && !Yii::$app->user->can('profile-full-access')){
             if($model->user_id!=Yii::$app->user->identity->user_id){
@@ -160,7 +167,7 @@ class InfoController extends Controller
         $OldImageUrl=$model->image_url;
         $changeImage=false;
         if ($model->load(Yii::$app->request->post())) {
-            //echo "Saving..";
+         
                 $image = UploadedFile::getInstance($model, 'image');
                 if($image){
                     // store the source file name
@@ -168,7 +175,7 @@ class InfoController extends Controller
                     $Imagename=explode(".",$image->name);
                     $ext = $Imagename[1];
                     // generate a unique file name
-                    $model->avatar = hash('haval160,4',$model->user_id).".{$ext}";
+                    $model->avatar = $image->name;
                     $path = Yii::$app->params['uploadPath'] . $model->avatar;
                     //$backendpath = $BackendUploadPath . $model->avatar;
                     $changeImage=true;
@@ -181,7 +188,8 @@ class InfoController extends Controller
             if($model->save()){
                 if($changeImage){
                     //Save image to frontend photo folder
-                    $image->saveAs($path);
+                   // $image->saveAs($path);
+                    $image->saveAs('uploads/user/photo/'.$image->name);
                     $this->Deleteimage($OldAvatar);
                     //Save image to backend photo folder
                     //copy($path,$backendpath);
@@ -203,10 +211,12 @@ class InfoController extends Controller
             if(Yii::$app->request->isAjax){
             return $this->renderAjax('update', [
                 'model' => $model,
+                'x'=>$x
             ]);
             }else{
                return $this->render('update', [
                 'model' => $model,
+                'x'=>$x
             ]); 
             }
         }

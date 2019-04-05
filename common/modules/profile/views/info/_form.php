@@ -33,6 +33,8 @@ SCRIPT;
 $this->registerJs($js, View::POS_READY);
 $this->registerCssFile("/css/profile.css");
 $imagePath=\Yii::$app->getModule("profile")->assetsUrl."/photo/";
+
+
 ?>
 <div class="profile-form">
     <?php
@@ -57,7 +59,7 @@ $imagePath=\Yii::$app->getModule("profile")->assetsUrl."/photo/";
                 'resizeImages' => true,
                 'style'=>'margin-left: 140px',
                 'initialPreview' => [
-                    '<img src="' . $imagePath . $model->getImageUrl() . '" width="200" class="file-preview-image">',
+                    '<img src=/uploads/user/photo/'.$model->image_url.' width="200" class="file-preview-image">',
                 ],
                 'showUpload' => false,
                 'showRemove' => false,

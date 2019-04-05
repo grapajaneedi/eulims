@@ -4,3 +4,12 @@ $(function(){
     });
 });
 
+$(function(){
+    $('.modal_method').click(function () {
+        LoadModal(this.title, this.value, true, 1100);
+    });
+});
+
+
+
+

@@ -92,6 +92,10 @@ $this->registerJs($js);
         'pjax' => true,    
         'id'=>'testname-grid',
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-products']],
+        'hover' => true,
+        'containerOptions'=>[
+            'style'=>'overflow:auto; height:400px',
+        ],
         'rowOptions' => function($data){
             $GLOBALS['rstl_id']=Yii::$app->user->identity->profile->rstl_id;
             $servicesquery= Services::find()->where(['method_reference_id' => $data['method_reference_id']])->andWhere(['rstl_id'=>  $GLOBALS['rstl_id']])->one();
@@ -105,6 +109,7 @@ $this->registerJs($js);
                 'type' => GridView::TYPE_PRIMARY,
                 'heading' => '<span class="glyphicon glyphicon-book"></span>  ' . Html::encode($this->title),
                 'after'=>false,
+                'before'=>'Tests:'.$testnamemethodcount
             ],
         'columns' => [
             [

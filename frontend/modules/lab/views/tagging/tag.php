@@ -301,9 +301,6 @@ echo Html::button('<i class="glyphicon glyphicon-ok"></i> End', ['disabled'=>fal
                     }
 
                 }, 1000);
-               
-
-
            }
         })
         .done(function( response ) {   

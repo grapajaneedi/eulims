@@ -42,13 +42,13 @@ $services =  Services::find()->all();
     <div class="image-loader" style="display: hidden;"></div>
 <div class="services-index" >
 
-<fieldset>
-    <legend>Legend/Status</legend>
-    <div>
+<!-- <fieldset>
+    <legend>Legend/Status</legend> -->
+    <!-- <div>
         <span class='badge btn-success legend-font' ><span class= 'glyphicon glyphicon-check'></span> UNOFFER</span>
         <span class='badge btn-danger legend-font' ><span class= 'glyphicon glyphicon-check'></span> OFFER</span>               
-    </div>
-</fieldset> 
+    </div> -->
+<!-- </fieldset>  -->
     <div class="row">
      <?php $form = ActiveForm::begin(); ?> 
         <div>
