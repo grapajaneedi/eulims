@@ -70,13 +70,20 @@ use kartik\number\NumberControl;
                 ]);
                 ?>
 
+                <div class="col-sm-12">
+                    <?= $form->field($model, 'description')->textarea(['rows' => 6])->hint('Any supporting Info e.x. alchohol content , etc') ?>
+
+                </div>
+
         </div>
         <div class="col-md-6">
              <?php
                 echo $func->GetSupplierList($form,$model,false,"Supplier");
             ?> 
             
-            <?= $form->field($model, 'quantity')->textInput(['type'=>'number','onchange'=>'getTotal();']) ?>
+            <?= $form->field($model, 'quantity')->textInput(['type'=>'number','onchange'=>'getTotal();'])->hint("Hint: Piece/s") ?>
+
+             <?= $form->field($model, 'content')->textInput(['type'=>'number','onchange'=>'getContent();'])->hint("Hint: Volume or Mass per piece") ?>
 
             <?php
               echo $form->field($model, 'amount')->widget(NumberControl::classname(), [
@@ -90,9 +97,24 @@ use kartik\number\NumberControl;
                   'pluginEvents'=>[
                         'change'=>"function(){
                         getTotal();
+                        getContent();
                         }"
                    ],
-                  ])->label('Amount');
+                  ])->hint("Hint: Price per piece");
+             ?>
+
+             <?php
+              echo $form->field($model, 'total_unit')->widget(MaskMoney::classname(), [
+                  'readonly'=>true,
+                   'options'=>[
+                       'style'=>'text-align: right'
+                   ],
+                   'pluginOptions' => [
+                      //'prefix' => '₱ ',
+                      'allowNegative' => false,
+                   ]
+                 
+                  ]);
              ?>
            
              <?php
@@ -106,14 +128,14 @@ use kartik\number\NumberControl;
                       'allowNegative' => false,
                    ]
                  
-                  ])->label('Total Amount');
+                  ]);
              ?>
         
         </div>
        
     </div>
     <div class="row">
-        
+      
     </div>
     
     
@@ -136,5 +158,16 @@ use kartik\number\NumberControl;
             $("#inventoryentries-total_amount-disp").val(total);
             $("#inventoryentries-total_amount").val(total);
             $("#inventoryentries-total_amount-disp").maskMoney('mask', total);
+        }
+
+        function getContent(){
+             qty= $('#inventoryentries-quantity').val();
+             amount=$('#inventoryentries-content').val();
+             
+             total= qty * amount;
+            
+            $("#inventoryentries-total_unit-disp").val(total);
+            $("#inventoryentries-total_unit").val(total);
+            $("#inventoryentries-total_unit-disp").maskMoney('mask', total);
         }
     </script>

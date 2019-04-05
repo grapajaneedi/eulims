@@ -41,7 +41,7 @@ class InventoryWithdrawal extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['created_by', 'withdrawal_datetime', 'total_qty'], 'required'],
+            [['created_by', 'withdrawal_datetime'], 'required'],
             [['created_by', 'lab_id', 'total_qty'], 'integer'],
             [['withdrawal_datetime'], 'safe'],
             [['total_cost'], 'number'],

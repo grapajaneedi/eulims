@@ -1,12 +1,41 @@
+<?php
+
+use yii\helpers\Html;
+use kartik\grid\GridView;
+?>
 <div class="Lab-default-index">
-    <h1><?= $this->context->action->uniqueId ?></h1>
-    <p>
-        This is the view content for action "<?= $this->context->action->id ?>".
-        The action belongs to the controller "<?= get_class($this->context) ?>"
-        in the "<?= $this->context->module->id ?>" module.
-    </p>
-    <p>
-        You may customize this page by editing the following file:<br>
-        <code><?= __FILE__ ?></code>
-    </p>
+    <h2>Reorder Point</h2>
+     <div class="expired-index">
+       
+    </div>
+    <h2>Expired</h2>
+    <div class="expired-index">
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                'inventory_transactions_id',
+                [
+                    'header'=>'Product',
+                    'value'=>function($model){
+                        return $model->product->product_name;
+                    }
+                ],
+                'expiration_date',
+                'po_number',
+                'content',
+                'quantity',
+                'description',
+                [
+                    'header'=>'Created_at',
+                    'value'=>function($model){
+                        return date('Y-m-d',$model->created_at);
+                    }
+                ],
+
+                // ['class' => 'yii\grid\ActionColumn'],
+            ],
+        ]); ?>
+    </div>
+
 </div>

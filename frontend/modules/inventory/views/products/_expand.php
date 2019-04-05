@@ -3,12 +3,12 @@ use yii\helpers\Html;
 use kartik\tabs\TabsX;
 use yii\helpers\Url;
 $items = [
-    [
-        'label' => '<i class="glyphicon glyphicon-book"></i> '. Html::encode('Products'),
-        'content' => $this->render('_detail', [
-            'model' => $model,
-        ]),
-    ],
+    // [
+    //     'label' => '<i class="glyphicon glyphicon-book"></i> '. Html::encode('Products'),
+    //     'content' => $this->render('_detail', [
+    //         'model' => $model,
+    //     ]),
+    // ],
         [
         'label' => '<i class="glyphicon glyphicon-book"></i> '. Html::encode('Inventory Entries'),
         'content' => $this->render('_dataInventoryEntries', [

@@ -72,10 +72,21 @@ Modal::end();
         ],            
         'product_code',
         'product_name',
-        'description:ntext',
-        // 'price',
+        // 'description:ntext',
+        [
+            'header'=>'Reorder Point',
+            'value'=>function($model){
+                return $model->qty_reorder;
+            }
+        ],
+        [
+            'header'=>'Unit',
+            'value'=>function($model){
+                return $model->unittype->unit;
+            }
+        ],
         // 'srp',
-        'qty_onhand',
+        // 'qty_onhand',
         // 'qty_per_unit',
         // 'discontinued:boolean',
         [

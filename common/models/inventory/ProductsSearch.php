@@ -19,7 +19,7 @@ class ProductsSearch extends Products
     {
         return [
             [['product_id', 'qty_reorder','categorytype_id', 'qty_onhand', 'qty_min_reorder', 'discontinued', 'created_by', 'created_at', 'updated_at'], 'integer'],
-            [['product_code', 'product_name', 'description', 'qty_per_unit', 'suppliers_ids'], 'safe'],
+            [['product_code', 'product_name', 'description', 'unit', 'suppliers_ids'], 'safe'],
             [['price', 'srp'], 'number'],
         ];
     }
@@ -76,7 +76,7 @@ class ProductsSearch extends Products
         $query->andFilterWhere(['like', 'product_code', $this->product_code])
             ->andFilterWhere(['like', 'product_name', $this->product_name])
             ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'qty_per_unit', $this->qty_per_unit])
+            ->andFilterWhere(['like', 'unit', $this->unit])
             ->andFilterWhere(['like', 'suppliers_ids', $this->suppliers_ids]);
 
         return $dataProvider;

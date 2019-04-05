@@ -24,40 +24,52 @@ use common\models\inventory\InventoryWithdrawaldetails;
                 },
         ],               
          [
-             'attribute' => 'po_number',  
+             'attribute' => 'content',  
+             'value'=>function($model){
+                return $model->content." ".$model->product->unittype->unit;
+             },
              'pageSummary' => '<span style="float:right;">Total:</span>',
          ],
-         [
-           'attribute' => 'quantity',   
+         // [
+         //   'attribute' => 'quantity',
+         //   'format' => ['decimal', 2],
+         //    'pageSummary' => true  
+         // ],
+        //  [
+        //         'attribute' => 'withdrawdetails',
+        //         'label' => 'Withdrawn',
+        //         'value' => function($model){  
+
+
+        //         $withdrawn = InventoryWithdrawaldetails::find()->where(['inventory_transactions_id'=>$model->inventory_transactions_id])->sum('quantity');
+
+
+        //             return $withdrawn;                
+        //         },
+        //         'format' => ['decimal', 2],
+        //         'pageSummary' => true  
+
+        // ],
+        [
+           'attribute' => 'quantity_onhand',
            'format' => ['decimal', 2],
             'pageSummary' => true  
          ],
-         [
-                'attribute' => 'withdrawdetails',
-                'label' => 'Withdrawn',
-                'value' => function($model){  
-
-
-                $withdrawn = InventoryWithdrawaldetails::find()->where(['inventory_transactions_id'=>$model->inventory_transactions_id])->sum('quantity');
-
-
-                    return $withdrawn;                
-                },
-                'format' => ['decimal', 2],
-                'pageSummary' => true  
-
-        ],
          [
            'attribute' => 'amount',   
            'format' => ['decimal', 2],
             'pageSummary' => true  
          ],
-         [
-           'attribute' => 'total_amount',   
-           'format' => ['decimal', 2],
-            'pageSummary' => true  
-         ],
-        
+         // [
+         //   'attribute' => 'total_amount',   
+         //   'format' => ['decimal', 2],
+         //    'pageSummary' => true  
+         // ],
+         //  [
+         //   'attribute' => 'total_unit',   
+         //   'format' => ['decimal', 2],
+         //    'pageSummary' => true  
+         // ],
     ];
     
     echo GridView::widget([

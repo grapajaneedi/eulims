@@ -150,7 +150,7 @@ $this->params['breadcrumbs'][] = $this->title;
             //'created_by',
             //'suppliers_id',
             //'po_number',
-            'quantity',
+            'quantity_onhand',
             'amount',
             //'total_amount',
             //'Image1',

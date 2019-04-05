@@ -15,9 +15,13 @@ use yii\behaviors\TimestampBehavior;
  * @property int $created_by
  * @property int $suppliers_id
  * @property string $po_number
- * @property int $quantity
+ * @property int $quantity_onhand //tracking currently onhand  item 
+ * @property int $quantity //the item qty at the start of the entries
+ * @property double $content 
  * @property string $amount
+ * @property string $total_unit 
  * @property string $total_amount
+ * @property string $description
  * @property int $created_at
  * @property int $updated_at
  *
@@ -51,10 +55,11 @@ class InventoryEntries extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['rstl_id', 'product_id', 'created_by', 'suppliers_id', 'quantity','amount'], 'required'],
+            [['rstl_id', 'product_id', 'created_by', 'suppliers_id', 'quantity','amount', 'content'], 'required'],
             [[ 'rstl_id', 'product_id', 'created_by', 'suppliers_id', 'quantity', 'created_at', 'updated_at'], 'integer'],
             [['manufacturing_date', 'expiration_date'], 'safe'],
-            [['amount', 'total_amount'], 'number'],
+            [['content', 'amount', 'total_unit', 'total_amount'], 'number'],
+            [['description'], 'string'],
             [['po_number'], 'string', 'max' => 50],
             [['suppliers_id'], 'exist', 'skipOnError' => true, 'targetClass' => Suppliers::className(), 'targetAttribute' => ['suppliers_id' => 'suppliers_id']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => Products::className(), 'targetAttribute' => ['product_id' => 'product_id']],
@@ -84,11 +89,15 @@ class InventoryEntries extends \yii\db\ActiveRecord
             'created_by' => 'Created By',
             'suppliers_id' => 'Suppliers ID',
             'po_number' => 'Po Number',
+            'quantity_onhand'=>'Quantity Onhand',
             'quantity' => 'Quantity',
-            'amount' => 'Amount',
-            'total_amount' => 'Total Amount',
+            'content' => 'Content',
+            'amount' => 'Price',
+            'total_unit' => 'Total Unit',
+            'total_amount' => 'Total Price',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
+            'description' => 'Description',
         ];
     }
 

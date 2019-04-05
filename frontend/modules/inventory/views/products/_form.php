@@ -6,6 +6,7 @@ use yii\helpers\ArrayHelper;
 use common\models\inventory\Categorytype;
 use common\models\inventory\Suppliers;
 use common\models\inventory\Producttype;
+use common\models\inventory\Units;
 use kartik\widgets\FileInput;
 use kartik\money\MaskMoney;
 use yii\helpers\Url;
@@ -142,13 +143,13 @@ function isthere($file){
                       'prefix' => '₱ ',
                       'allowNegative' => false,
                    ]
-                  ])->label('Price');
+                  ])->label('Price')->hint("For Equipment Only, Leave 0 if consumable");
               ?>
         </div> 
     </div>
     <div class="row">
         <div class="col-sm-6">
-             <?= $form->field($model, 'qty_min_reorder')->textInput(['placeholder' => 'Qty Min Reorder','type'=>'number']) ?>
+             <?= $form->field($model, 'qty_min_reorder')->textInput(['placeholder' => 'Qty Min Reorder','type'=>'number'])->hint("Hint:(Volume or Mass) Threshold limit to reorder") ?>
         </div>
         <div class="col-sm-6">
             <?=
@@ -164,10 +165,19 @@ function isthere($file){
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <?= $form->field($model, 'qty_reorder')->textInput(['placeholder' => 'Qty Reorder','type'=>'number']) ?>
+            <?= $form->field($model, 'qty_reorder')->textInput(['placeholder' => 'Qty Reorder','type'=>'number'])->hint("Hint:(Volume or Mass) Number to reorder") ?>
         </div>
         <div class="col-sm-6">
-            <?= $form->field($model, 'qty_per_unit')->textInput(['maxlength' => true, 'placeholder' => 'Qty Per Unit','type'=>'number']) ?>
+           
+            <?=
+            $form->field($model, 'unit')->widget(\kartik\widgets\Select2::classname(), [
+                'data' => ArrayHelper::map(Units::find()->orderBy('unit')->asArray()->all(), 'unitid', 'unit'),
+                'options' => ['placeholder' => 'Choose Unit'],
+                'pluginOptions' => [
+                    'allowClear' => true
+                ],
+            ])->hint("This unit will be used throughout of the transaction");
+            ?>
         </div>
     </div>
     <div class="row">
@@ -178,7 +188,7 @@ function isthere($file){
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+            <?= $form->field($model, 'description')->textarea(['rows' => 6])->hint('Supporting Description') ?>
         </div>
         <div class="col-sm-6">
             <?=
