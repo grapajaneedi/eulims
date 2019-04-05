@@ -71,6 +71,14 @@ function(calEvent, jsEvent, view) {
         
     // });
 
+    // alert('Event: id is  ' + calEvent.id);
+    // alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+    // alert('View: ' + view.name);
+
+    // change the border color just for fun
+    // $(this).css('border-color', 'red');
+
+    window.open( "/inventory/equipmentservice/update?id=" + calEvent.id, "_blank", "" );
 }
 EOF;
 
@@ -87,7 +95,7 @@ EOF;
                         'editable' => true,
                         // 'select' => new JsExpression($JSCode),
                         // 'drop' => new JsExpression($JSDropEvent),
-                        // 'eventClick' => new JsExpression($JSEventClick),
+                        'eventClick' => new JsExpression($JSEventClick),
                         // 'dayClick'=>new \yii\web\JsExpression($JSDayClick),
                         'defaultDate' => date('Y-m-d')
                   ],

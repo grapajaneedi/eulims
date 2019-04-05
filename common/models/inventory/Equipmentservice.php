@@ -18,6 +18,7 @@ use common\models\User;
  *
  * @property Servicetype $servicetype
  * @property User $requesteduser
+ * @property Products $inventoryTransactions
  */
 class Equipmentservice extends \yii\db\ActiveRecord
 {
@@ -82,5 +83,13 @@ class Equipmentservice extends \yii\db\ActiveRecord
     public function getRequesteduser()
     {
         return $this->hasOne(User::className(), ['user_id' => 'requested_by']);
+    }
+
+    /**
+    * @return \yii\db\ActiveQuery
+    */
+    public function getInventoryTransactions()
+    {
+        return $this->hasOne(Products::className(), ['product_id' => 'inventory_transactions_id']);
     }
 }

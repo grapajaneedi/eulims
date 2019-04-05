@@ -89,7 +89,8 @@ class InventoryentriesController extends Controller
                     $this->updateQtyProduct($model->product_id,$total_qty);
                     $transaction->commit();
                     Yii::$app->session->setFlash('success', 'Product Entry Created!');
-                    return $this->redirect(['view', 'id' => $model->inventory_transactions_id]); 
+                    return $this->redirect(['/inventory/inventoryentries']);
+                    // return $this->redirect(['view', 'id' => $model->inventory_transactions_id]); 
                 }
                 
                 
