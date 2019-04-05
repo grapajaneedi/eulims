@@ -347,6 +347,7 @@ class ProductsController extends Controller
         $model->inventory_transactions_id=$id;
 
         if ($model->load(Yii::$app->request->post())) {
+
             $model->requested_by = Yii::$app->user->identity->profile->user_id; 
             if( $model->save()){
                 Yii::$app->session->setFlash('success', "Successfully created a new Schedule.");
@@ -376,11 +377,10 @@ class ProductsController extends Controller
     
     //as of now get all the schedules
     $schedules = Equipmentservice::find()->where(['inventory_transactions_id'=>$id])->all(); 
-
-    $ctr=1; 
+ 
     foreach ($schedules AS $schedule){
         $Event= new Schedule();
-        $Event->id = $ctr;
+        $Event->id = $schedule->equipmentservice_id;
         $Event->title =$schedule->servicetype->servicetype;
 
         $Event->start =$schedule->startdate;
@@ -390,7 +390,6 @@ class ProductsController extends Controller
         $newdate = date('Y-m-d',strtotime($date1 . "+1 days"));
         $Event->end = $newdate;
         $events[] = $Event;
-        $ctr++;
     }
 
     return $events;
