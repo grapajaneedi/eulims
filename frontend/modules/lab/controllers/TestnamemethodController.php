@@ -4,6 +4,7 @@ namespace frontend\modules\lab\controllers;
 
 use Yii;
 use common\models\lab\Testnamemethod;
+use common\models\lab\Methodreference;
 use common\models\lab\Workflow;
 use common\models\lab\ProcedureSearch;
 use common\models\lab\Procedure;
@@ -58,9 +59,9 @@ class TestnamemethodController extends Controller
         $labid = $_GET['lab_id'];
         $testname_id = $_GET['id'];
     
-         $testnamemethod = Testnamemethod::find()->where(['testname_id'=>$testname_id])->all();
+         $methodreference = Methodreference::find()->all();
          $testnamedataprovider = new ArrayDataProvider([
-                 'allModels' => $testnamemethod,
+                 'allModels' => $methodreference,
                  'pagination' => [
                      'pageSize' =>false,
                  ],

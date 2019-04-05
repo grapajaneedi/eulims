@@ -37,7 +37,7 @@ $this->registerJs($js, $this::POS_READY);
         'id'=>'testname-grid',
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-products']],
         'containerOptions'=>[
-            'style'=>'overflow:auto; height:500px',
+            'style'=>'overflow:auto; height:380px',
         ],
         'columns' => [
             [
@@ -48,24 +48,17 @@ $this->registerJs($js, $this::POS_READY);
                 'contentOptions' => ['class' => 'text-center','style'=>'max-width:20px;'],
                 'radioOptions' => function ($model) {
                     return [
-                        'value' => $model['method_id'],
-                        'checked' => $model['method_id'],
+                        'value' => $model['method_reference_id'],
+                        'checked' => $model['method_reference_id'],
                     ];
                 },
             ],
             [     
                 'label' => 'Method',
                 'format' => 'raw',
-               // 'width'=> '150px',
                 'contentOptions' => ['style' => 'width: 30%;word-wrap: break-word;white-space:pre-line;'],  
                 'value' => function($data) {
-                    $method_query = Methodreference::find()->where(['method_reference_id'=>$data->method_id])->one();
-        
-                    if ($method_query){
-                        return $method_query->method;
-                    }else{
-                        return "";
-                    }
+                    return $data->method;
                  }                        
             ],
             [     
@@ -73,13 +66,7 @@ $this->registerJs($js, $this::POS_READY);
                 'format' => 'raw',
                 'contentOptions' => ['style' => 'width: 60%;word-wrap: break-word;white-space:pre-line;'],  
                 'value' => function($data) {
-
-                    $method_query = Methodreference::find()->where(['method_reference_id'=>$data->method_id])->one();
-                    if ($method_query){
-                        return $method_query->reference;
-                    }else{
-                        return "";
-                    }
+                    return $data->reference;
                             
                  }                        
             ],
@@ -89,12 +76,7 @@ $this->registerJs($js, $this::POS_READY);
                 'width'=> '150px',
                 'contentOptions' => ['style' => 'width: 10%;word-wrap: break-word;white-space:pre-line;'],  
                 'value' => function($data) {
-                    $method_query = Methodreference::find()->where(['method_reference_id'=>$data->method_id])->one();
-                    if ($method_query){
-                        return $method_query->fee;
-                    }else{
-                        return "";
-                    }
+                    return $data->fee;
                  }                
             ],
        ],
