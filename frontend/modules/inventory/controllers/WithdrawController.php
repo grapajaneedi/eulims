@@ -282,107 +282,65 @@ class WithdrawController extends Controller
     public function actionOutcart(){
         //gather data from cart
         $session = Yii::$app->session;
-        
-
-        //try
         try {
             //begin transaction
             $connection = Yii::$app->inventorydb;
             $transaction = $connection->beginTransaction();
 
             if($session->has('cart')){
-                $cart = unserialize($session['cart']);
-                $begin = 0;
-                //while{
+                $cart = unserialize($session['cart']); //so we can access through looping
+
+                //make a withdrawal header
+                $header = new InventoryWithdrawal();
+                $header->created_by=Yii::$app->user->id;
+                $header->withdrawal_datetime=date('Y-m-d');
+                if(Yii::$app->user->identity->profile){
+                    $header->lab_id= Yii::$app->user->identity->profile->lab_id;
+                }else{
+                    $transaction->rollBack();
+                    throw new Exception("User has no Lab_id!", 1);
+                }
+                $header->total_qty=0;//$key['Quantity'];
+                $header->total_cost=0;//$key['Subtotal'];
+                $header->remarks="N/A";
+                if(!$header->save()){
+                    $transaction->rollBack();
+                    throw new Exception("Cannot save header of Withdrawal Items!", 1);
+                }
+
                 foreach ($cart as $key) {
+                     $entry = InventoryEntries::findOne($key['ID']); //get the entries record
 
-                    //check avaialbility of withdrawal product ~> else proceed to A. [collect info for system visibility]
-
-                    //query for the inventoryentries
-                    // $entry = InventoryEntries::find(['inventory_transactions_id'=>$key['ID']])->with('product')->one();
-                    $entry = InventoryEntries::findOne($key['ID']);
-
-                    // var_dump($entry);exit;
-
-                    //query for the withdrawaldetails and sum up all the qty withdrawn
-                    $withdrawn = InventoryWithdrawaldetails::find()->where(['inventory_transactions_id'=>$key['ID']])->sum('quantity');
-
-                    $qty = (int)$entry->quantity - (int)$withdrawn; //we get the quantity that is withdrawable
-
-                    //compare else throw ERR
-                    // cart qty > withdrawable ~> throw ERR
-                    if($key['Quantity']>$qty){
+                     if($key['Quantity']>$entry->quantity_onhand){ // cart qty > withdrawable ~> throw ERR
+                        $transaction->rollBack();
                         throw new Exception("Withdrawable Quantity is less than the desired Quantity!", 1);
-                    }
+                     }
 
-                    //execute calculations
-                    //subtract qty in Product tbl
-                    $product = Products::find()->where(['product_code'=>$key['Item']])->one();
-                    $product->qty_onhand = $product->qty_onhand - $key['Quantity'];
-                    if($product->save()){
-                        $header="";
-                        if($begin==0){
-
-
-                            //create record in withdrawal and details table
-                            $header = new InventoryWithdrawal();
-                            $header->created_by=Yii::$app->user->id;
-                            $header->withdrawal_datetime=date('Y-m-d');
-                            if(Yii::$app->user->identity->profile){
-                                $header->lab_id= Yii::$app->user->identity->profile->lab_id;
-                            }else{
-                                // $header->lab_id= 0;
-                                throw new Exception("User has no Lab_id!", 1);
-                            }
-                            $header->total_qty=$key['Quantity'];
-                            $header->total_cost=$key['Subtotal'];
-                            $header->remarks="N/A";
-                            if($header->save()){
-                                $begin=$header->inventory_withdrawal_id;
-                            }
-                            else{
-                                throw new Exception("Cannot save header of Withdrawal Items!", 1);
-                            }
-                        }else{
-
-                            //update record in withdrawal and details table
-                            $header = InventoryWithdrawal::findOne($begin);
-                            $header->total_qty=$header->total_qty+$key['Quantity'];
-                            $header->total_cost=$header->total_cost+$key['Subtotal'];
-                           if(!$header->save()){
-                                throw new Exception("Cannot update header of Withdrawal Items!", 1);
-                            }
-                        }
-
-                        //create record of withdrawal item
+                     //subtract qty in Entries tbl
+                     $entry->quantity_onhand = (int)$entry->quantity_onhand - (int)$key['Quantity']; 
+                     if($entry->save()){
+                        //create record of withdrawaldetails item
                         $item = new InventoryWithdrawaldetails();
-                        $item->inventory_withdrawal_id =$begin;
+                        $item->inventory_withdrawal_id =$header->inventory_withdrawal_id;
                         $item->inventory_transactions_id=$key['ID'];
                         $item->quantity=$key['Quantity'];
                         $item->price=$key['Subtotal'];
                         $item->withdarawal_status_id=2;
-                        if($item->save()){
-                            $session['cart']=serialize([]);
-                            $transaction->commit();
-                        }
-                        
-                    }else{
-                        throw new Exception("Can't update Product Quantity!", 1);
-                    }
-
-                   
+                        $item->save();
+                      }
                 }
-            }      
 
-            //end transaction 
-        } catch (Exception $e) {
-             $transaction->rollBack();
-            throw $e;
-        } catch (\Throwable $e) {
-            $transaction->rollBack();
-            throw $e;
-        }
-        
-         return $this->redirect(['out']);
+                //commit
+                $transaction->commit(); 
+                $session['cart']=serialize([]);
+                Yii::$app->session->setFlash('success', 'Processed Successfully!');
+            }
+
+               } catch (Exception $e) {
+                  $transaction->rollBack();
+                  throw $e;
+               }      
+
+        return $this->redirect(['out']);
     }
 }

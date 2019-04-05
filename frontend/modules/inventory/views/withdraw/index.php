@@ -59,8 +59,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     return $lab->labname;
                 }
             ],
-            'total_qty',
-            'total_cost',
             'remarks:ntext',
 
             // ['class' => 'yii\grid\ActionColumn'],

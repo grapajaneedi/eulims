@@ -63,7 +63,7 @@ $columns =2;
 			<div class="items">
 				
 				<?php 
-					// var_dump(unserialize($session['cart']));
+					
 					$total = 0;
 					 if($session->has('cart')){
 					 	$cart = unserialize($session['cart']);
@@ -112,9 +112,6 @@ $columns =2;
 					 else{
 					 	echo "<pre align='center'>~EMPTY~</pre>";
 					 }
-					
-			        
-
 				?>
 				
 			</div>

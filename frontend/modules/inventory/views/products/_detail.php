@@ -22,7 +22,6 @@ use yii\web\View;
             ],
             'buttons1' => '',
             'attributes' => [
-              
                 [
                     'columns' => [
                         [
@@ -52,9 +51,9 @@ use yii\web\View;
                             'displayOnly'=>true
                         ],
                         [
-                            'label'=>'Description',
+                            'label'=>'Reorder Point',
                             'format'=>'raw',
-                            'value'=>$model->description,
+                            'value'=>$model->qty_reorder,
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
                         ],
@@ -62,41 +61,41 @@ use yii\web\View;
                     ],
 
                 ],
+               // [
+               //    'columns' => [
+               //        [
+               //              'label'=>'Srp',
+               //              'format'=>'raw',
+               //              'value'=>$model->srp,
+               //              'valueColOptions'=>['style'=>'width:30%'], 
+               //              'displayOnly'=>true,
+               //              'hAlign'=>'left',
+               //        ],
+               //        [
+
+               //          'label'=>'Price',
+               //          'format'=>'raw',
+               //          'value'=>$model->price,
+               //          'valueColOptions'=>['style'=>'width:30%'], 
+               //          'displayOnly'=>true
+               //        ],
+               //    ],
+               // ],
                [
                   'columns' => [
-                      [
-                            'label'=>'Srp',
-                            'format'=>'raw',
-                            'value'=>$model->srp,
-                            'valueColOptions'=>['style'=>'width:30%'], 
-                            'displayOnly'=>true,
-                            'hAlign'=>'left',
-                      ],
-                      [
-
-                        'label'=>'Price',
-                        'format'=>'raw',
-                        'value'=>$model->price,
-                        'valueColOptions'=>['style'=>'width:30%'], 
-                        'displayOnly'=>true
-                      ],
-                  ],
-               ],
-               [
-                  'columns' => [
-                      [
-                            'label'=>'Qty On-hand',
-                            'format'=>'raw',
-                            'value'=>$model->qty_onhand,
-                            'valueColOptions'=>['style'=>'width:30%'], 
-                            'displayOnly'=>true,
-                            'hAlign'=>'left',
-                      ],
+                      // [
+                      //       'label'=>'Qty On-hand',
+                      //       'format'=>'raw',
+                      //       'value'=>$model->qty_onhand,
+                      //       'valueColOptions'=>['style'=>'width:30%'], 
+                      //       'displayOnly'=>true,
+                      //       'hAlign'=>'left',
+                      // ],
                       [
 
-                        'label'=>'Qty Reorder',
+                        'label'=>'Description',
                         'format'=>'raw',
-                        'value'=>$model->qty_reorder,
+                        'value'=>$model->description,
                         'valueColOptions'=>['style'=>'width:30%'], 
                         'displayOnly'=>true
                       ],

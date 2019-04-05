@@ -82,6 +82,7 @@ class InventoryentriesController extends Controller
             try  {
                 $total= $model->quantity * $model->amount;
                 $model->total_amount=$total;
+                $model->quantity_onhand = $model->quantity;
                 if ($model->save()){
                     $qty=$model->product->qty_onhand;
                     $total_qty=$qty + $model->quantity;
