@@ -81,9 +81,9 @@ use kartik\number\NumberControl;
                 echo $func->GetSupplierList($form,$model,false,"Supplier");
             ?> 
             
-            <?= $form->field($model, 'quantity')->textInput(['type'=>'number','onchange'=>'getTotal();'])->hint("Hint: Piece/s") ?>
+            <?= $form->field($model, 'quantity')->textInput(['type'=>'number', 'step'=>"0.5",'onchange'=>'getTotal();'])->hint("Hint: Piece/s") ?>
 
-             <?= $form->field($model, 'content')->textInput(['type'=>'number','onchange'=>'getContent();'])->hint("Hint: Volume or Mass per piece") ?>
+             <?= $form->field($model, 'content')->textInput(['type'=>'number', 'step'=>"0.5",'onchange'=>'getContent();'])->hint("Hint: Volume or Mass per piece") ?>
 
             <?php
               echo $form->field($model, 'amount')->widget(NumberControl::classname(), [
