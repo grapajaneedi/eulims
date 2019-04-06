@@ -6,6 +6,7 @@ use common\models\lab\Services;
 use common\models\lab\Lab;
 use common\models\lab\Testname;
 use common\models\lab\Methodreference;
+use common\models\lab\Sampletypetestname;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
@@ -76,10 +77,9 @@ $this->registerJs($js);
 <?= Html::textInput('methodreferenceid', $methodreferenceid, ['class' => 'form-control', 'id'=>'methodreferenceid', 'type'=>'hidden'], ['readonly' => true]) ?>
 <?= Html::textInput('labid', $labid, ['class' => 'form-control', 'id'=>'labid', 'type'=>'hidden'], ['readonly' => true]) ?>
 <?= Html::textInput('sampletypeid', $sampletypeid, ['class' => 'form-control', 'id'=>'sampletypeid', 'type'=>'hidden' ], ['readonly' => true]) ?>
-<?= Html::textInput('labsampletypeid', $labsampletypeid, ['class' => 'form-control', 'id'=>'labsampletypeid', 'type'=>'hidden'], ['readonly' => true]) ?> 
-<?= Html::textInput('sampletypetestname', $sampletypetestname, ['class' => 'form-control', 'id'=>'sampletypetestname', 'type'=>'hidden'], ['readonly' => true]) ?>
-<?= Html::textInput('testnamemethod', $testnamemethod, ['class' => 'form-control', 'id'=>'testnamemethod', 'type'=>'hidden'], ['readonly' => true]) ?>
-<?= Html::textInput('testname', $testname, ['class' => 'form-control', 'id'=>'testname', 'type'=>'hidden'], ['readonly' => true]) ?>
+<?= Html::textInput('labsampletypeid', $labsampletypeid, ['class' => 'form-control', 'id'=>'labsampletypeid' , 'type'=>'hidden'], ['readonly' => true]) ?> 
+<?= Html::textInput('sampletypetestname', $sampletypetestname, ['class' => 'form-control', 'id'=>'sampletypetestname' , 'type'=>'hidden'], ['readonly' => true]) ?>
+
 
 <?php
  $GLOBALS['rstl_id']=Yii::$app->user->identity->profile->rstl_id;
@@ -96,14 +96,23 @@ $this->registerJs($js);
         'containerOptions'=>[
             'style'=>'overflow:auto; height:400px',
         ],
-        'rowOptions' => function($data){
+        'rowOptions' => function($data)use ($methodreferenceid, $sampletypeid){
+
             $GLOBALS['rstl_id']=Yii::$app->user->identity->profile->rstl_id;
-            $servicesquery= Services::find()->where(['method_reference_id' => $data['method_reference_id']])->andWhere(['rstl_id'=>  $GLOBALS['rstl_id']])->one();
+            $typetestname = Sampletypetestname::find()->where(['sampletype_id' =>  $sampletypeid, 'testname_id'=>$methodreferenceid])->one();
+            
+            if ($typetestname){
+                //sampletypetestname exist
+                $servicesquery = Services::find()->where(['method_reference_id' => $data['method_reference_id']])->andWhere(['rstl_id'=>  $GLOBALS['rstl_id']])->andWhere(['testname_method_id'=>  $typetestname->sampletype_testname_id])->one();        
                 if ($servicesquery){
                     return ['class'=>'success'];
                 }else{
-                return ['class'=>'danger'];
-                }      
+                    return ['class'=>'danger'];
+                }        
+            }else{
+                      //sampletypetestname not exist
+                      return ['class'=>'danger'];
+            } 
        },
         'panel' => [
                 'type' => GridView::TYPE_PRIMARY,
@@ -117,14 +126,31 @@ $this->registerJs($js);
                 'hAlign'=>'center',
                 'format' => 'raw',
                 'contentOptions' => ['style' => 'width: 5%;word-wrap: break-word;white-space:pre-line;'],
-                'value'=>function($data){
+                'value'=>function($data) use ($methodreferenceid, $sampletypeid) {
+
                     $GLOBALS['rstl_id']=Yii::$app->user->identity->profile->rstl_id;
-                    $servicesquery= Services::find()->where(['method_reference_id' => $data['method_reference_id']])->andWhere(['rstl_id'=>  $GLOBALS['rstl_id']])->one();
-                    if ($servicesquery){
-                       return "<span class='btn btn-success' id='offer' onclick='unofferservices(".$data['method_reference_id'].")'>UNOFFER</span>";
+                    $typetestname = Sampletypetestname::find()->where(['sampletype_id' =>  $sampletypeid, 'testname_id'=>$methodreferenceid])->one();
+                    
+                    if ($typetestname){
+                        //sampletypetestname exist
+
+                        $servicesquery = Services::find()->where(['method_reference_id' => $data['method_reference_id']])->andWhere(['rstl_id'=>  $GLOBALS['rstl_id']])->andWhere(['testname_method_id'=>  $typetestname->sampletype_testname_id])->one();        
+                        if ($servicesquery){
+                            return "<span class='btn btn-success' id='offer'  onclick='unofferservices(".$data['method_reference_id'].")'>UNOFFER</span>";  
+                            
+                        }else{
+                            return "<span class='btn btn-danger' id='offer' onclick='offerservices(".$data['method_reference_id'].")'>OFFER</span>";
+                            
+                        }  
+                        
                     }else{
-                        return "<span class='btn btn-danger' id='offer' onclick='offerservices(".$data['method_reference_id'].")'>OFFER</span>";
-                    }
+                              //sampletypetestname not exist
+                            return "<span class='btn btn-danger' id='offer'  onclick='offerservices(".$data['method_reference_id'].")'>OFFER</span>";
+                    } 
+
+                  
+                  
+
                 },
                 'enableSorting' => false,
             ],

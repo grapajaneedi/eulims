@@ -289,7 +289,7 @@ class ServicesController extends Controller
           $sampletypeid = $_POST['sampletypeid'];
           $methodreferenceid = $_POST['methodreferenceid'];
           $labsampletypeid = $_POST['labsampletypeid'];
-          $testname = $_POST['testname'];
+          $sampletypetestname = $_POST['sampletypetestname'];
           $GLOBALS['rstl_id']=Yii::$app->user->identity->profile->rstl_id;
 
           $apiUrl_testnamemethod="https://eulimsapi.onelab.ph/api/web/v1/testnamemethods/search?testname_id=".$methodreferenceid;
@@ -313,13 +313,13 @@ class ServicesController extends Controller
                 $sampletypetestname = $sampletypetestnames['sampletype_testname_id'];      
             }
   
-          $services = new Services();
-          $services->rstl_id =   $GLOBALS['rstl_id'];
-          $services->method_reference_id = $id;
-          $services->sampletype_id = $sampletypeid;
-          $services->testname_method_id = 1;
-          $services->save();
-          $services_model = Services::find()->where(['services_id' => $services->services_id])->one();
+            $services = new Services();
+            $services->rstl_id =   $GLOBALS['rstl_id'];
+            $services->method_reference_id = $id;
+            $services->sampletype_id = $sampletypeid;
+            $services->testname_method_id = $sampletypetestname;
+            $services->save();
+            $services_model = Services::find()->where(['services_id' => $services->services_id])->one();
 
           $apiUrl_sampletype="https://eulimsapi.onelab.ph/api/web/v1/sampletypes/search?sampletype_id=".$sampletypeid;
           $curl = new curl\Curl();
@@ -419,6 +419,9 @@ class ServicesController extends Controller
                 $sampletypetestname->testname_id = $var['testname_id'];
                 $sampletypetestname->added_by = $var['added_by'];
                 $sampletypetestname->save();
+
+
+              
             }
          }
           $apiUrl_methodreference="https://eulimsapi.onelab.ph/api/web/v1/methodreferences/search?method_reference_id=".$id;
@@ -479,14 +482,16 @@ class ServicesController extends Controller
                 $sampletypetestnameid = $sampletypetestnames['sampletype_testname_id'];      
             }
 
+           //DON'T DELETE RECORD IF IT'S CONNECTED IN OTHER SAMPLETYPES.. DELETE ONLY IF ITS DEPENDENT IN THAT SPECIFIC SAMPLECODE
+
            $connection= Yii::$app->labdb;
            $connection->createCommand('set foreign_key_checks=0')->execute();
-           $connection->createCommand("DELETE FROM tbl_sampletype WHERE sampletype_id=$sampletypeid")->execute();
-           $connection->createCommand("DELETE FROM tbl_lab_sampletype WHERE lab_sampletype_id=$labsampletypeid")->execute();
-           $connection->createCommand("DELETE FROM tbl_methodreference WHERE method_reference_id=$id")->execute();
-           $connection->createCommand("DELETE FROM tbl_testname WHERE testname_id=$methodreferenceid")->execute();
-           $connection->createCommand("DELETE FROM tbl_sampletype_testname WHERE sampletype_testname_id=$sampletypetestnameid")->execute();
-           $connection->createCommand("DELETE FROM tbl_testname_method WHERE testname_method_id=$testnamemethodid")->execute();
+        //   $connection->createCommand("DELETE FROM tbl_sampletype WHERE sampletype_id=$sampletypeid")->execute();
+        //    $connection->createCommand("DELETE FROM tbl_lab_sampletype WHERE lab_sampletype_id=$labsampletypeid")->execute();
+        //    $connection->createCommand("DELETE FROM tbl_methodreference WHERE method_reference_id=$id")->execute();
+       //   $connection->createCommand("DELETE FROM tbl_testname WHERE testname_id=$methodreferenceid")->execute();
+        //    $connection->createCommand("DELETE FROM tbl_sampletype_testname WHERE sampletype_testname_id=$sampletypetestnameid")->execute();
+        //  $connection->createCommand("DELETE FROM tbl_testname_method WHERE testname_method_id=$testnamemethodid")->execute();
            $connection->createCommand("DELETE FROM tbl_services WHERE method_reference_id=$id AND rstl_id=$GLOBALS[rstl_id]")->execute();
            $connection->createCommand('set foreign_key_checks=1')->execute();  
      }

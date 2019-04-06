@@ -41,6 +41,7 @@ class LabsampletypeController extends Controller
     {
         $searchModel = new LabsampletypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->sort->defaultOrder = ['effective_date' => SORT_ASC];
 
         return $this->render('index', [
             'searchModel' => $searchModel,

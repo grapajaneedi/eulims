@@ -39,6 +39,7 @@ class SampletypeController extends Controller
     {
         $searchModel = new SampletypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+     //   $dataProvider->sort->defaultOrder = ['method' => SORT_ASC];
 
         return $this->render('index', [
             'searchModel' => $searchModel,

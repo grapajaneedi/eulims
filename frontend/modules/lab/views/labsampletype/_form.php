@@ -13,7 +13,7 @@ use yii\helpers\Url;
 
 
 $lablist= ArrayHelper::map(Lab::find()->all(),'lab_id','labname');
-$sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','type');
+$sampletypelist= ArrayHelper::map(Sampletype::find()->orderBy(['sampletype_id' => SORT_DESC])->all(),'sampletype_id','type');
 
 /* @var $this yii\web\View */
 /* @var $model common\models\lab\Labsampletype */
