@@ -16,19 +16,17 @@ use yii\helpers\Url;
 ?>
 
 <div class="sampletype-form">
+
     <?php $form = ActiveForm::begin(); ?>
    
     <?= $form->field($model, 'type')->textInput(['maxlength' => true]) ?>
-    <?php
-        $model->status_id='Active';
-    ?>
+
     <?= $form->field($model,'status_id')->widget(Select2::classname(),[
                     'data' => ['1'=>'Active', '0'=>'Inactive'],
-                    'theme' => Select2::THEME_KRAJEE,  
-                    'initValueText'=>'fs',
+                    'theme' => Select2::THEME_KRAJEE,
                     'options' => ['id'=>'sample-testcategory_id'],
-                    'pluginOptions' => ['allowClear' => true],
-        ])
+                    'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Status'],
+            ])
     ?>
 
     <div class="form-group pull-right">

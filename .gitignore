@@ -340,3 +340,4 @@ frontend/modules/referrals/controllers/ReferralController_20190321.php
 frontend/modules/lab/controllers/RequestController - gg.php
 frontend/modules/lab/views/request/viewreferral - Copy.php
 common/models/lab/exRequestreferral_20190321.php
+frontend/views/admin-lte/layouts/content_.php
