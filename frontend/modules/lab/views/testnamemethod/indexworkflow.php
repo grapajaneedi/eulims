@@ -102,10 +102,12 @@ $this->params['breadcrumbs'][] = $this->title;
                     'value'=>function($data){     
                         $workflow = Workflow::find()->where(['testname_method_id' => $data->testname_method_id])->one();
                         if ($workflow){
-                           return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Create Workflow for ".$data->testname->testName)]);
+                           return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Create Workflow")]);
                         }else{
-                            return Html::button('<span class="glyphicon glyphicon-plus"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-success','title' => Yii::t('app', "Create Workflow for ".$data->testname->testName)]);
+                            return Html::button('<span class="glyphicon glyphicon-plus"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-success','title' => Yii::t('app', "Create Workflow")]);
                         }
+
+                        ///return $data->testname_method_id;
                     },
                         'enableSorting' => false,
                         'contentOptions' => ['style' => 'width:20px; white-space: normal;'],
