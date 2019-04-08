@@ -249,7 +249,7 @@ class AnalysisController extends Controller
                     $analysis->rstl_id = $GLOBALS['rstl_id'];
                     $analysis->test_id = (int) $post['Analysis']['test_id'];
                     $analysis->sample_type_id = (int) $post['Analysis']['sample_type_id'];
-                    $analysis->testcategory_id = $post['Analysis']['method'];
+                    $analysis->testcategory_id = $method->method_reference_id;
                     $analysis->is_package = (int) $post['Analysis']['is_package'];
                     $analysis->method = $method->method;
                     $analysis->fee = $method->fee;

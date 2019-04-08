@@ -134,7 +134,7 @@ if(Yii::$app->user->can('allow-cancel-request')){
                 'attribute'=>'status_id',
                 'hAlign'=>'center',
                 'format'=>'raw',
-                'width' => '100px',
+                'width' => '110px',
                 'value'=>function($model){
          
                     $samples_count= Sample::find() 
@@ -151,13 +151,13 @@ if(Yii::$app->user->can('allow-cancel-request')){
                     $rcount = count($requestcount); 
                     
                     if ($rcount==0){
-                        return Html::button('<span"><b>PENDING</span>', ['value'=>Url::to(['/lab/tagging/samplestatus','id'=>$model->request_id]),'onclick'=>'LoadModal(this.title, this.value, true, 1200);', 'class' => 'btn btn-default','title' => Yii::t('app', "Analyses Monitoring"), 'style'=>'width:100px;']);
+                        return Html::button('<span"><b>PENDING</span>', ['value'=>Url::to(['/lab/tagging/samplestatus','id'=>$model->request_id]),'onclick'=>'LoadModal(this.title, this.value, true, 1200);', 'class' => 'btn btn-default','title' => Yii::t('app', "Analyses Monitoring"), 'style'=>'width:110px;']);
                         
                     }elseif ($scount>$rcount){
-                        return Html::button('<span"><b>ONGOING</span>', ['value'=>Url::to(['/lab/tagging/samplestatus','id'=>$model->request_id]),'onclick'=>'LoadModal(this.title, this.value, true, 1200);', 'class' => 'btn btn-primary','title' => Yii::t('app', "Analyses Monitoring"), 'style'=>'width:100px']);
+                        return Html::button('<span"><b>ONGOING</span>', ['value'=>Url::to(['/lab/tagging/samplestatus','id'=>$model->request_id]),'onclick'=>'LoadModal(this.title, this.value, true, 1200);', 'class' => 'btn btn-primary','title' => Yii::t('app', "Analyses Monitoring"), 'style'=>'width:110px']);
                         
                     }elseif ($scount==$rcount){
-                        return Html::button('<span"><b>COMPLETED</span>', ['value'=>Url::to(['/lab/tagging/samplestatus','id'=>$model->request_id]),'onclick'=>'LoadModal(this.title, this.value, true, 1200);', 'class' => 'btn btn-success','title' => Yii::t('app', "Analyses Monitoring"), 'style'=>'width:100px']);                  
+                        return Html::button('<span"><b>COMPLETED</span>', ['value'=>Url::to(['/lab/tagging/samplestatus','id'=>$model->request_id]),'onclick'=>'LoadModal(this.title, this.value, true, 1200);', 'class' => 'btn btn-success','title' => Yii::t('app', "Analyses Monitoring"), 'style'=>'width:110px']);                  
                     }           
               }
             ],

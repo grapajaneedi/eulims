@@ -281,6 +281,7 @@ class TaggingController extends Controller
                 $analysisQuery = Analysis::findOne(['analysis_id' => $id]);
                 $modelmethod=  Methodreference::findOne(['method'=>$analysisQuery->method]);   
              
+                //method id == testcategory_id
                 $testnamemethod = Testnamemethod::findOne(['testname_id'=>$analysisQuery->test_id, 'method_id'=>$analysisQuery->testcategory_id]);
                 if ( $testnamemethod){
                 $workflow = Workflow::find()->where(['testname_method_id' => $testnamemethod->testname_method_id])->all();
