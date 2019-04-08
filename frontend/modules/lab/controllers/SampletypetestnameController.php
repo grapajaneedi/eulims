@@ -40,6 +40,7 @@ class SampletypetestnameController extends Controller
     {
         $searchModel = new SampletypetestnameSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->sort->defaultOrder = ['sampletype_testname_id' => SORT_DESC];
 
         return $this->render('index', [
             'searchModel' => $searchModel,

@@ -39,7 +39,7 @@ class SampletypeController extends Controller
     {
         $searchModel = new SampletypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-     //   $dataProvider->sort->defaultOrder = ['method' => SORT_ASC];
+        $dataProvider->sort->defaultOrder = ['type' => SORT_ASC];
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -92,10 +92,20 @@ class SampletypeController extends Controller
     public function actionCreate()
     {
         $model = new Sampletype();
+        $post= Yii::$app->request->post();
+        if ($model->load(Yii::$app->request->post())) {
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-          Yii::$app->session->setFlash('success', 'Sample Type Successfully Created'); 
+          $sampletype = Sampletype::find()->where(['type'=> $post['Sampletype']['type']])->one();
+
+          if ($sampletype){
+            Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
             return $this->runAction('index');
+          }else{
+            $model->save();  
+            Yii::$app->session->setFlash('success', 'Sample Type Successfully Created'); 
+            return $this->runAction('index');
+          }
+         
         }
 
         if(Yii::$app->request->isAjax){
@@ -111,7 +121,6 @@ class SampletypeController extends Controller
         $model = new Sampletype();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-          //  Yii::$app->session->setFlash('success', 'Sample Type Successfully Created'); 
             return $this->runAction('sampletypetestname');
         }
 
@@ -126,10 +135,20 @@ class SampletypeController extends Controller
     public function actionCreatetype()
     {
         $model = new Sampletype();
+        $post= Yii::$app->request->post();
+        if ($model->load(Yii::$app->request->post())) {
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-          //  Yii::$app->session->setFlash('success', 'Sample Type Successfully Created'); 
+          $sampletype = Sampletype::find()->where(['type'=> $post['Sampletype']['type']])->one();
+
+          if ($sampletype){
+            Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
             return $this->runAction('sampletype');
+          }else{
+            $model->save();  
+            Yii::$app->session->setFlash('success', 'Sample Type Successfully Created'); 
+            return $this->runAction('sampletype');
+          }
+         
         }
 
         if(Yii::$app->request->isAjax){

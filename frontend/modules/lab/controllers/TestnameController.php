@@ -39,6 +39,7 @@ class TestnameController extends Controller
     {
         $searchModel = new TestnameSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->sort->defaultOrder = ['testName' => SORT_ASC];
 
         return $this->render('index', [
             'searchModel' => $searchModel,

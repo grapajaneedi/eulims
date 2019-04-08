@@ -70,25 +70,29 @@ $this->registerJs($js);
     <?php $form = ActiveForm::begin(); ?>
 
     <?= GridView::widget([
-        'dataProvider' => $sampleDataProvider,
-        //'filterModel' => $samplesearchmodel,
-        'pjax'=>true,
-        'headerRowOptions' => ['class' => 'kartik-sheet-style'],
-        'filterRowOptions' => ['class' => 'kartik-sheet-style'],
-        'bordered' => true,
-        'id'=>'sample-grid',
-        'striped' => true,
-        'condensed' => true,
-        'responsive'=>false,
-        'containerOptions'=>[
-            'style'=>'overflow:auto; height:180px',
-        ],
-        'pjaxSettings' => [
-            'options' => [
-                'enablePushState' => false,
-            ]
-        ],
-        'floatHeaderOptions' => ['scrollingTop' => true],
+       'id' => 'sample-grid',
+       'dataProvider'=> $sampleDataProvider,
+       'pjax'=>true,
+       'pjaxSettings' => [
+           'options' => [
+               'enablePushState' => false,
+           ]
+       ],
+       'containerOptions'=>[
+           'style'=>'overflow:auto; height:200px',
+       ],
+       'floatHeaderOptions' => ['scrollingTop' => true],
+       'responsive'=>true,
+       'striped'=>true,
+       'hover'=>true,
+       'bordered' => true,
+       'panel' => [
+          'heading'=>'<h3 class="panel-title">Samples</h3>',
+          'type'=>'primary',
+          'before' => '',
+          'after'=>false,
+       ],
+       'toolbar' => false,
         'columns' => [
                [
             'class' => '\kartik\grid\CheckboxColumn',

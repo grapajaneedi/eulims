@@ -38,7 +38,7 @@ class Sampletype extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['type'], 'unique'],
+          //  [['type'], 'unique'],
             [['type', 'status_id'], 'required'],
             [['status_id'], 'integer'],
             [['type'], 'string', 'max' => 75],

@@ -41,7 +41,7 @@ class LabsampletypeController extends Controller
     {
         $searchModel = new LabsampletypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->sort->defaultOrder = ['effective_date' => SORT_ASC];
+        $dataProvider->sort->defaultOrder = ['effective_date' => SORT_DESC];
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -69,13 +69,24 @@ class LabsampletypeController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+
     public function actionCreate()
     {
         $model = new Labsampletype();
+        $post= Yii::$app->request->post();
+        if ($model->load(Yii::$app->request->post())) {
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Lab Sample Type Successfully Created'); 
-            return $this->runAction('index');
+            $labsampletype = Labsampletype::find()->where(['lab_id'=> $post['Labsampletype']['lab_id'], 'sampletype_id'=>$post['Labsampletype']['sampletype_id']])->one();
+
+            if ($labsampletype){
+                Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+                 return $this->runAction('index');
+            }else{
+                $model->save();
+                Yii::$app->session->setFlash('success', 'Lab Sample Type Successfully Created'); 
+                return $this->runAction('index');
+            }
+         
         }
 
         $sampletype = [];

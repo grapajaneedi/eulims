@@ -22,6 +22,7 @@ use common\models\lab\Sampletypetestname;
 use common\models\lab\Testnamemethod;
 use common\models\lab\Methodreference;
 use common\models\lab\Testname;
+use yii\data\ArrayDataProvider;
 
 use DateTime;
 
@@ -150,6 +151,28 @@ class AnalysisController extends Controller
         }
         echo Json::encode(['output' => '', 'selected'=>'']);
     }
+
+    public function actionGettestnamemethod()
+	{
+      
+        $labid = $_GET['lab_id'];
+        $testname_id = $_GET['id'];
+    
+        
+        $testnamemethod = Testnamemethod::find()->where(['testname_id'=>$testname_id])->all();
+        $testnamedataprovider = new ArrayDataProvider([
+                'allModels' => $testnamemethod,
+                'pagination' => [
+                    'pageSize' => false,
+                ],
+             
+        ]);
+   
+        return $this->renderAjax('_method', [
+           'testnamedataprovider' => $testnamedataprovider,
+        ]);
+	
+     }
   
     public function actionListsampletype() {
         $out = [];
@@ -212,7 +235,9 @@ class AnalysisController extends Controller
 
                 foreach ($sample_ids as $sample_id){                
                     $modeltest=  Testname::findOne(['testname_id'=>$post['Analysis']['test_id']]);
-                    $modelmethod=  Methodreference::findOne(['method_reference_id'=>$post['Analysis']['method']]);
+                   // $modelmethod=  Methodreference::findOne(['method_reference_id'=>$post['Analysis']['method']]);
+                    $modelmethod=  Testnamemethod::findOne(['testname_method_id'=>$post['Analysis']['method']]);
+                    $method=  Methodreference::findOne(['method_reference_id'=>$modelmethod->method_id]);
                     $analysis = new Analysis();
                     $date = new DateTime();
                     date_add($date,date_interval_create_from_date_string("1 day"));
@@ -226,10 +251,10 @@ class AnalysisController extends Controller
                     $analysis->sample_type_id = (int) $post['Analysis']['sample_type_id'];
                     $analysis->testcategory_id = $post['Analysis']['method'];
                     $analysis->is_package = (int) $post['Analysis']['is_package'];
-                    $analysis->method = $modelmethod->method;
-                    $analysis->fee = $post['Analysis']['fee'];
+                    $analysis->method = $method->method;
+                    $analysis->fee = $method->fee;
                     $analysis->testname = $modeltest->testName;
-                    $analysis->references = $post['Analysis']['references'];
+                    $analysis->references = $method->reference;
                     $analysis->quantity = 1;
                     $analysis->sample_code = $post['Analysis']['sample_code'];
                     $analysis->date_analysis = date("Y-m-d h:i:s");
@@ -323,13 +348,15 @@ class AnalysisController extends Controller
                         
                     if($model->save(false)){
                         $post= Yii::$app->request->post();
-                        $modelmethod=  Methodreference::findOne(['method_reference_id'=>$post['Analysis']['method']]);
+                       // $modelmethod=  Methodreference::findOne(['method_reference_id'=>$post['Analysis']['method']]);
+                       $modelmethod=  Testnamemethod::findOne(['testname_method_id'=>$post['Analysis']['method']]);
+                       $method=  Methodreference::findOne(['method_reference_id'=>$modelmethod->method_id]);
                         $modeltest=  Testname::findOne(['testname_id'=>$post['Analysis']['test_id']]);
                       
                         
                         //update command
 
-                        $now = "12345";
+                      
                         $Connection= Yii::$app->labdb;
                         $sql="UPDATE `tbl_analysis` SET `testname`='$modeltest->testName'
                         WHERE `analysis_id`=".$id;
@@ -340,7 +367,7 @@ class AnalysisController extends Controller
                         $post= Yii::$app->request->post();
                             
                         $modelmethod=  Methodreference::findOne(['method_reference_id'=>$post['Analysis']['method']]);
-                        $method = $modelmethod->method;
+                        $method = $method->method;
 
                         $Connection= Yii::$app->labdb;
                         $sql="UPDATE `tbl_analysis` SET `method`='$method' WHERE `analysis_id`=".$id;
