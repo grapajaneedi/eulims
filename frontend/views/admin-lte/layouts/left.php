@@ -3,7 +3,6 @@ use common\models\system\User;
 use common\models\system\Package;
 use common\models\system\PackageDetails;
 use yii\helpers\Url;
-use yii\helpers\Html;
 
 $Packages= Package::find()->all();
 
@@ -34,17 +33,17 @@ if(Yii::$app->user->isGuest){
     if($CurrentUserDesignation==''){
        $UsernameDesignation=$CurrentUserName;
     }else{
-       $UsernameDesignation=$CurrentUserName;
+       $UsernameDesignation=$CurrentUserName.'<br>'.$CurrentUserDesignation;
     }
-	// $unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'));
+	$unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'));
 	
-	// $unresponded = $unresponded_notification->num_notification > 0 ? $unresponded_notification->num_notification : '';
-	// //notification will run if the user is already logged in
-	// $this->registerJs("
-	// 	setInterval(function(e){
-	// 		get_unresponded_notifications();
-	// 	}, 30000);
-	// ");
+	$unresponded = $unresponded_notification->num_notification > 0 ? $unresponded_notification->num_notification : '';
+	//notification will run if the user is already logged in
+	$this->registerJs("
+		setInterval(function(e){
+			get_unresponded_notifications();
+		}, 30000);
+	");
 
 	/*	function get_unseen_notifications()
 		{
@@ -78,28 +77,25 @@ if(Yii::$app->user->isGuest){
         <!-- Sidebar user panel -->
         <div class="user-panel">
             <div class="pull-left image">
-            <?php 
-                        if (Yii::$app->user->isGuest){
-                            $imagename = "no-image.png";
-                        }else{
-                            $CurrentUser = User::findOne(['user_id'=> Yii::$app->user->identity->user_id]);
-                            $imagename = $CurrentUser->profile->image_url;
-                        }
-                     ?>  
-                 <?= Html::img("/uploads/user/photo/".$imagename, [ 
-                    'class' => 'img-circle',     
-                    'data-target'=>'#w0'
-                ]) 
-                ?>
-            </div>   
+                <img src="<?= $CurrentUserAvatar ?>" class="img-circle" alt="User Image"/>
+            </div>
             <div class="pull-left info">
                 <p><?= $UsernameDesignation ?></p>
-             
+
                 <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
             </div>
         </div>
 
-        <br>
+        <!-- search form -->
+        <form action="#" method="get" class="sidebar-form">
+            <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search..."/>
+              <span class="input-group-btn">
+                <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i>
+                </button>
+              </span>
+            </div>
+        </form>
         <?php
         $Menu= Package::find()->orderBy(['PackageName'=>SORT_ASC])->all();
         $init=true;

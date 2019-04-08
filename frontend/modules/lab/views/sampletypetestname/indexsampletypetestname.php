@@ -63,11 +63,7 @@ $this->registerJs($js);
                 'attribute' => 'testname_id',
                 'label' => 'Test Name',
                 'value' => function($model) {
-                    if ($model->testname){
-                        return $model->testname->testName;
-                    }else{
-                        return "";
-                    }
+                    return $model->testname->testName;
                 },
                 'filterType' => GridView::FILTER_SELECT2,
                 'filter' => $testnamelist,

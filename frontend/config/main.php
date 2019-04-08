@@ -18,6 +18,7 @@ return [
     //'modules' =>require(__DIR__.'/_modules.php'), // Load routes from PHP File
     'modules' =>$modules,
     //'modules'=>parse_ini_file(Yii::$app->basePath.'/config/module.ini',true),
+	'timeZone' => 'Asia/Manila', //set timezone to Manila
     'components' => [
         'request' => [
             'csrfParam' => '_csrf-frontend',
