@@ -71,10 +71,17 @@ class SampletypetestnameController extends Controller
     public function actionCreate()
     {
         $model = new Sampletypetestname();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Sample Type Test Name Successfully Created'); 
-            return $this->runAction('index');
+        $post= Yii::$app->request->post();
+        if ($model->load(Yii::$app->request->post())) {
+            $sampletypetestname = Sampletypetestname::find()->where(['sampletype_id'=> $post['Sampletypetestname']['sampletype_id'], 'testname_id'=>$post['Sampletypetestname']['testname_id']])->one();
+                 if ($sampletypetestname){
+                     Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+                      return $this->runAction('index');
+                 }else{
+                     $model->save();
+                     Yii::$app->session->setFlash('success', 'Sample Type Test Name Successfully Created'); 
+                     return $this->runAction('index');
+                 }      
         }
 
         $testname = [];

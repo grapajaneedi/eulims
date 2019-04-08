@@ -19,12 +19,14 @@ use yii\helpers\Url;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'testName')->textInput(['maxlength' => true]) ?>
-
+    <?php
+        $model->status_id='Active';
+    ?>
     <?= $form->field($model,'status_id')->widget(Select2::classname(),[
                     'data' => ['1'=>'Active', '0'=>'Inactive'],
                     'theme' => Select2::THEME_KRAJEE,
                     'options' => ['id'=>'sample-testcategory_id'],
-                    'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Status'],
+                    'pluginOptions' => ['allowClear' => true],
             ])
     ?>
 

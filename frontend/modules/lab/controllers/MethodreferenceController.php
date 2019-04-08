@@ -76,14 +76,45 @@ class MethodreferenceController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+
+    //  $model = new Testname();
+    //  $post= Yii::$app->request->post();
+    //  if ($model->load(Yii::$app->request->post())) {
+    //      $testname = Testname::find()->where(['testName'=> $post['Testname']['testName']])->one();
+
+    //      if($testname){
+    //          Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+    //          return $this->runAction('testname');
+    //      }else{
+    //          $post= Yii::$app->request->post();
+    //          $model->save();  
+    //          Yii::$app->session->setFlash('success', 'Test Name Successfully Created'); 
+    //          return $this->runAction('testname');
+    //      } 
+    //  }
+
+
     public function actionCreate()
     {
         $model = new Methodreference();
         $model->testname_id = 0;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Method Reference Successfully Created'); 
-            return $this->runAction('index');
+
+        $post= Yii::$app->request->post();
+        if ($model->load(Yii::$app->request->post())) {
+
+            $methodreference = Methodreference::find()->where(['method'=> $post['Methodreference']['method'], 'reference'=> $post['Methodreference']['reference'], 'fee'=> $post['Methodreference']['fee']])->one();
+            if ($methodreference){
+                Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+                return $this->runAction('index');
+            }else{
+                Yii::$app->session->setFlash('success', 'Method Reference Successfully Created'); 
+                $model->save();
+                return $this->runAction('index');
+            }
+            
         }
+
+
             $model->create_time=date("Y-m-d h:i:s");
             $model->update_time=date("Y-m-d h:i:s");
 
