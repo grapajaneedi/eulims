@@ -50,7 +50,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value'=>function($model){
 
                     $request = Request::find()->where(['request_id' => $model->request_id])->one();
-                    return $request->request_ref_num;
+
+                    if ($request){
+                        return $request->request_ref_num;
+                    }else{
+                        "";
+                    }
+                   
                 },
                
                 // 'filter'=>Select2::widget([
