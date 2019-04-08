@@ -94,16 +94,18 @@ class SampletypeController extends Controller
         $model = new Sampletype();
         $post= Yii::$app->request->post();
         if ($model->load(Yii::$app->request->post())) {
+
           $sampletype = Sampletype::find()->where(['type'=> $post['Sampletype']['type']])->one();
 
           if ($sampletype){
-                Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
-                return $this->runAction('index');
+            Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+            return $this->runAction('index');
           }else{
-                $model->save();  
-                Yii::$app->session->setFlash('success', 'Sample Type Successfully Created'); 
-                return $this->runAction('index');
-          }      
+            $model->save();  
+            Yii::$app->session->setFlash('success', 'Sample Type Successfully Created'); 
+            return $this->runAction('index');
+          }
+         
         }
 
         if(Yii::$app->request->isAjax){

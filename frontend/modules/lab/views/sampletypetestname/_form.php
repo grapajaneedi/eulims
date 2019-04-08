@@ -12,8 +12,8 @@ use common\models\lab\Sampletype;
 use common\models\lab\Testname;
 use yii\helpers\Url;
 
-$sampletypelist= ArrayHelper::map(Sampletype::find()->orderBy(['sampletype_id' => SORT_DESC])->all(),'sampletype_id','type');
-$testnamelist= ArrayHelper::map(Testname::find()->orderBy(['testname_id' => SORT_DESC])->all(),'testname_id','testName');
+$sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','type');
+$testnamelist= ArrayHelper::map(Testname::find()->all(),'testname_id','testName');
 
 /* @var $this yii\web\View */
 /* @var $model common\models\lab\Sampletypetestname */
