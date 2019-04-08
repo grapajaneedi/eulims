@@ -49,7 +49,7 @@ $this->registerJs($js, $this::POS_READY);
                 'radioOptions' => function ($model) {
                     return [
                         'value' => $model['method_reference_id'],
-                        'checked' => $model['method_reference_id'],
+                       // 'checked' => $model['method_reference_id'],
                     ];
                 },
             ],

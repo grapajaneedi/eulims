@@ -52,7 +52,7 @@ $this->registerJs($js, $this::POS_READY);
                 'radioOptions' => function ($model) {
                     return [
                         'value' => $model['testname_method_id'],
-                        'checked' => $model['testname_method_id'],
+                        //'checked' => $model['testname_method_id'],
                     ];
                 },
             ],

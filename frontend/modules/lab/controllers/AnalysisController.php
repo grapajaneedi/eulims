@@ -349,8 +349,8 @@ class AnalysisController extends Controller
                     if($model->save(false)){
                         $post= Yii::$app->request->post();
                        // $modelmethod=  Methodreference::findOne(['method_reference_id'=>$post['Analysis']['method']]);
-                       $modelmethod=  Testnamemethod::findOne(['testname_method_id'=>$post['Analysis']['method']]);
-                       $method=  Methodreference::findOne(['method_reference_id'=>$modelmethod->method_id]);
+                        $modelmethod=  Testnamemethod::findOne(['testname_method_id'=>$post['Analysis']['method']]);
+                        $method=  Methodreference::findOne(['method_reference_id'=>$modelmethod->method_id]);
                         $modeltest=  Testname::findOne(['testname_id'=>$post['Analysis']['test_id']]);
                       
                         
@@ -366,11 +366,11 @@ class AnalysisController extends Controller
 
                         $post= Yii::$app->request->post();
                             
-                        $modelmethod=  Methodreference::findOne(['method_reference_id'=>$post['Analysis']['method']]);
-                        $method = $method->method;
+                       // $modelmethod=  Methodreference::findOne(['method_reference_id'=>$post['Analysis']['method']]);
+                       // $method = $method->method;
 
                         $Connection= Yii::$app->labdb;
-                        $sql="UPDATE `tbl_analysis` SET `method`='$method' WHERE `analysis_id`=".$id;
+                        $sql="UPDATE `tbl_analysis` SET `method`='$method->method', `fee`='$method->fee' WHERE `analysis_id`=".$id;
                         $Command=$Connection->createCommand($sql);
                         $Command->execute();
 
