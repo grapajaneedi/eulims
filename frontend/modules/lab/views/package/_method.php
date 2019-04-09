@@ -21,19 +21,34 @@ use kartik\datetime\DateTimePicker;
         <div class="col-sm-6">
         <?= GridView::widget([
         'dataProvider' => $testnamedataprovider,
-        'pjax' => true,    
-        'condensed' => true,
-        'responsive'=>false,
         'id'=>'testname-grid',
-        'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-products']],
-        'containerOptions'=>[
-            'style'=>'overflow:auto; height:380px',
+        'pjax'=>true,
+        'pjaxSettings' => [
+            'options' => [
+                'enablePushState' => false,
+            ]
         ],
+        'containerOptions'=>[
+            'style'=>'overflow:auto; height:250px',
+        ],
+        'floatHeaderOptions' => ['scrollingTop' => true],
+        'responsive'=>true,
+        'striped'=>true,
+        'hover'=>true,
+        'bordered' => true,
+        'panel' => [
+           'heading'=>'<h3 class="panel-title">Methods</h3>',
+           'type'=>'primary',
+           'before' => '',
+           'after'=>false,
+        ],
+        'toolbar' => false,
         'columns' => [
             [
-                'label' => 'Add',
+                'label' => '',
                 'format' => 'raw', 
-                'contentOptions' => ['style' => 'width: 5%;word-wrap: break-word;white-space:pre-line;'],  
+                'vAlign' => 'middle',
+                'contentOptions' => ['style' => 'width: 3%;word-wrap: break-word;white-space:pre-line;'],  
                 'value' => function($data) {     
                     return "<span class='btn btn-primary glyphicon glyphicon-plus' id='offer' onclick=deleteworkflow(".$data->method_id.")></span>";
                  }          
@@ -41,7 +56,7 @@ use kartik\datetime\DateTimePicker;
             [     
                 'label' => 'Method',
                 'format' => 'raw',
-                'contentOptions' => ['style' => 'width: 30%;word-wrap: break-word;white-space:pre-line;'],  
+                'contentOptions' => ['style' => 'width: 40%;word-wrap: break-word;white-space:pre-line;'],  
                 'value' => function($data) {
                     $method_query = Methodreference::find()->where(['method_reference_id'=>$data->method_id])->one();
         
@@ -75,7 +90,8 @@ use kartik\datetime\DateTimePicker;
                 'value' => function($data) {
                     $method_query = Methodreference::find()->where(['method_reference_id'=>$data->method_id])->one();
                     if ($method_query){
-                        return $method_query->fee;
+                        
+                        return number_format($method_query->fee,2);
                     }else{
                         return "";
                     }
@@ -85,7 +101,86 @@ use kartik\datetime\DateTimePicker;
     ]); ?>
         </div>
             <div class="col-sm-6">
-            
+            <?= GridView::widget([
+        'dataProvider' => $testnamedataprovider,
+        'id'=>'testname-grid',
+        'pjax'=>true,
+        'pjaxSettings' => [
+            'options' => [
+                'enablePushState' => false,
+            ]
+        ],
+        'containerOptions'=>[
+            'style'=>'overflow:auto; height:250px',
+        ],
+        'floatHeaderOptions' => ['scrollingTop' => true],
+        'responsive'=>true,
+        'striped'=>true,
+        'hover'=>true,
+        'bordered' => true,
+        'panel' => [
+           'heading'=>'<h3 class="panel-title">Packages</h3>',
+           'type'=>'primary',
+           'before' => '',
+           'after'=>false,
+        ],
+        'toolbar' => false,
+        'columns' => [
+            [
+                'label' => '',
+                'format' => 'raw', 
+                'vAlign' => 'middle',
+                'contentOptions' => ['style' => 'width: 3%;word-wrap: break-word;white-space:pre-line;'],  
+                'value' => function($data) {     
+                    return "<span class='btn btn-danger glyphicon glyphicon-minus' id='offer' onclick=deleteworkflow(".$data->method_id.")></span>";
+                 }          
+            ],
+            [     
+                'label' => 'Method',
+                'format' => 'raw',
+                'contentOptions' => ['style' => 'width: 40%;word-wrap: break-word;white-space:pre-line;'],  
+                'value' => function($data) {
+                    $method_query = Methodreference::find()->where(['method_reference_id'=>$data->method_id])->one();
+        
+                    if ($method_query){
+                        return $method_query->method;
+                    }else{
+                        return "";
+                    }
+                 }                        
+            ],
+            [     
+                'label' => 'Reference',
+                'format' => 'raw',
+                'contentOptions' => ['style' => 'width: 60%;word-wrap: break-word;white-space:pre-line;'],  
+                'value' => function($data) {
+
+                    $method_query = Methodreference::find()->where(['method_reference_id'=>$data->method_id])->one();
+                    if ($method_query){
+                        return $method_query->reference;
+                    }else{
+                        return "";
+                    }
+                            
+                 }                        
+            ],
+            [    
+                'label' => 'Fee',
+                'format' => 'raw',
+                'width'=> '150px',
+                'contentOptions' => ['style' => 'width: 10%;word-wrap: break-word;white-space:pre-line;'],  
+                'value' => function($data) {
+                    $method_query = Methodreference::find()->where(['method_reference_id'=>$data->method_id])->one();
+                    if ($method_query){
+                        
+                        return number_format($method_query->fee,2);
+                    }else{
+                        return "";
+                    }
+                 }                
+            ]
+       ],
+    ]); ?>
       
         </div>
 </div>

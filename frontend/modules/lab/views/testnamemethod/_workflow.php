@@ -106,74 +106,7 @@ $this->registerJs($js);
 ?>
 
 
-        <?php
-         $testnamemethod =  Testnamemethod::findOne(['testname_method_id'=>$testname_id]);
-
-         $testname =  Testname::findOne(['testname_id'=>$testnamemethod->testname_id]);
-         $method =  Methodreference::findOne(['method_reference_id'=>$testnamemethod->method_id]);
-
-            echo DetailView::widget([
-            'model'=>$testnamemethod,
-            'responsive'=>true,
-            'hover'=>true,
-            'mode'=>DetailView::MODE_VIEW,
-            'panel'=>[
-                'heading'=>'<i class="glyphicon glyphicon-book"></i> '.$testname->testName,
-                'type'=>DetailView::TYPE_PRIMARY,
-            ],
-            'attributes'=>[
-                [
-                    'columns' => [
-                        
-                         [
-                             'label'=>'Method',
-                             'format'=>'raw',
-                             'value'=>$method->method,
-                            'displayOnly'=>true
-                         ],
-                     ],
-                    'columns' => [
-                       
-                        [
-                            'label'=>'Method',
-                            'format'=>'raw',
-                            'value'=>$method->method,
-                            'displayOnly'=>true
-                        ],
-                    ],
-                    'columns' => [
-                        [
-                            'label'=>'Method',
-                            'format'=>'raw',
-                            'value'=>$method->method,
-                            'displayOnly'=>true
-                        ],
-                    ],
-                ],
-                [
-                    'columns' => [
-                        [
-                            'label'=>'References',
-                            'value'=>$method->reference,
-                            'displayOnly'=>true,
-                        ],
-                    ],
-                ],
-                [
-                    'columns' => [
-                        [
-                            'label'=>'Fee',
-                            'format'=>'raw',
-                            'value'=>number_format($method->fee, 2),
-                        //    'valueColOptions'=>['style'=>'width:30%'], 
-                            'displayOnly'=>true
-                        ],
-                    ],
-                ],
-            ],
-
-        ]);
-        ?>
+       
    
 
 

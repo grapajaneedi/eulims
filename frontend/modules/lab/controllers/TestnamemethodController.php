@@ -211,7 +211,7 @@ class TestnamemethodController extends Controller
                 ]);
 
         if(Yii::$app->request->isAjax){
-            return $this->renderAjax('_createworkflow', [
+            return $this->renderAjax('_workflow', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
                 'workflowdataprovider'=>$workflowdataprovider,
@@ -251,7 +251,7 @@ class TestnamemethodController extends Controller
                ]);
 
        if(Yii::$app->request->isAjax){
-           return $this->renderAjax('_createworkflow', [
+           return $this->renderAjax('_workflow', [
                'searchModel' => $searchModel,
                'dataProvider' => $dataProvider,
                'workflowdataprovider'=>$workflowdataprovider,
@@ -309,7 +309,7 @@ class TestnamemethodController extends Controller
               ]);
 
       if(Yii::$app->request->isAjax){
-          return $this->renderAjax('_createworkflow', [
+          return $this->renderAjax('_workflow', [
               'searchModel' => $searchModel,
               'dataProvider' => $dataProvider,
               'workflowdataprovider'=>$workflowdataprovider,
@@ -350,7 +350,7 @@ class TestnamemethodController extends Controller
                ]);
 
        if(Yii::$app->request->isAjax){
-           return $this->renderAjax('_createworkflow', [
+           return $this->renderAjax('_workflow', [
                'searchModel' => $searchModel,
                'dataProvider' => $dataProvider,
                'workflowdataprovider'=>$workflowdataprovider,

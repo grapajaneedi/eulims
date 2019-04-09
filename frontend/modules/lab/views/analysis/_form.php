@@ -74,7 +74,7 @@ $this->registerJs($js);
           ]
       ],
       'containerOptions'=>[
-          'style'=>'overflow:auto; height:200px',
+          'style'=>'overflow:auto; height:150px',
       ],
       'floatHeaderOptions' => ['scrollingTop' => true],
       'responsive'=>true,

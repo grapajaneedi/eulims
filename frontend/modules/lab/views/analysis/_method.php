@@ -36,12 +36,29 @@ $this->registerJs($js, $this::POS_READY);
 
 <?= GridView::widget([
         'dataProvider' =>  $testnamedataprovider,
-        'pjax' => true,    
         'id'=>'testname-grid',
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-products']],
-        'containerOptions'=>[
-            'style'=>'overflow:auto; height:250px',
+        'pjax'=>true,
+        'pjaxSettings' => [
+            'options' => [
+                'enablePushState' => false,
+            ]
         ],
+        'containerOptions'=>[
+            'style'=>'overflow:auto; height:200px',
+        ],
+        'floatHeaderOptions' => ['scrollingTop' => true],
+        'responsive'=>true,
+        'striped'=>true,
+        'hover'=>true,
+        'bordered' => true,
+        'panel' => [
+           'heading'=>'<h3 class="panel-title">Methods</h3>',
+           'type'=>'primary',
+           'before' => '',
+           'after'=>false,
+        ],
+        'toolbar' => false,
         'columns' => [
             [
                 'class' =>  '\kartik\grid\RadioColumn',
@@ -59,7 +76,7 @@ $this->registerJs($js, $this::POS_READY);
             [     
                 'label' => 'Method',
                 'format' => 'raw',
-                'contentOptions' => ['style' => 'width: 40%;word-wrap: break-word;white-space:pre-line;'],  
+                'contentOptions' => ['style' => 'width: 50%;word-wrap: break-word;white-space:pre-line;'],  
                 'value' => function($data) {
                     $method_query = Methodreference::find()->where(['method_reference_id'=>$data->method_id])->one();
         
@@ -73,7 +90,7 @@ $this->registerJs($js, $this::POS_READY);
             [     
                 'label' => 'Reference',
                 'format' => 'raw',
-                'contentOptions' => ['style' => 'width: 50%;word-wrap: break-word;white-space:pre-line;'],  
+                'contentOptions' => ['style' => 'width: 40%;word-wrap: break-word;white-space:pre-line;'],  
                 'value' => function($data) {
 
                     $method_query = Methodreference::find()->where(['method_reference_id'=>$data->method_id])->one();
@@ -93,7 +110,7 @@ $this->registerJs($js, $this::POS_READY);
                 'value' => function($data) {
                     $method_query = Methodreference::find()->where(['method_reference_id'=>$data->method_id])->one();
                     if ($method_query){
-                        return $method_query->fee;
+                        return number_format($method_query->fee,2);
                     }else{
                         return "";
                     }
