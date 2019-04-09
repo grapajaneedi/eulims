@@ -80,9 +80,18 @@ class MethodreferenceController extends Controller
     {
         $model = new Methodreference();
         $model->testname_id = 0;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Method Reference Successfully Created'); 
-            return $this->runAction('index');
+        $post= Yii::$app->request->post();
+        if ($model->load(Yii::$app->request->post())) {
+
+            $methodreference = Methodreference::find()->where(['method'=> $post['Methodreference']['method'], 'reference'=> $post['Methodreference']['reference'], 'fee'=> $post['Methodreference']['fee']])->one();
+            if ($methodreference){
+                Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+                return $this->runAction('index');
+            }else{
+                Yii::$app->session->setFlash('success', 'Method Reference Successfully Created'); 
+                $model->save();
+                return $this->runAction('index');
+            }
         }
             $model->create_time=date("Y-m-d h:i:s");
             $model->update_time=date("Y-m-d h:i:s");
@@ -100,9 +109,18 @@ class MethodreferenceController extends Controller
     {
         $model = new Methodreference();
         $model->testname_id = 0;
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-           // Yii::$app->session->setFlash('success', 'Method Reference Successfully Created'); 
-            return $this->runAction('testname');
+        $post= Yii::$app->request->post();
+        if ($model->load(Yii::$app->request->post())) {
+
+            $methodreference = Methodreference::find()->where(['method'=> $post['Methodreference']['method'], 'reference'=> $post['Methodreference']['reference'], 'fee'=> $post['Methodreference']['fee']])->one();
+            if ($methodreference){
+                Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+                return $this->runAction('index');
+            }else{
+                Yii::$app->session->setFlash('success', 'Method Reference Successfully Created'); 
+                $model->save();
+                return $this->runAction('index');
+            }
         }
         $model->create_time=date("Y-m-d h:i:s");
         $model->update_time=date("Y-m-d h:i:s");

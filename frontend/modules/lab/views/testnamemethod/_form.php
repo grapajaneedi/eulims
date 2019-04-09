@@ -13,7 +13,7 @@ use common\models\lab\Testname;
 use common\models\lab\Methodreference;
 use yii\helpers\Url;
 
-$testnamelist= ArrayHelper::map(Testname::find()->all(),'testname_id','testName');
+$testnamelist= ArrayHelper::map(Testname::find()->orderBy(['testname_id' => SORT_DESC])->all(),'testname_id','testName');
 $methodlist= ArrayHelper::map(Methodreference::find()->all(),'method_reference_id','method');
 
 /* @var $this yii\web\View */

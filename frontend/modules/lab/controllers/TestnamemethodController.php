@@ -59,7 +59,7 @@ class TestnamemethodController extends Controller
         $labid = $_GET['lab_id'];
         $testname_id = $_GET['id'];
     
-         $methodreference = Methodreference::find()->all();
+         $methodreference = Methodreference::find()->orderBy(['method_reference_id' => SORT_DESC])->all();
          $testnamedataprovider = new ArrayDataProvider([
                  'allModels' => $methodreference,
                  'pagination' => [
@@ -137,10 +137,19 @@ class TestnamemethodController extends Controller
     {
         $model = new Testnamemethod();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Test Name Method Successfully Created'); 
-            return $this->runAction('index');
-        }
+        $post= Yii::$app->request->post();
+        if ($model->load(Yii::$app->request->post())) {
+
+            $testnamemethod = Testnamemethod::find()->where(['testname_id'=> $post['Testnamemethod']['testname_id'], 'method_id'=>$post['Testnamemethod']['method_id']])->one();
+            if ($testnamemethod){
+                              Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+                               return $this->runAction('index');
+                          }else{
+                              $model->save();
+                              Yii::$app->session->setFlash('success', 'Test Name Method Successfully Created'); 
+                              return $this->runAction('index');
+                          }   
+                        }
 
         if(Yii::$app->request->isAjax){
             $model->create_time=date("Y-m-d h:i:s");
