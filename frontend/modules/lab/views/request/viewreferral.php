@@ -134,7 +134,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
     <div class="image-loader" style="display: hidden;"></div>
     <div class="container table-responsive">
         <?php
-
         if($model->request_type_id == 2){
             //for referral request
             echo DetailView::widget([
@@ -232,6 +231,25 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                     ],
                 ],
                 [
+                    'columns' => [
+                        [
+                            //'attribute'=>'report_due',
+                            'label'=>'Referred by',
+                            'format'=>'raw',
+                            'value'=> 'DOST',
+                            'displayOnly'=>true
+                        ],
+                        [
+                            'label'=>'Referred to',
+                            'format'=>'raw',
+                            //'value'=>$model->customer ? $model->customer->fax : "",
+                            'value'=>'DOST',
+                            'valueColOptions'=>['style'=>'width:30%'], 
+                            'displayOnly'=>true
+                        ],
+                    ],
+                ],
+                [
                     'group'=>true,
                     'label'=>'Payment Details',
                     'rowOptions'=>['class'=>'info']
@@ -239,19 +257,50 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                 [
                     'columns' => [
                         [
-                            'label'=>'Deposite Slip',
+                            'label'=>'Deposit Slip',
                             //'value'=>$orNumbers,
-                            'value'=>null,
+                            //'value'=>null,
+                            'format' => 'raw',
+                            //'value'=> Html::button('<span class="glyphicon glyphicon-upload"></span> Upload', ['value'=>Url::to(['/referrals/attachment/upload_deposit','referral_id'=>$model->referral_id,'request_id'=>$model->request_id]), 'onclick'=>'upload(this.value,this.title)', 'class' => 'btn btn-primary btn-xs','title' => 'Upload Deposit Slip']),
+                            'value'=>function() use ($depositslip,$model){
+                                $link = '';
+                                $link .= !empty($model->request_ref_num) ? Html::button('<span class="glyphicon glyphicon-upload"></span> Upload', ['value'=>Url::to(['/referrals/attachment/upload_deposit','referral_id'=>$model->referral_id,'request_id'=>$model->request_id]), 'onclick'=>'upload(this.value,this.title)', 'class' => 'btn btn-primary btn-xs','title' => 'Upload Deposit Slip']) : '';
+                                if($depositslip > 0){
+                                    foreach ($depositslip as $deposit) {
+                                        //$link .= "<br>".Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$deposit['filename'], 'http://eulimsapi.onelab.ph/attachment_uploads/'.$model->request_ref_num.'/'.$deposit['filename'], ['style'=>'font-size:12px;','title'=>'Download Deposit Slip']);
+                                        //$link .= "<br>".Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$deposit['filename'],'/referrals/attachment/download?request_id='.$model->request_id.'&file='.$deposit['filename'], ['style'=>'font-size:12px;color:#000077;','title'=>'Download Deposit Slip','target'=>'_blank']);
+                                        $link .= "<br>".Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$deposit['filename'],'/referrals/attachment/download?request_id='.$model->request_id.'&file='.$deposit['attachment_id'], ['style'=>'font-size:12px;color:#000077;font-weight:bold;','title'=>'Download Deposit Slip','target'=>'_self']);
+
+                                    }
+                                }
+                                return $link;
+                            },
                             'displayOnly'=>true,
-                            'valueColOptions'=>['style'=>'width:30%']
+                            'valueColOptions'=>['style'=>'width:30%;vertical-align: top;'],
+                            'labelColOptions' => ['style' => 'width: 20%; text-align: right; vertical-align: top;'],
+                            //'vAlign' => 'right',
                         ],
                         [
                             'label'=>'Official Receipt',
                             'format'=>'raw',
                             //'value'=>$payment_total,
-                            'value'=>null,
-                            'valueColOptions'=>['style'=>'width:30%'], 
-                            'displayOnly'=>true
+                            //'value'=>null,
+                            //'value'=> Html::button('<span class="glyphicon glyphicon-upload"></span> Upload', ['value'=>Url::to(['/referrals/attachment/upload_or','referral_id'=>$model->referral_id,'request_id'=>$model->request_id]), 'onclick'=>'upload(this.value,this.title)', 'class' => 'btn btn-primary btn-xs','title' => 'Upload Official Receipt']),
+                            'value'=>function() use ($officialreceipt,$model){
+                                $link = '';
+                                $link .= !empty($model->request_ref_num) ? Html::button('<span class="glyphicon glyphicon-upload"></span> Upload', ['value'=>Url::to(['/referrals/attachment/upload_or','referral_id'=>$model->referral_id,'request_id'=>$model->request_id]), 'onclick'=>'upload(this.value,this.title)', 'class' => 'btn btn-primary btn-xs','title' => 'Upload Official Receipt']) : '';
+                                if($officialreceipt > 0){
+                                    foreach ($officialreceipt as $or) {
+                                        $link .= "<br>".Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$or['filename'],'/referrals/attachment/download?request_id='.$model->request_id.'&file='.$or['attachment_id'], ['style'=>'font-size:12px;color:#000077;font-weight:bold;','title'=>'Download Official Receipt','target'=>'_self']);
+
+                                    }
+                                }
+                                return $link;
+                            },
+                            'valueColOptions'=>['style'=>'width:30%;vertical-align: top;'], 
+                            'displayOnly'=>true,
+                            'labelColOptions' => ['style' => 'width: 20%; text-align: right; vertical-align: top;'],
+                            //'vAlign' => 'right',
                         ],
                     ],
                 ],
@@ -815,23 +864,30 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
     }
     //function updateAnalysisReferral(id,url,title){
     function updateAnalysisReferral(id,requestId,title){
-            $.ajax({
-                url: '/lab/analysisreferral/getdefaultpage?analysis_id='+id,
-                success: function (data) {
-                    $('.image-loader').removeClass('img-loader');
-                    //alert(data);
-                    var url = '/lab/analysisreferral/update?id='+id+'&request_id='+requestId+'&page='+data;
-                    $('.modal-title').html(title);
-                    $('#modalAnalysis').modal('show')
-                        .find('#modalContent')
-                        .load(url);
-                },
-                beforeSend: function (xhr) {
-                    $('.image-loader').addClass('img-loader');
-                }
-            });
+        $.ajax({
+            url: '/lab/analysisreferral/getdefaultpage?analysis_id='+id,
+            success: function (data) {
+                $('.image-loader').removeClass('img-loader');
+                //alert(data);
+                var url = '/lab/analysisreferral/update?id='+id+'&request_id='+requestId+'&page='+data;
+                $('.modal-title').html(title);
+                $('#modalAnalysis').modal('show')
+                    .find('#modalContent')
+                    .load(url);
+            },
+            beforeSend: function (xhr) {
+                $('.image-loader').addClass('img-loader');
+            }
+        });
     }
     function viewAnalysisReferral(url,title){
+        $('.modal-title').html(title);
+        $('#modal').modal('show')
+            .find('#modalContent')
+            .load(url);
+    }
+    //upload slip
+    function upload(url,title){
         $('.modal-title').html(title);
         $('#modal').modal('show')
             .find('#modalContent')

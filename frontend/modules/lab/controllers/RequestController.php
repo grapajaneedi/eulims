@@ -136,7 +136,11 @@ class RequestController extends Controller
 
             $customer = json_decode($refcomponent->getCustomerOne($reqModel->customer_id),true);
             $agency = json_decode($refcomponent->listMatchAgency($id),true);
-
+			//set third parameter to 1 for attachment type deposit slip
+            $deposit = json_decode($refcomponent->getAttachment($reqModel->referral_id,Yii::$app->user->identity->profile->rstl_id,1),true);
+            //set third parameter to 2 for attachment type or
+            $or = json_decode($refcomponent->getAttachment($reqModel->referral_id,Yii::$app->user->identity->profile->rstl_id,2),true);
+			
             $agencydataprovider = new ArrayDataProvider([
                 'allModels' => $agency,
                 'pagination'=>false,
@@ -182,6 +186,8 @@ class RequestController extends Controller
                 'checkTesting' => $checkTesting,
                 'checkSamplecode' => $checkSamplecode,
                 'customer' => $customer,
+				'depositslip' => $deposit,
+                'officialreceipt' => $or,
             ]);
 
         } else {
