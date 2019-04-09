@@ -67,7 +67,8 @@ class ReferralComponent extends Component {
      * @return array
      */
     function getDiscountOne($discountId){
-        if($discountId > 0){
+        //if($discountId > 0){
+        if($discountId >= 0){
             $apiUrl=$this->source.'/api/web/referral/listdatas/discountbyid?discount_id='.$discountId;
             $curl = new curl\Curl();
             $list = $curl->get($apiUrl);
@@ -352,6 +353,42 @@ class ReferralComponent extends Component {
             return $list;
         } else {
             return 'Invalid request!';
+        }
+    }
+    //get attachment
+    function getAttachment($referralId,$rstlId,$type){
+        if($referralId > 0 && $rstlId > 0 && $type > 0) {
+            $apiUrl=$this->source.'/api/web/referral/attachments/show_upload?referral_id='.$referralId.'&rstl_id='.$rstlId.'&type='.$type;
+            $curl = new curl\Curl();
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'Invalid referral!';
+        }
+    }
+    //download attachment
+    /*function downloadAttachment($filename,$referencenum){
+        if(!empty($filename) && !empty($referencenum)){
+            $url = $this->source.'/attachment_uploads/'.$referencenum.'/'.$filename;
+            return $url;
+        } else {
+            return 'false';
+        }
+    }*/
+    function downloadAttachment($referralId,$rstlId,$fileId){
+         if($referralId > 0 && $rstlId > 0 && $fileId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/attachments/download?referral_id='.$referralId.'&rstl_id='.$rstlId.'&file='.$fileId;
+            //$curl = new curl\Curl();
+            //$file = $curl->get($apiUrl);
+            //return $apiUrl;
+            //if($file == 0){
+            //    return 'false';
+            //} else {
+            //    return $apiUrl;
+            //}
+            return $apiUrl;
+        } else {
+            return 'false';
         }
     }
 }
