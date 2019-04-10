@@ -140,6 +140,10 @@ class RequestController extends Controller
             $deposit = json_decode($refcomponent->getAttachment($reqModel->referral_id,Yii::$app->user->identity->profile->rstl_id,1),true);
             //set third parameter to 2 for attachment type or
             $or = json_decode($refcomponent->getAttachment($reqModel->referral_id,Yii::$app->user->identity->profile->rstl_id,2),true);
+            $referred_agency = json_decode($refcomponent->getReferredAgency($reqModel->referral_id,Yii::$app->user->identity->profile->rstl_id),true);
+
+            $as_receiving = !empty($referred_agency['receiving_agency']) && $referred_agency > 0 ? $referred_agency['receiving_agency']['name'] : null;
+            $as_testing = !empty($referred_agency['testing_agency']) && $referred_agency > 0 ? $referred_agency['testing_agency']['name'] : null;
 			
             $agencydataprovider = new ArrayDataProvider([
                 'allModels' => $agency,
@@ -188,6 +192,8 @@ class RequestController extends Controller
                 'customer' => $customer,
 				'depositslip' => $deposit,
                 'officialreceipt' => $or,
+                'as_receiving' => $as_receiving,
+                'as_testing' => $as_testing,
             ]);
 
         } else {

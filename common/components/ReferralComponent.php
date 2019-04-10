@@ -366,15 +366,6 @@ class ReferralComponent extends Component {
             return 'Invalid referral!';
         }
     }
-    //download attachment
-    /*function downloadAttachment($filename,$referencenum){
-        if(!empty($filename) && !empty($referencenum)){
-            $url = $this->source.'/attachment_uploads/'.$referencenum.'/'.$filename;
-            return $url;
-        } else {
-            return 'false';
-        }
-    }*/
     function downloadAttachment($referralId,$rstlId,$fileId){
          if($referralId > 0 && $rstlId > 0 && $fileId > 0) {
             $apiUrl=$this->source.'/api/web/referral/attachments/download?referral_id='.$referralId.'&rstl_id='.$rstlId.'&file='.$fileId;
@@ -387,6 +378,26 @@ class ReferralComponent extends Component {
             //    return $apiUrl;
             //}
             return $apiUrl;
+        } else {
+            return 'false';
+        }
+    }
+    function getReferredAgency($referralId,$rstlId){
+         if($referralId > 0 && $rstlId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/referrals/referred_agency?referral_id='.$referralId.'&rstl_id='.$rstlId;
+            $curl = new curl\Curl();
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'false';
+        }
+    }
+    function getReferralAll($rstlId){
+         if($rstlId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/referrals/referral_all?rstl_id='.$rstlId;
+            $curl = new curl\Curl();
+            $list = $curl->get($apiUrl);
+            return $list;
         } else {
             return 'false';
         }
