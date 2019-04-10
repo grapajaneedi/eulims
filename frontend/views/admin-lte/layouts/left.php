@@ -35,9 +35,9 @@ if(Yii::$app->user->isGuest){
     }else{
        $UsernameDesignation=$CurrentUserName.'<br>'.$CurrentUserDesignation;
     }
-	// $unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'));
+	$unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'));
 	
-	// $unresponded = $unresponded_notification->num_notification > 0 ? $unresponded_notification->num_notification : '';
+	$unresponded = $unresponded_notification->num_notification > 0 ? $unresponded_notification->num_notification : '';
 	//notification will run if the user is already logged in
 	$this->registerJs("
 		setInterval(function(e){
@@ -191,52 +191,52 @@ if(Yii::$app->user->isGuest){
 
 </aside>
 <script type="text/javascript">
-// function showNotifications(){
-// 	$.ajax({
-// 		url: '/referrals/notification/list_unresponded_notification',
-// 		//url: '',
-// 		success: function (data) {
-// 			$(".modal-title").html('Notifications');
-// 			$('#modalNotification').modal('show')
-// 				.find('#modalBody')
-// 				.load('/referrals/notification/list_unresponded_notification');
-// 				get_unresponded_notifications();
-// 			$(".content-image-loader").css("display", "none");
-// 			$('.content-image-loader').removeClass('content-img-loader');
-// 		},
-// 		beforeSend: function (xhr) {
-// 			$(".content-image-loader").css("display", "block");
-// 			$('.content-image-loader').addClass('content-img-loader');
-// 		}
-// 	});
-// }
-// $("#btn_unresponded").on('click', function(e) {
-// 	e.preventDefault();
-// });
+function showNotifications(){
+	$.ajax({
+		url: '/referrals/notification/list_unresponded_notification',
+		//url: '',
+		success: function (data) {
+			$(".modal-title").html('Notifications');
+			$('#modalNotification').modal('show')
+				.find('#modalBody')
+				.load('/referrals/notification/list_unresponded_notification');
+				get_unresponded_notifications();
+			$(".content-image-loader").css("display", "none");
+			$('.content-image-loader').removeClass('content-img-loader');
+		},
+		beforeSend: function (xhr) {
+			$(".content-image-loader").css("display", "block");
+			$('.content-image-loader').addClass('content-img-loader');
+		}
+	});
+}
+$("#btn_unresponded").on('click', function(e) {
+	e.preventDefault();
+});
 
-// function get_unresponded_notifications()
-// {
-// 	$.ajax({
-// 		url: '/referrals/notification/count_unresponded_notification',
-// 		dataType: 'json',
-// 		method: 'GET',
-// 		success: function (data) {
-// 			if (data.num_notification > 0){
-// 				$('#count_noti_sub').html(data.num_notification);
-// 				$('#count_noti_menu').html(data.num_notification);
-// 			} else if(data.num_notification == 0) {
-// 				$('#count_noti_sub').html('');
-// 				$('#count_noti_menu').html('');
-// 			} else {
-// 				alert(data.num_notification);
-// 			}
-// 		},
-// 		/*beforeSend: function (xhr) {
-// 			$("#modalContent").html("<img src='/images/img-loader64.gif' alt='' style='display: block;margin-left: auto;margin-right: auto;'>");
-// 		},*/
-// 		error: function (jqXHR, textStatus, errorThrown) {
-// 			console.log('error occured!');
-// 		}
-// 	});
-// }
-// </script>
+function get_unresponded_notifications()
+{
+	$.ajax({
+		url: '/referrals/notification/count_unresponded_notification',
+		dataType: 'json',
+		method: 'GET',
+		success: function (data) {
+			if (data.num_notification > 0){
+				$('#count_noti_sub').html(data.num_notification);
+				$('#count_noti_menu').html(data.num_notification);
+			} else if(data.num_notification == 0) {
+				$('#count_noti_sub').html('');
+				$('#count_noti_menu').html('');
+			} else {
+				alert(data.num_notification);
+			}
+		},
+		/*beforeSend: function (xhr) {
+			$("#modalContent").html("<img src='/images/img-loader64.gif' alt='' style='display: block;margin-left: auto;margin-right: auto;'>");
+		},*/
+		error: function (jqXHR, textStatus, errorThrown) {
+			console.log('error occured!');
+		}
+	});
+}
+</script>
