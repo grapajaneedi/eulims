@@ -76,7 +76,7 @@ class LabsampletypeController extends Controller
         $post= Yii::$app->request->post();
         if ($model->load(Yii::$app->request->post())) {
 
-            $labsampletype = Labsampletype::find()->where(['lab_id'=> $post['Labsampletype']['lab_id'], 'sampletype_id'=>$post['Labsampletype']['sampletype_id']])->one();
+            $labsampletype = Labsampletype::find()->where(['lab_id'=> $post['Labsampletype']['lab_id'], 'sampletype_id'=>$post['Labsampletype']['sampletype_id'],  'testcategory_id'=>$post['Labsampletype']['testcategory_id']])->one();
 
             if ($labsampletype){
                 Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 

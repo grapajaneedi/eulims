@@ -53,12 +53,23 @@ $services =  Services::find()->all();
      <?php $form = ActiveForm::begin(); ?> 
         <div>
             <?php 
-                echo$sampletype = "<div class='col-md-4'>".$form->field($model,'lab_id')->widget(Select2::classname(),[
+                echo$sampletype = "<div class='col-md-3'>".$form->field($model,'lab_id')->widget(Select2::classname(),[
                             'data' => $lablist,
                             'theme' => Select2::THEME_KRAJEE,
                             'options' => ['id'=>'lab_id'],
                             'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Lab'],
-                    ])."</div>"."<div class='col-md-4'>".$form->field($model, 'sampletype_id')->widget(DepDrop::classname(), [
+                    ])."</div>"."<div class='col-md-3'>".$form->field($model, 'method_reference_id')->widget(DepDrop::classname(), [
+                        'type'=>DepDrop::TYPE_SELECT2,
+                        'data'=>$sampletype,
+                        'options'=>['id'=>'sample-method_reference_id'],
+                        'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
+                        'pluginOptions'=>[
+                            'depends'=>['lab_id'],
+                            'placeholder'=>'Select Test Category',
+                            'url'=>Url::to(['/lab/services/listtestcategory']),
+                            'loadingText' => 'Loading Test Category...',
+                        ]
+                    ])->label("Test Category")."</div>"."<div class='col-md-3'>".$form->field($model, 'sampletype_id')->widget(DepDrop::classname(), [
                         'type'=>DepDrop::TYPE_SELECT2,
                         'data'=>$sampletype,
                         'options'=>['id'=>'sample-sample_type_id'],
@@ -69,7 +80,7 @@ $services =  Services::find()->all();
                             'url'=>Url::to(['/lab/services/listsampletype']),
                             'loadingText' => 'Loading Sample Types...',
                         ]
-                    ])."</div>"."<div class='col-md-4'>".$form->field($model, 'testname_method_id')->widget(DepDrop::classname(), [
+                    ])."</div>"."<div class='col-md-3'>".$form->field($model, 'testname_method_id')->widget(DepDrop::classname(), [
                         'type'=>DepDrop::TYPE_SELECT2,
                         'data'=>$test,
                         'options'=>['id'=>'sample-test_id'],

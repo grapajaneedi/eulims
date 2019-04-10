@@ -152,7 +152,7 @@ class PackageController extends Controller
     public function actionGetmethod()
 	{
         $labid = $_GET['lab_id'];
-        $testname_id = $_GET['testname_id'];
+        $sample = $_GET['sampletype_id'];
 
          $testnamemethod = Testnamemethod::find()->where(['testname_id'=>$testname_id])->all();
          $testnamedataprovider = new ArrayDataProvider([
@@ -162,12 +162,83 @@ class PackageController extends Controller
                  ],
               
          ]);
+
+         $package = Package::find()->where(['id'=>0])->all();
+         $packagedataprovider = new ArrayDataProvider([
+                 'allModels' => $package,
+                 'pagination' => [
+                     'pageSize' => false,
+                 ],
+              
+         ]);
+
+
     
          return $this->renderAjax('_method', [
             'testnamedataprovider' => $testnamedataprovider,
+            'packagedataprovider'=>$packagedataprovider
          ]);
 	
      }
+
+     public function actionAddpackage()
+     {
+         $testname_method_id = $_POST['mid'];
+        //  $testname_id = $_POST['testname_id'];
+        //  $searchModel = new ProcedureSearch();
+        //  $model = new Procedure();
+        //  $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+  
+        // // $procedure = Procedure::find()->where(['procedure_id' => $id])->one();
+    
+
+        //BASICALLY
+
+        /*
+            id, rstl_id, test_category, sample_type, name, rate, tests
+
+            tska nakabasis sa sampletype ang testnamemethod.. tanga! 
+            pag mag click ng add package sa gridview
+
+            lalabas sa gridview lahat ng testname method na nakadepende sa sampletype
+
+            weeeeeeeeeee
+
+                mag increment yung mga niselect sa isang textbox.. 
+        
+            tapos pag add nya.. wala na hasul.. boom!
+
+
+        */
+         $Package = new Package();
+         $procedure->procedure_name = $procedure_name;
+         $procedure->procedure_code = "1";
+         $procedure->testname_id = "1";
+         $procedure->testname_method_id = "1";
+         $procedure->save();
+  
+         $workflow = Workflow::find()->where(['testname_method_id' => $testname_id]);
+         
+                 $workflowdataprovider = new ActiveDataProvider([
+                         'query' => $workflow,
+                         'pagination' => [
+                             'pageSize' => false,
+                         ],
+                      
+                 ]);
+  
+         if(Yii::$app->request->isAjax){
+             return $this->renderAjax('_workflow', [
+                 'searchModel' => $searchModel,
+                 'dataProvider' => $dataProvider,
+                 'workflowdataprovider'=>$workflowdataprovider,
+                 'testname_id'=>$testname_id,
+                 'model'=>$model,
+             ]);
+         }
+     
+         
+    }
 
     /**
      * Finds the Package model based on its primary key value.

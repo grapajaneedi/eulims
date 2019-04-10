@@ -179,6 +179,33 @@ class ServicesController extends Controller
         \Yii::$app->response->data = Json::encode(['output'=>$out, 'selected'=>'']);
     }
 
+    public function actionListtestcategory() {
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $id = end($_POST['depdrop_parents']);
+
+            $apiUrl="https://eulimsapi.onelab.ph/api/web/v1/sampletypes/restore?id=".$id;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
+            $response = $curl->get($apiUrl);
+            $decode=Json::decode($response);
+
+            $selected  = null;
+            if ($id != null && count($decode) > 0) {
+                $selected = '';
+                foreach ($decode as $i => $sampletype) {
+                    $out[] = ['id' => $sampletype['sampletype_id'], 'name' => $sampletype['type']];
+                    if ($i == 0) {
+                        $selected = $sampletype['sampletype_id'];
+                    }
+                }
+               \Yii::$app->response->data = Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        \Yii::$app->response->data = Json::encode(['output'=>$out, 'selected'=>'']);
+    }
+
     public function actionListtest() {
         $out = [];
         if (isset($_POST['depdrop_parents'])) {

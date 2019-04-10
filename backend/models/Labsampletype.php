@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models\lab;
+namespace app\models;
 
 use Yii;
 
@@ -52,26 +52,11 @@ class Labsampletype extends \yii\db\ActiveRecord
     {
         return [
             'lab_sampletype_id' => 'Lab Sampletype ID',
-            'lab_id' => 'Lab',
-            'sampletype_id' => 'Sample Type',
+            'lab_id' => 'Lab ID',
+            'sampletype_id' => 'Sampletype ID',
             'effective_date' => 'Effective Date',
             'added_by' => 'Added By',
             'testcategory_id' => 'Testcategory ID',
         ];
     }
-
-    public function getLab()
-    {
-        return $this->hasOne(Lab::className(), ['lab_id' => 'lab_id']);
-    }
-    public function getSampletype()
-    {
-        return $this->hasOne(Sampletype::className(), ['sampletype_id' => 'sampletype_id']);
-    }
-
-    public function getTestcategory()
-    {
-        return $this->hasOne(Testcategory::className(), ['testcategory_id' => 'testcategory_id']);
-    }
-
-} 
+}

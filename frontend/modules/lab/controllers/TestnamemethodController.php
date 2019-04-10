@@ -46,6 +46,7 @@ class TestnamemethodController extends Controller
     {
         $searchModel = new TestnamemethodSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->sort->defaultOrder = ['testname_method_id' => SORT_DESC];
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -106,6 +107,8 @@ class TestnamemethodController extends Controller
     {
         $searchModel = new TestnamemethodSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->sort->defaultOrder = ['testname_method_id' => SORT_DESC];
+        
 
         return $this->render('indextestname', [
             'searchModel' => $searchModel,

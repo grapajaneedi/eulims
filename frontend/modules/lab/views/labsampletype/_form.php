@@ -8,12 +8,14 @@ use kartik\widgets\DatePicker;
 use kartik\datetime\DateTimePicker;
 use yii\helpers\ArrayHelper;
 use common\models\lab\Lab;
+use common\models\lab\Testcategory;
 use common\models\lab\Sampletype;
 use yii\helpers\Url;
 
 
 $lablist= ArrayHelper::map(Lab::find()->all(),'lab_id','labname');
 $sampletypelist= ArrayHelper::map(Sampletype::find()->orderBy(['sampletype_id' => SORT_DESC])->all(),'sampletype_id','type');
+$testcategorylist= ArrayHelper::map(Testcategory::find()->orderBy(['testcategory_id' => SORT_DESC])->all(),'testcategory_id','category');
 
 /* @var $this yii\web\View */
 /* @var $model common\models\lab\Labsampletype */
@@ -31,9 +33,19 @@ $sampletypelist= ArrayHelper::map(Sampletype::find()->orderBy(['sampletype_id' =
                     'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Lab'],
             ])
     ?>
+<div class="input-group">
+ <?= $form->field($model,'testcategory_id')->widget(Select2::classname(),[
+                    'data' => $testcategorylist,
+                    'theme' => Select2::THEME_KRAJEE,
+                    'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Test Category'],
+            ])->label("Test Category")
+    ?>
+      <span class="input-group-btn" style="padding-top: 25.5px">
+                    <button onclick="LoadModal('Create New Sample Type', '/lab/testcategory/createcategory');"class="btn btn-default" type="button"><i class="fa fa-plus"></i></button>
+     </span>
+    </div>
 
-
-        <div class="input-group">
+<div class="input-group">
  <?= $form->field($model,'sampletype_id')->widget(Select2::classname(),[
                     'data' => $sampletypelist,
                     'theme' => Select2::THEME_KRAJEE,
@@ -44,9 +56,10 @@ $sampletypelist= ArrayHelper::map(Sampletype::find()->orderBy(['sampletype_id' =
                     <button onclick="LoadModal('Create New Sample Type', '/lab/sampletype/createtype');"class="btn btn-default" type="button"><i class="fa fa-plus"></i></button>
      </span>
     </div>
+    
 
     <?= $form->field($model, 'effective_date')->widget(DatePicker::classname(), [
-        //'readonly'=>true,
+      
         'options' => ['placeholder' => 'Select Date'],
             'value'=>function($model){
                 return date("m/d/Y",$model->effective_date);

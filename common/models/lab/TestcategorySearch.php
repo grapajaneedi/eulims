@@ -5,12 +5,12 @@ namespace common\models\lab;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\lab\Labsampletype;
+use common\models\lab\Testcategory;
 
 /**
- * LabsampletypeSearch represents the model behind the search form of `common\models\lab\Labsampletype`.
+ * TestcategorySearch represents the model behind the search form of `common\models\lab\Testcategory`.
  */
-class LabsampletypeSearch extends Labsampletype
+class TestcategorySearch extends Testcategory
 {
     /**
      * {@inheritdoc}
@@ -18,8 +18,8 @@ class LabsampletypeSearch extends Labsampletype
     public function rules()
     {
         return [
-            [['lab_sampletype_id', 'lab_id', 'sampletype_id', 'testcategory_id'], 'integer'],
-            [['effective_date', 'added_by'], 'safe'],
+            [['testcategory_id'], 'integer'],
+            [['category'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class LabsampletypeSearch extends Labsampletype
      */
     public function search($params)
     {
-        $query = Labsampletype::find();
+        $query = Testcategory::find();
 
         // add conditions that should always apply here
 
@@ -59,15 +59,13 @@ class LabsampletypeSearch extends Labsampletype
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'lab_sampletype_id' => $this->lab_sampletype_id,
-            'lab_id' => $this->lab_id,
-            'sampletype_id' => $this->sampletype_id,
-            'effective_date' => $this->effective_date,
             'testcategory_id' => $this->testcategory_id,
         ]);
 
-        $query->andFilterWhere(['like', 'added_by', $this->added_by]);
+        $query->andFilterWhere(['like', 'category', $this->category]);
 
         return $dataProvider;
     }
-}
+} 
+
+?>

@@ -1,5 +1,6 @@
 <?php
 
+
 namespace common\models\lab;
 
 use Yii;
@@ -8,13 +9,7 @@ use Yii;
  * This is the model class for table "tbl_testcategory".
  *
  * @property int $testcategory_id
- * @property string $category_name
- * @property int $lab_id
- *
- * @property Sample[] $samples
- * @property Sampletype[] $sampletypes
- * @property Test[] $tests
- * @property Lab $lab
+ * @property string $category
  */
 class Testcategory extends \yii\db\ActiveRecord
 {
@@ -40,10 +35,8 @@ class Testcategory extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['category_name', 'lab_id'], 'required'],
-            [['lab_id'], 'integer'],
-            [['category_name'], 'string', 'max' => 200],
-            [['lab_id'], 'exist', 'skipOnError' => true, 'targetClass' => Lab::className(), 'targetAttribute' => ['lab_id' => 'lab_id']],
+            [['category'], 'required'],
+            [['category'], 'string', 'max' => 200],
         ];
     }
 
@@ -53,41 +46,10 @@ class Testcategory extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'testcategory_id' => 'Testcategory ID',
-            'category_name' => 'Category Name',
-            'lab_id' => 'Lab ID',
+            'testcategory_id' => 'Test Category',
+            'category' => 'Category',
         ];
     }
 
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSamples()
-    {
-        return $this->hasMany(Sample::className(), ['testcategory_id' => 'testcategory_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getSampletypes()
-    {
-        return $this->hasMany(Sampletype::className(), ['testcategory_id' => 'testcategory_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getTests()
-    {
-        return $this->hasMany(Test::className(), ['testcategory_id' => 'testcategory_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getLab()
-    {
-        return $this->hasOne(Lab::className(), ['lab_id' => 'lab_id']);
-    }
+   
 }

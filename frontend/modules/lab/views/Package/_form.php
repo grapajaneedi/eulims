@@ -25,13 +25,6 @@ $sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','typ
     <?php $form = ActiveForm::begin(); ?>
 
    
-    <?= $form->field($model,'sampletype_id')->widget(Select2::classname(),[
-                    'data' => $sampletypelist,
-                    'theme' => Select2::THEME_KRAJEE,
-                    'options' => ['id'=>'sample-testcategory_id'],
-                    'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Sample Type'],
-            ])
-    ?>
 
 
     <?php
@@ -40,34 +33,18 @@ $sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','typ
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'rate')->textInput(['maxlength' => true]) ?>
-
-    <?php
-        //     echo $form->field($model, 'rate')->widget(MaskMoney::classname(), [
-        //     'readonly'=>true,
-        //     'options'=>[
-        //         'style'=>'text-align: right'
-        //     ],
-        //     'pluginOptions' => [
-        //        'prefix' => '₱ ',
-        //        'allowNegative' => false,
-        //     ]
-        //    ])->label("Rate");
-        ?>
+    
+    <?= $form->field($model,'sampletype_id')->widget(Select2::classname(),[
+                    'data' => $sampletypelist,
+                    'theme' => Select2::THEME_KRAJEE,
+                    'options' => ['id'=>'sample-testcategory_id'],
+                    'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Sample Type'],
+            ])
+    ?>
+    <?= $form->field($model, 'tests')->textInput(['maxlength' => true]) ?>
 
   
-    <?= $form->field($model, 'tests')->widget(DepDrop::classname(), [
-            'type'=>DepDrop::TYPE_SELECT2,
-            'data'=>$sampletype,
-            'options'=>['id'=>'sample-sample_type_id'],
-            'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
-            'pluginOptions'=>[
-                'depends'=>['sample-testcategory_id'],
-                'placeholder'=>'Select Test Name',
-                'url'=>Url::to(['/lab/analysis/listsampletype']),
-                'loadingText' => 'Loading Test Names...',
-            ]
-        ])
-        ?>
+   
 
         <div  id="methodreference">
     
@@ -93,13 +70,13 @@ $sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','typ
 
   
 <script type="text/javascript">
-    $('#sample-sample_type_id').on('change',function() {
+    $('#sample-testcategory_id').on('change',function() {
         $.ajax({
             url: '/lab/package/getmethod?id='+$(this).val(),
             method: "GET",
             dataType: 'html',
             data: { lab_id: 1,
-            testname_id: $('#sample-sample_type_id').val()},
+            sampletype_id: $('#sample-testcategory_id').val()},
             beforeSend: function(xhr) {
                $('.image-loader').addClass("img-loader");
                }
