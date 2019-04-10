@@ -236,14 +236,14 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                             //'attribute'=>'report_due',
                             'label'=>'Referred by',
                             'format'=>'raw',
-                            'value'=> !empty($as_receiving['name']) ? $as_receiving['name'] : null,
+                            'value'=> !empty($as_receiving) ? $as_receiving : null,
                             'displayOnly'=>true
                         ],
                         [
                             'label'=>'Referred to',
                             'format'=>'raw',
                             //'value'=>$model->customer ? $model->customer->fax : "",
-                            'value'=> !empty($as_testing['name']) ? $as_testing['name'] : null,
+                            'value'=> !empty($as_testing) ? $as_testing : null,
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
                         ],

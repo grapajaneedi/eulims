@@ -77,12 +77,6 @@ class ReferralController extends Controller
      */
     public function actionView($id)
     {
-        /*return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);*/
-        //$searchModel = new RequestSearch();
-        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        //$dataProvider->pagination->pageSize=10;
         $referralId = (int) $id;
         $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
         $noticeId = (int) Yii::$app->request->get('notice_id');
@@ -102,9 +96,6 @@ class ReferralController extends Controller
                 $samples = $referralDetails['sample_data'];
                 $analyses = $referralDetails['analysis_data'];
                 $customer = $referralDetails['customer_data'];
-
-                //$agencyDetails = json_decode($refcomponent->listAgency($request['receiving_agency_id']),true);
-                //$receiving_agency = $agencyDetails['0']['name'];
 
                 //set third parameter to 1 for attachment type deposit slip
                 $deposit = json_decode($refcomponent->getAttachment($referralId,Yii::$app->user->identity->profile->rstl_id,1),true);
@@ -157,13 +148,90 @@ class ReferralController extends Controller
                     'officialreceipt' => $or,
                 ]);
             } else {
-                //return "Your agency doesn't appear notified!";
                 Yii::$app->session->setFlash('error', "Your agency doesn't appear notified!");
                 return $this->redirect(['/referrals/notification']);
             }
         } else {
             Yii::$app->session->setFlash('error', "Invalid request!");
             return $this->redirect(['/referrals/notification']);
+        }
+    }
+
+    public function actionViewreferral($id)
+    {
+        $referralId = (int) $id;
+        $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
+
+        if($rstlId > 0 && $referralId > 0)
+        {
+            $refcomponent = new ReferralComponent();
+            $referralDetails = json_decode($refcomponent->getReferraldetails($referralId,$rstlId),true);
+
+            if($referralDetails != 0)
+            {
+                $model = new Request(); //for declaration required in Detailview
+
+                $request = $referralDetails['request_data'];
+                $samples = $referralDetails['sample_data'];
+                $analyses = $referralDetails['analysis_data'];
+                $customer = $referralDetails['customer_data'];
+
+                //set third parameter to 1 for attachment type deposit slip
+                $deposit = json_decode($refcomponent->getAttachment($referralId,Yii::$app->user->identity->profile->rstl_id,1),true);
+                //set third parameter to 2 for attachment type or
+                $or = json_decode($refcomponent->getAttachment($referralId,Yii::$app->user->identity->profile->rstl_id,2),true);
+                $referred_agency = json_decode($refcomponent->getReferredAgency($referralId,Yii::$app->user->identity->profile->rstl_id),true);
+
+                $receiving_agency = !empty($referred_agency['receiving_agency']) && $referred_agency > 0 ? $referred_agency['receiving_agency']['name'] : null;
+                $testing_agency = !empty($referred_agency['testing_agency']) && $referred_agency > 0 ? $referred_agency['testing_agency']['name'] : null;
+
+                $sampleDataProvider = new ArrayDataProvider([
+                    'allModels' => $samples,
+                    'pagination'=> [
+                        'pageSize' => 10,
+                    ],
+                ]);
+
+                $analysisDataprovider = new ArrayDataProvider([
+                    'allModels' => $analyses,
+                    //'pagination'=>false,
+                    'pagination'=> [
+                        'pageSize' => 10,
+                    ],
+
+                ]);
+
+                $analysis_fees = implode(',', array_map(function ($data) {
+                    return $data['analysis_fee'];
+                }, $analyses));
+
+                $subtotal = array_sum(explode(",",$analysis_fees));
+                $rate = $request['discount_rate'];
+                $discounted = $subtotal * ($rate/100);
+                $total = $subtotal - $discounted;
+
+                return $this->render('viewreferral', [
+                    'model' => $model,
+                    'request' => $request,
+                    'customer' => $customer,
+                    'sampleDataProvider' => $sampleDataProvider,
+                    'analysisdataprovider'=> $analysisDataprovider,
+                    'subtotal' => $subtotal,
+                    'discounted' => $discounted,
+                    'total' => $total,
+                    'countSample' => count($samples),
+                    'receiving_agency' => $receiving_agency,
+                    'testing_agency' => $testing_agency,
+                    'depositslip' => $deposit,
+                    'officialreceipt' => $or,
+                ]);
+            } else {
+                Yii::$app->session->setFlash('error', "Invalid referral!");
+                return $this->redirect(['/referrals/referral']);
+            }
+        } else {
+            Yii::$app->session->setFlash('error', "Invalid referral!");
+            return $this->redirect(['/referrals/referral']);
         }
     }
 
