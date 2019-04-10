@@ -138,6 +138,25 @@ if($notification['notification_type_id'] == 3 && $notification['responded'] == 0
                     ],
                 ],
                 [
+                    'columns' => [
+                        [
+                            //'attribute'=>'report_due',
+                            'label'=>'Referred by',
+                            'format'=>'raw',
+                            'value'=> !empty($receiving_agency) ? $receiving_agency : null,
+                            'displayOnly'=>true
+                        ],
+                        [
+                            'label'=>'Referred to',
+                            'format'=>'raw',
+                            //'value'=>$model->customer ? $model->customer->fax : "",
+                            'value'=> !empty($testing_agency) ? $testing_agency : null,
+                            'valueColOptions'=>['style'=>'width:30%'], 
+                            'displayOnly'=>true
+                        ],
+                    ],
+                ],
+                [
                     'group'=>true,
                     'label'=>'Payment Details',
                     'rowOptions'=>['class'=>'info']
@@ -146,16 +165,35 @@ if($notification['notification_type_id'] == 3 && $notification['responded'] == 0
                     'columns' => [
                         [
                             'label'=>'Deposite Slip',
-                            'value'=>null,
+                            'value'=>function() use ($depositslip,$model){
+                                $link = '';
+                                if($depositslip > 0){
+                                    foreach ($depositslip as $deposit) {
+                                        $link .= Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$deposit['filename'],'/referrals/attachment/download?request_id='.$model->request_id.'&file='.$deposit['attachment_id'], ['style'=>'font-size:12px;color:#000077;font-weight:bold;','title'=>'Download Deposit Slip','target'=>'_self'])."<br>";
+                                    }
+                                }
+                                return $link;
+                            },
+                            'format'=>'raw',
                             'displayOnly'=>true,
-                            'valueColOptions'=>['style'=>'width:30%']
+                            'valueColOptions'=>['style'=>'width:30%;vertical-align: top;'],
+                            'labelColOptions' => ['style' => 'width: 20%; text-align: right; vertical-align: top;'],
                         ],
                         [
                             'label'=>'Official Receipt',
                             'format'=>'raw',
-                            'value'=>null,
-                            'valueColOptions'=>['style'=>'width:30%'], 
-                            'displayOnly'=>true
+                            'value'=>function() use ($officialreceipt,$model){
+                                $link = '';
+                                if($officialreceipt > 0){
+                                    foreach ($officialreceipt as $or) {
+                                        $link .= Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$or['filename'],'/referrals/attachment/download?request_id='.$model->request_id.'&file='.$or['attachment_id'], ['style'=>'font-size:12px;color:#000077;font-weight:bold;','title'=>'Download Official Receipt','target'=>'_self'])."<br>";
+                                    }
+                                }
+                                return $link;
+                            },
+                            'valueColOptions'=>['style'=>'width:30%;vertical-align: top;'], 
+                            'displayOnly'=>true,
+                            'labelColOptions' => ['style' => 'width: 20%; text-align: right; vertical-align: top;'],
                         ],
                     ],
                 ],              

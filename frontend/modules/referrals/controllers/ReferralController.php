@@ -49,12 +49,23 @@ class ReferralController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ReferralSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        //$searchModel = new ReferralSearch();
+        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $refcomponent = new ReferralComponent();
+
+        $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
+
+        $referrals = json_decode($refcomponent->getReferralAll($rstlId),true);
+
+        $referralDataprovider = new ArrayDataProvider([
+            'allModels' => $referrals,
+            'pagination'=> ['pageSize' => 10],
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            //'searchModel' => $searchModel,
+            'dataProvider' => $referralDataprovider,
         ]);
     }
 
@@ -92,9 +103,18 @@ class ReferralController extends Controller
                 $analyses = $referralDetails['analysis_data'];
                 $customer = $referralDetails['customer_data'];
 
-                $agencyDetails = json_decode($refcomponent->listAgency($request['receiving_agency_id']),true);
+                //$agencyDetails = json_decode($refcomponent->listAgency($request['receiving_agency_id']),true);
+                //$receiving_agency = $agencyDetails['0']['name'];
 
-                $receiving_agency = $agencyDetails['0']['name'];
+                //set third parameter to 1 for attachment type deposit slip
+                $deposit = json_decode($refcomponent->getAttachment($referralId,Yii::$app->user->identity->profile->rstl_id,1),true);
+                //set third parameter to 2 for attachment type or
+                $or = json_decode($refcomponent->getAttachment($referralId,Yii::$app->user->identity->profile->rstl_id,2),true);
+                $referred_agency = json_decode($refcomponent->getReferredAgency($referralId,Yii::$app->user->identity->profile->rstl_id),true);
+
+                $receiving_agency = !empty($referred_agency['receiving_agency']) && $referred_agency > 0 ? $referred_agency['receiving_agency']['name'] : null;
+                $testing_agency = !empty($referred_agency['testing_agency']) && $referred_agency > 0 ? $referred_agency['testing_agency']['name'] : null;
+
                 $sampleDataProvider = new ArrayDataProvider([
                     'allModels' => $samples,
                     'pagination'=> [
@@ -132,6 +152,9 @@ class ReferralController extends Controller
                     'countSample' => count($samples),
                     'notification' => $noticeDetails,
                     'receiving_agency' => $receiving_agency,
+                    'testing_agency' => $testing_agency,
+                    'depositslip' => $deposit,
+                    'officialreceipt' => $or,
                 ]);
             } else {
                 //return "Your agency doesn't appear notified!";
