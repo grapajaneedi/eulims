@@ -24,7 +24,7 @@ use yii\db\Query;
 use yii\web\Response;
 use yii\db\ActiveQuery;
 use common\components\Functions;
-use linslin\yii2\curl;
+use common\components\ReferralComponent;
 
 /**
  * SampleController implements the CRUD actions for Sample model.
@@ -616,14 +616,9 @@ class SampleController extends Controller
     //get referral sample type list
     protected function listSampletypereferral($labId)
     {
-        //$apiUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/listdatas/labsampletypebylab?lab_id='.$labId;
-        //$apiUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/listdatas/sampletypebylab?lab_id='.$labId;
-        $apiUrl='https://eulimsapi.onelab.ph/api/web/referral/listdatas/sampletypebylab?lab_id='.$labId;
-        $curl = new curl\Curl();
-        $list = $curl->get($apiUrl);
-
+        $refcomponent = new ReferralComponent();
+        $list = $refcomponent->getSampletype($labId);
         $data = ArrayHelper::map(json_decode($list), 'sampletype_id', 'type');
-        
         return $data;
     }
 }

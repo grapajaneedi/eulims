@@ -92,6 +92,29 @@ class ReferralComponent extends Component {
             return "Not valid customer";
         }
     }
+    //get referral sample type by lab
+    function getSampletype($labId)
+    {
+        if($labId > 0){
+            $apiUrl=$this->source.'/api/web/referral/listdatas/sampletypebylab?lab_id='.$labId;
+            $curl = new curl\Curl();
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return "Not valid lab";
+        }
+    }
+    //get referral testname by sampletype
+    function getTestnames($labId,$sampletypeId){
+        if($labId > 0 && $sampletypeId > 0){
+            $apiUrl=$this->source.'/api/web/referral/listdatas/testnamebylab_sampletype?lab_id='.$labId.'&sampletype_id='.$sampletypeId;
+            $curl = new curl\Curl();
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return "Not valid lab or sampletype";
+        }
+    }
     //get referral laboratory list
     function listLabreferral()
     {
