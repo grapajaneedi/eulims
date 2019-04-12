@@ -346,7 +346,7 @@ if(Yii::$app->controller->action->id === 'update'){
             else {
                 $('.image-loader').addClass('img-loader');
                 $('.analysisreferral-form form').submit();
-                $('.image-loader').addClass('img-loader');
+                $('.image-loader').removeClass('img-loader');
             }
         });
     ");
@@ -395,7 +395,7 @@ if(Yii::$app->controller->action->id === 'update'){
     left: 0;
     bottom: 0;
     right: 0;
-    background-image: url('/images/img-loader64.gif');
+    background-image: url('/images/img-png-loader64.png');
     background-repeat: no-repeat;
 }
 /* Transparent Overlay */
