@@ -115,6 +115,18 @@ class ReferralComponent extends Component {
             return "Not valid lab or sampletype";
         }
     }
+    //get referral methodref by testname
+    function getMethodrefs($labId,$sampletypeId,$testnameId){
+        if($labId > 0 && $sampletypeId > 0 && $testnameId > 0){
+            $apiUrl=$this->source.'/api/web/referral/listdatas/testnamemethodref?testname_id='.$testnameId.'&sampletype_id='.$sampletypeId;
+            $curl = new curl\Curl();
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return "Not valid testname";
+        }
+    }
+
     //get referral laboratory list
     function listLabreferral()
     {
@@ -424,5 +436,29 @@ class ReferralComponent extends Component {
         } else {
             return 'false';
         }
+    }
+    //offer service
+    function offerService($data){
+        $referralUrl=$this->source.'/api/web/referral/services/offer';
+        $curl = new curl\Curl();
+        $referralreturn = $curl->setRequestBody($data)
+        ->setHeaders([
+            'Content-Type' => 'application/json',
+            'Content-Length' => strlen($data),
+        ])->post($referralUrl);
+
+        return $referralreturn;
+    }
+    //remove service
+    function removeService($data){
+        $referralUrl=$this->source.'/api/web/referral/services/remove';
+        $curl = new curl\Curl();
+        $referralreturn = $curl->setRequestBody($data)
+        ->setHeaders([
+            'Content-Type' => 'application/json',
+            'Content-Length' => strlen($data),
+        ])->post($referralUrl);
+
+        return $referralreturn;
     }
 }

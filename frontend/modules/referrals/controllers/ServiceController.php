@@ -13,6 +13,7 @@ use common\components\ReferralComponent;
 use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
+use linslin\yii2\curl;
 
 /**
  * ServiceController implements the CRUD actions for Service model.
@@ -63,11 +64,65 @@ class ServiceController extends Controller
             //'searchModel' => $searchModel,
             //'dataProvider' => $referralDataprovider,
         //]);
+
+        if(Yii::$app->request->get('service-testname_id')>0){
+            $testnameId = Yii::$app->request->get('service-testname_id');
+            $methods = json_decode($this->listReferralmethodref($testnameId),true);
+        } else {
+            $methods = [];
+        }
+
+        $methodrefDataProvider = new ArrayDataProvider([
+            //'key'=>'sample_id',
+            'allModels' => $methods,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            //'pagination'=>false,
+        ]);
+
         return $this->render('index',[
             'laboratory' => $labreferral,
             'sampletype' => [],
             'testname' => [],
+            'methodrefDataProvider' => $methodrefDataProvider,
+            'count_methods' => count($methods),
         ]);
+    }
+
+    //agency offer service
+    public function actionOffer()
+    {
+        //print_r(json_decode(Yii::$app->request->post('methodref_ids')));
+        //exit;
+        //$methodref_ids = json_decode(Yii::$app->request->post('methodref_ids'));
+        //foreach ($methodref_ids as $methodref) {
+            //echo $methodref;
+        //}
+        $data = Json::encode(['methodref_ids'=>Yii::$app->request->post('methodref_ids'),'lab_id'=>Yii::$app->request->post('lab_id'),'sampletype_id'=>Yii::$app->request->post('sampletype_id'),'testname_id'=>Yii::$app->request->post('testname_id')],JSON_NUMERIC_CHECK);
+
+        /*$referralUrl='https://eulimsapi.onelab.ph/api/web/referral/services/offer';
+       
+        $curl = new curl\Curl();
+        $referralreturn = $curl->setRequestBody($data)
+        ->setHeaders([
+            'Content-Type' => 'application/json',
+            'Content-Length' => strlen($data),
+        ])->post($referralUrl);*/
+        $refcomponent = new ReferralComponent();
+        $postAPI = $refcomponent->offerService($data);
+
+        print_r($postAPI);
+    }
+    //agency offer service
+    public function actionRemove()
+    {
+        $data = Json::encode(['methodref_ids'=>Yii::$app->request->post('methodref_ids'),'lab_id'=>Yii::$app->request->post('lab_id'),'sampletype_id'=>Yii::$app->request->post('sampletype_id'),'testname_id'=>Yii::$app->request->post('testname_id')],JSON_NUMERIC_CHECK);
+
+        $refcomponent = new ReferralComponent();
+        $postAPI = $refcomponent->removeService($data);
+
+        print_r($postAPI);
     }
 
     /**
@@ -156,20 +211,22 @@ class ServiceController extends Controller
         $out = [];
         if (isset($_POST['depdrop_parents'])) {
             $id = (int) end($_POST['depdrop_parents']);
-            $list = Json::decode($refcomponent->getSampletype($id),true);
             //$selected  = null;
-            if ($id != null && count($list) > 0) {
-                //$selected = '';
-                foreach ($list as $i => $sampletype) {
-                    $out[] = ['id' => $sampletype['sampletype_id'], 'name' => $sampletype['type']];
-                    //if ($i == 0) {
-                        //$selected = $sampletype['sampletype_id'];
-                    //}
+            if ($id != null) {
+                $list = Json::decode($refcomponent->getSampletype($id),true);
+                if(count($list) > 0){
+                    //$selected = '';
+                    foreach ($list as $i => $sampletype) {
+                        $out[] = ['id' => $sampletype['sampletype_id'], 'name' => $sampletype['type']];
+                        //if ($i == 0) {
+                            //$selected = $sampletype['sampletype_id'];
+                        //}
+                    }
+                    // Shows how you can preselect a value
+                    //echo Json::encode(['output' => $out, 'selected'=>$selected]);
+                    \Yii::$app->response->data = Json::encode(['output'=>$out]);
+                    return;
                 }
-                // Shows how you can preselect a value
-                //echo Json::encode(['output' => $out, 'selected'=>$selected]);
-                \Yii::$app->response->data = Json::encode(['output'=>$out]);
-                return;
             }
         }
         //echo Json::encode(['output' => '', 'selected'=>'']);
@@ -202,5 +259,52 @@ class ServiceController extends Controller
         }
         //echo Json::encode(['output' => '', 'selected'=>'']);
         echo Json::encode(['output'=>'']);
+    }
+
+    //get referral method reference
+    protected function listReferralmethodref($testnameId)
+    {
+        if(isset($testnameId))
+        {
+            if($testnameId > 0){
+                $refcomponent = new ReferralComponent();
+                $data = $refcomponent->getMethodrefs(1,1,$testnameId);
+            } else {
+                $data = [];
+            }
+
+        } else {
+            $data =[];
+        }
+        return $data;
+    }
+
+    public function actionGettestnamemethod()
+    {
+        $testnameId = (int) Yii::$app->request->get('testname_id');
+        $sampletypeId = (int) Yii::$app->request->get('sampletype_id');
+        $labId = (int) Yii::$app->request->get('lab_id');
+        if ($testnameId > 0 && $sampletypeId > 0 && $labId > 0){
+            $methods = json_decode($this->listReferralmethodref($testnameId),true);
+        }
+        else {
+            $methods = [];
+        }
+
+        if (Yii::$app->request->isAjax) {
+            $methodrefDataProvider = new ArrayDataProvider([
+                //'key'=>'sample_id',
+                'allModels' => $methods,
+                'pagination' => [
+                    'pageSize' => 10,
+                ],
+                //'pagination'=>false,
+            ]);
+            return $this->renderAjax('_methodreference', [
+                'methodrefDataProvider' => $methodrefDataProvider,
+                //'model' => $model,
+                'count_methods' => count($methods),
+            ]);
+        }
     }
 }

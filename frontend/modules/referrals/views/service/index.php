@@ -12,18 +12,20 @@ use kartik\grid\DataColumn;
 use yii\widgets\ActiveForm;
 use kartik\widgets\DepDrop;
 use kartik\widgets\Select2;
+use kartik\dialog\Dialog;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\referral\ServiceSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Referral Request';
+$this->title = 'Referral Service';
 $this->params['breadcrumbs'][] = ['label' => 'Referrals', 'url' => ['/referrals']];
 $this->params['breadcrumbs'][] = $this->title;
 $func=new Functions();
 $refcomp = new ReferralComponent();
 ?>
 <div class="service-index">
+    <div class="image-loader" style="display: hidden;"></div>
     <!--<div style="background-color: #aed6f1 ;border: 2px solid  #5dade2 ;" class="alert">
         <span style="color:#000000;">
             <strong>Note : </strong> Offer / Unoffer test for your agency. If test/calibration is not found in the list, please contact the administrator to add your test/calibration.
@@ -35,9 +37,10 @@ $refcomp = new ReferralComponent();
                     'id' => 'service-form',
                     'options' => [
                         'class' => 'form-horizontal',
-                        'data-pjax' => true,
+                        //'data-pjax' => true,
                     ],
-                    'method' => 'get',
+                    'method' => 'post',
+                    'action' => '/referrals/service/offer',
                 ])
             ?>
             <div class="col-sm-4">
@@ -69,6 +72,7 @@ $refcomp = new ReferralComponent();
                         'placeholder' => 'Select Sample Type',
                         'url'=>Url::to(['list_sampletype']),
                         'loadingText' => 'Loading Sample type...',
+                        //"depdrop:change"=>"function() { alert('HKJHK'); }",
                     ],
                 ]);
             ?>
@@ -87,16 +91,37 @@ $refcomp = new ReferralComponent();
                         'depends'=>['service-lab_id','service-sampletype_id'],
                         'url'=>Url::to(['list_testname']),
                         'loadingText' => 'Loading Test name...',
+                        /*"change" => "function() {
+                            //var testId = this.value;
+                            $.ajax({
+                                url: '".Url::toRoute("gettestnamemethod")."',
+                                //dataType: 'json',
+                                method: 'GET',
+                                //data: {service-testname_id:testId},
+                                data: $(this).serialize(),
+                                success: function (data, textStatus, jqXHR) {
+                                    //$('.image-loader').removeClass( \"img-loader\" );
+                                    $('#methodreference').html(data);
+                                },
+                                beforeSend: function (xhr) {
+                                    //alert('Please wait...');
+                                    //$('.image-loader').addClass( \"img-loader\" );
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>Error Encountered!</p>\");
+                                }
+                            });
+                        }",*/
                     ],
                 ]);
             ?>
-            <?php ActiveForm::end(); ?>
             </div>
         </div>
         <br>
         <!--<div class="container">-->
             <!--<div class="table-responsive">-->
-        <div>
+        <div class="row">
+            <div class="col-lg-12">
             <?php
                 /*echo GridView::widget([
                     'id' => 'service-grid',
@@ -128,6 +153,182 @@ $refcomp = new ReferralComponent();
                     'toolbar' => '',
                 ]);*/
             ?>
+            <div id="methodreference">
+                <?php
+                    echo $this->render('_methodreference', [ 'methodrefDataProvider' => $methodrefDataProvider,'count_methods'=>$count_methods]);
+                ?>
+            </div>
+            </div>
         </div>
     </div>
+    <?php ActiveForm::end(); ?>
 </div>
+<?php
+// Warning alert for no selected sample or method
+echo Dialog::widget([
+    'libName' => 'alertWarning', // a custom lib name
+    'overrideYiiConfirm' => false,
+    'options' => [  // customized BootstrapDialog options
+        'size' => Dialog::SIZE_SMALL, // large dialog text
+        'type' => Dialog::TYPE_DANGER, // bootstrap contextual color
+        'title' => "<i class='glyphicon glyphicon-alert' style='font-size:20px'></i> Warning",
+        'buttonLabel' => 'Close',
+    ]
+]);
+
+?>
+<script type="text/javascript">
+    $('#service-lab_id').on('change', function(event,textStatus, jqXHR) {
+        $("#service-sampletype_id").val('').trigger('change');
+    });
+    $('#service-sampletype_id').on('change', function(event,textStatus, jqXHR) {
+        $("#service-testname_id").val('').trigger('change');
+    });
+    $('#service-testname_id').on('change',function(event){
+    //$('#service-form').on('change',function(event){
+        var lab = $('#service-lab_id').val();
+        var sampletype = $('#service-sampletype_id').val();
+        var testname = $('#service-testname_id').val();
+        $.ajax({
+            url : 'service/gettestnamemethod',
+            method: 'GET',
+            //data: $('form').serialize(),
+            data: {lab_id:lab,sampletype_id:sampletype,testname_id:testname},
+            success: function (data){
+                $('.image-loader').removeClass("img-loader");
+                $('#methodreference').html(data);
+            },
+            beforeSend: function (xhr) {
+                //alert('Please wait...');
+                $('.image-loader').addClass("img-loader");
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alertWarning.alert("<p class='text-danger' style='font-weight:bold;'>Error Encountered!</p>");
+            }
+        });
+    });
+
+function offerService(){
+    //$('#btn-offer').on('click',function(e){
+        //e.preventDefault();
+        var methodrefs = $('#method-reference-grid').yiiGridView('getSelectedRows');
+        //var selected = $("input[name='methodref_id']").val();
+        
+        if(methodrefs.length < 1) {
+            alertWarning.alert("<p class='text-danger' style='font-weight:bold;'>No method selected!</p>");
+            return false;
+        }
+        /*else if ($('input[type=radio][name=methodref_id]', '#method-reference-grid').length < 1) {
+            alertWarning.alert("<p class='text-danger' style='font-weight:bold;'>No Method selected!</p>");
+            return false;
+        }
+        else if(!$("input[name='methodref_id']").is(':checked') || radioMethod == '') {
+            alertWarning.alert("<p class='text-danger' style='font-weight:bold;'>No Method selected!</p>");
+            return false;
+        }*/
+        else {
+            //var url = '/referrals/service/offer';
+            //$('.modal-title').html('Offer Service');
+            //$('#modal').modal('show')
+            //    .find('#modalContent')
+            //    .load(url);
+            //$('.image-loader').addClass('img-loader');
+            //$('.service-index form').submit();
+            //$('.image-loader').removeClass('img-loader');
+            //alert('GG');
+            var method_ids = [];
+            $.each($("input[name='methodref_ids[]']:checked"), function(){
+                method_ids.push($(this).val());
+            });
+            var method_ids_string = JSON.stringify(method_ids);
+            var lab = $('#service-lab_id').val();
+            var sampletype = $('#service-sampletype_id').val();
+            var testname = $('#service-testname_id').val();
+            $.ajax({
+                url : 'service/offer',
+                method: 'POST',
+               // data: $('.service-index form').serialize(),
+                data: {methodref_ids: method_ids_string,lab_id:lab,sampletype_id:sampletype,testname_id:testname},
+                //data: $('#method-reference-grid').serialize(),
+                //data: {lab_id:lab,sampletype_id:sampletype,testname_id:testname},
+                success: function (data){
+                    $('.image-loader').removeClass("img-loader");
+                    //$('#methodreference').html(data);
+                    //$('.service-index form').submit();
+                },
+                beforeSend: function (xhr) {
+                    //alert('Please wait...');
+                    $('.image-loader').addClass("img-loader");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alertWarning.alert("<p class='text-danger' style='font-weight:bold;'>Error Encountered!</p>");
+                }
+            });
+        }
+    //});
+}
+
+function removeService(){
+    var methodrefs = $('#method-reference-grid').yiiGridView('getSelectedRows');
+    if(methodrefs.length < 1) {
+        alertWarning.alert("<p class='text-danger' style='font-weight:bold;'>No method selected!</p>");
+        return false;
+    }
+    else {
+        var method_ids = [];
+        $.each($("input[name='methodref_ids[]']:checked"), function(){
+            method_ids.push($(this).val());
+        });
+        var method_ids_string = JSON.stringify(method_ids);
+        var lab = $('#service-lab_id').val();
+        var sampletype = $('#service-sampletype_id').val();
+        var testname = $('#service-testname_id').val();
+        $.ajax({
+            url : 'service/remove',
+            method: 'POST',
+            data: {methodref_ids: method_ids_string,lab_id:lab,sampletype_id:sampletype,testname_id:testname},
+            success: function (data){
+                $('.image-loader').removeClass("img-loader");
+            },
+            beforeSend: function (xhr) {
+                //alert('Please wait...');
+                $('.image-loader').addClass("img-loader");
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                alertWarning.alert("<p class='text-danger' style='font-weight:bold;'>Error Encountered!</p>");
+            }
+        });
+    }
+}
+</script>
+
+<style type="text/css">
+/* Absolute Center Spinner */
+.img-loader {
+    position: fixed;
+    z-index: 999;
+    /*height: 2em;
+    width: 2em;*/
+    height: 64px;
+    width: 64px;
+    overflow: show;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-image: url('/images/img-png-loader64.png');
+    background-repeat: no-repeat;
+}
+/* Transparent Overlay */
+.img-loader:before {
+    content: '';
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.3);
+}
+</style>

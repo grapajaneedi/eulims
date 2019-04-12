@@ -13,7 +13,7 @@ use common\components\ReferralComponent;
 /* @var $searchModel common\models\referral\ReferralSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Referral';
+$this->title = 'Referral Request';
 $this->params['breadcrumbs'][] = ['label' => 'Referrals', 'url' => ['/referrals']];
 $this->params['breadcrumbs'][] = $this->title;
 $func=new Functions();
