@@ -8,6 +8,11 @@ use common\models\referral\ServiceSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\lab\Request;
+use common\components\ReferralComponent;
+use yii\data\ArrayDataProvider;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Json;
 
 /**
  * ServiceController implements the CRUD actions for Service model.
@@ -35,12 +40,33 @@ class ServiceController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new ServiceSearch();
+        /*$searchModel = new ServiceSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+        ]);*/
+
+        $refcomponent = new ReferralComponent();
+
+        $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
+
+        $labreferral = ArrayHelper::map(json_decode($refcomponent->listLabreferral()), 'lab_id', 'labname');
+
+        //$referralDataprovider = new ArrayDataProvider([
+            //'allModels' => $referrals,
+            //'pagination'=> ['pageSize' => 10],
+        //]);
+
+        //return $this->render('index', [
+            //'searchModel' => $searchModel,
+            //'dataProvider' => $referralDataprovider,
+        //]);
+        return $this->render('index',[
+            'laboratory' => $labreferral,
+            'sampletype' => [],
+            'testname' => [],
         ]);
     }
 
@@ -123,5 +149,58 @@ class ServiceController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionList_sampletype() {
+        $refcomponent = new ReferralComponent();
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $id = (int) end($_POST['depdrop_parents']);
+            $list = Json::decode($refcomponent->getSampletype($id),true);
+            //$selected  = null;
+            if ($id != null && count($list) > 0) {
+                //$selected = '';
+                foreach ($list as $i => $sampletype) {
+                    $out[] = ['id' => $sampletype['sampletype_id'], 'name' => $sampletype['type']];
+                    //if ($i == 0) {
+                        //$selected = $sampletype['sampletype_id'];
+                    //}
+                }
+                // Shows how you can preselect a value
+                //echo Json::encode(['output' => $out, 'selected'=>$selected]);
+                \Yii::$app->response->data = Json::encode(['output'=>$out]);
+                return;
+            }
+        }
+        //echo Json::encode(['output' => '', 'selected'=>'']);
+        echo Json::encode(['output'=>'']);
+    }
+
+    public function actionList_testname() {
+        $refcomponent = new ReferralComponent();
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $lab_id = (int) ($_POST['depdrop_parents'][0]);
+            $sampletype_id = (int) ($_POST['depdrop_parents'][1]);
+            //$selected  = null;
+            if ($lab_id > 0 && $sampletype_id > 0) {
+                $list = Json::decode($refcomponent->getTestnames($lab_id,$sampletype_id),true);
+                if(count($list) > 0){
+                    //$selected = '';
+                    foreach ($list as $i => $testname) {
+                        $out[] = ['id' => $testname['testname_id'], 'name' => $testname['test_name']];
+                        //if ($i == 0) {
+                        //    $selected = $testname['testname_id'];
+                        //}
+                    }
+                    // Shows how you can preselect a value
+                    //echo Json::encode(['output' => $out, 'selected'=>$selected]);
+                    \Yii::$app->response->data = Json::encode(['output'=>$out]);
+                    return;
+                }
+            }
+        }
+        //echo Json::encode(['output' => '', 'selected'=>'']);
+        echo Json::encode(['output'=>'']);
     }
 }

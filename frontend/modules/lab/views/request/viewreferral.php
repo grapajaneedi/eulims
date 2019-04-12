@@ -217,7 +217,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                             'label'=>'Estimated Due Date',
                             'format'=>'raw',
                             'value'=> ($model->report_due != "0000-00-00 00:00:00") ? Yii::$app->formatter->asDate($model->report_due, 'php:F j, Y') : "<i class='text-danger font-weight-bold h5'>Pending referral request</i>",
-                            'valueColOptions'=>['style'=>'width:30%'], 
+                            'valueColOptions'=>['style'=>'width:30%'],
                             'displayOnly'=>true
                         ],
                         [

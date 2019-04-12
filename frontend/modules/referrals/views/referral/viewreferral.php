@@ -150,11 +150,11 @@ $this->params['breadcrumbs'][] = $this->title;
                     'columns' => [
                         [
                             'label'=>'Deposite Slip',
-                            'value'=>function() use ($depositslip,$model){
+                            'value'=>function() use ($depositslip,$model,$request){
                                 $link = '';
                                 if($depositslip > 0){
                                     foreach ($depositslip as $deposit) {
-                                        $link .= Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$deposit['filename'],'/referrals/attachment/download?request_id='.$model->request_id.'&file='.$deposit['attachment_id'], ['style'=>'font-size:12px;color:#000077;font-weight:bold;','title'=>'Download Deposit Slip','target'=>'_self'])."<br>";
+                                        $link .= Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$deposit['filename'],'/referrals/attachment/download?request_id='.$request['local_request_id'].'&file='.$deposit['attachment_id'], ['style'=>'font-size:12px;color:#000077;font-weight:bold;','title'=>'Download Deposit Slip','target'=>'_self'])."<br>";
                                     }
                                 }
                                 return $link;
@@ -167,11 +167,11 @@ $this->params['breadcrumbs'][] = $this->title;
                         [
                             'label'=>'Official Receipt',
                             'format'=>'raw',
-                            'value'=>function() use ($officialreceipt,$model){
+                            'value'=>function() use ($officialreceipt,$model,$request){
                                 $link = '';
                                 if($officialreceipt > 0){
                                     foreach ($officialreceipt as $or) {
-                                        $link .= Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$or['filename'],'/referrals/attachment/download?request_id='.$model->request_id.'&file='.$or['attachment_id'], ['style'=>'font-size:12px;color:#000077;font-weight:bold;','title'=>'Download Official Receipt','target'=>'_self'])."<br>";
+                                        $link .= Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$or['filename'],'/referrals/attachment/download?request_id='.$request['local_request_id'].'&file='.$or['attachment_id'], ['style'=>'font-size:12px;color:#000077;font-weight:bold;','title'=>'Download Official Receipt','target'=>'_self'])."<br>";
                                     }
                                 }
                                 return $link;
