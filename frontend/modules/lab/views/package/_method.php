@@ -17,6 +17,24 @@ use kartik\datetime\DateTimePicker;
 
 $js=<<<SCRIPT
 
+$(".kv-row-checkbox").change(function(){
+    var keys = $('#testnamemethod-grid').yiiGridView('getSelectedRows');
+    var keylist = keys.join();
+    $("#package-tests").val(keylist); 
+
+   
+   
+ });    
+
+ $(".select-on-check-all").change(function(){
+  var keys = $('#testnamemethod-grid').yiiGridView('getSelectedRows');
+  var keylist = keys.join();
+  $("#package-tests").val(keylist);
+  
+  
+ });
+
+
 function addpackage(mid){  
     $.ajax({
         url: '/lab/package/addpackage',
@@ -33,16 +51,15 @@ function addpackage(mid){
         });
 }
 
+
 SCRIPT;
 $this->registerJs($js);
 
+
 ?>
-
-
-     
         <?= GridView::widget([
         'dataProvider' => $testnamedataprovider,
-        'id'=>'testname-grid',
+        'id'=>'testnamemethod-grid',
         'pjax'=>true,
         'pjaxSettings' => [
             'options' => [
@@ -50,7 +67,7 @@ $this->registerJs($js);
             ]
         ],
         'containerOptions'=>[
-            'style'=>'overflow:auto; height:250px',
+            'style'=>'overflow:auto; height:320px',
         ],
         'floatHeaderOptions' => ['scrollingTop' => true],
         'responsive'=>true,
@@ -65,21 +82,28 @@ $this->registerJs($js);
         ],
         'toolbar' => false,
         'columns' => [
-            [
-                'label' => '',
-                'format' => 'raw', 
-                'vAlign' => 'middle',
-                'contentOptions' => ['style' => 'width: 3%;word-wrap: break-word;white-space:pre-line;'],  
-                'value' => function($data) {     
-                    return "<span class='btn btn-primary glyphicon glyphicon-plus' id='offer' onclick=addpackage(".$data->testname_method_id.")></span>";
-                 }          
+            ['class' => '\kartik\grid\CheckboxColumn'],
+          
+            [     
+                'label' => 'Test Name',
+                'format' => 'raw',
+                'contentOptions' => ['style' => 'width: 15%;word-wrap: break-word;white-space:pre-line;'],  
+                'value' => function($model) {
+                    $testname_query = Testname::find()->where(['testname_id'=>$model->testname_id])->one();
+        
+                    if ($testname_query){
+                        return $testname_query->testName;
+                    }else{
+                        return "";
+                    }
+                 }                        
             ],
             [     
                 'label' => 'Method',
                 'format' => 'raw',
                 'contentOptions' => ['style' => 'width: 40%;word-wrap: break-word;white-space:pre-line;'],  
-                'value' => function($data) {
-                    $method_query = Methodreference::find()->where(['method_reference_id'=>$data->method_id])->one();
+                'value' => function($model) {
+                    $method_query = Methodreference::find()->where(['method_reference_id'=>$model->method_id])->one();
         
                     if ($method_query){
                         return $method_query->method;
@@ -92,9 +116,8 @@ $this->registerJs($js);
                 'label' => 'Reference',
                 'format' => 'raw',
                 'contentOptions' => ['style' => 'width: 60%;word-wrap: break-word;white-space:pre-line;'],  
-                'value' => function($data) {
-
-                    $method_query = Methodreference::find()->where(['method_reference_id'=>$data->method_id])->one();
+                'value' => function($model) {
+                    $method_query = Methodreference::find()->where(['method_reference_id'=>$model->method_id])->one();
                     if ($method_query){
                         return $method_query->reference;
                     }else{
@@ -108,8 +131,8 @@ $this->registerJs($js);
                 'format' => 'raw',
                 'width'=> '150px',
                 'contentOptions' => ['style' => 'width: 10%;word-wrap: break-word;white-space:pre-line;'],  
-                'value' => function($data) {
-                    $method_query = Methodreference::find()->where(['method_reference_id'=>$data->method_id])->one();
+                'value' => function($model) {
+                    $method_query = Methodreference::find()->where(['method_reference_id'=>$model->method_id])->one();
                     if ($method_query){
                         
                         return number_format($method_query->fee,2);

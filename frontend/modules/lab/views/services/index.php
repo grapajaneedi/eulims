@@ -31,6 +31,16 @@ $this->title = 'Add/ Remove Services';
 $this->params['breadcrumbs'][] = $this->title;
 $services =  Services::find()->all(); 
 
+//$testcategory = Labsampletype::find()->where(['lab_sampletype_id'=>$labsampletypeid])->one();
+// $apiUrl_testcategory="https://eulimsapi.onelab.ph/api/web/v1/testcategories/search?testcategory_id=3";
+// $curl = new curl\Curl();
+// $curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
+// $response_testcategory = $curl->get($apiUrl_testcategory);
+// $decode_testcategory=Json::decode($response_testcategory,TRUE);
+
+// echo "<pre>";
+// var_dump($decode_testcategory);
+// echo "</pre>";
 
 ?>
 
@@ -60,8 +70,8 @@ $services =  Services::find()->all();
                             'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Lab'],
                     ])."</div>"."<div class='col-md-3'>".$form->field($model, 'method_reference_id')->widget(DepDrop::classname(), [
                         'type'=>DepDrop::TYPE_SELECT2,
-                        'data'=>$sampletype,
-                        'options'=>['id'=>'sample-method_reference_id'],
+                        'data'=>$testcategory,
+                        'options'=>['id'=>'sample-testcategory_id'],
                         'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
                         'pluginOptions'=>[
                             'depends'=>['lab_id'],
@@ -75,7 +85,7 @@ $services =  Services::find()->all();
                         'options'=>['id'=>'sample-sample_type_id'],
                         'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
                         'pluginOptions'=>[
-                            'depends'=>['lab_id'],
+                            'depends'=>['sample-testcategory_id'],
                             'placeholder'=>'Select Sample Type',
                             'url'=>Url::to(['/lab/services/listsampletype']),
                             'loadingText' => 'Loading Sample Types...',

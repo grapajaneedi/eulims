@@ -201,6 +201,34 @@ class AnalysisController extends Controller
         echo Json::encode(['output' => '', 'selected'=>'']);
     }
 
+    public function actionListtype() {
+        $out = [];
+        if (isset($_POST['depdrop_parents'])) {
+            $id = end($_POST['depdrop_parents']);
+
+            $list =  Sampletype::find()
+            ->innerJoin('tbl_lab_sampletype', 'tbl_lab_sampletype.sampletype_id=tbl_sampletype.sampletype_id')
+            ->innerJoin('tbl_testcategory', 'tbl_testcategory.testcategory_id=tbl_lab_sampletype.testcategory_id')
+            ->Where(['tbl_lab_sampletype.testcategory_id'=>$id])
+            ->asArray()
+            ->all();
+
+            $selected  = null;
+            if ($id != null && count($list) > 0) {
+                $selected = '';
+                foreach ($list as $i => $sampletype) {
+                    $out[] = ['id' => $sampletype['sampletype_id'], 'name' => $sampletype['type']];
+                    if ($i == 0) {
+                        $selected = $sampletype['sampletype_id'];
+                    }
+                }
+                \Yii::$app->response->data = Json::encode(['output'=>$out, 'selected'=>'']);
+                return;
+            }
+        }
+        echo Json::encode(['output' => '', 'selected'=>'']);
+    }
+
     /**
      * Creates a new Analysis model.
      * If creation is successful, the browser will be redirected to the 'view' page.
@@ -225,7 +253,8 @@ class AnalysisController extends Controller
         $request_id = $_GET['id'];
         $request = $this->findRequest($request_id);
         $labId = $request->lab_id;
-        $testcategory = $this->listTestcategory($labId);
+        //$testcategory = $this->listTestcategory($labId);
+        $testcategory = [];
         $sampletype = [];
         $test = [];     
         if ($model->load(Yii::$app->request->post())) {
@@ -248,6 +277,7 @@ class AnalysisController extends Controller
                     $analysis->type_fee_id = 1;
                     $analysis->rstl_id = $GLOBALS['rstl_id'];
                     $analysis->test_id = (int) $post['Analysis']['test_id'];
+                    $analysis->category_id = (int) $post['Analysis']['category_id'];
                     $analysis->sample_type_id = (int) $post['Analysis']['sample_type_id'];
                     $analysis->testcategory_id = $method->method_reference_id;
                     $analysis->is_package = (int) $post['Analysis']['is_package'];

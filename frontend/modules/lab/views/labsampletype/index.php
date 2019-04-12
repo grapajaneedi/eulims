@@ -43,7 +43,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'lab_id',
                 'label' => 'Lab',
                 'value' => function($model) {
-                   return $model->lab->labname;
+                   if ($model->lab){
+                      return $model->lab->labname;
+                   }else{
+                        return "";
+                   }
+                   
                 },
                 'filterType' => GridView::FILTER_SELECT2,
                 'filter' => $lablist,

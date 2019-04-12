@@ -5,6 +5,7 @@ namespace frontend\modules\services\controllers;
 use Yii;
 use common\models\lab\Packagelist;
 use common\models\lab\Methodreference;
+use common\models\lab\Testnamemethod;
 use common\models\lab\Package;
 use common\models\lab\PackagelistSearch;
 use common\models\lab\Analysis;
@@ -182,6 +183,7 @@ class PackagelistController extends Controller
                      $analysis->testcategory_id = 0;
                      $analysis->is_package = 1;
                      $analysis->method = "-";
+                     $analysis->category_id = 1;
                      $analysis->fee = $r;
                      $analysis->testname = $modelpackage->name;
                      $analysis->references = "-";
@@ -196,7 +198,9 @@ class PackagelistController extends Controller
                      foreach ($test_ids as $t_id){
 
                         $analysis_package = new Analysis();
-                        $modeltest=  Testname::findOne(['testname_id'=>$t_id]);
+                        $testnamemethod =  Testnamemethod::findOne(['testname_method_id'=>$t_id]);
+                        $modeltest=  Testname::findOne(['testname_id'=>$testnamemethod->testname_id]);
+                        $methodreference =  Methodreference::findOne(['method_reference_id'=>$testnamemethod->method_id]);
 
                         //hindi makuha using model method ui
 
@@ -213,11 +217,13 @@ class PackagelistController extends Controller
                         $analysis_package->user_id = 1;
                         $analysis_package->type_fee_id = 2;
                         $analysis_package->sample_type_id = (int) $post['Packagelist']['sample_type_id'];
-                        $analysis_package->testcategory_id = 1;
+                        $analysis_package->category_id = 1;
+                        $analysis_package->testcategory_id = $methodreference->method_reference_id;
                         $analysis_package->is_package = 1;
-                        $analysis_package->method = '';
+                        $analysis_package->method = $methodreference->method;
                        // $analysis->method = $modelmethod->method;
-                        $analysis_package->fee = 0;
+                        $analysis->category_id = 1;
+                        $analysis_package->fee = $methodreference->fee;
                         $analysis_package->testname = $modeltest->testName;
                         $analysis_package->references = "references";
                         $analysis_package->quantity = 1;
@@ -319,12 +325,44 @@ class PackagelistController extends Controller
                 if(count($modelpackagelist)>0){
                     $rate = number_format($modelpackagelist->rate,2);
                              
-                    $sql = "SELECT GROUP_CONCAT(testName) FROM tbl_testname WHERE testname_id IN ($tet)";     
+                    // $sql = "SELECT GROUP_CONCAT(testName) FROM tbl_testname WHERE testname_id IN ($tet)";     
          
-                    $Connection = Yii::$app->labdb;
-                    $command = $Connection->createCommand($sql);
-                    $row = $command->queryOne();    
-                        $tests = $row['GROUP_CONCAT(testName)'];               
+                    // $Connection = Yii::$app->labdb;
+                    // $command = $Connection->createCommand($sql);
+                    // $row = $command->queryOne();    
+                    //     $tests = $row['GROUP_CONCAT(testName)'];   
+                    
+                    
+                  
+                        $sql = "SELECT GROUP_CONCAT(testname_id) FROM tbl_testname_method WHERE testname_method_id IN ($tet)";     
+             
+                        $Connection = Yii::$app->labdb;
+                        $command = $Connection->createCommand($sql);
+                        $row = $command->queryOne();    
+                        $tests = $row['GROUP_CONCAT(testname_id)'];  
+
+                        $space = explode(',', $tests);
+                        $d = '';
+                        $newline = ", ";
+                        foreach ($space as $s){
+                            $d.= $s.$newline;
+                        }
+
+                        $len = strlen($d);
+
+                        $x = $len-2;
+
+                        $testname_id = substr($d ,0,$x);
+                        $sql_testname = "SELECT GROUP_CONCAT(testName) FROM tbl_testname WHERE testname_id IN ($testname_id)";     
+             
+                        $Connection = Yii::$app->labdb;
+                        $command_testname = $Connection->createCommand($sql_testname);
+                        $row_testname = $command_testname->queryOne();    
+                        $tests = $row_testname['GROUP_CONCAT(testName)'];  
+
+                      
+                 
+
                 } else {
                     $rate = "";
                     $tests = "";

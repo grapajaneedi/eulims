@@ -5,6 +5,8 @@ namespace frontend\modules\lab\controllers;
 use Yii;
 use common\models\lab\Testcategory;
 use common\models\lab\TestcategorySearch;
+use common\models\lab\Labsampletype;
+use common\models\lab\LabsampletypeSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -46,10 +48,11 @@ class TestcategoryController extends Controller
 
     public function actionCategory()
     {
-        $searchModel = new TestcategorySearch();
+        $searchModel = new LabsampletypeSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->sort->defaultOrder = ['effective_date' => SORT_DESC];
 
-        return $this->render('indexcategory', [
+        return $this->render('/labsampletype/indexcategory', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
@@ -112,17 +115,18 @@ class TestcategoryController extends Controller
                               return $this->runAction('category');
                          }else{
                              $model->save();
-                             Yii::$app->session->setFlash('success', 'Test Category Successfully Created'); 
                              return $this->runAction('category');
                          }      
         
                         }
-         
+
+                        
                 if(Yii::$app->request->isAjax){
                     return $this->renderAjax('_form', [
                         'model' => $model,
                     ]);
                }
+         
     }
 
     /**

@@ -41,7 +41,7 @@ $testcategorylist= ArrayHelper::map(Testcategory::find()->orderBy(['testcategory
             ])->label("Test Category")
     ?>
       <span class="input-group-btn" style="padding-top: 25.5px">
-                    <button onclick="LoadModal('Create New Sample Type', '/lab/testcategory/createcategory');"class="btn btn-default" type="button"><i class="fa fa-plus"></i></button>
+                    <button onclick="LoadModal('Create New Test Category', '/lab/testcategory/createcategory');"class="btn btn-default" type="button"><i class="fa fa-plus"></i></button>
      </span>
     </div>
 

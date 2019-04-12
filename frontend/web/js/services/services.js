@@ -10,6 +10,12 @@ $(function(){
     });
 });
 
+$(function(){
+    $('.modal_package').click(function () {
+        LoadModal(this.title, this.value, true, 700);
+    });
+});
+
 
 
 
