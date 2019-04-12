@@ -50,8 +50,7 @@ $lablist= ArrayHelper::map(Lab::find()->all(),'lab_id','labname');
             ],
             ['class' => 'kartik\grid\ActionColumn',
             'contentOptions' => ['style' => 'width: 8.7%'],
-          //  'template' => $button,
-          'template' => '{view}{update}{delete}',
+            'template' => '{view}{update}{delete}',
             'buttons'=>[
                 'view'=>function ($url, $model) {
                     return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['/lab/sampletype/view','id'=>$model->sampletype_id]), 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-primary','title' => Yii::t('app', "View Sample Type <font color='Blue'></font>")]);
