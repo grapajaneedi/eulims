@@ -99,7 +99,8 @@ class ServiceController extends Controller
         //foreach ($methodref_ids as $methodref) {
             //echo $methodref;
         //}
-        $data = Json::encode(['methodref_ids'=>Yii::$app->request->post('methodref_ids'),'lab_id'=>Yii::$app->request->post('lab_id'),'sampletype_id'=>Yii::$app->request->post('sampletype_id'),'testname_id'=>Yii::$app->request->post('testname_id')],JSON_NUMERIC_CHECK);
+        $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
+        $data = Json::encode(['methodref_ids'=>Yii::$app->request->post('methodref_ids'),'lab_id'=>Yii::$app->request->post('lab_id'),'sampletype_id'=>Yii::$app->request->post('sampletype_id'),'testname_id'=>Yii::$app->request->post('testname_id'),'rstl_id'=>$rstlId],JSON_NUMERIC_CHECK);
 
         /*$referralUrl='https://eulimsapi.onelab.ph/api/web/referral/services/offer';
        
@@ -112,17 +113,29 @@ class ServiceController extends Controller
         $refcomponent = new ReferralComponent();
         $postAPI = $refcomponent->offerService($data);
 
-        print_r($postAPI);
+        //if($postAPI === 1){
+            //Yii::$app->session->setFlash('success', "Sample Successfully Created.");
+            //return $this->redirect(['/referrals/service']);
+            //return "<div class='alert alert-success'>Successfully offered service.</div>";
+            //return 1;
+        //} else {
+            //return "<div class='alert alert-error'>Offer not successful!</div>";
+            //return "<div class='alert alert-success'>Successfully offered service.</div>";
+           // return "Offer not successful!";
+        //}
+        return $postAPI;
     }
     //agency offer service
     public function actionRemove()
     {
-        $data = Json::encode(['methodref_ids'=>Yii::$app->request->post('methodref_ids'),'lab_id'=>Yii::$app->request->post('lab_id'),'sampletype_id'=>Yii::$app->request->post('sampletype_id'),'testname_id'=>Yii::$app->request->post('testname_id')],JSON_NUMERIC_CHECK);
+        $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
+        $data = Json::encode(['methodref_ids'=>Yii::$app->request->post('methodref_ids'),'lab_id'=>Yii::$app->request->post('lab_id'),'sampletype_id'=>Yii::$app->request->post('sampletype_id'),'testname_id'=>Yii::$app->request->post('testname_id'),'rstl_id'=>$rstlId],JSON_NUMERIC_CHECK);
 
         $refcomponent = new ReferralComponent();
         $postAPI = $refcomponent->removeService($data);
 
-        print_r($postAPI);
+        //print_r($postAPI);
+        return $postAPI; 
     }
 
     /**

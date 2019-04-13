@@ -13,6 +13,7 @@ use yii\widgets\ActiveForm;
 use kartik\widgets\DepDrop;
 use kartik\widgets\Select2;
 use kartik\dialog\Dialog;
+use kartik\widgets\Growl;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\referral\ServiceSearch */
@@ -176,6 +177,21 @@ echo Dialog::widget([
     ]
 ]);
 
+echo Growl::widget([
+    'type' => Growl::TYPE_SUCCESS,
+    'title' => '',
+    'icon' => '',
+    'body' => 'Finished Loading.',
+    'showSeparator' => true,
+    'delay' => 1000,
+    'pluginOptions' => [
+        'placement' => [
+            'from' => 'top',
+            'align' => 'center',
+        ]
+    ]
+]);
+
 ?>
 <script type="text/javascript">
     $('#service-lab_id').on('change', function(event,textStatus, jqXHR) {
@@ -255,6 +271,45 @@ function offerService(){
                     $('.image-loader').removeClass("img-loader");
                     //$('#methodreference').html(data);
                     //$('.service-index form').submit();
+                    if(data == 1){
+                        $.notify({
+                            // options
+                            icon: 'glyphicon glyphicon-ok',
+                            message: 'Successfully offered service(s).'
+                        },{
+                            // settings
+                            type: 'success',
+                            delay: 1000,
+                            timer: 2000,
+                            placement: {
+                                from: "top",
+                                align: "center"
+                            },
+                            offset: {
+                                x: 200,
+                                y: 230
+                            }
+                        });
+                    } else {
+                        $.notify({
+                            // options
+                            icon: 'glyphicon glyphicon-alert',
+                            message: 'Fail to offer service(s)!'
+                        },{
+                            // settings
+                            type: 'error',
+                            delay: 1000,
+                            timer: 2000,
+                            placement: {
+                                from: "top",
+                                align: "center"
+                            },
+                            offset: {
+                                x: 200,
+                                y: 230
+                            }
+                        });
+                    }
                 },
                 beforeSend: function (xhr) {
                     //alert('Please wait...');
@@ -283,20 +338,83 @@ function removeService(){
         var lab = $('#service-lab_id').val();
         var sampletype = $('#service-sampletype_id').val();
         var testname = $('#service-testname_id').val();
-        $.ajax({
-            url : 'service/remove',
-            method: 'POST',
-            data: {methodref_ids: method_ids_string,lab_id:lab,sampletype_id:sampletype,testname_id:testname},
-            success: function (data){
-                $('.image-loader').removeClass("img-loader");
-            },
-            beforeSend: function (xhr) {
-                //alert('Please wait...');
-                $('.image-loader').addClass("img-loader");
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                alertWarning.alert("<p class='text-danger' style='font-weight:bold;'>Error Encountered!</p>");
-            }
+
+        BootstrapDialog.show({
+            title: "<span class='glyphicon glyphicon-alert'></span>&nbsp;&nbsp;WARNING",
+            message: "<div class='alert alert-danger' style='border:2px #ff3300 dotted;margin:auto;font-size:13px;text-align:justify;text-justify:inter-word;'>"
+                +"<p style='font-weight:bold;font-size:13px;'><span class='glyphicon glyphicon-alert' style='font-size:17px;'></span>&nbsp;&nbsp;All checked methods that you did not offer will not be removed as service.</p>"
+                +"</div>"
+                +"<p class='note' style='margin:15px 0 0 15px;font-weight:bold;color:#0d47a1;font-size:14px;'>Are you sure want to continue?</p>",
+            buttons: [
+                {
+                    label: 'Yes',
+                    // no title as it is optional
+                    cssClass: 'btn-primary',
+                    action: function(thisDialog){
+                        thisDialog.close();
+                        $.ajax({
+                            url : 'service/remove',
+                            method: 'POST',
+                            data: {methodref_ids: method_ids_string,lab_id:lab,sampletype_id:sampletype,testname_id:testname},
+                            success: function (data){
+                                $('.image-loader').removeClass("img-loader");
+                                if(data == 1){
+                                        $.notify({
+                                            // options
+                                            icon: 'glyphicon glyphicon-ok',
+                                            message: 'Successfully removed service(s).'
+                                        },{
+                                            // settings
+                                            type: 'success',
+                                            delay: 1000,
+                                            timer: 2000,
+                                            placement: {
+                                                from: "top",
+                                                align: "center"
+                                            },
+                                            offset: {
+                                                x: 200,
+                                                y: 230
+                                            }
+                                        });
+                                    } else {
+                                        $.notify({
+                                            // options
+                                            icon: 'glyphicon glyphicon-alert',
+                                            message: 'Fail to remove offered service(s)!'
+                                        },{
+                                            // settings
+                                            type: 'error',
+                                            delay: 1000,
+                                            timer: 2000,
+                                            placement: {
+                                                from: "top",
+                                                align: "center"
+                                            },
+                                            offset: {
+                                                x: 200,
+                                                y: 230
+                                            }
+                                        });
+                                    }
+                            },
+                            beforeSend: function (xhr) {
+                                //alert('Please wait...');
+                                $('.image-loader').addClass("img-loader");
+                            },
+                            error: function (jqXHR, textStatus, errorThrown) {
+                                alertWarning.alert("<p class='text-danger' style='font-weight:bold;'>Error Encountered!</p>");
+                            }
+                        });
+                    }
+                }, 
+                {
+                    label: 'No',
+                    action: function(thisDialog){
+                        thisDialog.close();
+                    }
+                }
+            ]
         });
     }
 }
