@@ -123,6 +123,9 @@ class ServiceController extends Controller
             //return "<div class='alert alert-success'>Successfully offered service.</div>";
            // return "Offer not successful!";
         //}
+        //return 2 is duplicate
+        //return 1 is success
+        //return 0 is fail save
         return $postAPI;
     }
     //agency offer service
@@ -135,7 +138,7 @@ class ServiceController extends Controller
         $postAPI = $refcomponent->removeService($data);
 
         //print_r($postAPI);
-        return $postAPI; 
+        return $postAPI;
     }
 
     /**

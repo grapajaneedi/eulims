@@ -290,11 +290,30 @@ function offerService(){
                                 y: 230
                             }
                         });
+                    } else if(data == 2) {
+                        $.notify({
+                            // options
+                            icon: 'glyphicon glyphicon-ban-circle',
+                            message: 'Please offer methods that are not yet offered.'
+                        },{
+                            // settings
+                            type: 'error',
+                            delay: 1000,
+                            timer: 2000,
+                            placement: {
+                                from: "top",
+                                align: "center"
+                            },
+                            offset: {
+                                x: 200,
+                                y: 230
+                            }
+                        });
                     } else {
                         $.notify({
                             // options
                             icon: 'glyphicon glyphicon-alert',
-                            message: 'Fail to offer service(s)!'
+                            message: 'Failed to offer service(s).'
                         },{
                             // settings
                             type: 'error',
@@ -344,7 +363,7 @@ function removeService(){
             message: "<div class='alert alert-danger' style='border:2px #ff3300 dotted;margin:auto;font-size:13px;text-align:justify;text-justify:inter-word;'>"
                 +"<p style='font-weight:bold;font-size:13px;'><span class='glyphicon glyphicon-alert' style='font-size:17px;'></span>&nbsp;&nbsp;All checked methods that you did not offer will not be removed as service.</p>"
                 +"</div>"
-                +"<p class='note' style='margin:15px 0 0 15px;font-weight:bold;color:#0d47a1;font-size:14px;'>Are you sure want to continue?</p>",
+                +"<p class='note' style='margin:15px 0 0 15px;font-weight:bold;color:#0d47a1;font-size:14px;'>Do you wish to continue?</p>",
             buttons: [
                 {
                     label: 'Yes',
@@ -381,7 +400,7 @@ function removeService(){
                                         $.notify({
                                             // options
                                             icon: 'glyphicon glyphicon-alert',
-                                            message: 'Fail to remove offered service(s)!'
+                                            message: 'Failed to remove service(s). Method,reference may not be offered as service yet.'
                                         },{
                                             // settings
                                             type: 'error',
