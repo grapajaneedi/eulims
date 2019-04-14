@@ -400,7 +400,7 @@ function removeService(){
                                         $.notify({
                                             // options
                                             icon: 'glyphicon glyphicon-alert',
-                                            message: 'Failed to remove service(s). Method,reference may not be offered as service yet.'
+                                            message: 'Failed to remove service(s). Selected method may not be offered as service yet.'
                                         },{
                                             // settings
                                             type: 'error',

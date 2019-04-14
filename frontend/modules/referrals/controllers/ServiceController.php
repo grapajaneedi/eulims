@@ -93,12 +93,6 @@ class ServiceController extends Controller
     //agency offer service
     public function actionOffer()
     {
-        //print_r(json_decode(Yii::$app->request->post('methodref_ids')));
-        //exit;
-        //$methodref_ids = json_decode(Yii::$app->request->post('methodref_ids'));
-        //foreach ($methodref_ids as $methodref) {
-            //echo $methodref;
-        //}
         $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
         $data = Json::encode(['methodref_ids'=>Yii::$app->request->post('methodref_ids'),'lab_id'=>Yii::$app->request->post('lab_id'),'sampletype_id'=>Yii::$app->request->post('sampletype_id'),'testname_id'=>Yii::$app->request->post('testname_id'),'rstl_id'=>$rstlId],JSON_NUMERIC_CHECK);
 
