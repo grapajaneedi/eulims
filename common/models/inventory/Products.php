@@ -142,20 +142,15 @@ class Products extends \yii\db\ActiveRecord
     }
 
 
-    public function getTotalqty(){
-        $myvar = InventoryEntries::find()->where(['product_id'=>$this->product_id])->sum('quantity');
-        
+    public function getTotalqty()
+    {
+        $myvar = InventoryEntries::find()->where(['product_id'=>$this->product_id])->all();
+        $total = 0;
+        foreach ($myvar as $var) {
+            # code...
+            $total += $var->getTotalcontent();
+        }
 
-        $withdrawn = InventoryEntries::find()->where(['product_id'=>$this->product_id])->all();
-        $totalwithdrawn=0;
-        foreach ($withdrawn as $item) {
-            $totalwithdrawn+=InventoryWithdrawaldetails::find()->where(['inventory_transactions_id'=>$item->inventory_transactions_id])->sum('quantity');
-        }
-        $result = $myvar-$totalwithdrawn;
-        if($result){
-            return $result;
-        }else{
-            return false;
-        }
+        return $total;
     }
 }
