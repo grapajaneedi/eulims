@@ -27,6 +27,7 @@ use common\models\finance\Customertransaction;
 use common\models\finance\Customerwallet;
 use common\models\inventory\Products;
 use common\models\inventory\Suppliers;
+use common\models\inventory\Reorder;
 use yii\web\NotFoundHttpException;
 use common\models\system\LogSync;
 use common\models\system\ApiSettings;
@@ -780,5 +781,23 @@ SCRIPT;
             }
             return false;
         }
+    }
+
+    public function checkreorderpoint($id){
+        $product = Products::findOne($id);
+        
+        if($product->qty_reorder >= $product->getTotalqty()){
+            $checkvar = Reorder::find()->where(['product_id'=>$id])->one();
+            if($checkvar)
+                return false; //dont proceed to add into reorder table
+
+            //add the product to the reorder points table
+            $reorder = new Reorder();
+            $reorder->product_id=$id;
+            $reorder->date_created=date("Y-m-d");
+            $reorder->save();
+            //return true;
+        }
+        //return false;
     }
 }

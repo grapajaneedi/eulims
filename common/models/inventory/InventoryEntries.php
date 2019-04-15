@@ -140,4 +140,9 @@ class InventoryEntries extends \yii\db\ActiveRecord
     {
         return $this->hasMany(InventoryWithdrawaldetails::className(), ['inventory_transactions_id' => 'inventory_transactions_id']);
     }
+
+    public function getTotalcontent()
+    {
+        return ($this->quantity_onhand * $this->content);
+    }
 }

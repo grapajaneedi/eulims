@@ -4,11 +4,46 @@ use yii\helpers\Html;
 use kartik\grid\GridView;
 ?>
 <div class="Lab-default-index">
-    <h2>Reorder Point</h2>
-     <div class="expired-index">
-       
+    <div class="alert alert-warning">
+         <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+         <h2><i class="icon fa fa-warning"></i>Reorder Point !</h2>
+         Products need to reorder.
     </div>
-    <h2>Expired</h2>
+     <div class="reorder-index">
+       <?= GridView::widget([
+            'dataProvider' => $dataProvider2,
+            'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                'product_id',
+                 [
+                    'header'=>'Product',
+                    'value'=>function($model){
+                        return $model->product->product_name;
+                    }
+                ],
+                [
+                    'header'=>'Reorder Point',
+                    'value'=>function($model){
+                        return $model->product->qty_reorder." ".$model->product->unittype->unit;
+                    }
+                ],
+                [
+                    'header'=>'Total onHand',
+                    'value'=>function($model){
+                        return $model->product->getTotalqty()." ".$model->product->unittype->unit;
+                    }
+                ],
+                'date_created',
+
+                // ['class' => 'yii\grid\ActionColumn'],
+            ],
+        ]); ?>
+    </div>
+    <div class="alert alert-warning">
+         <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+         <h2><i class="icon fa fa-warning"></i>Expired !</h2>
+         Products need to dispose.
+    </div>
     <div class="expired-index">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,

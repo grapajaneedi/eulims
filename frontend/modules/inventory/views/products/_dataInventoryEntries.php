@@ -55,6 +55,13 @@ use common\models\inventory\InventoryWithdrawaldetails;
            'format' => ['decimal', 2],
             'pageSummary' => true  
          ],
+        [
+            'header'=>'Total onHand',
+            'value'=>function($model){
+                return $model->Totalcontent." ".$model->product->unittype->unit;
+            },
+            'pageSummary' => true 
+         ],
          [
            'attribute' => 'amount',   
            'format' => ['decimal', 2],
