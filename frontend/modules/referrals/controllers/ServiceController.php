@@ -65,9 +65,11 @@ class ServiceController extends Controller
             //'dataProvider' => $referralDataprovider,
         //]);
 
-        if(Yii::$app->request->get('service-testname_id')>0){
-            $testnameId = Yii::$app->request->get('service-testname_id');
-            $methods = json_decode($this->listReferralmethodref($testnameId),true);
+        if(Yii::$app->request->get('testname_id')>0 && Yii::$app->request->get('sampletype_id')>0 && Yii::$app->request->get('lab_id')>0){
+            $testnameId = (int) Yii::$app->request->get('testname_id');
+            $sampletypeId = (int) Yii::$app->request->get('sampletype_id');
+            $labId = (int) Yii::$app->request->get('lab_id');
+            $methods = json_decode($this->listReferralmethodref($labId,$sampletypeId,$testnameId),true);
         } else {
             $methods = [];
         }
@@ -272,13 +274,13 @@ class ServiceController extends Controller
     }
 
     //get referral method reference
-    protected function listReferralmethodref($testnameId)
+    protected function listReferralmethodref($labId,$sampletypeId,$testnameId)
     {
-        if(isset($testnameId))
+        if(isset($testnameId) && isset($sampletypeId) && isset($labId))
         {
-            if($testnameId > 0){
+            if($testnameId > 0 && $sampletypeId > 0 && $labId > 0){
                 $refcomponent = new ReferralComponent();
-                $data = $refcomponent->getMethodrefs(1,1,$testnameId);
+                $data = $refcomponent->getMethodrefs($labId,$sampletypeId,$testnameId);
             } else {
                 $data = [];
             }
@@ -295,7 +297,7 @@ class ServiceController extends Controller
         $sampletypeId = (int) Yii::$app->request->get('sampletype_id');
         $labId = (int) Yii::$app->request->get('lab_id');
         if ($testnameId > 0 && $sampletypeId > 0 && $labId > 0){
-            $methods = json_decode($this->listReferralmethodref($testnameId),true);
+            $methods = json_decode($this->listReferralmethodref($labId,$sampletypeId,$testnameId),true);
         }
         else {
             $methods = [];

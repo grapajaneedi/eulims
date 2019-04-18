@@ -206,7 +206,7 @@ echo Growl::widget([
         var sampletype = $('#service-sampletype_id').val();
         var testname = $('#service-testname_id').val();
         $.ajax({
-            url : 'service/gettestnamemethod',
+            url : '/referrals/service/gettestnamemethod',
             method: 'GET',
             //data: $('form').serialize(),
             data: {lab_id:lab,sampletype_id:sampletype,testname_id:testname},
@@ -261,7 +261,7 @@ function offerService(){
             var sampletype = $('#service-sampletype_id').val();
             var testname = $('#service-testname_id').val();
             $.ajax({
-                url : 'service/offer',
+                url : '/referrals/service/offer',
                 method: 'POST',
                // data: $('.service-index form').serialize(),
                 data: {methodref_ids: method_ids_string,lab_id:lab,sampletype_id:sampletype,testname_id:testname},
@@ -329,6 +329,8 @@ function offerService(){
                             }
                         });
                     }
+                    //$.pjax.reload({container:"#method-reference-grid-pjax",url: '/referrals/service?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname,replace:false,timeout: false});
+                    $.pjax.reload({container: "#method-reference-grid", url: '/referrals/service/gettestnamemethod?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname});
                 },
                 beforeSend: function (xhr) {
                     //alert('Please wait...');
@@ -372,7 +374,7 @@ function removeService(){
                     action: function(thisDialog){
                         thisDialog.close();
                         $.ajax({
-                            url : 'service/remove',
+                            url : '/referrals/service/remove',
                             method: 'POST',
                             data: {methodref_ids: method_ids_string,lab_id:lab,sampletype_id:sampletype,testname_id:testname},
                             success: function (data){
@@ -416,6 +418,9 @@ function removeService(){
                                             }
                                         });
                                     }
+                                //$.pjax.reload({container:"#method-reference-grid-pjax",url: '/referrals/service?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname,replace:false,timeout: false});
+                                //$("#method-reference-grid").yiiGridView("applyFilter");
+                                $.pjax.reload({container: "#method-reference-grid", url: '/referrals/service/gettestnamemethod?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname});
                             },
                             beforeSend: function (xhr) {
                                 //alert('Please wait...');

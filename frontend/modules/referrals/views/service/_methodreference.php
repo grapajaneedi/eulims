@@ -9,6 +9,7 @@ use kartik\widgets\Select2;
 use kartik\widgets\DepDrop;
 use yii\helpers\Url;
 use yii\helpers\Json;
+use common\components\ReferralComponent;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\lab\Analysis */
@@ -16,10 +17,12 @@ use yii\helpers\Json;
 ?>
 
 <?php
-    // $checkMethod = ($model->methodref_id) ? $model->methodref_id : null;
+    $refcomponent = new ReferralComponent();
+    $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
+    $img_url = "https://eulimsapi.onelab.ph/img_logo/icons/";
 ?>
 
-<div class="analysismethodreference-form">
+<div class="methodreference-grid">
     <div class="row">
         <div class="col-lg-12">
             <div class="table-responsive">
@@ -94,7 +97,7 @@ use yii\helpers\Json;
                     [
                         'class' => '\kartik\grid\SerialColumn',
                         'headerOptions' => ['class' => 'text-center'],
-                        'contentOptions' => ['class' => 'text-center','style'=>'max-width:5px;'],
+                        'contentOptions' => ['class' => 'text-center','style'=>'max-width:4%;'],
                     ],
                     /*[
                         'class' =>  '\kartik\grid\RadioColumn',
@@ -113,20 +116,31 @@ use yii\helpers\Json;
                         //'class' => '\kartik\grid\CheckboxColumn',
                         'class' => '\yii\grid\CheckboxColumn',
                         'headerOptions' => ['class' => 'text-center'],
-                        'contentOptions' => ['class' => 'text-center','style'=>'max-width:5px;'],
+                        'contentOptions' => ['class' => 'text-center','style'=>'max-width:4%;'],
                         'name' => 'methodref_ids',
                         'checkboxOptions'=> function($data) {
                             return [
-                                'value' => $data['methodreference']['methodreference_id'],
+                                'value' => $data['methodreference_id'],
                             ];
                         },
                     ],
                     [
                         'header' => 'Offered',
                         'format' => 'raw',
-                        'value' => 'YES/NO',
+                        //'value' => 'YES/NO',
+                        'value' => function($data) use ($refcomponent,$count_methods,$rstlId) {
+                            //return $data['methodreference']['methodreference_id'];
+                            if($count_methods > 0){
+                                $check = $refcomponent->checkOffered($data['methodreference_id'],$rstlId);
+                                //return $check == 1 ? 'YES' : 'NO';
+                                return $check == 1 ? '<span style="font-size:14px;" class="label label-success">YES</span>' : '<span class="label label-danger" style="font-size:14px;">NO</span>';
+                                //return $check;
+                            } else {
+                                return null;
+                            }
+                        },
                         'contentOptions' => [
-                            'style'=>'max-width:10px; overflow: auto; white-space: normal; word-wrap: break-word;',
+                            'style'=>'max-width:5%; overflow: auto; white-space: normal; word-wrap: break-word;',
                             'class' => 'text-center'
                         ],
                         'headerOptions' => ['class' => 'text-center'],
@@ -136,10 +150,10 @@ use yii\helpers\Json;
                         'header' => 'Method',
                         'enableSorting' => false,
                         'value' => function($data){
-                            return $data['methodreference']['method'];
+                            return $data['method'];
                         },
                         'contentOptions' => [
-                            'style'=>'max-width:200px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                            'style'=>'max-width:20%; overflow: auto; white-space: normal; word-wrap: break-word;'
                         ],
                         'headerOptions' => ['class' => 'text-center'],
                     ],
@@ -148,10 +162,10 @@ use yii\helpers\Json;
                         'header' => 'Reference',
                         'enableSorting' => false,
                         'value' => function($data){
-                            return $data['methodreference']['reference'];
+                            return $data['reference'];
                         },
                         'contentOptions' => [
-                            'style'=>'max-width:200px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                            'style'=>'max-width:25%; overflow: auto; white-space: normal; word-wrap: break-word;'
                         ],
                         'headerOptions' => ['class' => 'text-center'],
                     ],
@@ -160,19 +174,42 @@ use yii\helpers\Json;
                         'header' => 'Fee',
                         'enableSorting' => false,
                         'value' => function($data){
-                            return number_format($data['methodreference']['fee'],2);
+                            return number_format($data['fee'],2);
                         },
                         'contentOptions' => [
-                            'style'=>'text-align:right;max-width:45px;'
+                            'style'=>'text-align:right;max-width:12%;'
                         ],
                         'headerOptions' => ['class' => 'text-center'],
                     ],
                     [
                         'header' => 'Offered by',
                         'format' => 'raw',
-                        'value' => 'List of Agencies',
+                        //'value' => 'List of Agencies',
+                        'value' => function($data) use ($refcomponent,$count_methods,$img_url) {
+                            if($count_methods > 0){
+                                $data = json_decode($refcomponent->offeredby($data['methodreference_id']),true);
+                                $img = '';
+                                $non_dost = [];
+                                $non_dost_img = '';
+                                if($data == 0){
+                                    return '';
+                                } else {
+                                    foreach ($data as $agency) {
+                                        if($agency['agency_id'] < 100){
+                                            $img .= Html::img($img_url.$agency['agency_id'].".png", ['alt'=>$agency['agency']['name'],'title'=>$agency['agency']['name'], 'height'=>'26px', 'width'=>'26px']);
+                                        } else {
+                                            array_push($non_dost,$agency['agency']['code']); //..);
+                                        }
+                                    }
+                                    $non_dost_img .= "<span style='font-size:9px;font-weight:bold;'>".implode(", ", $non_dost)."</span>";
+                                    return $non_dost_img.$img;
+                                }
+                            } else {
+                                return null;
+                            }
+                        },
                         'contentOptions' => [
-                            'style'=>'max-width:10px; overflow: auto; white-space: normal; word-wrap: break-word;',
+                            'style'=>'max-width:27%; overflow: auto; white-space: normal; word-wrap: break-word;',
                             'class' => 'text-center'
                         ],
                         'headerOptions' => ['class' => 'text-center'],
