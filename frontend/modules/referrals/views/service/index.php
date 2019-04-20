@@ -330,7 +330,8 @@ function offerService(){
                         });
                     }
                     //$.pjax.reload({container:"#method-reference-grid-pjax",url: '/referrals/service?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname,replace:false,timeout: false});
-                    $.pjax.reload({container: "#method-reference-grid", url: '/referrals/service/gettestnamemethod?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname});
+                    $.pjax.reload({container: "#method-reference-grid", url: '/referrals/service/gettestnamemethod?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname,replace:false,timeout: false});
+                   // $('#method-reference-grid-pjax').load('/referrals/service/gettestnamemethod?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname);
                 },
                 beforeSend: function (xhr) {
                     //alert('Please wait...');
@@ -420,10 +421,10 @@ function removeService(){
                                     }
                                 //$.pjax.reload({container:"#method-reference-grid-pjax",url: '/referrals/service?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname,replace:false,timeout: false});
                                 //$("#method-reference-grid").yiiGridView("applyFilter");
-                                $.pjax.reload({container: "#method-reference-grid", url: '/referrals/service/gettestnamemethod?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname});
+                                $.pjax.reload({container: "#method-reference-grid", url: '/referrals/service/gettestnamemethod?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname,replace:false,timeout:false});
+                                //$('#method-reference-grid-pjax').load('/referrals/service/gettestnamemethod?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname);
                             },
                             beforeSend: function (xhr) {
-                                //alert('Please wait...');
                                 $('.image-loader').addClass("img-loader");
                             },
                             error: function (jqXHR, textStatus, errorThrown) {

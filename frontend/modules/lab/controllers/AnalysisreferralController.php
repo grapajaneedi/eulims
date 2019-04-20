@@ -628,6 +628,8 @@ class AnalysisreferralController extends Controller
                 //$apiUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/listdatas/testnamemethodref?testname_id='.$testnameId;
                 $apiUrl='https://eulimsapi.onelab.ph/api/web/referral/listdatas/testnamemethodref?testname_id='.$testnameId;
                 $curl = new curl\Curl();
+                $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+                $curl->setOption(CURLOPT_TIMEOUT, 120);
                 //$list = $curl->get($apiUrl);
                 $data = $curl->get($apiUrl);
             } else {
@@ -669,6 +671,8 @@ class AnalysisreferralController extends Controller
             //$apiUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/listdatas/setpagemethodref?testname_id='.$model->test_id.'&methodref_id='.$model->methodref_id.'&perpage='.$perpage;
             $apiUrl='https://eulimsapi.onelab.ph/api/web/referral/listdatas/setpagemethodref?testname_id='.$model->test_id.'&methodref_id='.$model->methodref_id.'&perpage='.$perpage;
             $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
             $list = $curl->get($apiUrl);
             $cpage = json_decode($list,true);
             $data = $cpage['count_page'];

@@ -113,8 +113,8 @@ use common\components\ReferralComponent;
                         'contentOptions' => ['class' => 'text-center','style'=>'max-width:20px;'],
                     ],*/
                     [
-                        //'class' => '\kartik\grid\CheckboxColumn',
-                        'class' => '\yii\grid\CheckboxColumn',
+                        'class' => '\kartik\grid\CheckboxColumn',
+                        //'class' => '\yii\grid\CheckboxColumn',
                         'headerOptions' => ['class' => 'text-center'],
                         'contentOptions' => ['class' => 'text-center','style'=>'max-width:4%;'],
                         'name' => 'methodref_ids',

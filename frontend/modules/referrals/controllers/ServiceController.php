@@ -48,7 +48,7 @@ class ServiceController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);*/
-
+        set_time_limit(120);
         $refcomponent = new ReferralComponent();
 
         $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
@@ -95,6 +95,7 @@ class ServiceController extends Controller
     //agency offer service
     public function actionOffer()
     {
+        set_time_limit(120);
         $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
         $data = Json::encode(['methodref_ids'=>Yii::$app->request->post('methodref_ids'),'lab_id'=>Yii::$app->request->post('lab_id'),'sampletype_id'=>Yii::$app->request->post('sampletype_id'),'testname_id'=>Yii::$app->request->post('testname_id'),'rstl_id'=>$rstlId],JSON_NUMERIC_CHECK);
 
@@ -127,6 +128,7 @@ class ServiceController extends Controller
     //agency offer service
     public function actionRemove()
     {
+        set_time_limit(120);
         $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
         $data = Json::encode(['methodref_ids'=>Yii::$app->request->post('methodref_ids'),'lab_id'=>Yii::$app->request->post('lab_id'),'sampletype_id'=>Yii::$app->request->post('sampletype_id'),'testname_id'=>Yii::$app->request->post('testname_id'),'rstl_id'=>$rstlId],JSON_NUMERIC_CHECK);
 
@@ -293,6 +295,7 @@ class ServiceController extends Controller
 
     public function actionGettestnamemethod()
     {
+        set_time_limit(120);
         $testnameId = (int) Yii::$app->request->get('testname_id');
         $sampletypeId = (int) Yii::$app->request->get('sampletype_id');
         $labId = (int) Yii::$app->request->get('lab_id');

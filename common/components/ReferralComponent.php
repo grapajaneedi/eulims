@@ -121,6 +121,8 @@ class ReferralComponent extends Component {
             //$apiUrl=$this->source.'/api/web/referral/listdatas/testnamemethodref?testname_id='.$testnameId.'&sampletype_id='.$sampletypeId.'&lab_id='.$labId;
             $apiUrl=$this->source.'/api/web/referral/services/methodrefs?testname_id='.$testnameId.'&sampletype_id='.$sampletypeId.'&lab_id='.$labId;
             $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
