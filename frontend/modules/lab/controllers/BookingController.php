@@ -8,7 +8,8 @@ use common\models\lab\BookingSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use frontend\modules\inventory\components\_class\Schedule;
+use common\models\lab\Customer;
 /**
  * BookingController implements the CRUD actions for Booking model.
  */
@@ -70,10 +71,37 @@ class BookingController extends Controller
             return $this->redirect(['view', 'id' => $model->booking_id]);
         }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
         ]);
     }
+    
+    public function actionJsoncalendar($start=NULL,$end=NULL,$_=NULL,$id){
+
+    \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+    $events = array();
+    
+    //as of now get all the schedules
+    $schedules = Booking::find()->where(['booking_id'=>$id])->all(); 
+ 
+    foreach ($schedules AS $schedule){
+        $customer =Customer::find()->where(['customer_id'=>$schedule->customer_id])->one();
+        $Event= new Schedule();
+        $Event->id = $schedule->booking_id;
+        $Event->title =$customer->customer_name.": ".$schedule->description;
+
+        $Event->start =$schedule->scheduled_date;
+
+        $date = $schedule->scheduled_date;
+        $date1 = str_replace('-', '/', $date);
+        $newdate = date('Y-m-d',strtotime($date1 . "+1 days"));
+        $Event->end  = $newdate;
+        $events[] = $Event;
+    }
+
+    return $events;
+  }
 
     /**
      * Updates an existing Booking model.
