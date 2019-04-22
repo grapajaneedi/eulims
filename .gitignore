@@ -341,3 +341,7 @@ frontend/modules/lab/controllers/RequestController - gg.php
 frontend/modules/lab/views/request/viewreferral - Copy.php
 common/models/lab/exRequestreferral_20190321.php
 frontend/views/admin-lte/layouts/content_.php
+frontend/modules/referrals/views/service/_methodreference_20190419.php
+frontend/web/images/nppc-logo.png
+frontend/web/images/nppclogo.jpg
+frontend/web/images/onelab-logo.png

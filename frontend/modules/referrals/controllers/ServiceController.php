@@ -48,7 +48,7 @@ class ServiceController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);*/
-
+        set_time_limit(120);
         $refcomponent = new ReferralComponent();
 
         $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
@@ -65,9 +65,11 @@ class ServiceController extends Controller
             //'dataProvider' => $referralDataprovider,
         //]);
 
-        if(Yii::$app->request->get('service-testname_id')>0){
-            $testnameId = Yii::$app->request->get('service-testname_id');
-            $methods = json_decode($this->listReferralmethodref($testnameId),true);
+        if(Yii::$app->request->get('testname_id')>0 && Yii::$app->request->get('sampletype_id')>0 && Yii::$app->request->get('lab_id')>0){
+            $testnameId = (int) Yii::$app->request->get('testname_id');
+            $sampletypeId = (int) Yii::$app->request->get('sampletype_id');
+            $labId = (int) Yii::$app->request->get('lab_id');
+            $methods = json_decode($this->listReferralmethodref($labId,$sampletypeId,$testnameId),true);
         } else {
             $methods = [];
         }
@@ -93,6 +95,7 @@ class ServiceController extends Controller
     //agency offer service
     public function actionOffer()
     {
+        set_time_limit(120);
         $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
         $data = Json::encode(['methodref_ids'=>Yii::$app->request->post('methodref_ids'),'lab_id'=>Yii::$app->request->post('lab_id'),'sampletype_id'=>Yii::$app->request->post('sampletype_id'),'testname_id'=>Yii::$app->request->post('testname_id'),'rstl_id'=>$rstlId],JSON_NUMERIC_CHECK);
 
@@ -125,6 +128,7 @@ class ServiceController extends Controller
     //agency offer service
     public function actionRemove()
     {
+        set_time_limit(120);
         $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
         $data = Json::encode(['methodref_ids'=>Yii::$app->request->post('methodref_ids'),'lab_id'=>Yii::$app->request->post('lab_id'),'sampletype_id'=>Yii::$app->request->post('sampletype_id'),'testname_id'=>Yii::$app->request->post('testname_id'),'rstl_id'=>$rstlId],JSON_NUMERIC_CHECK);
 
@@ -272,13 +276,13 @@ class ServiceController extends Controller
     }
 
     //get referral method reference
-    protected function listReferralmethodref($testnameId)
+    protected function listReferralmethodref($labId,$sampletypeId,$testnameId)
     {
-        if(isset($testnameId))
+        if(isset($testnameId) && isset($sampletypeId) && isset($labId))
         {
-            if($testnameId > 0){
+            if($testnameId > 0 && $sampletypeId > 0 && $labId > 0){
                 $refcomponent = new ReferralComponent();
-                $data = $refcomponent->getMethodrefs(1,1,$testnameId);
+                $data = $refcomponent->getMethodrefs($labId,$sampletypeId,$testnameId);
             } else {
                 $data = [];
             }
@@ -291,11 +295,12 @@ class ServiceController extends Controller
 
     public function actionGettestnamemethod()
     {
+        set_time_limit(120);
         $testnameId = (int) Yii::$app->request->get('testname_id');
         $sampletypeId = (int) Yii::$app->request->get('sampletype_id');
         $labId = (int) Yii::$app->request->get('lab_id');
         if ($testnameId > 0 && $sampletypeId > 0 && $labId > 0){
-            $methods = json_decode($this->listReferralmethodref($testnameId),true);
+            $methods = json_decode($this->listReferralmethodref($labId,$sampletypeId,$testnameId),true);
         }
         else {
             $methods = [];

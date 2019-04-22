@@ -118,8 +118,11 @@ class ReferralComponent extends Component {
     //get referral methodref by testname
     function getMethodrefs($labId,$sampletypeId,$testnameId){
         if($labId > 0 && $sampletypeId > 0 && $testnameId > 0){
-            $apiUrl=$this->source.'/api/web/referral/listdatas/testnamemethodref?testname_id='.$testnameId.'&sampletype_id='.$sampletypeId;
+            //$apiUrl=$this->source.'/api/web/referral/listdatas/testnamemethodref?testname_id='.$testnameId.'&sampletype_id='.$sampletypeId.'&lab_id='.$labId;
+            $apiUrl=$this->source.'/api/web/referral/services/methodrefs?testname_id='.$testnameId.'&sampletype_id='.$sampletypeId.'&lab_id='.$labId;
             $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -461,4 +464,27 @@ class ReferralComponent extends Component {
 
         return $referralreturn;
     }
+    //check if service is already offered
+    function checkOffered($methodrefId,$rstlId){
+        if($rstlId > 0 && $methodrefId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/services/check_offered?methodref_id='.$methodrefId.'&rstl_id='.$rstlId;
+            $curl = new curl\Curl();
+            $check = $curl->get($apiUrl);
+            return $check;
+        } else {
+            return 0;
+        }
+    }
+    //return method reference offered by
+    function offeredBy($methodrefId){
+        if($methodrefId > 0){
+            $apiUrl=$this->source.'/api/web/referral/services/offeredby?methodref_id='.$methodrefId;
+            $curl = new curl\Curl();
+            $offeredby = $curl->get($apiUrl);
+            return $offeredby;
+        } else {
+            return 0;
+        }
+    }
+
 }
