@@ -18,7 +18,7 @@ class BookingSearch extends Booking
     public function rules()
     {
         return [
-            [['booking_id', 'rstl_id'], 'integer'],
+            [['booking_id', 'rstl_id', 'qty_sample', 'customer_id'], 'integer'],
             [['scheduled_date', 'booking_reference', 'description', 'date_created'], 'safe'],
         ];
     }
@@ -63,6 +63,8 @@ class BookingSearch extends Booking
             'scheduled_date' => $this->scheduled_date,
             'rstl_id' => $this->rstl_id,
             'date_created' => $this->date_created,
+            'qty_sample' => $this->qty_sample,
+            'customer_id' => $this->customer_id,
         ]);
 
         $query->andFilterWhere(['like', 'booking_reference', $this->booking_reference])
