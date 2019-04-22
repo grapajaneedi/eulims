@@ -6,6 +6,7 @@ use Yii;
 use common\models\lab\Package;
 use common\models\lab\PackageSearch;
 use common\models\lab\Testnamemethod;
+use common\models\lab\Sampletypetestname;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -13,6 +14,7 @@ use yii\helpers\Json;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use linslin\yii2\curl;
+use common\models\lab\Testname;
 
 /**
  * PackageController implements the CRUD actions for Package model.
@@ -78,12 +80,12 @@ class PackageController extends Controller
         if ($model->load(Yii::$app->request->post())) {
                    $model = new Package();
                     $model->rstl_id= $GLOBALS['rstl_id'];
-                    $model->testcategory_id=11;
                     $model->sampletype_id= $post['Package']['sampletype_id'];
                     $model->name= $post['Package']['name'];
+                    $model->testcategory_id= $post['Package']['testcategory_id'];
                     $model->rate= $post['Package']['rate'];
-                    $model->tests= $post['sample_ids'];
-                    $model->save(); 
+                    $model->tests= $post['Package']['tests'];
+                    $model->save(false); 
                     Yii::$app->session->setFlash('success', 'Package Successfully Created'); 
                     return $this->runAction('index');
                 }          
@@ -107,16 +109,6 @@ class PackageController extends Controller
      */
     public function actionUpdate($id)
     {
-        // $model = $this->findModel($id);
-
-        // if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        //     return $this->redirect(['view', 'id' => $model->id]);
-        // }
-
-        // return $this->render('update', [
-        //     'model' => $model,
-        // ]);
-
         $model = $this->findModel($id);
         $sampletype = [];
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -151,12 +143,21 @@ class PackageController extends Controller
 
     public function actionGetmethod()
 	{
+        $model = new Testnamemethod();
         $labid = $_GET['lab_id'];
-        $sample = $_GET['sampletype_id'];
+        $sampletype_id = $_GET['sampletype_id'];
 
-         $testnamemethod = Testnamemethod::find()->where(['testname_id'=>$testname_id])->all();
-         $testnamedataprovider = new ArrayDataProvider([
-                 'allModels' => $testnamemethod,
+         $sampletypetestname = Sampletypetestname::find()->where(['sampletype_id'=>$sampletype_id])->all();
+
+         $testnamemethod = Testnamemethod::find()
+         ->leftJoin('tbl_sampletype_testname', 'tbl_sampletype_testname.testname_id=tbl_testname_method.testname_id')
+         ->where(['tbl_sampletype_testname.sampletype_id'=>$sampletype_id]);
+        
+
+         
+
+         $testnamedataprovider = new ActiveDataProvider([
+                 'query' => $testnamemethod,
                  'pagination' => [
                      'pageSize' => false,
                  ],
@@ -176,7 +177,8 @@ class PackageController extends Controller
     
          return $this->renderAjax('_method', [
             'testnamedataprovider' => $testnamedataprovider,
-            'packagedataprovider'=>$packagedataprovider
+            'packagedataprovider'=>$packagedataprovider,
+            'model'=>$model
          ]);
 	
      }

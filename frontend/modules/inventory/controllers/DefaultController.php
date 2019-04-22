@@ -6,6 +6,7 @@ use yii\web\Controller;
 use Yii;
 use common\models\inventory\Products;
 use common\models\inventory\InventoryEntries;
+use common\models\inventory\Reorder;
 use yii\data\ActiveDataProvider;
 
 /**
@@ -27,9 +28,15 @@ class DefaultController extends Controller
             'query' => $query,
         ]);
 
+        $query = Reorder::find();
+        $dataProvider2 = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
         //query for reorderpoint 
         return $this->render('index',[
         	'dataProvider'=>$dataProvider,
+            'dataProvider2'=>$dataProvider2,
         ]);
     }
 }

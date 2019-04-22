@@ -12,6 +12,7 @@ use common\models\lab\Sampletype;
 use common\models\lab\Sampletypetestname;
 use common\models\lab\ServicesSearch;
 use common\models\lab\Labsampletype;
+use common\models\lab\Testcategory;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -19,7 +20,7 @@ use yii\helpers\Json;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use linslin\yii2\curl;
-set_time_limit(2000);
+set_time_limit(5000);
 /**
  * ServicesController implements the CRUD actions for Services model.
  */
@@ -51,6 +52,7 @@ class ServicesController extends Controller
         $modelmethod = new Methodreference();
         $searchModel = new ServicesSearch();
         $sampletype = [];
+        $testcategory = [];
         $test = [];
      
         $samplesQuery = Sample::find()->where(['sample_id' =>0]);
@@ -64,6 +66,7 @@ class ServicesController extends Controller
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'testcategory'=>$testcategory,
             'sampletype'=>$sampletype,
             'model'=>$model,
             'test'=>$test,
@@ -184,7 +187,7 @@ class ServicesController extends Controller
         if (isset($_POST['depdrop_parents'])) {
             $id = end($_POST['depdrop_parents']);
 
-            $apiUrl="https://eulimsapi.onelab.ph/api/web/v1/sampletypes/restore?id=".$id;
+            $apiUrl="https://eulimsapi.onelab.ph/api/web/v1/testcategories/restore?id=".$id;
             $curl = new curl\Curl();
             $curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
             $response = $curl->get($apiUrl);
@@ -193,10 +196,10 @@ class ServicesController extends Controller
             $selected  = null;
             if ($id != null && count($decode) > 0) {
                 $selected = '';
-                foreach ($decode as $i => $sampletype) {
-                    $out[] = ['id' => $sampletype['sampletype_id'], 'name' => $sampletype['type']];
+                foreach ($decode as $i => $testcategory) {
+                    $out[] = ['id' => $testcategory['testcategory_id'], 'name' => $testcategory['category']];
                     if ($i == 0) {
-                        $selected = $sampletype['sampletype_id'];
+                        $selected = $testcategory['testcategory_id'];
                     }
                 }
                \Yii::$app->response->data = Json::encode(['output'=>$out, 'selected'=>'']);
@@ -384,10 +387,33 @@ class ServicesController extends Controller
                 $labsampletype->sampletype_id = $var['sampletype_id'];
                 $labsampletype->effective_date = $var['effective_date'];
                 $labsampletype->added_by = $var['added_by'];
+                $labsampletype->testcategory_id = $var['testcategory_id'];
                 $labsampletype->save(false);
             }  
          }
      
+         //ADD TESTCATEGORY
+
+         $labsampletype = Labsampletype::find()->where(['lab_sampletype_id'=>$labsampletypeid])->one();
+         $apiUrl_testcategory="https://eulimsapi.onelab.ph/api/web/v1/testcategories/search?testcategory_id=".$labsampletype->testcategory_id;
+         $curl = new curl\Curl();
+         $curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
+         $response_testcategory = $curl->get($apiUrl_testcategory);
+         $decode_testcategory=Json::decode($response_testcategory,TRUE);
+
+         foreach ($decode_testcategory as $var)
+         { 
+            $testcategory = Testcategory::find()->where(['testcategory_id'=>$labsampletype->testcategory_id])->one();
+            if ($testcategory){
+            }else{
+                $testcategory = new Testcategory();
+                $testcategory->testcategory_id = $var['testcategory_id'];  
+                $testcategory->category = $var['category'];
+                $testcategory->save(false);
+            }  
+         }
+
+
          $apiUrl_testnames="https://eulimsapi.onelab.ph/api/web/v1/testnames/search?testname_id=".$methodreferenceid;
          $curl = new curl\Curl();
          $curl->setOption(CURLOPT_SSL_VERIFYPEER, false);

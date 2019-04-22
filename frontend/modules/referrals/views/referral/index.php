@@ -13,10 +13,11 @@ use common\components\ReferralComponent;
 /* @var $searchModel common\models\referral\ReferralSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Referral';
+$this->title = 'Referral Request';
 $this->params['breadcrumbs'][] = ['label' => 'Referrals', 'url' => ['/referrals']];
 $this->params['breadcrumbs'][] = $this->title;
 $func=new Functions();
+$refcomp = new ReferralComponent();
 
 ?>
 <div class="referral-index">
@@ -75,8 +76,7 @@ $func=new Functions();
                 'header' => 'Referred By',
                 'attribute' => 'receiving_agency_id',
                 'format' => 'raw',
-                'value' => function($data){ 
-                    $refcomp = new ReferralComponent();
+                'value' => function($data) use ($refcomp){
                     $referred_agency = json_decode($refcomp->listAgency($data['receiving_agency_id']),true);
                     $receiving_agency = !empty($referred_agency) ? $referred_agency[0]['name'] : null;
                     return $receiving_agency;
@@ -87,13 +87,56 @@ $func=new Functions();
                 'header' => 'Referred To',
                 'attribute' => 'testing_agency_id',
                 'format' => 'raw',
-                'value' => function($data){ 
-                    $refcomp = new ReferralComponent();
+                'value' => function($data) use ($refcomp){
                     $referred_agency = json_decode($refcomp->listAgency($data['testing_agency_id']),true);
                     $testing_agency = !empty($referred_agency) ? $referred_agency[0]['name'] : null;
                     return $testing_agency;
                 },
                 'headerOptions' => ['class' => 'text-center'],
+            ],
+            [
+                'class' => 'kartik\grid\ActionColumn',
+                'template' => '{view}',
+                'dropdown' => false,
+                'dropdownOptions' => ['class' => 'pull-right'],
+                'headerOptions' => ['class' => 'kartik-sheet-style'],
+                'buttons' => [
+                    'view' => function ($url, $data) {
+
+                        return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['referral/viewreferral','id'=>$data['referral_id']]),'onclick'=>'location.href=this.value', 'class' => 'btn btn-primary','title' => 'View '.$data['referral_code']]);
+
+                        /*$checkActive = $referralcomp->checkActiveLab($model->lab_id,$data['agency_id']);
+                        $checkNotify = $referralcomp->checkNotify($model->request_id,$data['agency_id']);
+                        $checkConfirm = $referralcomp->checkConfirm($model->request_id,$rstlId,$data['agency_id']);
+
+                        //return $checkConfirm; 
+                        //exit;
+
+                        if($model->status_id > 0) {
+                            switch ($checkNotify) {
+                                case 0:
+                                    alert('Not valid request!');
+                                    if($checkActive != 1)
+                                    {
+                                        return 'Lab not active.';
+                                    }
+                                case 1:
+                                    if($checkActive == 1){
+                                        return Html::button('<span class="glyphicon glyphicon-bell"></span> Notify', ['value'=>Url::to(['/referrals/referral/notify','request_id'=>$model->request_id,'agency_id'=>$data['agency_id']]),'onclick'=>'sendNotification(this.value,this.title)','class' => 'btn btn-primary','title' => 'Notify '.$data['name']]);
+                                    } else {
+                                        return '<span class="label label-danger">LAB NOT ACTIVE</span>';
+                                    }
+                                    break;
+                                case 2: 
+                                    //return '<span class="text-success">Notice sent.</span>';
+                                    return $checkConfirm == 1 ? Html::button('<span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Send', ['value'=>Url::to(['/referrals/referral/send','request_id'=>$model->request_id,'agency_id'=>$data['agency_id']]),'onclick'=>'sendReferral(this.value,this.title)','class' => 'btn btn-primary','title' => 'Send Referral '.$data['name']]) : '<span class="text-success">Notice sent.</span>';
+                                    break;
+                            }
+                        } else {
+                            return "<span class='label label-danger'>Referral ".$model->status->status."</span>";
+                        }*/
+                    },
+                ],
             ],
         ],
         'toolbar' => [
@@ -101,7 +144,6 @@ $func=new Functions();
                         'class' => 'btn btn-default', 
                         'title' => 'Refresh Grid'
                     ]),
-            //'{toggleData}',
         ],
 ]); ?>
 
@@ -138,14 +180,3 @@ $func=new Functions();
         ],
     ]);*/ ?>
 </div>
-
-<script type="text/javascript">
-    function addSample(url,title){
-        $("#referralcreate").click(function(){
-            $(".modal-title").html(title);
-            $("#modal").modal('show')
-                .find('#modalContent')
-                .load(url);
-        });
-    }
-</script>

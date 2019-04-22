@@ -36,9 +36,8 @@ if(Yii::$app->user->isGuest){
        $UsernameDesignation=$CurrentUserName.'<br>'.$CurrentUserDesignation;
     }
 	$unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'));
-	
 	$unresponded = $unresponded_notification->num_notification > 0 ? $unresponded_notification->num_notification : '';
-	//notification will run if the user is already logged in
+//notification will run if the user is already logged in
 	$this->registerJs("
 		setInterval(function(e){
 			get_unresponded_notifications();
