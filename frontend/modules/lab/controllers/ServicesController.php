@@ -241,6 +241,7 @@ class ServicesController extends Controller
         $id = $_GET['id'];
         $labid = $_GET['lab_id'];
         $sampletypeid = $_GET['sample_type_id'];
+        $testcategory = $_GET['testcategory'];
         $methodreferenceid = $id;
         $model = new Methodreference();
 
@@ -307,7 +308,8 @@ class ServicesController extends Controller
             'sampletypetestname'=>$sampletypetestname,
             'testnamemethod'=>$testnamemethod,
             'testname'=>$testname,
-            'testnamemethodcount'=>$testnamemethodcount
+            'testnamemethodcount'=>$testnamemethodcount,
+            'testcategory'=>$testcategory
          ]);
 	
      }
@@ -318,6 +320,7 @@ class ServicesController extends Controller
           $labid = $_POST['labid'];
           $sampletypeid = $_POST['sampletypeid'];
           $methodreferenceid = $_POST['methodreferenceid'];
+          $testcategory = $_POST['testcategory'];
           $labsampletypeid = $_POST['labsampletypeid'];
           $sampletypetestname = $_POST['sampletypetestname'];
           $GLOBALS['rstl_id']=Yii::$app->user->identity->profile->rstl_id;
@@ -395,7 +398,7 @@ class ServicesController extends Controller
          //ADD TESTCATEGORY
 
          $labsampletype = Labsampletype::find()->where(['lab_sampletype_id'=>$labsampletypeid])->one();
-         $apiUrl_testcategory="https://eulimsapi.onelab.ph/api/web/v1/testcategories/search?testcategory_id=".$labsampletype->testcategory_id;
+         $apiUrl_testcategory="https://eulimsapi.onelab.ph/api/web/v1/testcategories/search?testcategory_id=".$testcategory;
          $curl = new curl\Curl();
          $curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
          $response_testcategory = $curl->get($apiUrl_testcategory);

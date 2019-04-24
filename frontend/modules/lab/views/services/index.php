@@ -156,7 +156,8 @@ $services =  Services::find()->all();
             method: "GET",
             dataType: 'html',
             data: { lab_id: $('#lab_id').val(),
-            sample_type_id: $('#sample-sample_type_id').val()},
+            sample_type_id: $('#sample-sample_type_id').val(),
+            testcategory: $('#sample-testcategory_id').val()},
             beforeSend: function(xhr) {
                $('.image-loader').addClass("img-loader");
                }

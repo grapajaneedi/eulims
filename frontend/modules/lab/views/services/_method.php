@@ -36,6 +36,7 @@ function offerservices(mid){
         labsampletypeid: $('#labsampletypeid').val(),
         sampletypetestname: $('#sampletypetestname').val(),
         testnamemethod: $('#testnamemethod').val(),
+        testcategory: $('#testcategory').val(),
         testname: $('#testname').val()},
         beforeSend: function(xhr) {
            $('.image-loader').addClass("img-loader");
@@ -59,6 +60,7 @@ function unofferservices(mid){
           labsampletypeid: $('#labsampletypeid').val(),
           sampletypetestname: $('#sampletypetestname').val(),
           testnamemethod: $('#testnamemethod').val(),
+          testcategory: $('#testcategory').val(),
           testname: $('#testname').val()},
           beforeSend: function(xhr) {
              $('.image-loader').addClass("img-loader");
@@ -79,6 +81,8 @@ $this->registerJs($js);
 <?= Html::textInput('sampletypeid', $sampletypeid, ['class' => 'form-control', 'id'=>'sampletypeid', 'type'=>'hidden' ], ['readonly' => true]) ?>
 <?= Html::textInput('labsampletypeid', $labsampletypeid, ['class' => 'form-control', 'id'=>'labsampletypeid',  'type'=>'hidden' ], ['readonly' => true]) ?> 
 <?= Html::textInput('sampletypetestname', $sampletypetestname, ['class' => 'form-control', 'id'=>'sampletypetestname' , 'type'=>'hidden'], ['readonly' => true]) ?>
+<?= Html::textInput('testcategory', $testcategory, ['class' => 'form-control', 'id'=>'testcategory', 'type'=>'hidden' ], ['readonly' => true]) ?>
+
 
 
 <?php
