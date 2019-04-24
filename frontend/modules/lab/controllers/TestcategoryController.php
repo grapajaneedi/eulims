@@ -39,7 +39,7 @@ class TestcategoryController extends Controller
     {
         $searchModel = new TestcategorySearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $dataProvider->sort->defaultOrder = ['category' => SORT_DESC];
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

@@ -37,7 +37,12 @@ use yii\helpers\Url;
                 'value' => function($model) {   
                     //find in workflow
                     $procedure= Procedure::find()->where(['procedure_id'=> $model->method_id])->one();
-                    return $procedure->procedure_code;
+                    if ($procedure){
+                        return $procedure->procedure_code;
+                    }else{
+                        return "";
+                    }
+                   
                         //return $model->procedure_code;
                             },
             ],

@@ -68,7 +68,7 @@ $services =  Services::find()->all();
                             'theme' => Select2::THEME_KRAJEE,
                             'options' => ['id'=>'lab_id'],
                             'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Lab'],
-                    ])."</div>"."<div class='col-md-3'>".$form->field($model, 'method_reference_id')->widget(DepDrop::classname(), [
+                    ])->label("Laboratory")."</div>"."<div class='col-md-3'>".$form->field($model, 'method_reference_id')->widget(DepDrop::classname(), [
                         'type'=>DepDrop::TYPE_SELECT2,
                         'data'=>$testcategory,
                         'options'=>['id'=>'sample-testcategory_id'],

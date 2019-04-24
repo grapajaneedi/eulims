@@ -308,9 +308,6 @@ $currentyear =2018;
     }
     echo '</div>';
     ?>
-
-
-
                                     <?php
                                     // $labCount =7;
                                     

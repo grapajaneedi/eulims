@@ -23,6 +23,7 @@ $lablist= ArrayHelper::map(Lab::find()->all(),'lab_id','labname');
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'hover'=>true,
         'pjax' => true,
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-products']],
         'panel' => [

@@ -126,6 +126,8 @@ $LaboratoryContent="<div class='row'><div class='col-md-12'>". GridView::widget(
             ],
         ],
     ])."</div></div>";
+
+   
 $createHTML=<<<HTML
     <p>
         <?= Html::a('Create Lab', ['create'], ['class' => 'btn btn-success']) ?>
@@ -272,6 +274,69 @@ $DiscountContent=GridView::widget([
         ],
     ]);
 ?>
+<?php
+$ServicesContent="echo".GridView::widget([
+        'dataProvider' => $dataProvider3,
+        'filterModel' => $searchModel,
+        'id'=>'DiscountGrid',
+        'pjax'=>true,
+        'pjaxSettings' => [
+                'options' => [
+                    'enablePushState' => false,
+                ],
+        ],
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'type',
+            [
+            'class' => 'kartik\grid\EditableColumn',
+            'refreshGrid'=>true,
+            'attribute' => 'rate', 
+            'readonly' => function($model, $key, $index, $widget) {
+                return (!$model->status); // do not allow editing of inactive records
+            },
+            'editableOptions' => [
+                'header' => 'Rate', 
+                'inputType' => \kartik\editable\Editable::INPUT_MONEY,
+                'options' => [
+                    'pluginOptions' => [
+                        'min' => 0, 
+                        'prefix' => '',
+                        'max' => 5000,
+                        'decimal' => '.',
+                        'precision'=>2],
+                ],
+                'formOptions'=>['action' => ['/system/discount/updatediscount']],
+            ],
+            'hAlign' => 'right', 
+            'vAlign' => 'middle',
+            'width' => '7%',
+            'format' => ['decimal', 2],
+                'pageSummary' => true
+            ],
+            [
+                'class' => 'kartik\grid\BooleanColumn',
+                'attribute' => 'status', 
+                'vAlign' => 'middle'
+            ], 
+
+            [
+                'class' => kartik\grid\ActionColumn::className(),
+                //'template' => $Buttontemplate,
+                'buttons'=>[
+                    'view'=>function ($url, $model) {
+                        return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::toRoute(['discount/view','id'=>$model->discount_id]), 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-primary','title' => Yii::t('app', "View Discount")]);
+                    },
+                    'update'=>function ($url, $model) {
+                        return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::toRoute(['discount/update','id'=>$model->discount_id]),'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-success','title' => Yii::t('app', "Update Discount")]);
+                    }
+                ],
+               
+            ],
+        ],
+    ]);
+?>
 <div class="lab-index">
     <div class="panel panel-primary">
         <div class="panel-heading">
@@ -304,6 +369,13 @@ $DiscountContent=GridView::widget([
                         'content' =>$DiscountContent ,
                         'active' => $DiscActive,
                         'options' => ['id' => 'discount_config'],
+                       // 'visible' => Yii::$app->user->can('access-terminal-configurations')
+                    ],
+                    [
+                        'label' => '<i class="fa-level-down"></i> Services',
+                        'content' =>$ServicesContent ,
+                        'active' => $DiscActive,
+                        'options' => ['id' => 'services_config'],
                        // 'visible' => Yii::$app->user->can('access-terminal-configurations')
                     ],
                 ],
