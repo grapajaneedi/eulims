@@ -334,9 +334,12 @@ function offerService(){
                     //$.pjax.reload({container:"#method-reference-grid-pjax",url: '/referrals/service?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname,replace:false,timeout: false});
                     $.pjax.reload({container: "#method-reference-grid", url: '/referrals/service/gettestnamemethod?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname,replace:false,timeout: false});
                    // $('#method-reference-grid-pjax').load('/referrals/service/gettestnamemethod?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname);
+                    $("#btn-remove").on('click',removeService);
+                    $("#btn-offer").on('click',offerService);
                 },
                 beforeSend: function (xhr) {
-                    //alert('Please wait...');
+                    $("#btn-remove").prop("onclick", null).off("click");
+                    $("#btn-offer").prop("onclick", null).off("click");
                     $('.image-loader').addClass("img-loader");
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
@@ -426,8 +429,12 @@ function removeService(){
                                 //$("#method-reference-grid").yiiGridView("applyFilter");
                                 $.pjax.reload({container: "#method-reference-grid", url: '/referrals/service/gettestnamemethod?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname,replace:false,timeout:false});
                                 //$('#method-reference-grid-pjax').load('/referrals/service/gettestnamemethod?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname);
+                                $("#btn-remove").on('click',removeService);
+                                $("#btn-offer").on('click',offerService);
                             },
                             beforeSend: function (xhr) {
+                                $("#btn-remove").prop("onclick", null).off("click");
+                                $("#btn-offer").prop("onclick", null).off("click");
                                 $('.image-loader').addClass("img-loader");
                             },
                             error: function (jqXHR, textStatus, errorThrown) {

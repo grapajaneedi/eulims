@@ -43,6 +43,7 @@ use yii\data\ArrayDataProvider;
 /**
  * RequestController implements the CRUD actions for Request model.
  */
+set_time_limit(120);
 class RequestController extends Controller
 {
     /**
@@ -117,9 +118,6 @@ class RequestController extends Controller
         }else{
             $ids = ['-1'];
         }
-        
-        $analysisQuery = Analysis::find()
-        ->where(['IN', 'sample_id', $ids]);
 
       //  $analysisQuery = Analysis::find()->where(['sample_id' =>$samples->sample_id]);
         if($request_type == 2) {
@@ -127,11 +125,15 @@ class RequestController extends Controller
             $modelref_request = Referralrequest::find()->where(['request_id'=>$id])->one();
             $reqModel=$this->findRequestModel($id);
 
+            $analysisQuery = Analysis::find()
+                ->where(['IN', 'sample_id', $ids]);
+
             $analysisdataprovider = new ActiveDataProvider([
                 'query' => $analysisQuery,
-                'pagination' => [
+                /*'pagination' => [
                     'pageSize' => 10,
-                ]
+                ]*/
+                'pagination' => false,
             ]);
 
             $customer = json_decode($refcomponent->getCustomerOne($reqModel->customer_id),true);
@@ -150,6 +152,9 @@ class RequestController extends Controller
                 'pagination'=>false,
             ]);
         } else {
+            $analysisQuery = Analysis::find()
+                ->where(['IN', 'sample_id', $ids]);
+
             $analysisdataprovider = new ActiveDataProvider([
                 'query' => $analysisQuery,
                 'pagination' =>false,
@@ -163,9 +168,13 @@ class RequestController extends Controller
         }
 
         $connection= Yii::$app->labdb;
-        $fee = $connection->createCommand('SELECT SUM(fee) as subtotal FROM tbl_analysis WHERE request_id =:requestId')
+        $analysisfee = $connection->createCommand('SELECT SUM(fee) as analysis_subtotal FROM tbl_analysis WHERE request_id =:requestId')
         ->bindValue(':requestId',$id)->queryOne();
-        $subtotal = $fee['subtotal'];
+        //$packagefee = $connection->createCommand('SELECT SUM(package_rate) as package_subtotal FROM tbl_sample WHERE request_id =:requestId')
+        //->bindValue(':requestId',$id)->queryOne();
+        $subtotal = $analysisfee['analysis_subtotal'];
+        //$package_subtotal = $packagefee['package_subtotal'];
+        //$subtotal = $analysis_subtotal + $package_subtotal;
         $rate = $model->discount;
         $discounted = $subtotal * ($rate/100);
         $total = $subtotal - $discounted;
@@ -815,6 +824,8 @@ class RequestController extends Controller
             //$apiUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/customers/searchname?keyword='.$query;
             $apiUrl='https://eulimsapi.onelab.ph/api/web/referral/customers/searchname?keyword='.$query;
             $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
             $show = $curl->get($apiUrl);
         } else {
             $show = ['results' => ['id' => '', 'text' => '']];

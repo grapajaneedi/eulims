@@ -12,7 +12,9 @@ use Yii;
  * @property int $sampletype_id
  * @property string $name
  * @property string $rate
- * @property string $test_method
+ * @property string $test_methods
+ * @property string $remarks
+ * @property int $added_by
  *
  * @property Sample $sampletype
  * @property Lab $lab
@@ -43,11 +45,11 @@ class Packagelist extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['lab_id', 'sampletype_id', 'name', 'test_method'], 'required'],
-            [['lab_id', 'sampletype_id'], 'integer'],
+            [['lab_id', 'sampletype_id', 'name', 'test_methods'], 'required'],
+            [['lab_id', 'sampletype_id', 'added_by'], 'integer'],
             [['rate'], 'number'],
-            [['name'], 'string', 'max' => 50],
-            [['test_method'], 'string', 'max' => 100],
+            [['name'], 'string', 'max' => 100],
+            [['test_methods', 'remarks'], 'string', 'max' => 200],
             [['sampletype_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sample::className(), 'targetAttribute' => ['sampletype_id' => 'sample_id']],
             [['lab_id'], 'exist', 'skipOnError' => true, 'targetClass' => Lab::className(), 'targetAttribute' => ['lab_id' => 'lab_id']],
         ];
@@ -64,7 +66,9 @@ class Packagelist extends \yii\db\ActiveRecord
             'sampletype_id' => 'Sampletype ID',
             'name' => 'Name',
             'rate' => 'Rate',
-            'test_method' => 'Test Method',
+            'test_methods' => 'Test Methods',
+            'remarks' => 'Remarks',
+            'added_by' => 'Added By',
         ];
     }
 

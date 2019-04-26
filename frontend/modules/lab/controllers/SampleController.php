@@ -201,33 +201,30 @@ class SampleController extends Controller
         $model = $this->findModel($id);
         $request = $this->findRequest($model->request_id);
         $connection= Yii::$app->labdb;
+        $connection->createCommand('SET FOREIGN_KEY_CHECKS=0')->execute();
 
         $labId = $request->lab_id;
+        $oldSampletypeId = $model->sampletype_id;
         //$sampletype = $this->listSampletype($labId);
         $sampletype = ($request->request_type_id == 2) ? $this->listSampletypereferral($labId) : $this->listSampletype($labId);
 
         $analysisCount = Analysis::find()->where('sample_id =:sampleId',[':sampleId'=>$id])->count();
-        //$oldSampletypeId = $model->sampletype_id;
-        $analysisfail = null;
-
-        //print_r($model->sampletype_id);
-        //exit;
-
-        //print_r($_POST['Sample']['sampletype_id']);
-        //exit;
 
         if ($model->load(Yii::$app->request->post())) {
+            //print_r(Yii::$app->request->post());
+            //exit;
             $transaction = $connection->beginTransaction();
-            if($model->sampletype_id != $_POST['Sample']['sampletype_id'] && $analysisCount > 0)
+            if($oldSampletypeId != $_POST['Sample']['sampletype_id'])
             {
-                $connection->createCommand('SET FOREIGN_KEY_CHECKS=0')->execute();
-
                 if($analysisCount > 0){
-                    $analysisDelete = Analysis::deleteAll('sample_id = :sampleId',[':sampleId'=>$id]);            
-                    if(!$analysisDelete)
-                    {
-                        $analysisfail = 1;
+                    $analysisDelete = Analysis::deleteAll('sample_id = :sampleId',[':sampleId'=>$id]);
+                    if($analysisDelete){
+                        $analysisSave = 1;
+                    } else {
+                        $analysisSave = 0;
                     }
+                } else {
+                    $analysisSave = 1;
                 }
             }
             if(isset($_POST['Sample']['sampling_date'])){
@@ -235,12 +232,12 @@ class SampleController extends Controller
             } else {
                 $model->sampling_date = date('Y-m-d H:i:s');
             }
-            if($analysisfail == 1){
+            if(isset($analysisSave) == 0){        
                 $transaction->rollBack();
                 Yii::$app->session->setFlash('error', 'Error deleting analysis!');
-                return $this->redirect(['view', 'id' => $model->request_id]);
+                return $this->redirect(['/lab/request/view', 'id' => $model->request_id]);
             } else {
-                if($model->save(false)){
+                if($model->save(false) && isset($analysisSave) == 1){
                     $transaction->commit();
     				Yii::$app->session->setFlash('success', $model->samplename." Successfully Updated.");
                     return $this->redirect(['/lab/request/view', 'id' => $model->request_id]);
