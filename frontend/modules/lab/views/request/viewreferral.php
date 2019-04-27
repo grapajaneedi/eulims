@@ -681,7 +681,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                         if($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id != 2){
                             return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['onclick'=>'updateAnalysisReferral('.$model->analysis_id.','.$model->request_id.',this.title)', 'class' => 'btn btn-primary','title' => 'Update Analysis']);
                         } elseif($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id == 2 && $model->is_package_name == 1) {
-                            return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/analysisreferral/updatepackage','sample_id'=>$model->sample_id,'package_id'=>$model->package_id]),'onclick'=>'updatePackageReferral('.$model->package_id.','.$model->sample_id.','.$model->request_id.',this.value,this.title)', 'class' => 'btn btn-primary','title' => 'Update Package']);
+                            return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/analysisreferral/updatepackage','analysis_id'=>$model->analysis_id,'sample_id'=>$model->sample_id,'package_id'=>$model->package_id,'request_id'=>$model->request_id]),'onclick'=>'updatePackageReferral('.$model->package_id.','.$model->sample_id.','.$model->request_id.',this.value,this.title)', 'class' => 'btn btn-primary','title' => 'Update Package']);
                         } else {
                             return null;
                         }

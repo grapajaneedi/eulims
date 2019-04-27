@@ -270,8 +270,8 @@ if(Yii::$app->controller->action->id === 'update'){
     $this->registerJs("
         $('#add_analysis').on('click',function(){
             //var radioSample = $('#sample-analysis-grid').yiiGridView('getSelectedRows');
-            var radioSample = $(\"input[name='sample_id']\").val();
-            var radioMethod = $(\"input[name='methodref_id']\").val();
+            var radioSample = $(\"input[name='sample_id']:checked\").val();
+            var radioMethod = $(\"input[name='methodref_id']:checked\").val();
             
             /*if ($('input[type=radio][name=sample_id]', '#sample-analysis-grid').length < 1) {
                 alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No sample selected!</p>\");
@@ -299,7 +299,7 @@ if(Yii::$app->controller->action->id === 'update'){
 
     $this->registerJs("
         $('#sample-analysis-grid').on('change',function(){
-            var radioSample = $(\"input[name='sample_id']\").val();
+            var radioSample = $(\"input[name='sample_id']:checked\").val();
             var select = $('#analysisextend-test_id');
             select.find('option').remove().end();
             if(radioSample > 0) {
@@ -329,7 +329,7 @@ if(Yii::$app->controller->action->id === 'update'){
     $this->registerJs("
         $('#add_analysis').on('click',function(){
             var key_sample = $('#sample-analysis-grid').yiiGridView('getSelectedRows');
-            var radioMethod = $(\"input[name='methodref_id']\").val();
+            var radioMethod = $(\"input[name='methodref_id']:checked\").val();
             
             if(key_sample.length < 1) {
                 alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No sample selected!</p>\");

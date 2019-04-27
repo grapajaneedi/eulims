@@ -16,7 +16,7 @@ use yii\helpers\Json;
 ?>
 
 <?php
-    $checkPackage = ($model->methodref_id) ? $model->methodref_id : null;
+    $checkPackage = ($model->package_id) ? $model->package_id : null;
 ?>
 
 <div class="analysismethodreference-form">

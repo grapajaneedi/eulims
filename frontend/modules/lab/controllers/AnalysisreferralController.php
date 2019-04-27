@@ -165,12 +165,10 @@ class AnalysisreferralController extends Controller
             //$request->save();
             if($request->save(false)){
                 $transaction->commit();
-                Yii::$app->session->setFlash('success', "Analysis Successfully Saved.");
+                Yii::$app->session->setFlash('success', "Analysis successfully saved.");
                 return $this->redirect(['/lab/request/view', 'id' => $requestId]);
             } else {
-                $transaction->rollBack();
-                Yii::$app->session->setFlash('error', "Analysis fail to save.");
-                return $this->redirect(['/lab/request/view', 'id' => $requestId]);
+                goto analysisfail;
             }
             analysisfail: {
                 $transaction->rollBack();
@@ -282,12 +280,10 @@ class AnalysisreferralController extends Controller
                 //$request->save();
                 if($request->save(false)){
                     $transaction->commit();
-                    Yii::$app->session->setFlash('success', "Analysis Successfully Updated.");
+                    Yii::$app->session->setFlash('success', "Analysis successfully updated.");
                     return $this->redirect(['/lab/request/view', 'id' => $requestId]);
                 } else {
-                    $transaction->rollBack();
-                    Yii::$app->session->setFlash('error', "Analysis fail to update.");
-                    return $this->redirect(['/lab/request/view', 'id' => $requestId]);
+                    goto analysisfail;
                 }
             } else {
                 goto analysisfail;
@@ -787,13 +783,11 @@ class AnalysisreferralController extends Controller
                             $analysisSave = 1;
                         } else {
                             $analysisSave = 0;
-                            $transaction->rollBack();
                             goto packagefail;
                         }
                     }
                 } else {
                     $analysisSave = 0;
-                    $transaction->rollBack();
                     goto packagefail;
                 }
             }
@@ -807,16 +801,14 @@ class AnalysisreferralController extends Controller
             $request->total = $total;
             if($request->save(false) && $analysisSave == 1){
                 $transaction->commit();
-                Yii::$app->session->setFlash('success', "Package Successfully Saved.");
+                Yii::$app->session->setFlash('success', "Package successfully saved.");
                 return $this->redirect(['/lab/request/view', 'id' => $requestId]);
             } else {
-                $transaction->rollBack();
-                Yii::$app->session->setFlash('error', "Package fail to save.");
-                return $this->redirect(['/lab/request/view', 'id' => $requestId]);
+                goto packagefail;
             }
             packagefail: {
                 $transaction->rollBack();
-                Yii::$app->session->setFlash('error', "Package fail to save.");
+                Yii::$app->session->setFlash('error', "Package fail to save!");
                 return $this->redirect(['/lab/request/view', 'id' => $requestId]);
             }
         } elseif (Yii::$app->request->isAjax) {
@@ -828,8 +820,16 @@ class AnalysisreferralController extends Controller
                 'packageDataProvider' => $packageDataProvider,
                 //'methodrefDataProvider' => $methodrefDataProvider,
             ]);
-        } /*else {
-            return $this->render('createPackage', [
+        } else {
+            /*return $this->render('createPackage', [
+                'model' => $model,
+                //'testname' => $testname,
+                'labId' => $labId,
+                'sampleDataProvider' => $sampleDataProvider,
+                'packageDataProvider' => $packageDataProvider,
+                //'methodrefDataProvider' => $methodrefDataProvider,
+            ]);*/
+            return $this->renderAjax('_formPackage', [
                 'model' => $model,
                 //'testname' => $testname,
                 'labId' => $labId,
@@ -837,7 +837,168 @@ class AnalysisreferralController extends Controller
                 'packageDataProvider' => $packageDataProvider,
                 //'methodrefDataProvider' => $methodrefDataProvider,
             ]);
-        }*/
+        }
+    }
+
+    public function actionUpdatepackage($analysis_id,$sample_id,$package_id,$request_id)
+    {
+        //$model = new Analysisextend();
+
+        $model = $this->findModel($analysis_id);
+        $component = new ReferralComponent();
+
+        if(Yii::$app->request->get('request_id')){
+            $requestId = (int) Yii::$app->request->get('request_id');
+        } else {
+            $requestId = (int) $request_id;
+        }
+
+        $query = Sample::find()->where('request_id = :requestId', [':requestId' => $requestId]);
+        
+        $sampleDataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => false,
+        ]);
+
+        $request = $this->findRequest($requestId);
+        $labId = $request->lab_id;
+        $rstlId = Yii::$app->user->identity->profile->rstl_id;
+
+        $getSampletype = Sample::find()->where('request_id = :requestId', [':requestId' => $requestId])->groupBy('sampletype_id')->all();
+
+        $sampletypeId = implode(',', array_map(function ($data) {
+            return $data['sampletype_id'];
+        }, $getSampletype));
+
+        $listpackage = json_decode($component->getPackages($labId,$sampletypeId),true);
+
+        if($labId > 0 && $listpackage != 0){
+            $packageDataProvider = new ArrayDataProvider([
+                'key'=>'package_id',
+                'allModels' => $listpackage,
+                'pagination' => [
+                    'pageSize' => 10,
+                ],
+            ]);
+        } else {
+            $packageDataProvider = new ArrayDataProvider([
+                'key'=>'package_id',
+                'allModels' => [],
+                'pagination' => [
+                    'pageSize' => 10,
+                ],
+            ]);
+        }
+        if (Yii::$app->request->post()) {
+            $connection = Yii::$app->labdb;
+            $transaction = $connection->beginTransaction();
+            $connection->createCommand('SET FOREIGN_KEY_CHECKS=0')->execute();
+
+            if($sample_id > 0 && $package_id > 0){
+                $delete = Analysisextend::deleteAll('sample_id =:sampleId AND package_id =:packageId AND type_fee_id =:typeFee', [':sampleId' => $sample_id,':packageId'=>$package_id,':typeFee'=>2]);
+                if($delete){
+                    $postData = Yii::$app->request->post();
+
+                    $sampleId = (int) $postData['sample_id'];
+                    $packageId = (int) $postData['package_id'];
+                    $package_details = json_decode($component->getPackageOne($packageId),true);
+                    $sample = Sample::findOne($sampleId);
+
+                    $package = new Analysisextend();
+                    $package->rstl_id = (int) $rstlId;
+                    $package->date_analysis = date('Y-m-d');
+                    $package->request_id = (int) $requestId;
+                    $package->sample_id = (int) $sampleId;
+                    $package->testname = '-';
+                    $package->package_id = $packageId;
+                    $package->package_name = $package_details['package']['name'];
+                    $package->methodref_id = NULL;
+                    $package->method = '-';
+                    $package->references = '-';
+                    $package->fee = $package_details['package']['rate'];
+                    $package->quantity = 1; 
+                    $package->test_id = 0;
+                    $package->is_package = 1;
+                    $package->type_fee_id = 2;
+                    $package->is_package_name = 1;
+                    $package->sampletype_id = (int) $sample->sampletype_id;
+
+                    if($package->save(false)){
+                        foreach ($package_details['testmethod_data'] as $test_method) {
+                            $analysis = new Analysisextend();
+                            $analysis->rstl_id = (int) $rstlId;
+                            $analysis->date_analysis = date('Y-m-d');
+                            $analysis->request_id = (int) $requestId;
+                            $analysis->sample_id = (int) $sampleId;
+                            $analysis->testname = $test_method['testname'];
+                            $analysis->methodref_id = (int) $test_method['methodreference_id'];
+                            $analysis->method = $test_method['method'];
+                            $analysis->references = $test_method['reference'];
+                            $analysis->package_id = $packageId;
+                            $analysis->fee = 0; //since package
+                            $analysis->quantity = 1;
+                            $analysis->test_id = (int) $test_method['testname_id'];
+                            $analysis->is_package = 1;
+                            $analysis->type_fee_id = 2;
+                            $analysis->sampletype_id = (int) $sample->sampletype_id;
+
+                            if($analysis->save(false)){
+                                $analysisSave = 1;
+                            } else {
+                                $analysisSave = 0;
+                                goto packagefail;
+                            }
+                        }
+                    } else {
+                        $analysisSave = 0;
+                        goto packagefail;
+                    }
+                    
+                    $discount = $component->getDiscountOne($request->discount_id);
+                    $rate = $discount->rate;
+                    $fee = $connection->createCommand('SELECT SUM(fee) as subtotal FROM tbl_analysis WHERE request_id =:requestId')
+                    ->bindValue(':requestId',$requestId)->queryOne();
+                    $subtotal = $fee['subtotal'];
+                    $total = $subtotal - ($subtotal * ($rate/100));
+
+                    $request->total = $total;
+                    if($request->save(false) && $analysisSave == 1){
+                        $transaction->commit();
+                        Yii::$app->session->setFlash('success', "Package successfully updated.");
+                        return $this->redirect(['/lab/request/view', 'id' => $requestId]);
+                    } else {
+                        goto packagefail;
+                    }
+                } else {
+                    goto packagefail;
+                }
+            } else {
+                goto packagefail;
+            }
+            packagefail: {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('error', "Fail to update package!");
+                return $this->redirect(['/lab/request/view', 'id' => $requestId]);
+            }
+        } elseif (Yii::$app->request->isAjax) {
+            return $this->renderAjax('_formPackage', [
+                'model' => $model,
+                //'testname' => $testname,
+                'labId' => $labId,
+                'sampleDataProvider' => $sampleDataProvider,
+                'packageDataProvider' => $packageDataProvider,
+                //'methodrefDataProvider' => $methodrefDataProvider,
+            ]);
+        } else {
+            return $this->renderAjax('_formPackage', [
+                'model' => $model,
+                //'testname' => $testname,
+                'labId' => $labId,
+                'sampleDataProvider' => $sampleDataProvider,
+                'packageDataProvider' => $packageDataProvider,
+                //'methodrefDataProvider' => $methodrefDataProvider,
+            ]);
+        }
     }
 
     public function actionDeletepackage($sample_id,$package_id,$request_id)
@@ -861,7 +1022,7 @@ class AnalysisreferralController extends Controller
                     $total = $subtotal - ($subtotal * ($rate/100));
                     $request->total = $total;
                     if($request->save(false)){
-                        Yii::$app->session->setFlash('success', "Successfully removed package.");
+                        Yii::$app->session->setFlash('success', "Package successfully removed.");
                         return $this->redirect(['/lab/request/view', 'id' => $request_id]);
                     } else {
                         Yii::$app->session->setFlash('error', "Fail to update total!");
@@ -890,9 +1051,6 @@ class AnalysisreferralController extends Controller
                 $testname_methodDataProvider = new ArrayDataProvider([
                     'key'=>'testname_method_id',
                     'allModels' => $testname_method['testmethod_data'],
-                    // 'pagination' => [
-                    //     'pageSize' => 10,
-                    // ],
                     'pagination' => false,
                 ]);
                 return $this->renderPartial('_package-details', ['testname_methodDataProvider'=>$testname_methodDataProvider]);

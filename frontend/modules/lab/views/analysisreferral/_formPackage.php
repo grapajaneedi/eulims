@@ -37,7 +37,7 @@ use yii\web\JsExpression;
         <div class="table-responsive">
         <?php
             //if(Yii::$app->request->get('id') == $model->analysis_id){
-            if(Yii::$app->controller->action->id === 'update'){
+            if(Yii::$app->controller->action->id === 'updatepackage'){
                 $gridColumns = [
                     [
                         'class' => '\kartik\grid\SerialColumn',
@@ -113,8 +113,8 @@ use yii\web\JsExpression;
                     'contentOptions' => ['class' => 'text-center','style'=>'max-width:10px;'],
                 ],
                 [
-                    //'class' => '\kartik\grid\CheckboxColumn',
-                    'class' => '\yii\grid\CheckboxColumn',
+                    'class' => '\kartik\grid\CheckboxColumn',
+                    //'class' => '\yii\grid\CheckboxColumn',
                     'headerOptions' => ['class' => 'text-center'],
                     'contentOptions' => ['class' => 'text-center','style'=>'max-width:10px;'],
                     'name' => 'sample_ids',
@@ -357,12 +357,12 @@ echo Dialog::widget([
     };
 </script>
 <?php
-if(Yii::$app->controller->action->id === 'update'){
+if(Yii::$app->controller->action->id === 'updatepackage'){
     $this->registerJs("
-        $('#add_analysis').on('click',function(){
+        $('#add_package').on('click',function(){
             //var radioSample = $('#sample-analysis-grid').yiiGridView('getSelectedRows');
-            var radioSample = $(\"input[name='sample_id']\").val();
-            var radioPackage = $(\"input[name='package_id']\").val();
+            var radioSample = $(\"input[name='sample_id']:checked\").val();
+            var radioPackage = $(\"input[name='package_id']:checked\").val();
             
             /*if ($('input[type=radio][name=sample_id]', '#sample-analysis-grid').length < 1) {
                 alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No sample selected!</p>\");
@@ -418,10 +418,12 @@ if(Yii::$app->controller->action->id === 'update'){
 
     $this->registerJs("
         $('#sample-analysis-grid').on('change',function(){
-            var key_id = $('#sample-analysis-grid').yiiGridView('getSelectedRows');
-            if(key_id.length > 0) {
+            //var key_id = $('#sample-analysis-grid').yiiGridView('getSelectedRows');
+            //var radioSample = $(\"input[name='sample_id']\").val();
+            var radioSample = $(\"[name='sample_id']:checked\").val();
+            if(radioSample > 0) {
                 $.ajax({
-                    url: '".Url::toRoute("analysisreferral/getreferralpackage?sample_id='+key_id+'&lab_id='+".$labId."+'")."',
+                    url: '".Url::toRoute("analysisreferral/getreferralpackage?sample_id='+radioSample+'&lab_id='+".$labId."+'")."',
                     success: function (data) {
                         $('#show-packages').html(data);
                         $('.image-loader').removeClass(\"img-loader\");
@@ -493,7 +495,7 @@ if(Yii::$app->controller->action->id === 'update'){
     $this->registerJs("
         $('#add_package').on('click',function(){
             var key_sample = $('#sample-analysis-grid').yiiGridView('getSelectedRows');
-            var radioPackage = $(\"input[name='package_id']\").val();
+            var radioPackage = $(\"input[name='package_id']:checked\").val();
             
             if(key_sample.length < 1) {
                 alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No sample selected!</p>\");
@@ -518,8 +520,6 @@ if(Yii::$app->controller->action->id === 'update'){
     $this->registerJs("
         $('#sample-analysis-grid').on('change',function(){
             var key_id = $('#sample-analysis-grid').yiiGridView('getSelectedRows');
-            //var select = $('#analysisextend-test_id');
-            //select.find('option').remove().end();
             if(key_id.length > 0) {
                 $.ajax({
                     url: '".Url::toRoute("analysisreferral/getreferralpackage?sample_id='+key_id+'&lab_id='+".$labId."+'")."',

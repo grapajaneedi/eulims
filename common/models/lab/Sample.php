@@ -11,6 +11,7 @@ use Yii;
  * @property int $rstl_id
  * @property int $pstcsample_id
  * @property int $package_id
+ * @property string $package_name
  * @property string $package_rate
  * @property int $testcategory_id
  * @property int $sample_type_id
@@ -65,7 +66,7 @@ class Sample extends \yii\db\ActiveRecord
             [['description'], 'string'],
             [['sampling_date'], 'safe'],
             [['sample_code'], 'string', 'max' => 20],
-            [['samplename'], 'string', 'max' => 50],
+            [['samplename','package_name'], 'string', 'max' => 50],
             [['remarks'], 'string', 'max' => 150],
             [['sampletype_id'], 'exist', 'skipOnError' => true, 'targetClass' => Sampletype::className(), 'targetAttribute' => ['sampletype_id' => 'sampletype_id']],
             [['request_id'], 'exist', 'skipOnError' => true, 'targetClass' => Request::className(), 'targetAttribute' => ['request_id' => 'request_id']],
@@ -84,6 +85,7 @@ class Sample extends \yii\db\ActiveRecord
             'rstl_id' => 'Rstl ID',
             'pstcsample_id' => 'Pstcsample ID',
             'package_id' => 'Package ID',
+            'package_name' => 'Package Name',
             'package_rate' => 'Package Rate',
             'testcategory_id' => 'Test Category',
             'sampletype_id' => 'Sample Type',
