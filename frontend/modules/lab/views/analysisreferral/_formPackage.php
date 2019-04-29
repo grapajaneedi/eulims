@@ -19,16 +19,16 @@ use yii\web\JsExpression;
 ?>
 
 <?php
-    if(count($testname) > 0){
+    /*if(count($testname) > 0){
         $data = $testname;
     } else {
         $data = ['' => 'No Testname'] + $testname;
-    }
+    }*/
 
     $checkSample = ($model->sample_id) ? $model->sample_id : null;
 ?>
 
-<div class="analysisreferral-form">
+<div class="analysisreferral-package-form">
     <div class="image-loader" style="display: hidden;"></div>
     <?php $form = ActiveForm::begin(); ?>
 
@@ -37,7 +37,7 @@ use yii\web\JsExpression;
         <div class="table-responsive">
         <?php
             //if(Yii::$app->request->get('id') == $model->analysis_id){
-            if(Yii::$app->controller->action->id === 'update'){
+            if(Yii::$app->controller->action->id === 'updatepackage'){
                 $gridColumns = [
                     [
                         'class' => '\kartik\grid\SerialColumn',
@@ -113,8 +113,8 @@ use yii\web\JsExpression;
                     'contentOptions' => ['class' => 'text-center','style'=>'max-width:10px;'],
                 ],
                 [
-                    //'class' => '\kartik\grid\CheckboxColumn',
-                    'class' => '\yii\grid\CheckboxColumn',
+                    'class' => '\kartik\grid\CheckboxColumn',
+                    //'class' => '\yii\grid\CheckboxColumn',
                     'headerOptions' => ['class' => 'text-center'],
                     'contentOptions' => ['class' => 'text-center','style'=>'max-width:10px;'],
                     'name' => 'sample_ids',
@@ -175,18 +175,109 @@ use yii\web\JsExpression;
         </div>
         </div>
     </div>
+	
+	<div class="row">
+        <div class="col-lg-12">
+        <div class="table-responsive">
+        <?php
+			/*$gridColumns = [
+				[
+					'class' => '\kartik\grid\SerialColumn',
+					'headerOptions' => ['class' => 'text-center'],
+					'contentOptions' => ['class' => 'text-center','style'=>'max-width:20px;'],
+				],
+				[
+					'class' =>  '\kartik\grid\RadioColumn',
+					'radioOptions' => function ($model) use ($checkSample) {
+						return [
+							'value' => $model['sample_id'],
+							'checked' => $model['sample_id'] == $checkSample,
+						];
+					},
+					'name' => 'sample_id',
+					'showClear' => true,
+					'headerOptions' => ['class' => 'text-center'],
+					'contentOptions' => ['class' => 'text-center','style'=>'max-width:20px;'],
+				],
+				[
+					'class' => '\kartik\grid\ExpandRowColumn',
+					'width' => '50px',
+					'value' => function ($model, $key, $index, $column) {
+						return GridView::ROW_COLLAPSED;
+					},
+					// uncomment below and comment detail if you need to render via ajax
+					'detailUrl'=>Url::to(['/lab/analysisreferral/packagedetail']),
+					// 'detail' => function ($model, $key, $index, $column) {
+						// return Yii::$app->controller->renderPartial('_expand-row-details', ['model' => $model]);
+					// },
+					'headerOptions' => ['class' => 'kartik-sheet-style'],
+					'expandOneOnly' => true
+				],
+				[
+					'attribute'=>'samplename',
+					'enableSorting' => false,
+					'contentOptions' => ['style'=>'max-width:200px;'],
+				],
+				[
+					'attribute'=>'description',
+					'format' => 'raw',
+					'enableSorting' => false,
+					'value' => function($data){
+						return ($data->request->lab_id == 2) ? "Sampling Date: <span style='color:#000077;'><b>".date("Y-m-d h:i A",strtotime($data->sampling_date))."</b></span>,&nbsp;".$data->description : $data->description;
+					},
+				   'contentOptions' => [
+						'style'=>'max-width:200px; overflow: auto; white-space: normal; word-wrap: break-word;'
+					],
+				],
+			];
+
+			echo GridView::widget([
+				'id' => 'package-grid',
+				'dataProvider'=> $sampleDataProvider,
+				//'pjax'=>false,
+				'pjax'=>true,
+				//'headerRowOptions' => ['class' => 'kartik-sheet-style'],
+				//'filterRowOptions' => ['class' => 'kartik-sheet-style'],
+				'pjaxSettings' => [
+					'options' => [
+						'enablePushState' => false,
+					]
+				],
+				'containerOptions'=>[
+					'style'=>'overflow:auto; height:250px',
+				],
+				'floatHeaderOptions' => ['scrollingTop' => true],
+				'responsive'=>true,
+				'striped'=>true,
+				'hover'=>true,
+				'bordered' => true,
+				'panel' => [
+				   'heading'=>'<h3 class="panel-title">Packages</h3>',
+				   'type'=>'primary',
+				   'before' => '',
+				   'after'=>false,
+				   //'footer'=>false,
+				],
+				'columns' => $gridColumns,
+				'toolbar' => false,
+			]);*/
+        ?>
+        </div>
+        </div>
+    </div>
+	
     <div class="row">
         <div class="col-sm-8">
         <?php
-            $options = [
+            /*$options = [
                 'language' => 'en-US',
                 'width' => '100%',
                 'theme' => Select2::THEME_KRAJEE,
-                'placeholder' => 'Select Testname',
+                'placeholder' => 'Select Package',
                 'allowClear' => true,
             ];
 
-            echo $form->field($model,'test_id')->widget(Select2::classname(),[
+            echo $form->field($model,'package_id')->widget(Select2::classname(),[
                 'data' => $data,
                 'theme' => Select2::THEME_KRAJEE,
                 //'theme' => Select2::THEME_BOOTSTRAP,
@@ -218,16 +309,16 @@ use yii\web\JsExpression;
                         });
                     }",
                 ],
-            ])->label('Test Name');
+            ])->label('Test Name');*/
         ?>
         </div>
     </div>
     
     <div class="row">
         <div class="col-lg-12">
-            <div id="methodreference">
+            <div id="show-packages">
                 <?php
-                    echo $this->render('_methodreference', [ 'methodProvider' => $methodrefDataProvider,'model'=>$model]);
+                    echo $this->render('_packages', ['packageDataProvider' => $packageDataProvider,'model'=>$model]);
                 ?>
             </div>
         </div>
@@ -236,7 +327,7 @@ use yii\web\JsExpression;
     <div class="form-group">
         <div class="form-group" style="padding-bottom: 3px;">
         <div style="float:right;">
-            <?= Html::button($model->isNewRecord ? 'Add' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','id'=>'add_analysis']) ?>
+            <?= Html::button($model->isNewRecord ? 'Add' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','id'=>'add_package']) ?>
             <!-- <?= Html::submitButton($model->isNewRecord ? 'Save' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary','id'=>'add_analysis','onclick'=>'verifyCheck()']) ?> -->
             <?= Html::button('Close', ['class' => 'btn', 'onclick'=>'closeDialog()']) ?>
             <br>
@@ -266,12 +357,12 @@ echo Dialog::widget([
     };
 </script>
 <?php
-if(Yii::$app->controller->action->id === 'update'){
+if(Yii::$app->controller->action->id === 'updatepackage'){
     $this->registerJs("
-        $('#add_analysis').on('click',function(){
+        $('#add_package').on('click',function(){
             //var radioSample = $('#sample-analysis-grid').yiiGridView('getSelectedRows');
             var radioSample = $(\"input[name='sample_id']:checked\").val();
-            var radioMethod = $(\"input[name='methodref_id']:checked\").val();
+            var radioPackage = $(\"input[name='package_id']:checked\").val();
             
             /*if ($('input[type=radio][name=sample_id]', '#sample-analysis-grid').length < 1) {
                 alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No sample selected!</p>\");
@@ -281,25 +372,25 @@ if(Yii::$app->controller->action->id === 'update'){
                 alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No sample selected!</p>\");
                 return false;
             }
-            else if ($('input[type=radio][name=methodref_id]', '#method-reference-grid').length < 1) {
-                alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No Method selected!</p>\");
+            else if ($('input[type=radio][name=package_id]', '#package-grid').length < 1) {
+                alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No Package selected!</p>\");
                 return false;
             }
-            else if (!$(\"input[name='methodref_id']\").is(':checked') || radioMethod == '') {
-                alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No Method selected!</p>\");
+            else if (!$(\"input[name='package_id']\").is(':checked') || radioPackage == '') {
+                alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No Package selected!</p>\");
                 return false;
             }
             else {
                 $('.image-loader').addClass('img-loader');
-                $('.analysisreferral-form form').submit();
-                $('.image-loader').addClass('img-loader');
+                $('.analysisreferral-package-form form').submit();
+                $('.image-loader').removeClass('img-loader');
             }
         });
     ");
 
-    $this->registerJs("
+    /*$this->registerJs("
         $('#sample-analysis-grid').on('change',function(){
-            var radioSample = $(\"input[name='sample_id']:checked\").val();
+            var radioSample = $(\"input[name='sample_id']\").val();
             var select = $('#analysisextend-test_id');
             select.find('option').remove().end();
             if(radioSample > 0) {
@@ -323,13 +414,35 @@ if(Yii::$app->controller->action->id === 'update'){
                 select.val('').trigger('change');
             }
         });
+    ");*/
+
+    $this->registerJs("
+        $('#sample-analysis-grid').on('change',function(){
+            //var key_id = $('#sample-analysis-grid').yiiGridView('getSelectedRows');
+            //var radioSample = $(\"input[name='sample_id']\").val();
+            var radioSample = $(\"[name='sample_id']:checked\").val();
+            if(radioSample > 0) {
+                $.ajax({
+                    url: '".Url::toRoute("analysisreferral/getreferralpackage?sample_id='+radioSample+'&lab_id='+".$labId."+'")."',
+                    success: function (data) {
+                        $('#show-packages').html(data);
+                        $('.image-loader').removeClass(\"img-loader\");
+                    },
+                    beforeSend: function (xhr) {
+                        $('.image-loader').addClass(\"img-loader\");
+                    }
+                });
+            } else {
+                alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No sample selected!</p>\");
+            }
+        });
     ");
 
 } else {
-    $this->registerJs("
+/*    $this->registerJs("
         $('#add_analysis').on('click',function(){
             var key_sample = $('#sample-analysis-grid').yiiGridView('getSelectedRows');
-            var radioMethod = $(\"input[name='methodref_id']:checked\").val();
+            var radioMethod = $(\"input[name='methodref_id']\").val();
             
             if(key_sample.length < 1) {
                 alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No sample selected!</p>\");
@@ -375,6 +488,51 @@ if(Yii::$app->controller->action->id === 'update'){
                 //alert('No sample selected!');
                 alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No sample selected!</p>\");
                 select.val('').trigger('change');
+            }
+        });
+    ");*/
+
+    $this->registerJs("
+        $('#add_package').on('click',function(){
+            var key_sample = $('#sample-analysis-grid').yiiGridView('getSelectedRows');
+            var radioPackage = $(\"input[name='package_id']:checked\").val();
+            
+            if(key_sample.length < 1) {
+                alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No sample selected!</p>\");
+                return false;
+            }
+            else if ($('input[type=radio][name=package_id]', '#package-grid').length < 1) {
+                alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No Package selected!</p>\");
+                return false;
+            }
+            else if(!$(\"input[name='package_id']\").is(':checked') || radioPackage == '') {
+                alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No Package selected!</p>\");
+                return false;
+            }
+            else {
+                $('.image-loader').addClass('img-loader');
+                $('.analysisreferral-package-form form').submit();
+                $('.image-loader').removeClass('img-loader');
+            }
+        });
+    ");
+
+    $this->registerJs("
+        $('#sample-analysis-grid').on('change',function(){
+            var key_id = $('#sample-analysis-grid').yiiGridView('getSelectedRows');
+            if(key_id.length > 0) {
+                $.ajax({
+                    url: '".Url::toRoute("analysisreferral/getreferralpackage?sample_id='+key_id+'&lab_id='+".$labId."+'")."',
+                    success: function (data) {
+                        $('#show-packages').html(data);
+                        $('.image-loader').removeClass(\"img-loader\");
+                    },
+                    beforeSend: function (xhr) {
+                        $('.image-loader').addClass(\"img-loader\");
+                    }
+                });
+            } else {
+                alertWarning.alert(\"<p class='text-danger' style='font-weight:bold;'>No sample selected!</p>\");
             }
         });
     ");

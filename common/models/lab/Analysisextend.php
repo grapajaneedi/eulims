@@ -62,6 +62,8 @@ class Analysisextend extends Analysis
       //print_r(json_decode($list['sampletype']));
       //echo "</pre>";
   //}
+  
+  //public $package_id;
 
   /**
   * {@inheritdoc}
@@ -102,6 +104,7 @@ class Analysisextend extends Analysis
             'fee' => 'Fee',
             'test_id' => 'Test Name',
             'cancelled' => 'Cancelled',
+			   //'package_id' => 'Package',
         ];
     }
 }

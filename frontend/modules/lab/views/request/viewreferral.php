@@ -466,7 +466,81 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
             $enableRequest = false;
         }
 
+        /*if($model->type_fee_id == 2){
+            $packageName = [
+                'header'=>'Package',
+                'format' => 'raw',
+                'enableSorting' => false,
+                'value' => function($model) {
+                    return $model->sample ? $model->sample->samplename : '-';
+                },
+                'contentOptions' => ['style' => 'width:10%; white-space: normal;'],
+            ];
+        } else {
+            $packageName = [
+                'attribute'=>'testname',
+                'header'=>'Test/ Calibration Requested',
+                'contentOptions' => ['style' => 'width: 15%;word-wrap: break-word;white-space:pre-line;'],
+                'enableSorting' => false,
+                'format' => 'raw',
+            ];
+        }*/
+
         $analysisgridColumns = [
+            /*[
+                'attribute' => 'package_id', 
+                'width' => '310px',
+                'value' => function ($model, $key, $index, $widget) {
+                    return $model->sample->package_name;
+                },
+                'filterType' => GridView::FILTER_SELECT2,
+                'filter' => ArrayHelper::map(Suppliers::find()->orderBy('company_name')->asArray()->all(), 'id', 'company_name'), 
+                'filterWidgetOptions' => [
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+                'filterInputOptions' => ['placeholder' => 'Any supplier'],
+                'group' => true,  // enable grouping
+                'groupHeader' => function ($model, $key, $index, $widget) { // Closure method
+                    return [
+                        'mergeColumns' => [[0,3]], // columns to merge in summary
+                        'content' => [             // content to show in each summary cell
+                            1 => 'Summary (' . $model->sample->package_name . ')',
+                            4 => GridView::F_AVG,
+                            5 => GridView::F_SUM,
+                            6 => GridView::F_SUM,
+                        ],
+                        'contentFormats' => [      // content reformatting for each summary cell
+                            4 => ['format' => 'number', 'decimals' => 2],
+                            5 => ['format' => 'number', 'decimals' => 0],
+                            6 => ['format' => 'number', 'decimals' => 2],
+                        ],
+                        'contentOptions' => [      // content html attributes for each summary cell
+                            1 => ['style' => 'font-variant:small-caps'],
+                            4 => ['style' => 'text-align:right'],
+                            5 => ['style' => 'text-align:right'],
+                            6 => ['style' => 'text-align:right'],
+                        ],
+                        // html attributes for group summary row
+                        'options' => ['class' => 'info table-info','style' => 'font-weight:bold;']
+                    ];
+                },
+                //'visible'=>0,
+            ],*/
+            /*[
+                'attribute' => 'package_name',
+                'header' => 'Package Name',
+                'width' => '310px',
+                'value' => function ($model, $key, $index, $widget) {
+                    return $model->sample->package_name;
+                },
+                //'group' => true,  // enable grouping,
+                //'groupedRow' => true,                    // move grouped column to a single grouped row
+                //'groupOddCssClass' => 'kv-grouped-row',  // configure odd group cell css class
+                //'groupEvenCssClass' => 'kv-grouped-row', // configure even group cell css class
+                'group' => function($model){
+                    return !empty($model->sample->package_id) && ($model->type_fee_id == 2) ? true : false;
+                },
+            ],*/
             [
                 'attribute'=>'sample_name',
                 'header'=>'Sample',
@@ -492,28 +566,66 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                 'header'=>'Test/ Calibration Requested',
                 'contentOptions' => ['style' => 'width: 15%;word-wrap: break-word;white-space:pre-line;'],
                 'enableSorting' => false,
+                'format' => 'raw',
+                'value' => function($model) {
+                    //return $model->type_fee_id == 2 && $model->is_package_name == 1 ? $model->package_name : "&nbsp;&nbsp;".$model->testname;
+                    if($model->type_fee_id == 2 && $model->is_package_name == 1){
+                        return $model->package_name;
+                    } elseif($model->type_fee_id == 2 && $model->is_package_name == 0){
+                        return "&nbsp;&nbsp;<span style='font-size:12px;'>".$model->testname."</span>";
+                    } else {
+                        return $model->testname;
+                    }
+                },
             ],
             [
                 'attribute'=>'method',
                 'header'=>'Test Method',
                 'enableSorting' => false,  
-                'contentOptions' => ['style' => 'width: 50%;word-wrap: break-word;white-space:pre-line;'],              
+                'contentOptions' => ['style' => 'width: 50%;word-wrap: break-word;white-space:pre-line;'],
+                'format' => 'raw',
+                'value' => function($model) {
+                    //return ($model->type_fee_id == 2 && $model->is_package_name == 1) ? '-' : "<span style='font-size:12px;'>".$model->method."</span>";
+                    if($model->type_fee_id == 2 && $model->is_package_name == 1){
+                        return '-';
+                    } elseif($model->type_fee_id == 2 && $model->is_package_name == 0){
+                        return "&nbsp;&nbsp;<span style='font-size:12px;'>".$model->method."</span>";
+                    } else {
+                        return $model->method;
+                    }
+                },
             ],
             [
                 'attribute'=>'quantity',
                 'header'=>'Quantity',
                 'hAlign'=>'center',
                 'enableSorting' => false,
+                'format' => 'raw',
+                'value' => function($model) {
+                    //return $model->type_fee_id == 2 ? '-' : $model->quantity;
+                    if($model->type_fee_id == 2 && $model->is_package_name == 1){
+                        return 1;
+                    } elseif($model->type_fee_id == 2 && $model->is_package_name == 0){
+                        return "-";
+                    } else {
+                        return $model->quantity;
+                    }
+                },  
                 'pageSummary' => '<span style="float:right";>SUBTOTAL<BR>DISCOUNT<BR><B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TOTAL</B></span>',       
             ],
             [
-                'attribute'=>'fee',
+                //'attribute'=>'fee',
+                //'attribute'=>'sample_id',
                 'header'=>'Unit Price',
                 'enableSorting' => false,
                 'hAlign'=>'right',
                 'value'=>function($model){
-                    return number_format($model->fee,2);
+                    //return number_format($model->fee,2);
+                    return ($model->type_fee_id == 2 && $model->is_package_name == 0) ? '-' : number_format($model->fee,2);
                 },
+                /*'group' => function($model) {
+                    return $model->type_fee_id == 2 ? true : false;
+                },*/
                 'contentOptions' => [
                     'style'=>'max-width:80px; overflow: auto; white-space: normal; word-wrap: break-word;'
                 ],
@@ -565,18 +677,43 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                 'buttons'=>[
                     'update'=>function ($url, $model) use ($requeststatus,$notified,$checkTesting) {
                         //return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/analysisreferral/update','id'=>$model->analysis_id,'request_id'=>$model->request_id,'page'=>3]), 'onclick'=>'updateAnalysisReferral('.$model->analysis_id.',this.value,this.title)', 'class' => 'btn btn-primary','title' => 'Update Analysis']);
-                        return ($requeststatus > 0 && $notified == 0 && $checkTesting == 0) ? Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['onclick'=>'updateAnalysisReferral('.$model->analysis_id.','.$model->request_id.',this.title)', 'class' => 'btn btn-primary','title' => 'Update Analysis']) : null;
+                        //return ($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id != 2) ? Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['onclick'=>'updateAnalysisReferral('.$model->analysis_id.','.$model->request_id.',this.title)', 'class' => 'btn btn-primary','title' => 'Update Analysis']) : null;
+                        if($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id != 2){
+                            return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['onclick'=>'updateAnalysisReferral('.$model->analysis_id.','.$model->request_id.',this.title)', 'class' => 'btn btn-primary','title' => 'Update Analysis']);
+                        } elseif($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id == 2 && $model->is_package_name == 1) {
+                            return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/analysisreferral/updatepackage','analysis_id'=>$model->analysis_id,'sample_id'=>$model->sample_id,'package_id'=>$model->package_id,'request_id'=>$model->request_id]),'onclick'=>'updatePackageReferral('.$model->package_id.','.$model->sample_id.','.$model->request_id.',this.value,this.title)', 'class' => 'btn btn-primary','title' => 'Update Package']);
+                        } else {
+                            return null;
+                        }
                     },
                     'delete'=>function ($url, $model) use ($requeststatus,$notified,$checkTesting) {
                         $urls = '/lab/analysis/delete?id='.$model->analysis_id;
-                        return ($requeststatus > 0 && $notified == 0 && $checkTesting == 0) ? Html::a('<span class="glyphicon glyphicon-trash"></span>', $urls,['data-confirm'=>"Are you sure you want to delete this record?<b></b>", 'data-method'=>'post', 'class'=>'btn btn-danger','title'=>'Delete Analysis','data-pjax'=>'0']) : null;
+                        //$packageUrl = '/lab/analysisreferral/deletepackage?id='.$model->sample_id.'&package_id='.$model->package_id;
+                        //return ($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id == 2) ? Html::a('<span class="glyphicon glyphicon-trash"></span>', $urls,['data-confirm'=>"Are you sure you want to delete this record?<b></b>", 'data-method'=>'post', 'class'=>'btn btn-danger','title'=>'Delete Analysis','data-pjax'=>'0']) : null;
                        // return Html::button('<span class="glyphicon glyphicon-trash"></span>', ['value'=>Url::to(['/lab/analysis/delete','id'=>$model->analysis_id]), 'class' => 'btn btn-danger']);
+                        if($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id != 2 && $model->is_package_name == 0){
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', $urls,['data-confirm'=>"Are you sure you want to delete this analysis?<b></b>", 'data-method'=>'post', 'class'=>'btn btn-danger','title'=>'Delete Analysis','data-pjax'=>'0']);
+                        } elseif($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id == 2 && $model->is_package_name == 1) {
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>','/lab/analysisreferral/deletepackage?sample_id='.$model->sample_id.'&package_id='.$model->package_id.'&request_id='.$model->request_id,['data-confirm'=>"This will delete all the analyses under this package. Click OK to proceed. <b></b>", 'data-method'=>'post', 'class'=>'btn btn-danger','title'=>'Delete Package','data-pjax'=>'0']);
+                        } else {
+                            return null;
+                        }
                     },
                     'view' => function ($url, $model) use ($requeststatus) {
-                        return ($requeststatus > 0) ? Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['/lab/analysisreferral/view','id'=>$model->analysis_id]), 'onclick'=>'viewAnalysisReferral(this.value,this.title)', 'class' => 'btn btn-primary','title' => 'View Analysis']) : null;
+                        return ($requeststatus > 0 && $model->is_package_name == 0) ? Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['/lab/analysisreferral/view','id'=>$model->analysis_id]), 'onclick'=>'viewAnalysisReferral(this.value,this.title)', 'class' => 'btn btn-primary','title' => 'View Analysis']) : null;
+                        /*if($requeststatus > 0 && $model->type_fee_id != 2){
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', $urls,['data-confirm'=>"Are you sure you want to delete this analysis?<b></b>", 'data-method'=>'post', 'class'=>'btn btn-danger','title'=>'Delete Analysis','data-pjax'=>'0']);
+                        } elseif($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id == 2 && $model->is_package_name == 1) {
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', $packageUrl,['data-confirm'=>"This will delete all the analyses under this package. Click OK to proceed. <b></b>", 'data-method'=>'post', 'class'=>'btn btn-danger','title'=>'Delete Package','data-pjax'=>'0']);
+                        } else {
+                            return null;
+                        }*/
                     },
                 ],
             ],
+            /*'group' => function($model) {
+                return $model->type_fee_id == 2 ? true : false;
+            },*/
         ];
             echo GridView::widget([
                 'id' => 'analysis-grid',
@@ -598,7 +735,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                     'heading'=>'<h3 class="panel-title">Analysis</h3>',
                     'type'=>'primary',
                     'before'=>($requeststatus > 0 && $notified == 0 && $hasTestingAgency == 0 && trim($model->request_ref_num) == "") ? Html::button('<i class="glyphicon glyphicon-plus"></i> Add Analysis', ['disabled'=>$enableRequest,'value' => $model->request_type_id == 2 ? Url::to(['analysisreferral/create','request_id'=>$model->request_id]) : "",'title'=>'Add Analyses', 'onclick'=> $model->request_type_id == 2 ? $ClickButtonAnalysisReferral : "", 'class' => 'btn btn-success','id' => 'btn_add_analysis'])."   ".
-                    Html::button('<i class="glyphicon glyphicon-plus"></i> Add Package', ['disabled'=>$enableRequest,'value' => Url::to(['/services/packagelist/createpackage','id'=>$model->request_id]),'title'=>'Add Package', 'onclick'=>$ClickButton, 'class' => 'btn btn-success','id' => 'btn_add_package']) /*." ".
+                    Html::button('<i class="glyphicon glyphicon-plus"></i> Add Package', ['disabled'=>$enableRequest,'value' => Url::to(['analysisreferral/package','request_id'=>$model->request_id]),'title'=>'Add Package', 'onclick'=>$ClickButtonAnalysisReferral, 'class' => 'btn btn-success','id' => 'btn_add_package']) /*." ".
                     Html::button('<i class="glyphicon glyphicon-plus"></i> Additional Fees', ['disabled'=>$enableRequest,'value' => Url::to(['/lab/fee/create','id'=>$model->request_id]),'title'=>'Add Additional Fees', 'onclick'=>$ClickButton, 'class' => 'btn btn-success','id' => 'btn_add_fees'])*/ : null,
                    'after'=>false,
                    //'footer'=>($model->request_type_id == 2 || $requeststatus <= 0) ? "":"<div class='row' style='margin-left: 2px;padding-top: 5px'><button ".$disableButton." value='/lab/request/saverequestransaction' ".$btnID." class='btn btn-success'><i class='fa fa-save'></i> Save Request</button>".$EnablePrint."</div>",
@@ -862,7 +999,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
             .find('#modalContent')
             .load(url);
     }
-    //function updateAnalysisReferral(id,url,title){
     function updateAnalysisReferral(id,requestId,title){
         $.ajax({
             url: '/lab/analysisreferral/getdefaultpage?analysis_id='+id,
@@ -879,6 +1015,23 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                 $('.image-loader').addClass('img-loader');
             }
         });
+    }
+    function updatePackageReferral(packageId,sampleId,requestId,url,title){
+        // $.ajax({
+        //     url: '/lab/analysisreferral/getdefaultpage?analysis_id='+id,
+        //     success: function (data) {
+        //         $('.image-loader').removeClass('img-loader');
+        //         //alert(data);
+        //         var url = '/lab/analysisreferral/update?id='+id+'&request_id='+requestId+'&page='+data;
+                $('.modal-title').html(title);
+                $('#modalAnalysis').modal('show')
+                    .find('#modalContent')
+                    .load(url);
+        //     },
+        //     beforeSend: function (xhr) {
+        //         $('.image-loader').addClass('img-loader');
+        //     }
+        // });
     }
     function viewAnalysisReferral(url,title){
         $('.modal-title').html(title);

@@ -398,8 +398,8 @@ class ReferralController extends Controller
                         $sampleData = [
                             'sample_id' => $sample['sample_id'],
                             'rstl_id' => $sample['rstl_id'],
-                            'package_id' => $sample['package_id'],
-                            'package_rate' => $sample['package_rate'],
+                        //    'package_id' => $sample['package_id'],
+                        //    'package_rate' => $sample['package_rate'],
                             'sampletype_id' => $sample['sampletype_id'],
                             'sample_code' => $sample['sample_code'],
                             'samplename' => $sample['samplename'],
@@ -423,6 +423,7 @@ class ReferralController extends Controller
                             'request_id' => $analysis['request_id'],
                             'sample_id' => $analysis['sample_id'],
                             'sample_code' => $analysis['sample_code'],
+                            'package_id' => $analysis['package_id'],
                             'testname' => $analysis['testname'],
                             'method' => $analysis['method'],
                             'methodref_id' => $analysis['methodref_id'],
@@ -431,6 +432,7 @@ class ReferralController extends Controller
                             'test_id' => $analysis['test_id'],
                             'cancelled' => $analysis['cancelled'],
                             'is_package' => $analysis['is_package'],
+                            'is_package_name' => $analysis['is_package_name'],
                             'type_fee_id' => $analysis['type_fee_id']
                         ];
                         array_push($analysis_data, $analysisData);
