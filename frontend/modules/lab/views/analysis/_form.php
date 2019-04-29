@@ -17,6 +17,7 @@ use common\models\lab\Lab;
 use common\models\lab\Testcategory;
 use common\models\lab\Labsampletype;
 use common\models\lab\Sampletype;
+use common\models\lab\Request;
 use common\models\lab\Sampletypetestname;
 use common\models\lab\Testnamemethod;
 use common\models\lab\Methodreference;
@@ -129,17 +130,22 @@ $this->registerJs($js);
     <?= $form->field($model, 'fee')->hiddenInput()->label(false)  ?>
 
     <?= Html::textInput('sample_ids', '', ['class' => 'form-control', 'id'=>'sample_ids', 'type'=>'hidden'], ['readonly' => true]) ?>
-    
+  
     <?php
-         $category= ArrayHelper::map(Testcategory::find()->orderBy(['testcategory_id' => SORT_DESC])->all(),'testcategory_id','category');
+        $requestquery = Request::find()->where(['request_id' => $request_id])->one();
+         $category= ArrayHelper::map(Testcategory::find()
+         ->leftJoin('tbl_lab_sampletype', 'tbl_lab_sampletype.testcategory_id=tbl_testcategory.testcategory_id')
+         ->Where(['tbl_lab_sampletype.lab_id'=>$requestquery->lab_id])
+         ->orderBy(['testcategory_id' => SORT_DESC])->all(),'testcategory_id','category');
     ?>
+      <?= Html::textInput('lab_id', $requestquery->lab_id, ['class' => 'form-control', 'id'=>'lab_id', 'type'=>'hidden'], ['readonly' => true]) ?>
     <?= $form->field($model,'category_id')->widget(Select2::classname(),[
                     'data' => $category,
                     'theme' => Select2::THEME_KRAJEE,
                     'options' => ['id'=>'sample-category_id'],
                     'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Test Category'],
             ])->label("Test Category")
-        ?>
+    ?>
 
     <div class="row">
     <div class="col-sm-6">
@@ -282,7 +288,9 @@ $this->registerJs("$('#sample-test_id').on('change',function(){
             url: '/lab/analysis/gettestnamemethod?id='+$(this).val(),
             method: "GET",
             dataType: 'html',
-            data: { lab_id: 1,
+            data: { lab_id: $('#lab_id').val(),
+            testcategory_id: 29,
+            sampletype_id: 4,
             testname_id: $('#method_id').val()},
             beforeSend: function(xhr) {
                $('.image-loader').addClass("img-loader");

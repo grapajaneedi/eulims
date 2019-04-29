@@ -157,9 +157,18 @@ class AnalysisController extends Controller
       
         $labid = $_GET['lab_id'];
         $testname_id = $_GET['id'];
-    
-        
-        $testnamemethod = Testnamemethod::find()->where(['testname_id'=>$testname_id])->all();
+
+        $testname_id = $_GET['testcategory_id'];
+        $testname_id = $_GET['sampletype_id'];
+      
+            // $testnamemethod = Testnamemethod::find()
+        // ->leftJoin('tbl_sampletype_testname', 'tbl_sampletype_testname.testname_id=tbl_testname_method.testname_id')
+        // ->leftJoin('tbl_lab_sampletype', 'tbl_lab_sampletype.sampletype_id=tbl_sampletype_testname.sampletype_id')
+        // ->where(['tbl_testname_method.testname_id'=>$testname_id, 'tbl_lab_sampletype.testcategory_id'=>$testcategory_id, 'tbl_lab_sampletype.sampletype_id'=>$sampletype_id ])->all();
+
+        //dapat naka left join ito.. considering yung mga sample type and test category
+        $testnamemethod = Testnamemethod::find()
+        ->where(['testname_id'=>$testname_id])->all();
         $testnamedataprovider = new ArrayDataProvider([
                 'allModels' => $testnamemethod,
                 'pagination' => [
@@ -320,6 +329,7 @@ class AnalysisController extends Controller
 
             return $this->renderAjax('_form', [
                 'model' => $model,
+                'request_id'=>$request_id,
                 'searchModel' => $searchModel,
                 'samplesearchmodel'=>$samplesearchmodel,
                 'dataProvider' => $dataProvider,

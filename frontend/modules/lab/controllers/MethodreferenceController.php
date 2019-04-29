@@ -37,7 +37,7 @@ class MethodreferenceController extends Controller
     {
         $searchModel = new MethodreferenceSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->sort->defaultOrder = ['method' => SORT_ASC];
+        $dataProvider->sort->defaultOrder = ['method_reference_id' => SORT_DESC];
 
         return $this->render('index', [
             'searchModel' => $searchModel,

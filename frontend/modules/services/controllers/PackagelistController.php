@@ -202,12 +202,7 @@ class PackagelistController extends Controller
                         $modeltest=  Testname::findOne(['testname_id'=>$testnamemethod->testname_id]);
                         $methodreference =  Methodreference::findOne(['method_reference_id'=>$testnamemethod->method_id]);
 
-                        //hindi makuha using model method ui
-
-                        //testnamemethod dapat
-                        //tapos imatch ang testname at methodreference
                         $modelmethod=  Methodreference::findOne(['testname_id'=>$t_id]);
-
                         $analysis_package->sample_id = $sample_id;
                         $analysis_package->cancelled = 0;
                         $analysis_package->pstcanalysis_id = Yii::$app->user->identity->profile->rstl_id;
@@ -223,9 +218,9 @@ class PackagelistController extends Controller
                         $analysis_package->method = $methodreference->method;
                        // $analysis->method = $modelmethod->method;
                         $analysis->category_id = 1;
-                        $analysis_package->fee = $methodreference->fee;
+                        $analysis_package->fee = 0;
                         $analysis_package->testname = $modeltest->testName;
-                        $analysis_package->references = "references";
+                        $analysis_package->references = $methodreference->reference;
                         $analysis_package->quantity = 1;
                         $analysis_package->sample_code = "sample";
                         $analysis_package->date_analysis = '2018-06-14 7:35:0';   

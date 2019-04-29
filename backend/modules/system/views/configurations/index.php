@@ -5,6 +5,7 @@ use kartik\grid\GridView;
 use kartik\tabs\TabsX;
 use yii\helpers\Url;
 use common\models\lab\Lab;
+use common\models\lab\Requestcode;
 use yii\helpers\ArrayHelper;
 use common\models\lab\LabManagerSearch;
 use common\models\lab\discountSearch;
@@ -99,11 +100,43 @@ $LaboratoryContent="<div class='row'><div class='col-md-12'>". GridView::widget(
                     return $model->labcount;
                 }
             ],
+            // [
+            //     'class' => 'kartik\grid\EditableColumn',
+            //     'refreshGrid'=>true,
+            //     'attribute' => 'lab_id', 
+            //     'readonly' => function($model) {
+                   
+            //         $requestcode = Requestcode::find()->where(['lab_id'=>$model->lab_id])->one();
+            //         if ($requestcode){
+            //             return $requestcode->request_ref_num;
+            //         }else{
+            //             return '<No Request Code>';
+            //         }
+            //      },
+            //     'editableOptions' => [
+            //         'header' => 'Amount', 
+            //         'size'=>'s',
+            //         'inputType' => \kartik\editable\Editable::INPUT_TEXT,
+            //         'options' => [
+            //             'pluginOptions' => ['min' => 1]
+            //         ],
+            //         'placement'  => 'left',
+            //         'formOptions'=>['action' => ['/finance/op/updateamount']],
+            //     ],
+            // ],
             [
                 'attribute' => 'nextrequestcode',
                 'label' => 'Next Requestcode',
                 'value' => function($model) {
-                    return $model->nextrequestcode ? $model->nextrequestcode : '<No Request Code>';
+
+                    $requestcode = Requestcode::find()->where(['lab_id'=>$model->lab_id])->one();
+                    if ($requestcode){
+                        return $requestcode->request_ref_num;
+                    }else{
+                        return '<No Request Code>';
+                    }
+                    
+                    //return $model->nextrequestcode ? $model->nextrequestcode : '<No Request Code>';
                 }
             ],
             [
