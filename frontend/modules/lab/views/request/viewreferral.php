@@ -687,12 +687,12 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                         }
                     },
                     'delete'=>function ($url, $model) use ($requeststatus,$notified,$checkTesting) {
-                        $urls = '/lab/analysis/delete?id='.$model->analysis_id;
+                        //$urls = '/lab/analysis/delete?id='.$model->analysis_id;
                         //$packageUrl = '/lab/analysisreferral/deletepackage?id='.$model->sample_id.'&package_id='.$model->package_id;
                         //return ($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id == 2) ? Html::a('<span class="glyphicon glyphicon-trash"></span>', $urls,['data-confirm'=>"Are you sure you want to delete this record?<b></b>", 'data-method'=>'post', 'class'=>'btn btn-danger','title'=>'Delete Analysis','data-pjax'=>'0']) : null;
                        // return Html::button('<span class="glyphicon glyphicon-trash"></span>', ['value'=>Url::to(['/lab/analysis/delete','id'=>$model->analysis_id]), 'class' => 'btn btn-danger']);
                         if($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id != 2 && $model->is_package_name == 0){
-                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', $urls,['data-confirm'=>"Are you sure you want to delete this analysis?<b></b>", 'data-method'=>'post', 'class'=>'btn btn-danger','title'=>'Delete Analysis','data-pjax'=>'0']);
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', '/lab/analysisreferral/delete?id='.$model->analysis_id,['data-confirm'=>"Are you sure you want to delete this analysis?<b></b>", 'data-method'=>'post', 'class'=>'btn btn-danger','title'=>'Delete Analysis','data-pjax'=>'0']);
                         } elseif($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id == 2 && $model->is_package_name == 1) {
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>','/lab/analysisreferral/deletepackage?sample_id='.$model->sample_id.'&package_id='.$model->package_id.'&request_id='.$model->request_id,['data-confirm'=>"This will delete all the analyses under this package. Click OK to proceed. <b></b>", 'data-method'=>'post', 'class'=>'btn btn-danger','title'=>'Delete Package','data-pjax'=>'0']);
                         } else {
@@ -1200,7 +1200,7 @@ Modal::end();
     left: 0;
     bottom: 0;
     right: 0;
-    background-image: url('/images/img-loader64.gif');
+    background-image: url('/images/img-png-loader64.png');
     background-repeat: no-repeat;
 }
 /* Transparent Overlay */

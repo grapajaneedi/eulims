@@ -326,9 +326,34 @@ class AnalysisreferralController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $connection = Yii::$app->labdb;
+        $component = new ReferralComponent();
+        $transaction = $connection->beginTransaction();
+        $requestId = $model->request_id;
+        if($model->delete()) {
+            $request = $this->findRequest($requestId);
+            $discount = $component->getDiscountOne($request->discount_id);
+            $rate = $discount->rate;
+            $fee = $connection->createCommand('SELECT SUM(fee) as subtotal FROM tbl_analysis WHERE request_id =:requestId')
+            ->bindValue(':requestId',$requestId)->queryOne();
+            $subtotal = $fee['subtotal'];
+            $total = $subtotal - ($subtotal * ($rate/100));
+            $request->total = $total;
 
-        return $this->redirect(['index']);
+            if($request->save(false)){
+                $transaction->commit();
+                Yii::$app->session->setFlash('warning', 'Analysis Successfully Deleted');
+                return $this->redirect(['/lab/request/view', 'id' => $requestId]);
+            } else {
+                $transaction->rollBack();
+                Yii::$app->session->setFlash('warning', 'Analysis Successfully Deleted');
+                return $this->redirect(['/lab/request/view', 'id' => $requestId]);
+            }
+        } else {
+            $transaction->rollBack();
+            return $model->error();
+        }
     }
 
     /**
