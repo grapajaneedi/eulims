@@ -122,7 +122,8 @@
         "wbraganca/yii2-dynamicform": "*",
         "kartik-v/yii2-export": "*",
         "philippfrenzel/yii2fullcalendar": "*",
-		"yiisoft/yii2-queue": "^2.0@dev"
+		"yiisoft/yii2-queue": "^2.0@dev",
+        "kop/yii2-scroll-pager": "dev-master"
     },
     "require-dev": {
         "yiisoft/yii2-gii": "^2.0"

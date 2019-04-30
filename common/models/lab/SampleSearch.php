@@ -21,7 +21,7 @@ class SampleSearch extends Sample
     public function rules()
     {
         return [
-            [['sample_id', 'rstl_id', 'pstcsample_id', 'package_id', 'sample_month', 'sample_year', 'active'], 'integer'],
+            [['sample_id', 'rstl_id', 'pstcsample_id', 'sample_month', 'sample_year', 'active'], 'integer'],
             [['sample_code', 'samplename', 'description', 'sampling_date', 'request_id', 'sampletype_id', 'remarks'], 'safe'],
         ];
     }
@@ -67,7 +67,6 @@ class SampleSearch extends Sample
             'sample_id' => $this->sample_id,
             'rstl_id' => $this->rstl_id,
             'pstcsample_id' => $this->pstcsample_id,
-            'package_id' => $this->package_id,
             'sampletype_id' => $this->sampletype_id,
             'sampling_date' => $this->sampling_date,
             //'request_id' => $this->request_id,

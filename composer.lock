@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "76e8032b81b52f4f036586e3f6e64aa2",
+    "content-hash": "8ef63f23024e07022743ad193e2bf61a",
     "packages": [
         {
             "name": "2amigos/google-places-library",
@@ -464,8 +464,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/blueimp/JavaScript-Canvas-to-Blob/zipball/9f3deb2e710d39c72a988559609d9dc9a319de0b",
-                "reference": "9f3deb2e710d39c72a988559609d9dc9a319de0b",
-                "shasum": null
+                "reference": "9f3deb2e710d39c72a988559609d9dc9a319de0b"
             },
             "type": "bower-asset"
         },
@@ -544,8 +543,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/blueimp/Gallery/zipball/8336bb5934cb623608808601129db3fbf9201a09",
-                "reference": "8336bb5934cb623608808601129db3fbf9201a09",
-                "shasum": null
+                "reference": "8336bb5934cb623608808601129db3fbf9201a09"
             },
             "type": "bower-asset"
         },
@@ -576,8 +574,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/blueimp/JavaScript-Templates/zipball/da7647cb93fff2030e73a701db22c66de76a9919",
-                "reference": "da7647cb93fff2030e73a701db22c66de76a9919",
-                "shasum": null
+                "reference": "da7647cb93fff2030e73a701db22c66de76a9919"
             },
             "type": "bower-asset"
         },
@@ -592,8 +589,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/twbs/bootstrap/zipball/0b9c4a4007c44201dce9a6cc1a38407005c26c86",
-                "reference": "0b9c4a4007c44201dce9a6cc1a38407005c26c86",
-                "shasum": null
+                "reference": "0b9c4a4007c44201dce9a6cc1a38407005c26c86"
             },
             "require": {
                 "bower-asset/jquery": ">=1.9.1,<4.0"
@@ -798,8 +794,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/RobinHerbots/Inputmask/zipball/5e670ad62f50c738388d4dcec78d2888505ad77b",
-                "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b",
-                "shasum": null
+                "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "require": {
                 "bower-asset/jquery": ">=1.7"
@@ -820,8 +815,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/tapmodo/Jcrop/zipball/1902fbc6afa14481dc019a17e0dcb7d62b808a98",
-                "reference": "1902fbc6afa14481dc019a17e0dcb7d62b808a98",
-                "shasum": null
+                "reference": "1902fbc6afa14481dc019a17e0dcb7d62b808a98"
             },
             "type": "bower-asset"
         },
@@ -836,8 +830,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/77d2a51d0520d2ee44173afdf4e40a9201f5964e",
-                "reference": "77d2a51d0520d2ee44173afdf4e40a9201f5964e",
-                "shasum": null
+                "reference": "77d2a51d0520d2ee44173afdf4e40a9201f5964e"
             },
             "type": "bower-asset",
             "license": [
@@ -963,8 +956,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/bestiejs/punycode.js/zipball/38c8d3131a82567bfef18da09f7f4db68c84f8a3",
-                "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3",
-                "shasum": null
+                "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3"
             },
             "type": "bower-asset"
         },
@@ -979,8 +971,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/LPology/Simple-Ajax-Uploader/zipball/06c094a7d383a1e6643ab4c77716f01607489b54",
-                "reference": "06c094a7d383a1e6643ab4c77716f01607489b54",
-                "shasum": null
+                "reference": "06c094a7d383a1e6643ab4c77716f01607489b54"
             },
             "type": "bower-asset",
             "license": [
@@ -1061,8 +1052,7 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/yiisoft/jquery-pjax/zipball/aef7b953107264f00234902a3880eb50dafc48be",
-                "reference": "aef7b953107264f00234902a3880eb50dafc48be",
-                "shasum": null
+                "reference": "aef7b953107264f00234902a3880eb50dafc48be"
             },
             "require": {
                 "bower-asset/jquery": ">=1.8"
@@ -3629,6 +3619,54 @@
             "time": "2017-11-25T06:02:18+00:00"
         },
         {
+            "name": "kop/yii2-scroll-pager",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kop/yii2-scroll-pager.git",
+                "reference": "9b9727ce441fbfc487044535ab6ce0b7694d810b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kop/yii2-scroll-pager/zipball/9b9727ce441fbfc487044535ab6ce0b7694d810b",
+                "reference": "9b9727ce441fbfc487044535ab6ce0b7694d810b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "webcreate/jquery-ias": "^2.2.1",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "autoload": {
+                "psr-4": {
+                    "kop\\y2sp\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivan Koptiev",
+                    "email": "ivan.koptiev@codex.systems",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Infinite AJAX scrolling for Yii2 ListView widget",
+            "homepage": "http://kop.github.io/yii2-scroll-pager/",
+            "keywords": [
+                "pager",
+                "pagination",
+                "scroll",
+                "scrolling",
+                "yii",
+                "yii2"
+            ],
+            "time": "2016-07-06T19:56:33+00:00"
+        },
+        {
             "name": "linslin/yii2-curl",
             "version": "1.2.1",
             "source": {
@@ -4255,7 +4293,6 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/fullcalendar/-/fullcalendar-3.8.0.tgz",
-                "reference": null,
                 "shasum": "4c0fe494a62b0a8d640c6de8eb883b49a212b5dc"
             },
             "require": {
@@ -4366,7 +4403,6 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/jquery/-/jquery-3.2.1.tgz",
-                "reference": null,
                 "shasum": "5c4d9de652af6cd0a770154a631bba12b015c787"
             },
             "require-dev": {
@@ -4446,7 +4482,6 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/moment/-/moment-2.20.1.tgz",
-                "reference": null,
                 "shasum": "d6eb1a46cbcc14a2b2f9434112c1ff8907f313fd"
             },
             "require-dev": {
@@ -5867,6 +5902,7 @@
                 "mock",
                 "xunit"
             ],
+            "abandoned": true,
             "time": "2017-08-03T14:08:16+00:00"
         },
         {
@@ -7664,6 +7700,46 @@
             "time": "2015-02-25T15:31:24+00:00"
         },
         {
+            "name": "webcreate/jquery-ias",
+            "version": "2.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webcreate/infinite-ajax-scroll.git",
+                "reference": "33e0096ca99eef256a98340131791de7d09c202a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webcreate/infinite-ajax-scroll/zipball/33e0096ca99eef256a98340131791de7d09c202a",
+                "reference": "33e0096ca99eef256a98340131791de7d09c202a",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary",
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "fieg",
+                    "email": "jeroen@webcreate.nl",
+                    "homepage": "http://webcreate.nl"
+                }
+            ],
+            "description": "Infinite Ajax Scroll: A jQuery plugin that turns your server-side pagination into an infinite scrolling one using AJAX",
+            "homepage": "https://infiniteajaxscroll.com",
+            "keywords": [
+                "ajax",
+                "ias",
+                "infinite",
+                "jquery",
+                "pagination",
+                "scroll",
+                "scrolling"
+            ],
+            "time": "2018-10-01T11:39:46+00:00"
+        },
+        {
             "name": "webmozart/assert",
             "version": "1.2.0",
             "source": {
@@ -8802,7 +8878,8 @@
         "reportico/yii2-reportico": 20,
         "kartik-v/yii2-editable": 20,
         "kartik-v/yii2-sortable-input": 20,
-        "yiisoft/yii2-queue": 20
+        "yiisoft/yii2-queue": 20,
+        "kop/yii2-scroll-pager": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

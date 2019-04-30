@@ -97,6 +97,7 @@ class ComposerStaticInitb2e31f2d92d734baadeb2c74aa89265e
         ),
         'k' => 
         array (
+            'kop\\y2sp\\' => 9,
             'kartik\\sortinput\\' => 17,
             'kartik\\sortable\\' => 16,
             'kartik\\select2\\' => 15,
@@ -403,6 +404,10 @@ class ComposerStaticInitb2e31f2d92d734baadeb2c74aa89265e
         'linslin\\yii2\\curl\\' => 
         array (
             0 => __DIR__ . '/..' . '/linslin/yii2-curl',
+        ),
+        'kop\\y2sp\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/kop/yii2-scroll-pager',
         ),
         'kartik\\sortinput\\' => 
         array (

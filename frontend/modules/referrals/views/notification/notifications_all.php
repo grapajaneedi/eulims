@@ -1,47 +1,39 @@
 <?php
 use yii\helpers\Html;
+use kartik\grid\GridView;
+use yii\widgets\ListView;
+use yii\widgets\Pjax;
 ?>
 
 <div class="notification-view notification-display">
 <div class="alert alert-info" style="border-bottom: 2px solid #555;margin-bottom:2px;">
   <strong style="color:#000;">List of Notifications</strong>
 </div>
-  <ul>
-	<?php if($count_notice > 0 && $count_notice > 3) : ?>
-	<!--<li class="label-action">Action is needed</li>-->
-		<?php foreach($notifications as $notification): ?>
-		<?php if($notification['owner'] == 1): ?>
-		<a href='<?= "/lab/request/view?id=".$notification['local_request_id'] ?>'><li>
-			<?= $notification['notice_sent'] ?><br>
-			<span class="notification-date"><?= date("d-M-Y g:i A", strtotime($notification['notification_date'])) ?></span>
-		</li></a>
-		<?php else: ?>
-		<a href='<?= "/referrals/referral/view?id=".$notification['referral_id']."&notice_id=".$notification['notice_id'] ?>'><li>
-			<?= $notification['notice_sent'] ?><br>
-			<span class="notification-date"><?= date("d-M-Y g:i A", strtotime($notification['notification_date'])) ?></span>
-		</li></a>
-		<?php endif; ?>
-		<?php endforeach; ?>
-		<button type="button" class="btn btn-primary btn-xs btn-block" style="font-size:13px;">Load more</button>
-	<?php elseif($count_notice > 0 && $count_notice <= 3): ?>
-		<?php foreach($notifications as $notification): ?>
-		<?php if($notification['owner'] == 1): ?>
-		<a href='<?= "/lab/request/view?id=".$notification['local_request_id']."&notice_id=".$notification['notice_id'] ?>'><li>
-			<?= $notification['notice_sent'] ?><br>
-			<span class="notification-date"><?= date("d-M-Y g:i A", strtotime($notification['notification_date'])) ?></span>
-		</li></a>
-		<?php else: ?>
-		<a href='<?= "/referrals/referral/view?id=".$notification['referral_id']."&notice_id=".$notification['notice_id'] ?>'><li>
-			<?= $notification['notice_sent'] ?><br>
-			<span class="notification-date"><?= date("d-M-Y g:i A", strtotime($notification['notification_date'])) ?></span>
-		</li></a>
-		<?php endif; ?>
-		<?php endforeach; ?>
-	<?php else: ?>
-		<li>No notification.</li>
-	<?php endif; ?>
-  </ul>
-
+<?php
+echo ListView::widget([
+    'dataProvider' => $notificationProvider,
+    'itemOptions' => ['class' => 'item'],
+    'itemView' => '_list_item',
+    //'viewParams' => ['notifications' => $notifications,'count_notice'=>$count_notice],
+    'viewParams' => ['count_notice'=>$count_notice],
+    'summary' => false,
+    'emptyText' => '<div style="padding:5px;font-size:12px;background-color:#bbb;">No notifications to be displayed.</div>',
+    'pager' => [
+    	'class' => \kop\y2sp\ScrollPager::className(),
+    	'spinnerSrc' => '/images/img-png-loader-24.png',
+    	'triggerText' => 'Load more',
+    	'triggerTemplate' => '<button type="button" class="btn btn-primary btn-xs btn-block" style="font-size:13px;">{text}</button>',
+    	'noneLeftText' => 'No more notifications left to load.',
+    	'noneLeftTemplate' => '<button type="button" class="btn btn-default btn-xs btn-block" style="font-size:12px;">{text}</button>',
+    	'enabledExtensions' => [
+    		\kop\y2sp\ScrollPager::EXTENSION_TRIGGER,
+    		\kop\y2sp\ScrollPager::EXTENSION_SPINNER,
+    		\kop\y2sp\ScrollPager::EXTENSION_NONE_LEFT,
+    		\kop\y2sp\ScrollPager::EXTENSION_PAGING,
+    	],
+    ]
+]);
+?>
 
 </div>
 

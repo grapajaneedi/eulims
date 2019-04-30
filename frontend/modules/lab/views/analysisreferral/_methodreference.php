@@ -44,7 +44,7 @@ use yii\helpers\Json;
                         'contentOptions' => ['class' => 'text-center','style'=>'max-width:20px;'],
                     ],
                     [
-                        //'attribute'=>'testname_method_id',
+                        'attribute'=>'method',
                         'header' => 'Method',
                         'enableSorting' => false,
                         'value' => function($data){

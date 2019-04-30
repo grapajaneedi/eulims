@@ -817,15 +817,22 @@ return array (
       '@yii/queue/sqs' => $vendorDir . '/yiisoft/yii2-queue/src/drivers/sqs',
     ),
   ),
-    
-    'kartik-v/yii2-datecontrol' => 
+  'kartik-v/yii2-datecontrol' => 
+  array (
+    'name' => 'kartik-v/yii2-datecontrol',
+    'version' => '1.9.7',
+    'alias' => 
     array (
-      'name' => 'kartik-v/yii2-datecontrol',
-      'version' => '1.9.7',
-      'alias' => 
-      array (
-        '@kartik/datecontrol/Module' => $vendorDir . '/kartik-v/yii2-datecontrol/Module',
-      ),
+      '@kartik/datecontrol/Module' => $vendorDir . '/kartik-v/yii2-datecontrol/Module',
     ),
-
+  ),
+  'kop/yii2-scroll-pager' => 
+  array (
+    'name' => 'kop/yii2-scroll-pager',
+    'version' => '9999999-dev',
+    'alias' => 
+    array (
+      '@kop/y2sp' => $vendorDir . '/kop/yii2-scroll-pager',
+    ),
+  ),
 );

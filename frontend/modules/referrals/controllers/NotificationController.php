@@ -11,6 +11,7 @@ use yii\filters\VerbFilter;
 use common\models\lab\exRequestreferral;
 use yii\helpers\Json;
 use common\components\ReferralComponent;
+use yii\data\ArrayDataProvider;
 
 /**
  * NotificationController implements the CRUD actions for Notification model.
@@ -45,11 +46,15 @@ class NotificationController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);*/
-        $rstlId = Yii::$app->user->identity->profile->rstl_id;
-        $refcomponent = new ReferralComponent();
-        $notification = json_decode($refcomponent->getNotificationAll($rstlId),true);
-        
-        $count = $notification['count_notification'];
+        if(isset(Yii::$app->user->identity->profile->rstl_id)){
+            $rstlId = Yii::$app->user->identity->profile->rstl_id;
+            $refcomponent = new ReferralComponent();
+            $notification = json_decode($refcomponent->getNotificationAll($rstlId),true);
+            $count = $notification['count_notification'];
+        } else {
+            //return 'Session time out!';
+            return $this->redirect(['/site/login']);
+        }
 
         //$unresponded_notification = !empty($notification['notification']) ? $notification['notification'] : null;
         $list = [];
@@ -83,33 +88,56 @@ class NotificationController extends Controller
             $list = [];
         }
 
+        $notificationDataProvider = new ArrayDataProvider([
+            //'key'=>'notification_id',
+            //'allModels' => $notification['notification'],
+            'allModels' => $list,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+            //'pagination'=>false,
+        ]);
+
+
         if(\Yii::$app->request->isAjax){
             return $this->renderAjax('notifications_all', [
-                'notifications' => $list,
+                //'notifications' => $list,
                 'count_notice' => $count,
+                'notificationProvider' => $notificationDataProvider,
             ]);
         } else {
             return $this->render('notifications_all', [
                 'notifications' => $list,
                 'count_notice' => $count,
+                'notificationProvider' => $notificationDataProvider,
             ]);
         }
     }
     //get unresponded notifications
     public function actionCount_unresponded_notification()
     {   
-        $rstlId = Yii::$app->user->identity->profile->rstl_id;
-        $refcomponent = new ReferralComponent();
-        $notification = json_decode($refcomponent->listUnrespondedNofication($rstlId));
-
+        
+        if(isset(Yii::$app->user->identity->profile->rstl_id)){
+            $rstlId = Yii::$app->user->identity->profile->rstl_id;
+            $refcomponent = new ReferralComponent();
+            $notification = json_decode($refcomponent->listUnrespondedNofication($rstlId));
+        } else {
+            //return 'Session time out!';
+            return $this->redirect(['/site/login']);
+        }
         return Json::encode(['num_notification'=>$notification->count_notification]);
     }
     //get list of unresponded notifications
     public function actionList_unresponded_notification()
     {
-        $rstlId = Yii::$app->user->identity->profile->rstl_id;
-        $refcomponent = new ReferralComponent();
-        $notification = json_decode($refcomponent->listUnrespondedNofication($rstlId),true);
+        if(isset(Yii::$app->user->identity->profile->rstl_id)){
+            $rstlId = Yii::$app->user->identity->profile->rstl_id;
+            $refcomponent = new ReferralComponent();
+            $notification = json_decode($refcomponent->listUnrespondedNofication($rstlId),true);
+        } else {
+            //return 'Session time out!';
+            return $this->redirect(['/site/login']);
+        }
 
         $unresponded_notification = !empty($notification['notification']) ? $notification['notification'] : null;
 
