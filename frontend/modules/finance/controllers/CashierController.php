@@ -858,4 +858,63 @@ class CashierController extends \yii\web\Controller
          }
          return;
      }
+     
+     public function actionAddextra($collectiontype_id,$receiptid) {
+        $paymentitem = [new Paymentitem()];
+        $func= new Functions();
+         if (Yii::$app->request->post()) {
+           
+            Model::loadMultiple($paymentitem, Yii::$app->request->post());
+              
+            $paymentitem = Model::createMultiple(Paymentitem::classname());
+            
+            $valid = Model::validateMultiple($paymentitem);
+            
+                $connection= Yii::$app->financedb;
+                $transaction = $connection->beginTransaction();
+                $connection->createCommand('set foreign_key_checks=0')->execute();
+                try {
+                    $posts=Yii::$app->request->post();
+                
+                     $total=0;
+                       $posts=$posts["Paymentitem"];
+                        foreach ($posts as $post) {
+                            $paymentitems = new Paymentitem();
+                            $paymentitems->rstl_id =$GLOBALS['rstl_id'];
+                            $paymentitems->request_id = 0;
+                            $paymentitems->orderofpayment_id = 0;
+                            $paymentitems->details=$post['details'];
+                            $paymentitems->amount=$post['amount'];
+                            $paymentitems->status=2; //Paid
+                            $paymentitems->receipt_id=$receiptid;
+                            $paymentitems->save(false);
+                            $total+=$post['amount'];
+                            
+                            $receipt= Receipt::findOne($receiptid);
+                            $or=$receipt->or_number;
+                            $source= "From Receipt #:$or";
+                            $customer_id=$receipt->customer_id;
+                            $func->SetWallet($customer_id, $total, $source,0);
+                        }
+                       $transaction->commit();
+                       $this->UpdateTotalReceipt($receiptid);//update total of receipt
+                       
+                       Yii::$app->session->setFlash('info','Excess amount will be credited to customer wallet!');
+                      
+                       //Yii::$app->session->setFlash('success','Successfully Saved');
+                       return $this->redirect(['/finance/cashier/viewreceipt', 'receiptid' => $receiptid]);
+                
+                } catch (Exception $e) {
+                    Yii::$app->session->setFlash('danger','Transaction failed');
+                    $transaction->rollBack();
+                }
+       }else{
+           if($collectiontype_id == 1 || $collectiontype_id == 2){
+              return $this->renderAjax('receipt/_form_paymentitem', [
+                'paymentitem' => (empty($paymentitem)) ? [new Paymentitem()] : $paymentitem
+                ]);
+             }
+       } 
+        
+    }
 }

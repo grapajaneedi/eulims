@@ -91,10 +91,10 @@ EOF;
 
     <?= Html::button('<span class="glyphicon glyphicon-plus"></span> Create Booking', ['value'=>'/lab/booking/create', 'class' => 'btn btn-success','title' => Yii::t('app', "Booking"),'id'=>'btnBooking','onclick'=>'addBooking(this.value,this.title)'])?>
     
-   
+  <?php $rstl_id= Yii::$app->user->identity->profile->rstl_id;?>  
 
    <?= \yii2fullcalendar\yii2fullcalendar::widget(array(
-          'events'=> Url::to(['/lab/booking/jsoncalendar?id=1']),
+          'events'=> Url::to(["/lab/booking/jsoncalendar?id=$rstl_id"]),
           'clientOptions' => [
                         'selectable' => true,
                         'selectHelper' => true,

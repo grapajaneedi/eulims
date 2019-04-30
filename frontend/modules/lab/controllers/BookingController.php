@@ -10,6 +10,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use frontend\modules\inventory\components\_class\Schedule;
 use common\models\lab\Customer;
+use yii\db\Query;
 /**
  * BookingController implements the CRUD actions for Booking model.
  */
@@ -38,7 +39,7 @@ class BookingController extends Controller
     {
         $searchModel = new BookingSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -66,11 +67,25 @@ class BookingController extends Controller
     public function actionCreate()
     {
         $model = new Booking();
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        $model->rstl_id= Yii::$app->user->identity->profile->rstl_id;
+        if ($model->load(Yii::$app->request->post())) {
+            $model->booking_reference=$this->Createreferencenum();
+            $model->scheduled_date;
+            $model->description;echo "<br>";
+            $model->rstl_id;
+            $model->date_created=date("Y-m-d");
+            if(isset($_POST['qty_sample'])){
+                $quantity = (int) $_POST['qty_sample'];
+            } else {
+                $quantity = 1;
+            }
+            $model->qty_sample=$quantity;
+            $model->customer_id;
+            
+            $model->save();
             return $this->redirect(['view', 'id' => $model->booking_id]);
         }
-
+        
         return $this->renderAjax('create', [
             'model' => $model,
         ]);
@@ -83,7 +98,7 @@ class BookingController extends Controller
     $events = array();
     
     //as of now get all the schedules
-    $schedules = Booking::find()->where(['booking_id'=>$id])->all(); 
+    $schedules = Booking::find()->where(['rstl_id'=>$id])->all(); 
  
     foreach ($schedules AS $schedule){
         $customer =Customer::find()->where(['customer_id'=>$schedule->customer_id])->one();
@@ -152,4 +167,19 @@ class BookingController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+    
+    public function Createreferencenum(){
+          $lastid=(new Query)
+            ->select('MAX(booking_id) AS lastnumber')
+            ->from('eulims_lab.tbl_booking')
+            ->one();
+          $lastnum=$lastid["lastnumber"]+1;
+          $rstl_id=Yii::$app->user->identity->profile->rstl_id;
+           
+          $string = Yii::$app->security->generateRandomString(9);
+        
+          $next_refnumber=$rstl_id.$string.$lastnum;//rstl_id+random strings+(lastid+1)
+          return $next_refnumber;
+     }
+     
 }
