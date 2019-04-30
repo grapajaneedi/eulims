@@ -48,15 +48,7 @@ use common\models\system\Rstl;
                  'pluginOptions' => [
                      'format' => 'yyyy-mm-dd',
                      'todayHighlight' => true,
-                    // 'autoclose'=>true,
-                     //'startDate' => date('Y-m-d'),
-                     //'endDate' => date('Y-m-d')
-                     'beforeShowDay'=>'js:function() {
-
-			var unavailableDates = ["4-17-2019", "4-23-2019", "4-18-2019"];
-			var weekend = [0, 6];
-
-	            }',
+                    
                  ]
              ]);
              ?>
