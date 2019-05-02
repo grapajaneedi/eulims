@@ -29,12 +29,9 @@ $this->params['breadcrumbs'][] = ['label' => 'Referrals', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 $cancelButton = "";
-//$confirm_save_button = ($notification['notification_type_id'] == 1 && $notification['responded'] == 0) ? "<div class='row' style='margin-left: 2px;padding-top: 5px'>".Html::button('<span class="glyphicon glyphicon-ok"></span> Confirm Referral Notification', ['value'=>Url::to(['/referrals/referral/confirm','local_request_id'=>$request['local_request_id'],'referral_id'=>$request['referral_id'],'notice_id'=>$notification['notification_id'],'sender_id'=>$notification['sender_id']]),'onclick'=>'confirmNotification(this.value,this.title)','class' => 'btn btn-primary','title' => 'Confirm Referral of '.$receiving_agency]) ? ( :"<h4><span class='label label-success' style='color:#000;'>Referral notification confirmed.</span></h4>".(($notification['notification_type_id'] == 3 && $notification['responded'] == 0)))
 if($notification['notification_type_id'] == 1 && $notification['responded'] == 0){
-    //$confirmButton = "<h4><span class='label label-success' style='color:#000;'>Referral notification confirmed.</span></h4>";
     $actionButtonConfirm = "<div class='row' style='margin-left: 2px;padding-top: 5px'>".Html::button('<span class="glyphicon glyphicon-ok"></span> Confirm Referral Notification', ['value'=>Url::to(['/referrals/referral/confirm','local_request_id'=>$request['local_request_id'],'referral_id'=>$request['referral_id'],'notice_id'=>$notification['notification_id'],'sender_id'=>$notification['sender_id']]),'onclick'=>'confirmNotification(this.value,this.title)','class' => 'btn btn-primary','title' => 'Confirm Referral of '.$receiving_agency]);
 } else {
-    //$actionButtonConfirm = "<h4><span class='label label-success' style='color:#000;'>Referral notification confirmed.</span></h4>";
     $actionButtonConfirm = "";
 }
 
@@ -165,11 +162,11 @@ if($notification['notification_type_id'] == 3 && $notification['responded'] == 0
                     'columns' => [
                         [
                             'label'=>'Deposite Slip',
-                            'value'=>function() use ($depositslip,$model){
+                            'value'=>function() use ($depositslip,$model,$request){
                                 $link = '';
                                 if($depositslip > 0){
                                     foreach ($depositslip as $deposit) {
-                                        $link .= Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$deposit['filename'],'/referrals/attachment/download?request_id='.$model->request_id.'&file='.$deposit['attachment_id'], ['style'=>'font-size:12px;color:#000077;font-weight:bold;','title'=>'Download Deposit Slip','target'=>'_self'])."<br>";
+                                        $link .= Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$deposit['filename'],'/referrals/attachment/download?request_id='.$request['local_request_id'].'&file='.$deposit['attachment_id'], ['style'=>'font-size:12px;color:#000077;font-weight:bold;','title'=>'Download Deposit Slip','target'=>'_self'])."<br>";
                                     }
                                 }
                                 return $link;
@@ -182,11 +179,11 @@ if($notification['notification_type_id'] == 3 && $notification['responded'] == 0
                         [
                             'label'=>'Official Receipt',
                             'format'=>'raw',
-                            'value'=>function() use ($officialreceipt,$model){
+                            'value'=>function() use ($officialreceipt,$model,$request){
                                 $link = '';
                                 if($officialreceipt > 0){
                                     foreach ($officialreceipt as $or) {
-                                        $link .= Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$or['filename'],'/referrals/attachment/download?request_id='.$model->request_id.'&file='.$or['attachment_id'], ['style'=>'font-size:12px;color:#000077;font-weight:bold;','title'=>'Download Official Receipt','target'=>'_self'])."<br>";
+                                        $link .= Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$or['filename'],'/referrals/attachment/download?request_id='.$request['local_request_id'].'&file='.$or['attachment_id'], ['style'=>'font-size:12px;color:#000077;font-weight:bold;','title'=>'Download Official Receipt','target'=>'_self'])."<br>";
                                     }
                                 }
                                 return $link;
@@ -295,18 +292,12 @@ if($notification['notification_type_id'] == 3 && $notification['responded'] == 0
                 'header'=>'Sample',
                 'format' => 'raw',
                 'enableSorting' => false,
-                /*'value' => function($model) {
-                    //return $model->sample ? $model->sample->samplename : '-';
-                },*/
                 'contentOptions' => ['style' => 'width:10%; white-space: normal;'],
                
             ],
             [
                 'attribute'=>'sample_code',
                 'header'=>'Sample Code',
-                /*'value' => function($model) {
-                    //return $model->sample ? $model->sample->sample_code : '-';
-                },*/
                 'format' => 'raw',
                 'enableSorting' => false,
                 'contentOptions' => ['style' => 'width:10%; white-space: normal;'],
@@ -350,39 +341,6 @@ if($notification['notification_type_id'] == 3 && $notification['responded'] == 0
                     }
                 },
             ],
-            /*[
-                'header'=>'Status',
-                'hAlign'=>'center',
-                'format'=>'raw',
-                'value' => function($model) {
-              
-                  if ($model->tagging){
-
-                   if ($model->tagging->tagging_status_id==1) {
-                          return "<span class='badge btn-primary' style='width:90px;height:20px'>ONGOING</span>";
-                      }else if ($model->tagging->tagging_status_id==2) {
-                          return "<span class='badge btn-success' style='width:90px;height:20px'>COMPLETED</span>";
-                      }
-                      else if ($model->tagging->tagging_status_id==3) {
-                          return "<span class='badge btn-warning' style='width:90px;height:20px'>ASSIGNED</span>";
-                      }
-                      else if ($model->tagging->tagging_status_id==4) {
-                          return "<span class='badge btn-danger' style='width:90px;height:20px'>CANCELLED</span>";
-                      }
-                       
-                
-                  }else{
-                      return "<span class='badge badge-success' style='width:80px!important;height:20px!important;'>PENDING</span>";
-                  }
-                 
-                },
-                'enableSorting' => false,
-                'contentOptions' => ['style' => 'width:10px; white-space: normal;'],
-            ],*/
-            /*[
-                'class' => 'kartik\grid\ActionColumn',
-                'contentOptions' => ['style' => 'width: 8.7%'],
-            ],*/
         ];
             echo GridView::widget([
                 'id' => 'analysis-grid',
@@ -406,7 +364,6 @@ if($notification['notification_type_id'] == 3 && $notification['responded'] == 0
                     'before'=> null,
                    'after'=> false,
                    'footer'=>$actionButtonConfirm.$actionButtonSaveLocal,
-                   //'footer'=>($model->request_type_id == 2 || $notified == 0) ? "":"<div class='row' style='margin-left: 2px;padding-top: 5px'><button ".$disableButton." value='/lab/request/saverequestransaction' ".$btnID." class='btn btn-success'><i class='fa fa-save'></i> Save Request</button>".$EnablePrint."</div>",
                 ],
                 'columns' => $analysisgridColumns,
                 'toolbar' => [
@@ -446,32 +403,14 @@ if($notification['notification_type_id'] == 3 && $notification['responded'] == 0
             var agency_name = "<span style='font-size:10px;color:#757575;'>...No agency to be displayed...</span>";
         }
 
-        /*$.ajax({
-            url: url,
-            success: function (data) {
-                $('.image-loader').removeClass('img-loader');
-                //alert(data);
-                var url = '/lab/analysisreferral/update?id='+id+'&request_id='+requestId+'&page='+data;
-                $('.modal-title').html(title);
-                $('#modalAnalysis').modal('show')
-                    .find('#modalContent')
-                    .load(url);
-            },
-            beforeSend: function (xhr) {
-                $('.image-loader').addClass('img-loader');
-            }
-        });*/
-
         BootstrapDialog.show({
             title: "<span class='glyphicon glyphicon-send'></span>&nbsp;&nbsp;" + header_title,
             message: "<p class='note' style='margin:15px 0 0 15px;font-weight:bold;color:#990000;font-size:14px;'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:17px;'></span> Are you sure you want to confirm the referral notification of <span class='agency-name' style='color:#000000;'>"+agency_name+"</span>?</p>",
             buttons: [
                 {
                     label: 'Proceed',
-                    // no title as it is optional
                     cssClass: 'btn-primary',
                     action: function(thisDialog){
-                        //alert('Hi Orange!');
                         thisDialog.close();
                         $('.modal-title').html(header_title);
                         $('#modal').modal('show')

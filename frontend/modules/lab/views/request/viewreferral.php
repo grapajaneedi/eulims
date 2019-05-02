@@ -163,7 +163,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                         [
                             'label'=>'Customer / Agency',
                             'format'=>'raw',
-                            //'value'=> $model->customer ? $model->customer->customer_name : "",
                             'value'=> !empty($customer['customer_name']) ? $customer['customer_name'] : "",
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
@@ -182,7 +181,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                         [
                             'label'=>'Address',
                             'format'=>'raw',
-                            //'value'=>$model->customer ? $model->customer->address : "",
                             'value'=>!empty($customer['address']) ? $customer['address'] : "",
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
@@ -203,7 +201,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                         [
                             'label'=>'Tel no.',
                             'format'=>'raw',
-                            //'value'=>$model->customer ? $model->customer->tel : "",
                             'value'=>!empty($customer['tel']) ? $customer['tel'] : "",
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
@@ -223,7 +220,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                         [
                             'label'=>'Fax no.',
                             'format'=>'raw',
-                            //'value'=>$model->customer ? $model->customer->fax : "",
                             'value'=>!empty($customer['fax']) ? $customer['fax'] : "",
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
@@ -233,7 +229,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                 [
                     'columns' => [
                         [
-                            //'attribute'=>'report_due',
                             'label'=>'Referred by',
                             'format'=>'raw',
                             'value'=> !empty($as_receiving) ? $as_receiving : null,
@@ -242,7 +237,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                         [
                             'label'=>'Referred to',
                             'format'=>'raw',
-                            //'value'=>$model->customer ? $model->customer->fax : "",
                             'value'=> !empty($as_testing) ? $as_testing : null,
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
@@ -258,17 +252,12 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                     'columns' => [
                         [
                             'label'=>'Deposit Slip',
-                            //'value'=>$orNumbers,
-                            //'value'=>null,
                             'format' => 'raw',
-                            //'value'=> Html::button('<span class="glyphicon glyphicon-upload"></span> Upload', ['value'=>Url::to(['/referrals/attachment/upload_deposit','referral_id'=>$model->referral_id,'request_id'=>$model->request_id]), 'onclick'=>'upload(this.value,this.title)', 'class' => 'btn btn-primary btn-xs','title' => 'Upload Deposit Slip']),
                             'value'=>function() use ($depositslip,$model){
                                 $link = '';
-                                $link .= !empty($model->request_ref_num) ? Html::button('<span class="glyphicon glyphicon-upload"></span> Upload', ['value'=>Url::to(['/referrals/attachment/upload_deposit','referral_id'=>$model->referral_id,'request_id'=>$model->request_id]), 'onclick'=>'upload(this.value,this.title)', 'class' => 'btn btn-primary btn-xs','title' => 'Upload Deposit Slip']) : '';
+                                $link .= !empty($model->request_ref_num) && $model->referralrequest->referral_type_id == 1 ? Html::button('<span class="glyphicon glyphicon-upload"></span> Upload', ['value'=>Url::to(['/referrals/attachment/upload_deposit','referral_id'=>$model->referral_id,'request_id'=>$model->request_id]), 'onclick'=>'upload(this.value,this.title)', 'class' => 'btn btn-primary btn-xs','title' => 'Upload Deposit Slip']) : '';
                                 if($depositslip > 0){
                                     foreach ($depositslip as $deposit) {
-                                        //$link .= "<br>".Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$deposit['filename'], 'http://eulimsapi.onelab.ph/attachment_uploads/'.$model->request_ref_num.'/'.$deposit['filename'], ['style'=>'font-size:12px;','title'=>'Download Deposit Slip']);
-                                        //$link .= "<br>".Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$deposit['filename'],'/referrals/attachment/download?request_id='.$model->request_id.'&file='.$deposit['filename'], ['style'=>'font-size:12px;color:#000077;','title'=>'Download Deposit Slip','target'=>'_blank']);
                                         $link .= "<br>".Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$deposit['filename'],'/referrals/attachment/download?request_id='.$model->request_id.'&file='.$deposit['attachment_id'], ['style'=>'font-size:12px;color:#000077;font-weight:bold;','title'=>'Download Deposit Slip','target'=>'_self']);
 
                                     }
@@ -283,12 +272,9 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                         [
                             'label'=>'Official Receipt',
                             'format'=>'raw',
-                            //'value'=>$payment_total,
-                            //'value'=>null,
-                            //'value'=> Html::button('<span class="glyphicon glyphicon-upload"></span> Upload', ['value'=>Url::to(['/referrals/attachment/upload_or','referral_id'=>$model->referral_id,'request_id'=>$model->request_id]), 'onclick'=>'upload(this.value,this.title)', 'class' => 'btn btn-primary btn-xs','title' => 'Upload Official Receipt']),
                             'value'=>function() use ($officialreceipt,$model){
                                 $link = '';
-                                $link .= !empty($model->request_ref_num) ? Html::button('<span class="glyphicon glyphicon-upload"></span> Upload', ['value'=>Url::to(['/referrals/attachment/upload_or','referral_id'=>$model->referral_id,'request_id'=>$model->request_id]), 'onclick'=>'upload(this.value,this.title)', 'class' => 'btn btn-primary btn-xs','title' => 'Upload Official Receipt']) : '';
+                                $link .= !empty($model->request_ref_num) && $model->referralrequest->referral_type_id == 2 ? Html::button('<span class="glyphicon glyphicon-upload"></span> Upload', ['value'=>Url::to(['/referrals/attachment/upload_or','referral_id'=>$model->referral_id,'request_id'=>$model->request_id]), 'onclick'=>'upload(this.value,this.title)', 'class' => 'btn btn-primary btn-xs','title' => 'Upload Official Receipt']) : '';
                                 if($officialreceipt > 0){
                                     foreach ($officialreceipt as $or) {
                                         $link .= "<br>".Html::a('<span class="glyphicon glyphicon-save-file"></span> '.$or['filename'],'/referrals/attachment/download?request_id='.$model->request_id.'&file='.$or['attachment_id'], ['style'=>'font-size:12px;color:#000077;font-weight:bold;','title'=>'Download Official Receipt','target'=>'_self']);
@@ -303,25 +289,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                             //'vAlign' => 'right',
                         ],
                     ],
-                ],
-                /*[
-                    'columns' => [
-                        [
-                            'label'=>'OR Date',
-                            'value'=>$orDate,
-                            'displayOnly'=>true,
-                            'valueColOptions'=>['style'=>'width:30%']
-                        ],
-                        [
-                            'label'=>'Unpaid Balance',
-                            'format'=>'raw',
-                            'value'=>"₱".$UnpaidBalance,
-                            'valueColOptions'=>['style'=>'width:30%'], 
-                            'displayOnly'=>true
-                        ],
-                    ],
-                ],*/
-                
+                ],   
                 [
                     'group'=>true,
                     'label'=>'Transaction Details',
@@ -440,10 +408,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                     'before'=>($requeststatus > 0 && $notified == 0 && $hasTestingAgency == 0 && trim($model->request_ref_num) == "" && $checkTesting == 0) ? Html::button('<i class="glyphicon glyphicon-plus"></i> Add Sample', ['disabled'=>$enableRequest, 'value' => Url::to(['sample/create','request_id'=>$model->request_id]),'title'=>'Add Sample', 'onclick'=>'addSample(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn']) : Html::button('<i class="glyphicon glyphicon-print"></i> Print Label', ['disabled'=>!$enableRequest, 'onclick'=>"window.location.href = '" . \Yii::$app->urlManager->createUrl(['/reports/preview?url=/lab/request/printlabel','request_id'=>$model->request_id]) . "';" ,'title'=>'Print Label', 'class' => 'btn btn-success'])." ".$btnGetSamplecode,
                     'after'=>false,
                 ],
-                /*'krajeeDialogSettings' => [ 
-                    'options' => ['title' => 'Your sssse'],
-                    'overrideYiiConfirm' => false,
-                ],*/
                 'columns' => $gridColumns,
                 'toolbar' => [
                     'content'=> Html::a('<i class="glyphicon glyphicon-repeat"></i> Refresh Grid', [Url::to(['request/view','id'=>$model->request_id])], [
@@ -466,81 +430,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
             $enableRequest = false;
         }
 
-        /*if($model->type_fee_id == 2){
-            $packageName = [
-                'header'=>'Package',
-                'format' => 'raw',
-                'enableSorting' => false,
-                'value' => function($model) {
-                    return $model->sample ? $model->sample->samplename : '-';
-                },
-                'contentOptions' => ['style' => 'width:10%; white-space: normal;'],
-            ];
-        } else {
-            $packageName = [
-                'attribute'=>'testname',
-                'header'=>'Test/ Calibration Requested',
-                'contentOptions' => ['style' => 'width: 15%;word-wrap: break-word;white-space:pre-line;'],
-                'enableSorting' => false,
-                'format' => 'raw',
-            ];
-        }*/
-
         $analysisgridColumns = [
-            /*[
-                'attribute' => 'package_id', 
-                'width' => '310px',
-                'value' => function ($model, $key, $index, $widget) {
-                    return $model->sample->package_name;
-                },
-                'filterType' => GridView::FILTER_SELECT2,
-                'filter' => ArrayHelper::map(Suppliers::find()->orderBy('company_name')->asArray()->all(), 'id', 'company_name'), 
-                'filterWidgetOptions' => [
-                    'pluginOptions' => ['allowClear' => true],
-                ],
-                'filterInputOptions' => ['placeholder' => 'Any supplier'],
-                'group' => true,  // enable grouping
-                'groupHeader' => function ($model, $key, $index, $widget) { // Closure method
-                    return [
-                        'mergeColumns' => [[0,3]], // columns to merge in summary
-                        'content' => [             // content to show in each summary cell
-                            1 => 'Summary (' . $model->sample->package_name . ')',
-                            4 => GridView::F_AVG,
-                            5 => GridView::F_SUM,
-                            6 => GridView::F_SUM,
-                        ],
-                        'contentFormats' => [      // content reformatting for each summary cell
-                            4 => ['format' => 'number', 'decimals' => 2],
-                            5 => ['format' => 'number', 'decimals' => 0],
-                            6 => ['format' => 'number', 'decimals' => 2],
-                        ],
-                        'contentOptions' => [      // content html attributes for each summary cell
-                            1 => ['style' => 'font-variant:small-caps'],
-                            4 => ['style' => 'text-align:right'],
-                            5 => ['style' => 'text-align:right'],
-                            6 => ['style' => 'text-align:right'],
-                        ],
-                        // html attributes for group summary row
-                        'options' => ['class' => 'info table-info','style' => 'font-weight:bold;']
-                    ];
-                },
-                //'visible'=>0,
-            ],*/
-            /*[
-                'attribute' => 'package_name',
-                'header' => 'Package Name',
-                'width' => '310px',
-                'value' => function ($model, $key, $index, $widget) {
-                    return $model->sample->package_name;
-                },
-                //'group' => true,  // enable grouping,
-                //'groupedRow' => true,                    // move grouped column to a single grouped row
-                //'groupOddCssClass' => 'kv-grouped-row',  // configure odd group cell css class
-                //'groupEvenCssClass' => 'kv-grouped-row', // configure even group cell css class
-                'group' => function($model){
-                    return !empty($model->sample->package_id) && ($model->type_fee_id == 2) ? true : false;
-                },
-            ],*/
             [
                 'attribute'=>'sample_name',
                 'header'=>'Sample',
@@ -568,7 +458,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                 'enableSorting' => false,
                 'format' => 'raw',
                 'value' => function($model) {
-                    //return $model->type_fee_id == 2 && $model->is_package_name == 1 ? $model->package_name : "&nbsp;&nbsp;".$model->testname;
                     if($model->type_fee_id == 2 && $model->is_package_name == 1){
                         return $model->package_name;
                     } elseif($model->type_fee_id == 2 && $model->is_package_name == 0){
@@ -585,7 +474,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                 'contentOptions' => ['style' => 'width: 50%;word-wrap: break-word;white-space:pre-line;'],
                 'format' => 'raw',
                 'value' => function($model) {
-                    //return ($model->type_fee_id == 2 && $model->is_package_name == 1) ? '-' : "<span style='font-size:12px;'>".$model->method."</span>";
                     if($model->type_fee_id == 2 && $model->is_package_name == 1){
                         return '-';
                     } elseif($model->type_fee_id == 2 && $model->is_package_name == 0){
@@ -602,7 +490,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                 'enableSorting' => false,
                 'format' => 'raw',
                 'value' => function($model) {
-                    //return $model->type_fee_id == 2 ? '-' : $model->quantity;
                     if($model->type_fee_id == 2 && $model->is_package_name == 1){
                         return 1;
                     } elseif($model->type_fee_id == 2 && $model->is_package_name == 0){
@@ -614,18 +501,12 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                 'pageSummary' => '<span style="float:right";>SUBTOTAL<BR>DISCOUNT<BR><B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TOTAL</B></span>',       
             ],
             [
-                //'attribute'=>'fee',
-                //'attribute'=>'sample_id',
                 'header'=>'Unit Price',
                 'enableSorting' => false,
                 'hAlign'=>'right',
                 'value'=>function($model){
-                    //return number_format($model->fee,2);
                     return ($model->type_fee_id == 2 && $model->is_package_name == 0) ? '-' : number_format($model->fee,2);
                 },
-                /*'group' => function($model) {
-                    return $model->type_fee_id == 2 ? true : false;
-                },*/
                 'contentOptions' => [
                     'style'=>'max-width:80px; overflow: auto; white-space: normal; word-wrap: break-word;'
                 ],
@@ -676,8 +557,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                 'template' => $analysistemplate,
                 'buttons'=>[
                     'update'=>function ($url, $model) use ($requeststatus,$notified,$checkTesting) {
-                        //return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/analysisreferral/update','id'=>$model->analysis_id,'request_id'=>$model->request_id,'page'=>3]), 'onclick'=>'updateAnalysisReferral('.$model->analysis_id.',this.value,this.title)', 'class' => 'btn btn-primary','title' => 'Update Analysis']);
-                        //return ($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id != 2) ? Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['onclick'=>'updateAnalysisReferral('.$model->analysis_id.','.$model->request_id.',this.title)', 'class' => 'btn btn-primary','title' => 'Update Analysis']) : null;
                         if($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id != 2){
                             return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['onclick'=>'updateAnalysisReferral('.$model->analysis_id.','.$model->request_id.',this.title)', 'class' => 'btn btn-primary','title' => 'Update Analysis']);
                         } elseif($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id == 2 && $model->is_package_name == 1) {
@@ -687,10 +566,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                         }
                     },
                     'delete'=>function ($url, $model) use ($requeststatus,$notified,$checkTesting) {
-                        //$urls = '/lab/analysis/delete?id='.$model->analysis_id;
-                        //$packageUrl = '/lab/analysisreferral/deletepackage?id='.$model->sample_id.'&package_id='.$model->package_id;
-                        //return ($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id == 2) ? Html::a('<span class="glyphicon glyphicon-trash"></span>', $urls,['data-confirm'=>"Are you sure you want to delete this record?<b></b>", 'data-method'=>'post', 'class'=>'btn btn-danger','title'=>'Delete Analysis','data-pjax'=>'0']) : null;
-                       // return Html::button('<span class="glyphicon glyphicon-trash"></span>', ['value'=>Url::to(['/lab/analysis/delete','id'=>$model->analysis_id]), 'class' => 'btn btn-danger']);
                         if($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id != 2 && $model->is_package_name == 0){
                             return Html::a('<span class="glyphicon glyphicon-trash"></span>', '/lab/analysisreferral/delete?id='.$model->analysis_id,['data-confirm'=>"Are you sure you want to delete this analysis?<b></b>", 'data-method'=>'post', 'class'=>'btn btn-danger','title'=>'Delete Analysis','data-pjax'=>'0']);
                         } elseif($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id == 2 && $model->is_package_name == 1) {
@@ -701,19 +576,9 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                     },
                     'view' => function ($url, $model) use ($requeststatus) {
                         return ($requeststatus > 0 && $model->is_package_name == 0) ? Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['/lab/analysisreferral/view','id'=>$model->analysis_id]), 'onclick'=>'viewAnalysisReferral(this.value,this.title)', 'class' => 'btn btn-primary','title' => 'View Analysis']) : null;
-                        /*if($requeststatus > 0 && $model->type_fee_id != 2){
-                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', $urls,['data-confirm'=>"Are you sure you want to delete this analysis?<b></b>", 'data-method'=>'post', 'class'=>'btn btn-danger','title'=>'Delete Analysis','data-pjax'=>'0']);
-                        } elseif($requeststatus > 0 && $notified == 0 && $checkTesting == 0 && $model->type_fee_id == 2 && $model->is_package_name == 1) {
-                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', $packageUrl,['data-confirm'=>"This will delete all the analyses under this package. Click OK to proceed. <b></b>", 'data-method'=>'post', 'class'=>'btn btn-danger','title'=>'Delete Package','data-pjax'=>'0']);
-                        } else {
-                            return null;
-                        }*/
                     },
                 ],
             ],
-            /*'group' => function($model) {
-                return $model->type_fee_id == 2 ? true : false;
-            },*/
         ];
             echo GridView::widget([
                 'id' => 'analysis-grid',
@@ -735,10 +600,8 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                     'heading'=>'<h3 class="panel-title">Analysis</h3>',
                     'type'=>'primary',
                     'before'=>($requeststatus > 0 && $notified == 0 && $hasTestingAgency == 0 && trim($model->request_ref_num) == "") ? Html::button('<i class="glyphicon glyphicon-plus"></i> Add Analysis', ['disabled'=>$enableRequest,'value' => $model->request_type_id == 2 ? Url::to(['analysisreferral/create','request_id'=>$model->request_id]) : "",'title'=>'Add Analyses', 'onclick'=> $model->request_type_id == 2 ? $ClickButtonAnalysisReferral : "", 'class' => 'btn btn-success','id' => 'btn_add_analysis'])."   ".
-                    Html::button('<i class="glyphicon glyphicon-plus"></i> Add Package', ['disabled'=>$enableRequest,'value' => Url::to(['analysisreferral/package','request_id'=>$model->request_id]),'title'=>'Add Package', 'onclick'=>$ClickButtonAnalysisReferral, 'class' => 'btn btn-success','id' => 'btn_add_package']) /*." ".
-                    Html::button('<i class="glyphicon glyphicon-plus"></i> Additional Fees', ['disabled'=>$enableRequest,'value' => Url::to(['/lab/fee/create','id'=>$model->request_id]),'title'=>'Add Additional Fees', 'onclick'=>$ClickButton, 'class' => 'btn btn-success','id' => 'btn_add_fees'])*/ : null,
+                    Html::button('<i class="glyphicon glyphicon-plus"></i> Add Package', ['disabled'=>$enableRequest,'value' => Url::to(['analysisreferral/package','request_id'=>$model->request_id]),'title'=>'Add Package', 'onclick'=>$ClickButtonAnalysisReferral, 'class' => 'btn btn-success','id' => 'btn_add_package']) : null,
                    'after'=>false,
-                   //'footer'=>($model->request_type_id == 2 || $requeststatus <= 0) ? "":"<div class='row' style='margin-left: 2px;padding-top: 5px'><button ".$disableButton." value='/lab/request/saverequestransaction' ".$btnID." class='btn btn-success'><i class='fa fa-save'></i> Save Request</button>".$EnablePrint."</div>",
                    'footer'=>(($model->request_type_id == 2 && $notified == 1 && $hasTestingAgency > 0 && trim($model->request_ref_num) != "") || $checkTesting == 1) ? "<div class='row' style='margin-left: 2px;padding-top: 5px'>".$EnablePrint."</div>" : null,
                 ],
                 'columns' => $analysisgridColumns,
@@ -773,7 +636,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                     'header' => 'Estimated due date',
                     'enableSorting' => false,
                     'value' => function($data) use ($model,$referralcomp,$rstlId){
-                        //return ($data->request->lab_id == 2) ? "Sampling Date: <span style='color:#000077;'><b>".date("Y-m-d h:i A",strtotime($data->sampling_date))."</b></span>,&nbsp;".$data->description : $data->description;
                         $estimated_due = json_decode($referralcomp->getDuedate($model->request_id,$rstlId,$data['agency_id']),true);
 
                         return $estimated_due == 0 ? null : date('F j, Y',strtotime($estimated_due));
@@ -794,9 +656,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                             $checkActive = $referralcomp->checkActiveLab($model->lab_id,$data['agency_id']);
                             $checkNotify = $referralcomp->checkNotify($model->request_id,$data['agency_id']);
                             $checkConfirm = $referralcomp->checkConfirm($model->request_id,$rstlId,$data['agency_id']);
-
-                            //return $checkConfirm; 
-                            //exit;
 
                             if($model->status_id > 0) {
                                 switch ($checkNotify) {
@@ -841,7 +700,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                 'panel' => [
                     'heading'=>'<h3 class="panel-title">Agency</h3>',
                     'type'=>'primary',
-                    //'before'=>Html::button('<i class="glyphicon glyphicon-plus"></i> Add Sample', ['disabled'=>$enableRequest, 'value' => Url::to(['sample/create','request_id'=>$model->request_id]),'title'=>'Add Sample', 'onclick'=>'addSample(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn'])." ".Html::button('<i class="glyphicon glyphicon-print"></i> Print Label', ['disabled'=>!$enableRequest, 'onclick'=>"window.location.href = '" . \Yii::$app->urlManager->createUrl(['/reports/preview?url=/lab/request/printlabel','request_id'=>$model->request_id]) . "';" ,'title'=>'Print Label',  'class' => 'btn btn-success']),
                     'before'=>'<p class="text-primary"><strong>Note:</strong> Agency that offers the testname and method.</p>',
                     'after'=>false,
                 ],
@@ -859,14 +717,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
         </div>
     </div>
     <?php endif; ?>
-<?php  
-    //echo ListView::widget([
-    //    'dataProvider' => $dataProvider,
-    //    'itemOptions' => ['class' => 'item'],
-    //    'itemView' => '_item_view',
-        //'pager' => ['class' => ScrollPager::className()]
-    //]);
-?>
+
     <div class="container">
         <div class="table-responsive">
         <?php
@@ -1017,21 +868,10 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
         });
     }
     function updatePackageReferral(packageId,sampleId,requestId,url,title){
-        // $.ajax({
-        //     url: '/lab/analysisreferral/getdefaultpage?analysis_id='+id,
-        //     success: function (data) {
-        //         $('.image-loader').removeClass('img-loader');
-        //         //alert(data);
-        //         var url = '/lab/analysisreferral/update?id='+id+'&request_id='+requestId+'&page='+data;
-                $('.modal-title').html(title);
-                $('#modalAnalysis').modal('show')
-                    .find('#modalContent')
-                    .load(url);
-        //     },
-        //     beforeSend: function (xhr) {
-        //         $('.image-loader').addClass('img-loader');
-        //     }
-        // });
+        $('.modal-title').html(title);
+        $('#modalAnalysis').modal('show')
+            .find('#modalContent')
+            .load(url);
     }
     function viewAnalysisReferral(url,title){
         $('.modal-title').html(title);
@@ -1077,10 +917,8 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
             buttons: [
                 {
                     label: 'Send',
-                    // no title as it is optional
                     cssClass: 'btn-primary',
                     action: function(thisDialog){
-                        //alert('Hi Orange!');
                         thisDialog.close();
                         $('.modal-title').html(header_title);
                         $('#modal').modal('show')
@@ -1120,30 +958,13 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
             buttons: [
                 {
                     label: 'Send',
-                    // no title as it is optional
                     cssClass: 'btn-primary',
                     action: function(thisDialog){
-                        //alert('Hi Orange!');
                         thisDialog.close();
                         $('.modal-title').html(header_title);
                         $('#modal').modal('show')
                            .find('#modalContent')
                            .load(url);
-                        /*$.ajax({
-                            url: '/lab/analysisreferral/getdefaultpage?analysis_id='+id,
-                            success: function (data) {
-                                $('.image-loader').removeClass('img-loader');
-                                //alert(data);
-                                var url = '/lab/analysisreferral/update?id='+id+'&request_id='+requestId+'&page='+data;
-                                $('.modal-title').html(title);
-                                $('#modalAnalysis').modal('show')
-                                    .find('#modalContent')
-                                    .load(url);
-                            },
-                            beforeSend: function (xhr) {
-                                $('.image-loader').addClass('img-loader');
-                            }
-                        });*/
                     }
                 }, 
                 {
