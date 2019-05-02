@@ -243,17 +243,7 @@ class ReferralController extends Controller
     public function actionCreate()
     {
         $model = new Referral();
-
-        //if ($model->load(Yii::$app->request->post()) && $model->save()) {
-        //    return $this->redirect(['view', 'id' => $model->referral_id]);
-        //}
-
         if ($model->load(Yii::$app->request->post())) {
-            /*if(isset($_POST['Sample']['sampling_date'])){
-                $model->sampling_date = date('Y-m-d H:i:s', strtotime($_POST['Sample']['sampling_date']));
-            } else {
-                $model->sampling_date = date('Y-m-d H:i:s');
-            }*/
             $model->referral_date = '0000-00-00';
             $model->referral_time = '';
 
@@ -265,24 +255,12 @@ class ReferralController extends Controller
         } elseif (Yii::$app->request->isAjax) {
                 return $this->renderAjax('_form', [
                     'model' => $model,
-                    //'testcategory' => $testcategory,
-                    //'sampletype' => $sampletype,
-                    //'labId' => $labId,
-                    //'sampletemplate' => $this->listSampletemplate(),
                 ]);
         } else {
             return $this->render('update', [
                 'model' => $model,
-                //'testcategory' => $testcategory,
-                //'sampletype' => $sampletype,
-                //'labId' => $labId,
-                //'sampletemplate' => $this->listSampletemplate(),
             ]);
         }
-
-        //return $this->render('create', [
-        //    'model' => $model,
-        //]);
     }
 
     /**
@@ -440,7 +418,6 @@ class ReferralController extends Controller
 
                     $data = Json::encode(['request_data'=>$requestData,'sample_data'=>$sample_data,'analysis_data'=>$analysis_data,'agency_id'=>$agency_id],JSON_NUMERIC_CHECK);
 
-                    //$referralUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/referrals/insertreferraldata';
                     $referralUrl='https://eulimsapi.onelab.ph/api/web/referral/referrals/insertreferraldata';
                    
                     $curl = new curl\Curl();
@@ -484,7 +461,6 @@ class ReferralController extends Controller
                             ];
                             $notificationData = Json::encode(['notice_details'=>$details],JSON_NUMERIC_CHECK);
 
-                            //$notificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/notifications/notify';
                             $notificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/notifications/notify';
 
                             $curlNoti = new curl\Curl();
@@ -505,8 +481,6 @@ class ReferralController extends Controller
                                         //delay for 2 seconds, before executing next line of code
                                         sleep(2);
                                         return $this->redirect(['/lab/request/view', 'id' => $requestId]);
-                                        //header("refresh:2;url=/lab/request/view?id=".$requestId);
-                                        //echo 'Notification sent.';
                                     } else {
                                         $transaction->rollBack();
                                         return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Notification Fail: Error occured when sending!</div>";
@@ -518,8 +492,6 @@ class ReferralController extends Controller
                                     //delay for 2 seconds, before executing next line of code
                                     sleep(2);
                                     return $this->redirect(['/lab/request/view', 'id' => $requestId]);
-                                    //echo 'Notification sent.';
-                                    //header("refresh:2;url=/lab/request/view?id=".$requestId);
                                 }
                             } else {
                                 $transaction->rollBack();
@@ -567,7 +539,6 @@ class ReferralController extends Controller
                     ];
                     $notificationData = Json::encode(['notice_details'=>$details],JSON_NUMERIC_CHECK);
 
-                    //$notificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/notifications/confirm';
                     $notificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/notifications/confirm';
 
                     $curlNoti = new curl\Curl();
@@ -580,8 +551,6 @@ class ReferralController extends Controller
                     if($notificationResponse > 0){
                         $transaction->commit();
                         Yii::$app->session->setFlash('success', "Confirmation sent");
-                        //return $this->redirect(['/referrals/referral/view', 'id' => $referralId,'']);
-                        ///referrals/referral/view?id=".$notification['referral_id']."&notice_id=".$notification['notice_id']
                         return $this->redirect(['/referrals/notification']);
                     } else {
                         $transaction->rollBack();
@@ -630,22 +599,6 @@ class ReferralController extends Controller
 
         $generateCode = $this->generateCode($rstlId,$requestId,$labId,$year);
 
-        //if($generateCode == 1){
-            //$modelSample = Sample::find()->where(['sample_id'=>$sample['sample_id'],'request_id'=>$requestId])->one();
-            //$modelSample->sample_month = date('m', strtotime($request->request_datetime));
-            //$modelSample->sample_year = date('Y', strtotime($request->request_datetime));
-
-            //if(!$modelSample->save(false)){
-                //$transaction->rollBack();
-                //Yii::$app->session->setFlash('error', "Failure to update sample details!");
-                //return $this->redirect(['/lab/request']);
-            //}
-        //} else {
-            //$transaction->rollBack();
-            //Yii::$app->session->setFlash('error', "Failure to generate referral code!");
-            //return $this->redirect(['/lab/request']);
-        //}
-
         if($agency_id > 0){
             if(count($modelRequest) > 0 && count($ref_request) > 0 && count($samples) > 0 && $analysesCount > 0)
             {
@@ -691,7 +644,6 @@ class ReferralController extends Controller
 
                         $data = Json::encode(['request_data'=>$requestData,'sample_data'=>$sample_data,'agency_id'=>$agency_id],JSON_NUMERIC_CHECK);
 
-                        //$referralUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/referrals/sendreferral';
                         $referralUrl='https://eulimsapi.onelab.ph/api/web/referral/referrals/sendreferral';
                        
                         $curl = new curl\Curl();
@@ -756,21 +708,8 @@ class ReferralController extends Controller
 
                                 if($notificationResponse > 0){
                                     if($ref_request->notified == 0){
-                                        //echo 'Notification sent.';
-                                        //$modelref_request = Referralrequest::find()->where(['request_id'=>$requestId])->one();
-                                        //$modelref_request->notified = 1;
-                                        //if($modelref_request->save()){
-                                            //$transaction->commit();
-                                            //Yii::$app->session->setFlash('success', "Successfully sent");
-                                            //delay for 2 seconds, before executing next line of code
-                                            //sleep(2);
-                                            //return $this->redirect(['/lab/request/view', 'id' => $requestId]);
-                                            //header("refresh:2;url=/lab/request/view?id=".$requestId);
-                                            //echo 'Notification sent.';
-                                        //} else {
-                                            $transaction->rollBack();
-                                            return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Not yet notified!</div>";
-                                        //}
+                                        $transaction->rollBack();
+                                        return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Not yet notified!</div>";
                                     } else {
                                         $transaction->commit();
                                         //return 'Notification sent.';
@@ -778,8 +717,6 @@ class ReferralController extends Controller
                                         //delay for 2 seconds, before executing next line of code
                                         sleep(2);
                                         return $this->redirect(['/lab/request/view', 'id' => $requestId]);
-                                        //echo 'Notification sent.';
-                                        //header("refresh:2;url=/lab/request/view?id=".$requestId);
                                     }
                                 } else {
                                     $transaction->rollBack();
@@ -843,7 +780,6 @@ class ReferralController extends Controller
 
                 if ($model->save(false)){
                     $requestId = $model->request_id;
-                    //$model = $this->findRequest($request->request_id);
                     $updateReference = $connection->createCommand()->update('tbl_request', ['request_ref_num' => $referral['referral_code']],'request_id =:requestId')->bindParam(':requestId', $requestId)->execute();
 
                     $modelReferralrequest->request_id = $requestId;
@@ -888,16 +824,6 @@ class ReferralController extends Controller
                                 }
                             }
                             $sampleSave = 1;
-                            /*foreach ($modelSample as $dataSample) {
-                                $sampleData = [
-                                    'sample_id' => $sample['sample_id'],
-                                    'request_id' => $sample['request_id'],
-                                    'sample_code' => $sample['sample_code'],
-                                    'sample_month' => $sample['sample_month'],
-                                    'sample_year' => $sample['sample_year']
-                                ];
-                                array_push($sample_data, $sampleData);
-                            }*/
                         } else {
                             $transaction->rollBack();
                             $sampleSave = 0;
@@ -922,7 +848,6 @@ class ReferralController extends Controller
                             }
 
                             $sampledata = Json::encode(['sample_data'=>$sample_data,'referral_id'=>$referralId,'receiving_agency'=>$referral['receiving_agency_id']],JSON_NUMERIC_CHECK);
-                            //$referralUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/referrals/updatesamplecode';
                             $referralUrl='https://eulimsapi.onelab.ph/api/web/referral/referrals/updatesamplecode';
                        
                             $curl = new curl\Curl();
@@ -941,7 +866,6 @@ class ReferralController extends Controller
                                 ];
 
                                 $notificationData = Json::encode(['notice_details'=>$details],JSON_NUMERIC_CHECK);
-                                //$notificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/notifications/updateresponse';
                                 $notificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/notifications/updateresponse';
 
                                 $curlNoti = new curl\Curl();
@@ -1011,16 +935,7 @@ class ReferralController extends Controller
     }
     //generate reference code and sample code
     protected function generateCode($rstlId,$requestId,$labId,$year){
-        //$post= Yii::$app->request->post();
-        // echo $post['request_id'];
-        //exit;
-        //$return="Failed";
         $return=0;
-        //$request_id=(int) $post['request_id'];
-        //$lab_id=(int) $post['lab_id'];
-        //$rstl_id=(int) $post['rstl_id'];
-        //$year=(int) $post['year'];
-        // Generate Reference Number
         $func=new Functions();
         $proc="spGetNextGeneratedRequestCode(:rstlId,:labId)";
         $params=[
@@ -1067,9 +982,6 @@ class ReferralController extends Controller
         $request->total = $total;
 
         if($request->save(false)){
-            //$Func=new Functions();
-            //$response=$func->GenerateSampleCode($requestId);
-
             $samples = Sample::find()->where(['request_id'=>$requestId])->asArray()->all();
 
             foreach ($samples as $sample) {
@@ -1078,32 +990,12 @@ class ReferralController extends Controller
                 $modelSample->sample_year = date('Y', strtotime($request->request_datetime));
 
                 if($modelSample->save(false)){
-                    //$transaction->commit();
                     $sampleSave = 1;
-                    //$return = 1;
                 } else {
                     $transaction->rollBack();
                     $return = 0;
                 }
             }
-            // if($modelSample->save(false)){
-            //     $transaction->commit();
-            //     $return = 1;
-            // } else {
-            //     $transaction->rollBack();
-            //     $return = 0;
-            // }
-            //if($response){
-                //$return="Success";
-                //$return = 1;
-                //Yii::$app->session->setFlash('success', 'Request Reference # and Sample Code Successfully Generated!');
-                //$transaction->commit();
-            //} else {
-                //$transaction->rollBack();
-                //Yii::$app->session->setFlash('danger', 'Request Reference # and Sample Code Failed to Generate!');
-                //$return="Failed";
-                //$return = 0;
-            //}
             if($sampleSave == 1){
                 $transaction->commit();
                 $return = 1;
@@ -1112,9 +1004,7 @@ class ReferralController extends Controller
                 $return = 0;
             }
         } else {
-            //Yii::$app->session->setFlash('danger', 'Request Reference # and Sample Code Failed to Generate!');
             $transaction->rollBack();
-            //$return="Failed";
             $return = 0;
         }
         return $return;
@@ -1195,26 +1085,5 @@ class ReferralController extends Controller
             Yii::$app->session->setFlash('error', 'Invalid request!');
             return $this->redirect(['/lab/request/view', 'id' => $requestId]);
         }
-    }
-    //upload
-    public function actionUpload()
-    {
-        $fileName = 'file';
-        $uploadPath = './files';
-
-        if (isset($_FILES[$fileName])) {
-            $file = \yii\web\UploadedFile::getInstanceByName($fileName);
-
-            //Print file data
-            //print_r($file);
-
-            if ($file->saveAs($uploadPath . '/' . $file->name)) {
-                //Now save file data to database
-
-                echo \yii\helpers\Json::encode($file);
-            }
-        }
-
-        return false;
     }
 }
