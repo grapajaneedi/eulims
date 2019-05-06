@@ -41,6 +41,25 @@ $this->params['breadcrumbs'][] = $this->title;
                 'value' => function($model) {
 
                     if ($model->testname){
+                        return $model->testname_method_id;
+                    }else{
+                        return "";
+                    }
+                    
+                },
+            //     'filterType' => GridView::FILTER_SELECT2,
+            //     'filter' => $testnamelist,
+            //     'filterWidgetOptions' => [
+            //         'pluginOptions' => ['allowClear' => true],
+            //    ],
+             //  'filterInputOptions' => ['placeholder' => 'Test Name', 'testcategory_id' => 'grid-products-search-category_type_id']
+            ],
+            [
+                'attribute' => 'testname_id',
+                'label' => 'Test Name',
+                'value' => function($model) {
+
+                    if ($model->testname){
                         return $model->testname->testName;
                     }else{
                         return "";

@@ -27,29 +27,29 @@ $this->params['breadcrumbs'][] = $this->title;
                 'valueColOptions'=>['style'=>'width:30%'], 
                 'displayOnly'=>true
             ],
-            [
-                'label'=>'Tests',
-                'format'=>'raw',
-                'value' => function($model) {
-                    $tet = $model->tests;  
-                    $sql = "SELECT GROUP_CONCAT(testName) FROM tbl_testname WHERE testname_id IN ($tet)";     
+            // [
+            //     'label'=>'Tests',
+            //     'format'=>'raw',
+            //     'value' => function($model) {
+            //         $tet = $model->tests;  
+            //         $sql = "SELECT GROUP_CONCAT(testName) FROM tbl_testname WHERE testname_id IN ($tet)";     
          
-                    $Connection = Yii::$app->labdb;
-                    $command = $Connection->createCommand($sql);
-                    $row = $command->queryOne();    
-                    $tests = $row['GROUP_CONCAT(testName)'];  
+            //         $Connection = Yii::$app->labdb;
+            //         $command = $Connection->createCommand($sql);
+            //         $row = $command->queryOne();    
+            //         $tests = $row['GROUP_CONCAT(testName)'];  
 
-                    $space = explode(',', $tests);
-                    $d = '';
-                    $newline = ", ";
-                    foreach ($space as $s){
-                        $d.= $s.$newline;
-                    }                   
-                    return $d;
-                    },
-                'valueColOptions'=>['style'=>'width:30%'], 
-                'displayOnly'=>true
-            ],
+            //         $space = explode(',', $tests);
+            //         $d = '';
+            //         $newline = ", ";
+            //         foreach ($space as $s){
+            //             $d.= $s.$newline;
+            //         }                   
+            //         return $d;
+            //         },
+            //     'valueColOptions'=>['style'=>'width:30%'], 
+            //     'displayOnly'=>true
+            // ],
         ],
     ]) ?>
 

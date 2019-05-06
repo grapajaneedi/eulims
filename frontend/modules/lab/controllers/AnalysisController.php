@@ -158,8 +158,8 @@ class AnalysisController extends Controller
         $labid = $_GET['lab_id'];
         $testname_id = $_GET['id'];
 
-        $testname_id = $_GET['testcategory_id'];
-        $testname_id = $_GET['sampletype_id'];
+        // $testname_id = $_GET['testcategory_id'];
+        // $testname_id = $_GET['sampletype_id'];
       
             // $testnamemethod = Testnamemethod::find()
         // ->leftJoin('tbl_sampletype_testname', 'tbl_sampletype_testname.testname_id=tbl_testname_method.testname_id')
@@ -169,6 +169,8 @@ class AnalysisController extends Controller
         //dapat naka left join ito.. considering yung mga sample type and test category
         $testnamemethod = Testnamemethod::find()
         ->where(['testname_id'=>$testname_id])->all();
+
+        
         $testnamedataprovider = new ArrayDataProvider([
                 'allModels' => $testnamemethod,
                 'pagination' => [
@@ -262,7 +264,6 @@ class AnalysisController extends Controller
         $request_id = $_GET['id'];
         $request = $this->findRequest($request_id);
         $labId = $request->lab_id;
-        //$testcategory = $this->listTestcategory($labId);
         $testcategory = [];
         $sampletype = [];
         $test = [];     
@@ -273,7 +274,6 @@ class AnalysisController extends Controller
 
                 foreach ($sample_ids as $sample_id){                
                     $modeltest=  Testname::findOne(['testname_id'=>$post['Analysis']['test_id']]);
-                   // $modelmethod=  Methodreference::findOne(['method_reference_id'=>$post['Analysis']['method']]);
                     $modelmethod=  Testnamemethod::findOne(['testname_method_id'=>$post['Analysis']['method']]);
                     $method=  Methodreference::findOne(['method_reference_id'=>$modelmethod->method_id]);
                     $analysis = new Analysis();
@@ -363,10 +363,12 @@ class AnalysisController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        
         $analysisquery = Analysis::find()->where(['analysis_id' => $id])->one();
         $samplesQuery = Sample::find()->where(['sample_id' => $analysisquery->sample_id]);
         $requestquery = Request::find()->where([ 'request_id'=> $analysisquery->request_id])->one();
         $paymentitem = Paymentitem::find()->where([ 'request_id'=> $analysisquery->request_id])->one();
+        $request_id = $requestquery->request_id;
 
             $sampleDataProvider = new ActiveDataProvider([
                 'query' => $samplesQuery,
@@ -388,26 +390,15 @@ class AnalysisController extends Controller
                         
                     if($model->save(false)){
                         $post= Yii::$app->request->post();
-                       // $modelmethod=  Methodreference::findOne(['method_reference_id'=>$post['Analysis']['method']]);
                         $modelmethod=  Testnamemethod::findOne(['testname_method_id'=>$post['Analysis']['method']]);
                         $method=  Methodreference::findOne(['method_reference_id'=>$modelmethod->method_id]);
                         $modeltest=  Testname::findOne(['testname_id'=>$post['Analysis']['test_id']]);
-                      
-                        
-                        //update command
-
-                      
                         $Connection= Yii::$app->labdb;
                         $sql="UPDATE `tbl_analysis` SET `testname`='$modeltest->testName'
                         WHERE `analysis_id`=".$id;
                         $Command=$Connection->createCommand($sql);
                         $Command->execute();  
-
-
                         $post= Yii::$app->request->post();
-                            
-                       // $modelmethod=  Methodreference::findOne(['method_reference_id'=>$post['Analysis']['method']]);
-                       // $method = $method->method;
 
                         $Connection= Yii::$app->labdb;
                         $sql="UPDATE `tbl_analysis` SET `method`='$method->method', `fee`='$method->fee' WHERE `analysis_id`=".$id;
@@ -437,6 +428,7 @@ class AnalysisController extends Controller
             'model' => $model,
              'sampleDataProvider' => $sampleDataProvider,
              'testcategory' => $testcategory,
+             'request_id'=>$request_id,
             'test' => $test,
             'sampletype'=>$sampletype
         ]);
@@ -444,6 +436,7 @@ class AnalysisController extends Controller
         return $this->render('_form', [
             'model' => $model,
              'sampleDataProvider' => $sampleDataProvider,
+             'request_id'=>$request_id,
              'testcategory' => $testcategory,
             'sampletype' => $sampletype,
             'test' => $test,

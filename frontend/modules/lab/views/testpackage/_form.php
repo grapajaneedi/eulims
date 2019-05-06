@@ -20,7 +20,6 @@ $sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','typ
 
     <?php $form = ActiveForm::begin(); ?>
 
-   
     <?= $form->field($model, 'package_name')->textInput() ?>
 
     <?= $form->field($model, 'package_rate')->textInput() ?>
