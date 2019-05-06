@@ -289,13 +289,13 @@ class Printing {
             $RequestTemplate .= "<th colspan='10' class='text-left border-bottom-line'>1.0 TESTING OR CALIBRATION SERVICE</th>";
             $RequestTemplate .= "</tr>";
             $RequestTemplate .= "<tr>";
-            $RequestTemplate .= "<th colspan='2' class='text-center valign-bottom border-center-line border-left-line border-right-line padding-left-5' style=''>SAMPLE</th>";
-            $RequestTemplate .= "<th class='text-center valign-bottom border-bottom-line border-right-line padding-left-5' style='width: 15%;'>SAMPLE CODE</th>";
-            $RequestTemplate .= "<th colspan='2' class='text-center valign-bottom border-bottom-line border-right-line padding-left-5' style='width: 15%;'>TEST/CALIBRATION REQUESTED</th>";
-            $RequestTemplate .= "<th colspan='2' class='text-center valign-bottom border-bottom-line border-right-line padding-left-5' style='width: 15%;'>TEST METHOD</th>";
-            $RequestTemplate .= "<th class='text-center valign-bottom border-bottom-line border-right-line padding-left-5' style='width: 9%;'>NO OF SAMPLES/ UNIT</th>";
-            $RequestTemplate .= "<th class='text-center border-bottom-line border-right-line valign-bottom padding-right-5' style='width: 9%;'>UNIT COST</th>";
-            $RequestTemplate .= "<th class='text-center border-bottom-line border-right-line valign-bottom border-right-line padding-right-5' style='width: 9%;'>TOTAL</th>";
+            $RequestTemplate .= "<th colspan='2' class='text-center border-center-line border-left-line border-right-line padding-left-5' style=''>SAMPLE</th>";
+            $RequestTemplate .= "<th class='text-center border-bottom-line border-right-line padding-left-5' style='width: 15%;'>SAMPLE CODE</th>";
+            $RequestTemplate .= "<th colspan='2' class='text-center border-bottom-line border-right-line padding-left-5' style='width: 15%;'>TEST/CALIBRATION REQUESTED</th>";
+            $RequestTemplate .= "<th colspan='2' class='text-center border-bottom-line border-right-line padding-left-5' style='width: 15%;'>TEST METHOD</th>";
+            $RequestTemplate .= "<th class='text-center border-bottom-line border-right-line padding-left-5' style='width: 9%;'>NO OF SAMPLES/ UNIT</th>";
+            $RequestTemplate .= "<th class='text-center border-bottom-line border-right-line padding-right-5' style='width: 9%;'>UNIT COST</th>";
+            $RequestTemplate .= "<th class='text-center border-bottom-line border-right-line border-right-line padding-right-5' style='width: 9%;'>TOTAL</th>";
             $RequestTemplate .= "</tr>";
             
             $CurSampleCode = "";
