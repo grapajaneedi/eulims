@@ -93,7 +93,7 @@ class InventoryEntries extends \yii\db\ActiveRecord
             'quantity' => 'Quantity',
             'content' => 'Content',
             'amount' => 'Price',
-            'total_unit' => 'Total Unit',
+            'total_unit' => 'Total Volume/Mass',
             'total_amount' => 'Total Price',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
