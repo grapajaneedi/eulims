@@ -48,20 +48,14 @@ $CustomerList= ArrayHelper::map(Customer::find()->all(),'customer_id','customer_
                 'heading' => '<span class="glyphicon glyphicon-book"></span>  ' . Html::encode($this->title),
                 
             ],
-        'columns' => 
+        'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             'transactionnum',
             [
                 'attribute' => 'collectiontype_id',
                 'label' => 'Collection Type',
                 'value' => function($model) {
-
-                    if ($model->collectiontype){
-                        return $model->collectiontype->natureofcollection;
-                    }else{
-                        return "";
-                    }   
-                    
+                    return $model->collectiontype ? $model->collectiontype->natureofcollection : "";
                 },
                 'filterType' => GridView::FILTER_SELECT2,
                 'filter' => ArrayHelper::map(Collectiontype::find()->asArray()->all(), 'collectiontype_id', 'natureofcollection'),
@@ -149,7 +143,7 @@ $CustomerList= ArrayHelper::map(Customer::find()->all(),'customer_id','customer_
                  ],
             ], 
 
-      //  ],
+        ],
     ]); ?>
       
     <?php

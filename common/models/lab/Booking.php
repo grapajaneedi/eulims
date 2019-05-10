@@ -41,7 +41,7 @@ class Booking extends \yii\db\ActiveRecord
     {
         return [
             [['scheduled_date', 'booking_reference', 'qty_sample', 'customer_id'], 'required'],
-            [['scheduled_date', 'date_created'], 'safe'],
+            [['scheduled_date', 'date_created','booking_status'], 'safe'],
             [['rstl_id', 'qty_sample', 'customer_id'], 'integer'],
             [['booking_reference'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 100],
