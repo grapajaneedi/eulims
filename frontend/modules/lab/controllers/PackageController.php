@@ -15,7 +15,6 @@ use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 use linslin\yii2\curl;
 use common\models\lab\Testname;
-
 /**
  * PackageController implements the CRUD actions for Package model.
  */
@@ -149,12 +148,12 @@ class PackageController extends Controller
 
          $sampletypetestname = Sampletypetestname::find()->where(['sampletype_id'=>$sampletype_id])->all();
 
-         $testnamemethod = Testnamemethod::find()
-         ->leftJoin('tbl_sampletype_testname', 'tbl_sampletype_testname.testname_id=tbl_testname_method.testname_id')
-         ->where(['tbl_sampletype_testname.sampletype_id'=>$sampletype_id]);
-        
+        //  $testnamemethod = Testnamemethod::find()
+        //  ->leftJoin('tbl_sampletype_testname', 'tbl_sampletype_testname.testname_id=tbl_testname_method.testname_id')
+        //  ->where(['tbl_sampletype_testname.sampletype_id'=>$sampletype_id]);
 
-         
+        $testnamemethod = Testnamemethod::find();
+
 
          $testnamedataprovider = new ActiveDataProvider([
                  'query' => $testnamemethod,
@@ -192,26 +191,8 @@ class PackageController extends Controller
         //  $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
   
         // // $procedure = Procedure::find()->where(['procedure_id' => $id])->one();
-    
 
-        //BASICALLY
-
-        /*
-            id, rstl_id, test_category, sample_type, name, rate, tests
-
-            tska nakabasis sa sampletype ang testnamemethod.. tanga! 
-            pag mag click ng add package sa gridview
-
-            lalabas sa gridview lahat ng testname method na nakadepende sa sampletype
-
-            weeeeeeeeeee
-
-                mag increment yung mga niselect sa isang textbox.. 
-        
-            tapos pag add nya.. wala na hasul.. boom!
-
-
-        */
+      
          $Package = new Package();
          $procedure->procedure_name = $procedure_name;
          $procedure->procedure_code = "1";

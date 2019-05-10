@@ -40,7 +40,11 @@ $sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','typ
          $category= ArrayHelper::map(Testcategory::find()->orderBy(['testcategory_id' => SORT_DESC])->all(),'testcategory_id','category');
     
         $sampletype = [];
+
+      
     ?>
+
+    
     <?= $form->field($model,'testcategory_id')->widget(Select2::classname(),[
                     'data' => $category,
                     'theme' => Select2::THEME_KRAJEE,

@@ -20,6 +20,7 @@ $sampetypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','type
 $testcategorylist= ArrayHelper::map(Testcategory::find()->all(),'testcategory_id','category');
 $this->title = 'Packages';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="package-index">
 
@@ -101,7 +102,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' => 'tests',
                 'label' => 'Tests',
                 'format' => 'raw',
-                'width'=>'60%',
+               // 'width'=>'20%',
+                'contentOptions' => ['style' => 'width: 50%;word-wrap: break-word;white-space:pre-line;'],
                 'value' => function($model) {
 
                         if ($model->tests){

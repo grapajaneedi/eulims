@@ -36,38 +36,14 @@ if(Yii::$app->user->isGuest){
     }else{
        $UsernameDesignation=$CurrentUserName.'<br>'.$CurrentUserDesignation;
     }
-	// $unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'));
-	// $unresponded = $unresponded_notification->num_notification > 0 ? $unresponded_notification->num_notification : '';
-//notification will run if the user is already logged in
+	$unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'),true);
+	$unresponded = $unresponded_notification['num_notification'] > 0 ? $unresponded_notification['num_notification'] : ''; //no display if 0
+    //notification will run if the user is already logged in
 	$this->registerJs("
 		setInterval(function(e){
 			get_unresponded_notifications();
 		}, 30000);
 	");
-
-	/*	function get_unseen_notifications()
-		{
-			$.ajax({
-				url: '/referrals/referral/unseen_notification',
-				dataType: 'json',
-				method: 'GET',
-				success: function (data) {
-					if (data.data_notification.count_notification > 0){
-						$('#count_noti_sub').html(data.data_notification.count_notification);
-						$('#count_noti_menu').html(data.data_notification.count_notification);
-					} else if(data.data_notification.count_notification == 0) {
-						$('#count_noti_sub').html('');
-						$('#count_noti_menu').html('');
-					} else {
-						alert(data.data_notification.count_notification);
-					}
-				},
-				error: function (jqXHR, textStatus, errorThrown) {
-					console.log('error occured!');
-				}
-			});
-		}
-	");*/
 }
 ?>
 <aside class="main-sidebar">

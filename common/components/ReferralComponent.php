@@ -340,7 +340,7 @@ class ReferralComponent extends Component {
             $list = $curl->get($apiUrl);
             return $list;
         } else {
-            return 'Not valid rstl!';
+            return false;
         }
     }
     //get referral details via referral_id

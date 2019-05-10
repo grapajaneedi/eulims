@@ -228,7 +228,7 @@ function isthere($file){
     
     <div class="form-group pull-right">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-        <?= Html::a(Yii::t('app', 'Cancel'), Yii::$app->request->referrer , ['class'=> 'btn btn-danger']) ?>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
     </div>
 
     <?php ActiveForm::end(); ?>

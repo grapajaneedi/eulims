@@ -18,6 +18,7 @@ use common\models\services\Test;
 
 
 use common\models\lab\Labsampletype;
+use common\models\lab\Request;
 use common\models\lab\Sampletypetestname;
 use common\models\lab\Testnamemethod;
 use common\models\lab\Methodreference;
@@ -55,6 +56,7 @@ $(".select-on-check-all").change(function(){
 
 SCRIPT;
 $this->registerJs($js);
+
 ?>
 
 
@@ -103,6 +105,26 @@ $this->registerJs($js);
         ],
     ]); ?>
 
+
+    <?php
+            $requestquery = Request::find()->where(['request_id' => 2])->one();
+        
+            $category= ArrayHelper::map(Testcategory::find()
+            ->leftJoin('tbl_lab_sampletype', 'tbl_lab_sampletype.testcategory_id=tbl_testcategory.testcategory_id')
+            ->Where(['tbl_lab_sampletype.lab_id'=>1])
+            ->orderBy(['testcategory_id' => SORT_DESC])->all(),'testcategory_id','category');
+        ?>
+        <?= Html::textInput('lab_id', $requestquery->lab_id, ['class' => 'form-control', 'id'=>'lab_id', 'type'=>'hidden'], ['readonly' => true]) ?>
+        <?= $form->field($model,'package_id')->widget(Select2::classname(),[
+                        'data' => $category,
+                        'theme' => Select2::THEME_KRAJEE,
+                        'options' => ['id'=>'sample-category_id'],
+                        'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Test Category'],
+                ])->label("Test Category")
+        ?>
+
+
+
          <div class="row">
          <div class="col-sm-6">
                 <?= $form->field($model,'sample_type_id')->widget(Select2::classname(),[
@@ -115,6 +137,8 @@ $this->registerJs($js);
         </div>
        
     <div class="col-sm-6">
+
+    
       
     <?= $form->field($model, 'name')->widget(DepDrop::classname(), [
                     'type'=>DepDrop::TYPE_SELECT2,
@@ -132,8 +156,7 @@ $this->registerJs($js);
 
             </div>
         </div>
-      
-    
+
              <?= $form->field($model, 'tests')->textarea(['rows' => 4, 'readonly' => true]) ?>
 
              <?= Html::textInput('package_ids', '', ['class' => 'form-control', 'id'=>'package_ids', 'type'=>"hidden"], ['readonly' => true]) ?>

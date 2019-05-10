@@ -26,7 +26,7 @@ $func=new Functions();
 $refcomp = new ReferralComponent();
 ?>
 <div class="service-index">
-    <div class="image-loader" style="display: hidden;"></div>
+    <div class="service-image-loader" style="display: hidden;"></div>
     <!--<div style="background-color: #aed6f1 ;border: 2px solid  #5dade2 ;" class="alert">
         <span style="color:#000000;">
             <strong>Note : </strong> Offer / Unoffer test for your agency. If test/calibration is not found in the list, please contact the administrator to add your test/calibration.
@@ -211,12 +211,12 @@ echo Growl::widget([
             //data: $('form').serialize(),
             data: {lab_id:lab,sampletype_id:sampletype,testname_id:testname},
             success: function (data){
-                $('.image-loader').removeClass("img-loader");
+                $('.service-image-loader').removeClass("img-loader");
                 $('#methodreference').html(data);
             },
             beforeSend: function (xhr) {
                 //alert('Please wait...');
-                $('.image-loader').addClass("img-loader");
+                $('.service-image-loader').addClass("img-loader");
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 alertWarning.alert("<p class='text-danger' style='font-weight:bold;'>Error Encountered!</p>");
@@ -270,7 +270,6 @@ function offerService(){
                 //data: $('#method-reference-grid').serialize(),
                 //data: {lab_id:lab,sampletype_id:sampletype,testname_id:testname},
                 success: function (data){
-                    $('.image-loader').removeClass("img-loader");
                     //$('#methodreference').html(data);
                     //$('.service-index form').submit();
                     if(data == 1){
@@ -336,11 +335,17 @@ function offerService(){
                    // $('#method-reference-grid-pjax').load('/referrals/service/gettestnamemethod?lab_id='+lab+'&methodref_ids='+method_ids_string+'&sampletype_id='+sampletype+'&testname_id='+testname);
                     $("#btn-remove").on('click',removeService);
                     $("#btn-offer").on('click',offerService);
+                    $('.service-image-loader').removeClass("img-loader");
                 },
                 beforeSend: function (xhr) {
+                    $("input[name='methodref_ids_all']:checked").val('');
+                    $('input:checkbox[name=methodref_ids_all]').attr('checked',false);
+                    $('input:checkbox[name=methodref_ids_all]').prop("checked", false);
+                    $("input:checkbox[name='methodref_ids[]']").prop("checked", false);
+                    $("input:checkbox[name='methodref_ids[]']").attr('checked',false);
                     $("#btn-remove").prop("onclick", null).off("click");
                     $("#btn-offer").prop("onclick", null).off("click");
-                    $('.image-loader').addClass("img-loader");
+                    $('.service-image-loader').addClass("img-loader");
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     alertWarning.alert("<p class='text-danger' style='font-weight:bold;'>Error Encountered!</p>");
@@ -385,7 +390,7 @@ function removeService(){
                             method: 'POST',
                             data: {methodref_ids:method_ids_string,lab_id:lab,sampletype_id:sampletype,testname_id:testname},
                             success: function (data){
-                                $('.image-loader').removeClass("img-loader");
+                                $('.service-image-loader').removeClass("img-loader");
                                 if(data == 1){
                                         $.notify({
                                             // options
@@ -433,9 +438,14 @@ function removeService(){
                                 $("#btn-offer").on('click',offerService);
                             },
                             beforeSend: function (xhr) {
+                                $("input[name='methodref_ids_all']:checked").val('');
+                                $('input:checkbox[name=methodref_ids_all]').attr('checked',false);
+                                $('input:checkbox[name=methodref_ids_all]').prop("checked", false);
+                                $("input:checkbox[name='methodref_ids[]']").prop("checked", false);
+                                $("input:checkbox[name='methodref_ids[]']").attr('checked',false);
                                 $("#btn-remove").prop("onclick", null).off("click");
                                 $("#btn-offer").prop("onclick", null).off("click");
-                                $('.image-loader').addClass("img-loader");
+                                $('.service-image-loader').addClass("img-loader");
                             },
                             error: function (jqXHR, textStatus, errorThrown) {
                                 alertWarning.alert("<p class='text-danger' style='font-weight:bold;'>Error Encountered!</p>");
