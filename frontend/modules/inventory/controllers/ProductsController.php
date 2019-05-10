@@ -328,12 +328,21 @@ class ProductsController extends Controller
         ]);
 
         if($varsearch){
+            //  $dataProvider = new ActiveDataProvider([
+            // 'query' =>Products::find()->where(['like', 'product_name', $varsearch])->where(['producttype_id'=>2]),
+            // 'pagination' => [
+            //     'pageSize' => 10,
+            // ],
+            //  ]);
+
+             $query = Products::find();
              $dataProvider = new ActiveDataProvider([
-            'query' =>Products::find()->where(['like', 'product_name', $varsearch],['producttype_id'=>2]),
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-             ]);
+                'query' => $query,
+            ]);
+             $query->andFilterWhere([
+                'producttype_id' => 2,
+            ]);
+             $query->andFilterWhere(['like', 'product_name', $varsearch]);
 
         }
 
