@@ -99,7 +99,7 @@ if(Yii::$app->user->isGuest){
                 'url'=>["/".strtolower($Item->PackageName)],
                 'visible'=>true
             ];
-          
+            $unresponded=""; //comment this
             //$ItemSubMenu[]=[];
             foreach ($MenuItems as $MenuItem => $mItem){
                 $icon=substr($mItem->icon,6,strlen($mItem->icon)-6);

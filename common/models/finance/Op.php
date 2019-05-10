@@ -193,7 +193,8 @@ class Op extends \yii\db\ActiveRecord
         $countSamples = count($op->paymentitems);
         foreach ($op->paymentitems as $item){
             $request = Request::findOne($item->request_id);
-            foreach($request->samples as $sample){
+            if($request <> ""){
+                 foreach($request->samples as $sample){
                 $samples .= $sample->samplename;
                 $samples .= '(';
                 $countAnalyses = count($sample->analyses);
@@ -204,7 +205,12 @@ class Op extends \yii\db\ActiveRecord
                 }
                 $samples .= ')';
                 $samples .= ($countSamples > 1) ? ', ' : '';
+                }
             }
+            else{
+                $samples="";
+            }
+           
         }
         return $samples;
     }
