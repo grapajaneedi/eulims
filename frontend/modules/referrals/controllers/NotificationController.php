@@ -123,7 +123,7 @@ class NotificationController extends Controller
             $notification = json_decode($refcomponent->listUnrespondedNofication($rstlId),true);
             
             if($notification == false){
-                return Json::encode(['num_notification'=>'error']);
+                return Json::encode(['num_notification'=>'server error or no connection']);
             } else {
                 return Json::encode(['num_notification'=>$notification['count_notification']]);
             }

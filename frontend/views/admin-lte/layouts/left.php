@@ -182,7 +182,7 @@ if(Yii::$app->user->isGuest){
 
 </aside>
 <script type="text/javascript">
-	function showNotifications(){
+	/*function showNotifications(){
 		$.ajax({
 			url: '/referrals/notification/list_unresponded_notification',
 			//url: '',
@@ -203,5 +203,5 @@ if(Yii::$app->user->isGuest){
 	}
 	$("#btn_unresponded").on('click', function(e) {
 		e.preventDefault();
-	});
+	});*/
 </script>
