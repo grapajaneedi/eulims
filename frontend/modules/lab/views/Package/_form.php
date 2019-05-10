@@ -8,6 +8,7 @@ use kartik\widgets\DatePicker;
 use kartik\datetime\DateTimePicker;
 use yii\helpers\ArrayHelper;
 use common\models\lab\Lab;
+use common\models\lab\Testcategory;
 use common\models\lab\Sampletype;
 use yii\helpers\Url;
 //use kartik\money\MaskMoney;
@@ -18,14 +19,13 @@ use yii\helpers\Url;
 /* @var $form yii\widgets\ActiveForm */
 
 $sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','type');
+
+
 ?>
 
 <div class="package-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
-   
-
 
     <?php
     $model->name='Package';
@@ -33,19 +33,45 @@ $sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','typ
 
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
     <?= $form->field($model, 'rate')->textInput(['maxlength' => true]) ?>
+
+    <div class="row">
+        <div class="col-sm-6">
+        <?php
+         $category= ArrayHelper::map(Testcategory::find()->orderBy(['testcategory_id' => SORT_DESC])->all(),'testcategory_id','category');
     
-    <?= $form->field($model,'sampletype_id')->widget(Select2::classname(),[
-                    'data' => $sampletypelist,
-                    'theme' => Select2::THEME_KRAJEE,
-                    'options' => ['id'=>'sample-testcategory_id'],
-                    'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Sample Type'],
-            ])
+        $sampletype = [];
+
+      
     ?>
-    <?= $form->field($model, 'tests')->textInput(['maxlength' => true]) ?>
 
-  
-   
+    
+    <?= $form->field($model,'testcategory_id')->widget(Select2::classname(),[
+                    'data' => $category,
+                    'theme' => Select2::THEME_KRAJEE,
+                    'options' => ['id'=>'sample-category_id'],
+                    'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Test Category'],
+            ])->label("Test Category")
+        ?>
+        </div>
+        <div class="col-sm-6">
+        <?= $form->field($model, 'sampletype_id')->widget(DepDrop::classname(), [
+            'type'=>DepDrop::TYPE_SELECT2,
+            'data'=>$sampletype,
+            'options'=>['id'=>'sample-type_id'],
+            'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
+            'pluginOptions'=>[
+                'depends'=>['sample-category_id'],
+                'placeholder'=>'Select Sample Type',
+                'url'=>Url::to(['/lab/analysis/listtype']),
+                'loadingText' => 'Loading Sample Types...',
+            ]
+        ])->label("Sample Type")
+        ?>
+        </div>
+    </div>
 
+
+    <?= $form->field($model, 'tests')->hiddenInput(['maxlength' => true])->label(false) ?>
         <div  id="methodreference">
     
         </div>
@@ -70,13 +96,13 @@ $sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','typ
 
   
 <script type="text/javascript">
-    $('#sample-testcategory_id').on('change',function() {
+    $('#sample-type_id').on('change',function() {
         $.ajax({
             url: '/lab/package/getmethod?id='+$(this).val(),
             method: "GET",
             dataType: 'html',
             data: { lab_id: 1,
-            sampletype_id: $('#sample-testcategory_id').val()},
+            sampletype_id: $('#sample-type_id').val()},
             beforeSend: function(xhr) {
                $('.image-loader').addClass("img-loader");
                }

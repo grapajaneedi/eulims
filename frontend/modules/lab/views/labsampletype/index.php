@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'pjax' => true,
+        'hover'=>true,
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-products']],
         'panel' => [
                 'type' => GridView::TYPE_PRIMARY,
@@ -41,9 +42,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             [
                 'attribute' => 'lab_id',
+                'contentOptions' => ['style' => 'width: 8.7%'],
                 'label' => 'Lab',
+                'format' => 'raw',
+                'width'=>'20%',
                 'value' => function($model) {
-                   return $model->lab->labname;
+                   if ($model->lab){
+                      return $model->lab->labname;
+                   }else{
+                        return "";
+                   }
+                   
                 },
                 'filterType' => GridView::FILTER_SELECT2,
                 'filter' => $lablist,
@@ -55,7 +64,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'testcategory_id',
                 'label' => 'Test Category',
-                'width'=>'20%',
+                'format' => 'raw',
+                'contentOptions' => ['style' => 'width: 8.7%'],
                 'value' => function($model) {
                     if ($model->testcategory){
                         return $model->testcategory->category;
@@ -73,6 +83,8 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'sampletype_id',
                 'label' => 'Sample Type',
+                'format' => 'raw',
+                'width'=>'20%',
                 'value' => function($model) {
 
                     if ($model->sampletype){

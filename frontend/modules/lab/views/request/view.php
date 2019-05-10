@@ -145,6 +145,9 @@ $PrintEvent=<<<SCRIPT
 SCRIPT;
 $this->registerJs($PrintEvent);
 ?>
+
+
+
 <div class="section-request"> 
 <div id="cancelled-div" class="outer-div <?= $CancelClass ?>">
         <div class="inner-div">

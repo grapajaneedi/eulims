@@ -93,8 +93,8 @@ class FeeController extends Controller
 
         $request = $this->findRequest($request_id);
         $labId = $request->lab_id;
-        $testcategory = $this->listTestcategory($labId);
-     
+        //$testcategory = $this->listTestcategory($labId);
+        $testcategory = [];
         $sampletype = [];
         $test = [];
 
@@ -117,6 +117,7 @@ class FeeController extends Controller
                 $analysis->type_fee_id = 3;
                 $analysis->user_id = 1;
                 $analysis->sample_type_id = 1;
+                $analysis->category_id = 1;
                 $analysis->testcategory_id = 1;
                 $analysis->is_package = 0;
                 $analysis->method = "-";

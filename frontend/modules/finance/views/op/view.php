@@ -33,7 +33,7 @@ if(Yii::$app->user->can('allow-create-receipt')){
         }
     }
     else{
-        $receipt_button="<button type='button' value='/finance/cashier/view-receipt?receiptid=$model->receipt_id' id='Receipt2' style='float: right;margin-right: 5px' class='btn btn-success' onclick='location.href=this.value'><i class='fa fa-eye'></i> View Receipt</button>";                    
+        $receipt_button="<button type='button' value='/finance/cashier/viewreceipt?receiptid=$model->receipt_id' id='Receipt2' style='float: right;margin-right: 5px' class='btn btn-success' onclick='location.href=this.value'><i class='fa fa-eye'></i> View Receipt</button>";                    
    }
 }
 else{

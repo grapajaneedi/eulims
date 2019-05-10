@@ -14,8 +14,10 @@ use kartik\widgets\Typeahead;
 use yii\helpers\ArrayHelper;
 
 use common\models\lab\Lab;
+use common\models\lab\Testcategory;
 use common\models\lab\Labsampletype;
 use common\models\lab\Sampletype;
+use common\models\lab\Request;
 use common\models\lab\Sampletypetestname;
 use common\models\lab\Testnamemethod;
 use common\models\lab\Methodreference;
@@ -127,27 +129,42 @@ $this->registerJs($js);
     <?= $form->field($model, 'references')->hiddenInput()->label(false)  ?>
     <?= $form->field($model, 'fee')->hiddenInput()->label(false)  ?>
 
-    <?= Html::textInput('sample_ids', '', ['class' => 'form-control', 'id'=>'sample_ids', 'type'=>"hidden"], ['readonly' => true]) ?>
-   
-    <?php 
-     $list =  Testname::find()
-     ->innerJoin('tbl_sampletype_testname', 'tbl_testname.testname_id=tbl_sampletype_testname.testname_id')
-     ->Where(['tbl_sampletype_testname.sampletype_id'=>118])
-     ->asArray()
-     ->all();
-    
-?>
+    <?= Html::textInput('sample_ids', '', ['class' => 'form-control', 'id'=>'sample_ids', 'type'=>'hidden'], ['readonly' => true]) ?>
+  
+    <?php
+        $requestquery = Request::find()->where(['request_id' => $request_id])->one();
+      
+         $category= ArrayHelper::map(Testcategory::find()
+         ->leftJoin('tbl_lab_sampletype', 'tbl_lab_sampletype.testcategory_id=tbl_testcategory.testcategory_id')
+         ->Where(['tbl_lab_sampletype.lab_id'=>$requestquery->lab_id])
+         ->orderBy(['testcategory_id' => SORT_DESC])->all(),'testcategory_id','category');
+    ?>
+      <?= Html::textInput('lab_id', $requestquery->lab_id, ['class' => 'form-control', 'id'=>'lab_id', 'type'=>'hidden'], ['readonly' => true]) ?>
+    <?= $form->field($model,'category_id')->widget(Select2::classname(),[
+                    'data' => $category,
+                    'theme' => Select2::THEME_KRAJEE,
+                    'options' => ['id'=>'sample-category_id'],
+                    'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Test Category'],
+            ])->label("Test Category")
+    ?>
+
     <div class="row">
     <div class="col-sm-6">
 
-  
-    <?= $form->field($model,'sample_type_id')->widget(Select2::classname(),[
-                    'data' => $testcategory,
-                    'theme' => Select2::THEME_KRAJEE,
-                    'options' => ['id'=>'sample-testcategory_id'],
-                    'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Sample Type'],
-            ])->label("Sample Type")
+    <?= $form->field($model, 'sample_type_id')->widget(DepDrop::classname(), [
+            'type'=>DepDrop::TYPE_SELECT2,
+            'data'=>$testcategory,
+            'options'=>['id'=>'sample-type_id'],
+            'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
+            'pluginOptions'=>[
+                'depends'=>['sample-category_id'],
+                'placeholder'=>'Select Sample Type',
+                'url'=>Url::to(['/lab/analysis/listtype']),
+                'loadingText' => 'Loading Sample Types...',
+            ]
+        ])->label("Sample Type")
         ?>
+
     </div>
     <div class="col-sm-6">
 
@@ -157,7 +174,7 @@ $this->registerJs($js);
             'options'=>['id'=>'sample-sample_type_id'],
             'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
             'pluginOptions'=>[
-                'depends'=>['sample-testcategory_id'],
+                'depends'=>['sample-type_id'],
                 'placeholder'=>'Select Test Name',
                 'url'=>Url::to(['/lab/analysis/listsampletype']),
                 'loadingText' => 'Loading Test Names...',
@@ -272,7 +289,9 @@ $this->registerJs("$('#sample-test_id').on('change',function(){
             url: '/lab/analysis/gettestnamemethod?id='+$(this).val(),
             method: "GET",
             dataType: 'html',
-            data: { lab_id: 1,
+            data: { lab_id: $('#lab_id').val(),
+            testcategory_id: 29,
+            sampletype_id: 4,
             testname_id: $('#method_id').val()},
             beforeSend: function(xhr) {
                $('.image-loader').addClass("img-loader");

@@ -36,6 +36,7 @@ function offerservices(mid){
         labsampletypeid: $('#labsampletypeid').val(),
         sampletypetestname: $('#sampletypetestname').val(),
         testnamemethod: $('#testnamemethod').val(),
+        testcategory: $('#testcategory').val(),
         testname: $('#testname').val()},
         beforeSend: function(xhr) {
            $('.image-loader').addClass("img-loader");
@@ -59,6 +60,7 @@ function unofferservices(mid){
           labsampletypeid: $('#labsampletypeid').val(),
           sampletypetestname: $('#sampletypetestname').val(),
           testnamemethod: $('#testnamemethod').val(),
+          testcategory: $('#testcategory').val(),
           testname: $('#testname').val()},
           beforeSend: function(xhr) {
              $('.image-loader').addClass("img-loader");
@@ -77,8 +79,10 @@ $this->registerJs($js);
 <?= Html::textInput('methodreferenceid', $methodreferenceid, ['class' => 'form-control', 'id'=>'methodreferenceid', 'type'=>'hidden'], ['readonly' => true]) ?>
 <?= Html::textInput('labid', $labid, ['class' => 'form-control', 'id'=>'labid', 'type'=>'hidden'], ['readonly' => true]) ?>
 <?= Html::textInput('sampletypeid', $sampletypeid, ['class' => 'form-control', 'id'=>'sampletypeid', 'type'=>'hidden' ], ['readonly' => true]) ?>
-<?= Html::textInput('labsampletypeid', $labsampletypeid, ['class' => 'form-control', 'id'=>'labsampletypeid' , 'type'=>'hidden'], ['readonly' => true]) ?> 
+<?= Html::textInput('labsampletypeid', $labsampletypeid, ['class' => 'form-control', 'id'=>'labsampletypeid',  'type'=>'hidden' ], ['readonly' => true]) ?> 
 <?= Html::textInput('sampletypetestname', $sampletypetestname, ['class' => 'form-control', 'id'=>'sampletypetestname' , 'type'=>'hidden'], ['readonly' => true]) ?>
+<?= Html::textInput('testcategory', $testcategory, ['class' => 'form-control', 'id'=>'testcategory', 'type'=>'hidden' ], ['readonly' => true]) ?>
+
 
 
 <?php
@@ -127,30 +131,18 @@ $this->registerJs($js);
                 'format' => 'raw',
                 'contentOptions' => ['style' => 'width: 5%;word-wrap: break-word;white-space:pre-line;'],
                 'value'=>function($data) use ($methodreferenceid, $sampletypeid) {
-
                     $GLOBALS['rstl_id']=Yii::$app->user->identity->profile->rstl_id;
-                    $typetestname = Sampletypetestname::find()->where(['sampletype_id' =>  $sampletypeid, 'testname_id'=>$methodreferenceid])->one();
-                    
+                    $typetestname = Sampletypetestname::find()->where(['sampletype_id' =>  $sampletypeid, 'testname_id'=>$methodreferenceid])->one();         
                     if ($typetestname){
-                        //sampletypetestname exist
-
                         $servicesquery = Services::find()->where(['method_reference_id' => $data['method_reference_id']])->andWhere(['rstl_id'=>  $GLOBALS['rstl_id']])->andWhere(['testname_method_id'=>  $typetestname->sampletype_testname_id])->one();        
                         if ($servicesquery){
-                            return "<span class='btn btn-success' id='offer'  onclick='unofferservices(".$data['method_reference_id'].")'>UNOFFER</span>";  
-                            
+                            return "<span class='btn btn-success' id='offer'  onclick='unofferservices(".$data['method_reference_id'].")'>UNOFFER</span>";             
                         }else{
-                            return "<span class='btn btn-danger' id='offer' onclick='offerservices(".$data['method_reference_id'].")'>OFFER</span>";
-                            
-                        }  
-                        
+                            return "<span class='btn btn-danger' id='offer' onclick='offerservices(".$data['method_reference_id'].")'>OFFER</span>";                        
+                        }                         
                     }else{
-                              //sampletypetestname not exist
                             return "<span class='btn btn-danger' id='offer'  onclick='offerservices(".$data['method_reference_id'].")'>OFFER</span>";
                     } 
-
-                  
-                  
-
                 },
                 'enableSorting' => false,
             ],

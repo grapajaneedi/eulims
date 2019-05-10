@@ -12,6 +12,7 @@ use yii\filters\VerbFilter;
 use yii\data\ActiveDataProvider;
 use common\models\inventory\Products;
 use common\models\inventory\InventoryWithdrawaldetails;
+use common\components\Functions;
 
 /**
  * WithdrawController implements the CRUD actions for InventoryWithdrawal model.
@@ -319,6 +320,8 @@ class WithdrawController extends Controller
                      //subtract qty in Entries tbl
                      $entry->quantity_onhand = (int)$entry->quantity_onhand - (int)$key['Quantity']; 
                      if($entry->save()){
+                        $func = new Functions();
+                        $func->checkreorderpoint($entry->product_id);
                         //create record of withdrawaldetails item
                         $item = new InventoryWithdrawaldetails();
                         $item->inventory_withdrawal_id =$header->inventory_withdrawal_id;

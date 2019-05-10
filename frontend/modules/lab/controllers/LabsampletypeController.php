@@ -121,9 +121,19 @@ class LabsampletypeController extends Controller
     {
         $model = $this->findModel($id);
         
-                if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                    Yii::$app->session->setFlash('success', 'Lab Sample Type Successfully Updated'); 
-                    return $this->redirect(['index']);
+                if ($model->load(Yii::$app->request->post())) {
+                    $post= Yii::$app->request->post();
+                    $labsampletype = Labsampletype::find()->where(['lab_id'=> $post['Labsampletype']['lab_id'], 'sampletype_id'=>$post['Labsampletype']['sampletype_id'],  'testcategory_id'=>$post['Labsampletype']['testcategory_id']])->one();
+                    if ($labsampletype){
+                        Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+                        return $this->redirect(['index']);
+                    }else{        
+                        $model->save();
+                        return $this->redirect(['index']);
+                    }
+                  
+                  
+
 
                 } else if (Yii::$app->request->isAjax) {
                     return $this->renderAjax('update', [
@@ -142,7 +152,7 @@ class LabsampletypeController extends Controller
     {
         $model = $this->findModel($id); 
                     if($model->delete()) {            
-                        Yii::$app->session->setFlash('success', 'Lab Sample Type Successfully Deleted'); 
+                       // Yii::$app->session->setFlash('success', 'Lab Sample Type Successfully Deleted'); 
                         return $this->redirect(['index']);
                     } else {
                         return $model->error();

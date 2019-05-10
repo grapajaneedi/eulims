@@ -93,7 +93,7 @@ class InventoryEntries extends \yii\db\ActiveRecord
             'quantity' => 'Quantity',
             'content' => 'Content',
             'amount' => 'Price',
-            'total_unit' => 'Total Unit',
+            'total_unit' => 'Total Volume/Mass',
             'total_amount' => 'Total Price',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
@@ -139,5 +139,10 @@ class InventoryEntries extends \yii\db\ActiveRecord
     public function getWithdrawdetails()
     {
         return $this->hasMany(InventoryWithdrawaldetails::className(), ['inventory_transactions_id' => 'inventory_transactions_id']);
+    }
+
+    public function getTotalcontent()
+    {
+        return ($this->quantity_onhand * $this->content);
     }
 }

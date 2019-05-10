@@ -73,5 +73,8 @@ class Package extends \yii\db\ActiveRecord
     //     return $this->hasOne(Sampletype::className(), ['sampletype_id' => 'sampletype_id']);
     // }
 
-
+    public function getTestcategory()
+    {
+        return $this->hasOne(Testcategory::className(), ['testcategory_id' => 'testcategory_id']);
+    }
 }

@@ -318,7 +318,7 @@ td.kv-group-even {
 }
 
 .table-hover td.kv-group-even:hover {
-    background-color: #d7d9ff!important;
+    background-color: #090D61!important;
 }
 
 td.kv-group-odd {
@@ -326,7 +326,7 @@ td.kv-group-odd {
 }
 
 .table-hover td.kv-group-odd:hover {
-    background-color: #d7ecff!important;
+    background-color: #090D61!important;
 }
 
 .kv-grouped-row {
@@ -337,7 +337,7 @@ td.kv-group-odd {
 }
 
 .table-hover .kv-grouped-row:hover {
-    background-color: #FFE4E1!important;
+    background-color: #090D61!important;
 }
 
 /**

@@ -13,6 +13,8 @@ use Yii;
  * @property string $description
  * @property int $rstl_id
  * @property string $date_created
+ * @property int $qty_sample
+ * @property int $customer_id
  */
 class Booking extends \yii\db\ActiveRecord
 {
@@ -38,8 +40,9 @@ class Booking extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['scheduled_date', 'booking_reference', 'qty_sample', 'customer_id'], 'required'],
             [['scheduled_date', 'date_created'], 'safe'],
-            [['rstl_id'], 'integer'],
+            [['rstl_id', 'qty_sample', 'customer_id'], 'integer'],
             [['booking_reference'], 'string', 'max' => 50],
             [['description'], 'string', 'max' => 100],
         ];
@@ -57,6 +60,8 @@ class Booking extends \yii\db\ActiveRecord
             'description' => 'Description',
             'rstl_id' => 'Rstl ID',
             'date_created' => 'Date Created',
+            'qty_sample' => 'Qty Sample',
+            'customer_id' => 'Customer ID',
         ];
     }
 }
