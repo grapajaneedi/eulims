@@ -120,12 +120,18 @@ class NotificationController extends Controller
         if(isset(Yii::$app->user->identity->profile->rstl_id)){
             $rstlId = Yii::$app->user->identity->profile->rstl_id;
             $refcomponent = new ReferralComponent();
-            $notification = json_decode($refcomponent->listUnrespondedNofication($rstlId));
+            $notification = json_decode($refcomponent->listUnrespondedNofication($rstlId),true);
+            
+            if($notification == false){
+                return Json::encode(['num_notification'=>'server error or no connection']);
+            } else {
+                return Json::encode(['num_notification'=>$notification['count_notification']]);
+            }
         } else {
             //return 'Session time out!';
             return $this->redirect(['/site/login']);
         }
-        return Json::encode(['num_notification'=>$notification->count_notification]);
+        //return Json::encode(['num_notification'=>$notification->count_notification]);
     }
     //get list of unresponded notifications
     public function actionList_unresponded_notification()

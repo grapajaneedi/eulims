@@ -153,7 +153,7 @@ $model->modeofreleaseids=$model->modeofrelease_ids;
 </div>
 <div class="panel panel-success" id="div_met" style="padding-bottom: 10px;<?= $PanelStyle ?>">
     <div class="panel-heading">Metrology Request Details</div>
-    <div class="row" style="padding-left: 5px">
+    <div class="row" style="padding-left: 5px">*
         <div class="col-md-6">
             <label class="control-label">Recommended Due Date</label>
             <div class="col-md-12">

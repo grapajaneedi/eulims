@@ -143,7 +143,7 @@ class ProductsController extends Controller
             if($model->suppliers_ids)
                 $ids= implode(',',$model->suppliers_ids);
 
-
+            $model->suppliers_ids=$ids;
             $image1= UploadedFile::getInstance($model, 'Image1');
             // var_dump($model); exit;
             $image2= UploadedFile::getInstance($model, 'Image2');
@@ -159,6 +159,7 @@ class ProductsController extends Controller
             if(!empty($image1) && $image1->size !== 0) {
                 $image1->saveAs('uploads/products/'.$model->product_name.'1.'.$image1->extension);
                 $model->Image1='uploads/products/'.$model->product_name.'1.'.$image1->extension;
+             
             }else{
                 $model->Image1=$origimg1;
             }
@@ -327,12 +328,21 @@ class ProductsController extends Controller
         ]);
 
         if($varsearch){
+            //  $dataProvider = new ActiveDataProvider([
+            // 'query' =>Products::find()->where(['like', 'product_name', $varsearch])->where(['producttype_id'=>2]),
+            // 'pagination' => [
+            //     'pageSize' => 10,
+            // ],
+            //  ]);
+
+             $query = Products::find();
              $dataProvider = new ActiveDataProvider([
-            'query' =>Products::find()->where(['like', 'product_name', $varsearch],['producttype_id'=>2]),
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-             ]);
+                'query' => $query,
+            ]);
+             $query->andFilterWhere([
+                'producttype_id' => 2,
+            ]);
+             $query->andFilterWhere(['like', 'product_name', $varsearch]);
 
         }
 
