@@ -104,13 +104,13 @@ class ProductsController extends Controller
 
 
             if(!empty($image1) && $image1->size !== 0) {
-                $image1->saveAs('uploads/products/'.$model->product_name.$model->product_id.'1.'.$image1->extension);
-                $model->Image1='uploads/products/'.$model->product_name.$model->product_id.'1.'.$image1->extension;
+                $image1->saveAs('uploads/products/'.$model->product_code.$model->product_id.'1.'.$image1->extension);
+                $model->Image1='uploads/products/'.$model->product_code.$model->product_id.'1.'.$image1->extension;
             }
 
             if(!empty($image2) && $image2->size !== 0) {
-                $image2->saveAs('uploads/products/'.$model->product_name.$model->product_id.'2.'.$image2->extension);
-                $model->Image2='uploads/products/'.$model->product_name.$model->product_id.'2.'.$image2->extension;
+                $image2->saveAs('uploads/products/'.$model->product_code.$model->product_id.'2.'.$image2->extension);
+                $model->Image2='uploads/products/'.$model->product_code.$model->product_id.'2.'.$image2->extension;
             }
 
 
@@ -157,16 +157,16 @@ class ProductsController extends Controller
 
             
             if(!empty($image1) && $image1->size !== 0) {
-                $image1->saveAs('uploads/products/'.$model->product_name.'1.'.$image1->extension);
-                $model->Image1='uploads/products/'.$model->product_name.'1.'.$image1->extension;
+                $image1->saveAs('uploads/products/'.$model->product_code.'1.'.$image1->extension);
+                $model->Image1='uploads/products/'.$model->product_code.'1.'.$image1->extension;
              
             }else{
                 $model->Image1=$origimg1;
             }
 
             if(!empty($image2) && $image2->size !== 0) {
-                $image2->saveAs('uploads/products/'.$model->product_name.'2.'.$image2->extension);
-                $model->Image2='uploads/products/'.$model->product_name.'2.'.$image2->extension;
+                $image2->saveAs('uploads/products/'.$model->product_code.'2.'.$image2->extension);
+                $model->Image2='uploads/products/'.$model->product_code.'2.'.$image2->extension;
             }else{
                 $model->Image2=$origimg2;
             }
