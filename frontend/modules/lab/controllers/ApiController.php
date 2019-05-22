@@ -76,32 +76,37 @@ class ApiController extends Controller
    }  
 
    //Login
-  public function actionLogin($email, $password)
+  public function actionLogin()
   {  
 
-                
-            return $u.$p;
+    // Sample POST Data:
+    // {
+    // "email": "anecbook@gmail.com",
+    // "password": "123456"
+    // }
+
+            $data = array ("token"=>"W29iamVjdCBPYmplY3Rd", 
+            "user"=>array("email"=>"bernadettebucoybelamide@gmail.com",
+            "firstName"=>"Bernadette",
+            "middleInitial"=>"B",
+            "lastName"=> "Bucoy",
+            "userType"=> "CRO"
+        ));
+            return $this->asJson($data);   
+            //return $u.$p;
   }  
 
  public function actionUser()
   {  
-         $model = new Sample();    
-        
+    // Sample GET Data:
 
-             if (!isset($_GET['rstl_id'])){
-                 $rstl = 11;
-                 $year = 2019;
-             }else{
-                 $rstl = (int) $_GET['rstl_id'];
-                 $year = (int) $_GET['year'];
-             }
-                 $data = $model::find()
-                      ->leftJoin('tbl_request', 'tbl_sample.request_id=tbl_request.request_id') 
-                      ->where(['tbl_request.rstl_id'=>$rstl]) 
-                      ->AndWhere(['like', 'request_ref_num', '%'.$year.'%', false]) 
-                      ->count();
-                
-                     return $data;
+    // {
+    //   "token": "abcde12345"
+    // }
+
+
+    $data = array("token"=>"abcde12345", "q"=> "CHE-08");
+    return $this->asJson($data);  
  }  
 
  public function actionSamplecode()
@@ -127,23 +132,45 @@ class ApiController extends Controller
 
  public function actionAnalysis()
   {  
-         $model = new Sample();    
-        
+    // Sample GET Data:
 
-             if (!isset($_GET['rstl_id'])){
-                 $rstl = 11;
-                 $year = 2019;
-             }else{
-                 $rstl = (int) $_GET['rstl_id'];
-                 $year = (int) $_GET['year'];
-             }
-                 $data = $model::find()
-                      ->leftJoin('tbl_request', 'tbl_sample.request_id=tbl_request.request_id') 
-                      ->where(['tbl_request.rstl_id'=>$rstl]) 
-                      ->AndWhere(['like', 'request_ref_num', '%'.$year.'%', false]) 
-                      ->count();
-                
-                     return $data;
+    // {
+    //   "token": "abcde12345",
+    //   "id": "CHE-0812"
+    // }
+
+    //{
+    //     "sampleCode": "CHE-0812",
+    //     "samples": [
+    //       {
+    //         "name": "Oil",
+    //         "description": "Scheme: QFCS, Round: FC221, Sample: 778-Fat Quality Storage: 2-8 C, approx. 150 g sample, in an amber glass bottle."
+    //       }
+    //     ],
+    //     "tests": [
+    //       {
+    //         "id": 1,
+    //         "name": "Package B",
+    //         "method": null,
+    //         "progress": 0,
+    //         "workflow": 6,
+    //         "status": "pending",
+    //         "procedures": [
+    //           {
+    //             "procedure": "Oxidation",
+    //             "startDate": "2019-04-29",
+    //             "endDate": "2019-04-29",
+    //             "status": "pending"
+    //           }
+    //         ]
+    //       }
+    //     ]
+    //   }
+      
+    //   // If sample code does NOT exist
+    //   {
+    //     "error": "Sample code does not exist."
+    //   }
  }  
 
     /**
