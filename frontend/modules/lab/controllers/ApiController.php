@@ -64,11 +64,11 @@ class ApiController extends Controller
       
             if(!$sock = @fsockopen($server, 80))
             {
-                $data = 'Offline';
+                $data = array("status" => "Offline");
             }
             else
             {
-                $data = 'Online';
+                $data = array("status" => "Online");
             }
 
             return $this->asJson($data);

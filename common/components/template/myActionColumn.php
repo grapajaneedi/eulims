@@ -1,12 +1,6 @@
 <?php
 
-/*
- * Project Name: eulims * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 05 7, 18 , 3:10:24 PM * 
- * Module: myActionColumn * 
- */
+
 namespace common\components\template;
 use kartik\grid\ActionColumn;
 use Yii;

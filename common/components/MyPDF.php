@@ -1,12 +1,6 @@
 <?php
 
-/*
- * Project Name: eulims * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 01 18, 18 , 3:42:06 PM * 
- * Module: MyPDF * 
- */
+
 
 namespace common\components;
 use kartik\mpdf\Pdf;

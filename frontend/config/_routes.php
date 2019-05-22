@@ -3,7 +3,6 @@
 /* 
  * Project Name: onelab.gov.ph * 
  * Copyright(C)2017 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
  * 12 16, 17 , 7:42:15 PM * 
  * Module: _routes * 
  */

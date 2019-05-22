@@ -40,8 +40,6 @@ $sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','typ
          $category= ArrayHelper::map(Testcategory::find()->orderBy(['testcategory_id' => SORT_DESC])->all(),'testcategory_id','category');
     
         $sampletype = [];
-
-      
     ?>
 
     
@@ -89,9 +87,6 @@ $sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','typ
     </div>
 
     <?php ActiveForm::end(); ?>
-   
-  
-
 </div>
 
   

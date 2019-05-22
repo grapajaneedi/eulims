@@ -120,7 +120,7 @@ class SiteController extends Controller
         $TransactDetails=[
             'transaction_num'=>"R9-072018-MET-0230",
             'customer_code'=>"11-011",
-            'email'=>"nolansunico@gmail.com",
+            'email'=>"dostonelab@gmail.com",
             'collection_type'=>"Testing",
             'collection_code'=>'03-200',
             'order_date'=>"2018-10-09",
@@ -427,8 +427,8 @@ class SiteController extends Controller
     public function actionSendmail(){
         $mailer= \Yii::$app->mailer;
         $mailer->compose('sampleEmail-html', ['message' => 'Nolan'])
-                ->setFrom('nolansunico@gmail.com')
-                ->setTo('nolansunico@gmail.com')
+                ->setFrom('dostonelab@gmail.com')
+                ->setTo('dostonelab@gmail.com')
                 ->setBcc('nolan@tailormadetraffic.com')
                 ->attach('d:/attachment.png')
                 ->attach('d:/Sample.txt')

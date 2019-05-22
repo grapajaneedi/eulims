@@ -1,10 +1,4 @@
-/* 
- * Project Name: eulims * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 01 31, 18 , 1:42:50 PM * 
- * Module: main * 
- */
+
 jQuery(document).ready(function ($) {
     $('.btn-modal').click(function () {
         ShowModal(this.name, this.value,true,'600px');

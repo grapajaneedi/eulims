@@ -1,12 +1,6 @@
 <?php
 
-/*
- * Project Name: eulims * 
- * Copyright(C)2017 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 12 22, 17 , 4:06:42 PM * 
- * Module: UploadForm * 
- */
+
 
 namespace backend\models;
 use yii\base\Model;

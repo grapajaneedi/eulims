@@ -1,7 +1,6 @@
 <?php
 use kartik\mpdf\Pdf;
 /**
- * Class Created by Eng'r Nolan F. Sunico
  * This class perform backup of databases incrementally
  * Databases list on configurations
  */

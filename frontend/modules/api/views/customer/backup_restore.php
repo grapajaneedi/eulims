@@ -3,8 +3,7 @@
 use yii\helpers\Html;
 /*
  * Project Name: eulims_ * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
+ * Copyright(C)2018 Department of Science & Technology -IX *  
  * 09 7, 18 , 4:36:23 PM * 
  * Module: backup_restore * 
  */

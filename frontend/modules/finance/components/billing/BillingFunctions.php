@@ -5,7 +5,6 @@ use yii\base\Component;
 /*
  * Project Name: eulims_ * 
  * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
  * 07 2, 18 , 9:15:30 AM * 
  * Module: BillingFunctions * 
  */

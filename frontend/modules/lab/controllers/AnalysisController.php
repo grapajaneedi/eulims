@@ -1,5 +1,6 @@
 <?php
 namespace frontend\modules\lab\controllers;
+
 use Yii;
 use common\models\lab\Analysis;
 use common\models\lab\Sample;

@@ -2,8 +2,7 @@
 
 /*
  * Project Name: eulims_ * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
+ * Copyright(C)2018 Department of Science & Technology -IX *  
  * 10 29, 18 , 11:26:59 AM * 
  * Module: OpBilling * 
  */

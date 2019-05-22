@@ -3,7 +3,6 @@
 /*
  * Project Name: eulims_ * 
  * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
  * 07 27, 18 , 12:01:47 PM * 
  * Module: exRequest * 
  */
