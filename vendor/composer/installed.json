@@ -474,7 +474,8 @@
         "dist": {
             "type": "zip",
             "url": "https://api.github.com/repos/blueimp/JavaScript-Canvas-to-Blob/zipball/9f3deb2e710d39c72a988559609d9dc9a319de0b",
-            "reference": "9f3deb2e710d39c72a988559609d9dc9a319de0b"
+            "reference": "9f3deb2e710d39c72a988559609d9dc9a319de0b",
+            "shasum": null
         },
         "type": "bower-asset",
         "installation-source": "dist"
@@ -557,7 +558,8 @@
         "dist": {
             "type": "zip",
             "url": "https://api.github.com/repos/blueimp/Gallery/zipball/8336bb5934cb623608808601129db3fbf9201a09",
-            "reference": "8336bb5934cb623608808601129db3fbf9201a09"
+            "reference": "8336bb5934cb623608808601129db3fbf9201a09",
+            "shasum": null
         },
         "type": "bower-asset",
         "installation-source": "dist"
@@ -592,7 +594,8 @@
         "dist": {
             "type": "zip",
             "url": "https://api.github.com/repos/blueimp/JavaScript-Templates/zipball/da7647cb93fff2030e73a701db22c66de76a9919",
-            "reference": "da7647cb93fff2030e73a701db22c66de76a9919"
+            "reference": "da7647cb93fff2030e73a701db22c66de76a9919",
+            "shasum": null
         },
         "type": "bower-asset",
         "installation-source": "dist"
@@ -609,7 +612,8 @@
         "dist": {
             "type": "zip",
             "url": "https://api.github.com/repos/twbs/bootstrap/zipball/0b9c4a4007c44201dce9a6cc1a38407005c26c86",
-            "reference": "0b9c4a4007c44201dce9a6cc1a38407005c26c86"
+            "reference": "0b9c4a4007c44201dce9a6cc1a38407005c26c86",
+            "shasum": null
         },
         "require": {
             "bower-asset/jquery": ">=1.9.1,<4.0"
@@ -826,7 +830,8 @@
         "dist": {
             "type": "zip",
             "url": "https://api.github.com/repos/RobinHerbots/Inputmask/zipball/5e670ad62f50c738388d4dcec78d2888505ad77b",
-            "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
+            "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b",
+            "shasum": null
         },
         "require": {
             "bower-asset/jquery": ">=1.7"
@@ -849,7 +854,8 @@
         "dist": {
             "type": "zip",
             "url": "https://api.github.com/repos/tapmodo/Jcrop/zipball/1902fbc6afa14481dc019a17e0dcb7d62b808a98",
-            "reference": "1902fbc6afa14481dc019a17e0dcb7d62b808a98"
+            "reference": "1902fbc6afa14481dc019a17e0dcb7d62b808a98",
+            "shasum": null
         },
         "type": "bower-asset",
         "installation-source": "dist"
@@ -866,7 +872,8 @@
         "dist": {
             "type": "zip",
             "url": "https://api.github.com/repos/jquery/jquery-dist/zipball/77d2a51d0520d2ee44173afdf4e40a9201f5964e",
-            "reference": "77d2a51d0520d2ee44173afdf4e40a9201f5964e"
+            "reference": "77d2a51d0520d2ee44173afdf4e40a9201f5964e",
+            "shasum": null
         },
         "type": "bower-asset",
         "installation-source": "dist",
@@ -1000,7 +1007,8 @@
         "dist": {
             "type": "zip",
             "url": "https://api.github.com/repos/bestiejs/punycode.js/zipball/38c8d3131a82567bfef18da09f7f4db68c84f8a3",
-            "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3"
+            "reference": "38c8d3131a82567bfef18da09f7f4db68c84f8a3",
+            "shasum": null
         },
         "type": "bower-asset",
         "installation-source": "dist"
@@ -1017,7 +1025,8 @@
         "dist": {
             "type": "zip",
             "url": "https://api.github.com/repos/LPology/Simple-Ajax-Uploader/zipball/06c094a7d383a1e6643ab4c77716f01607489b54",
-            "reference": "06c094a7d383a1e6643ab4c77716f01607489b54"
+            "reference": "06c094a7d383a1e6643ab4c77716f01607489b54",
+            "shasum": null
         },
         "type": "bower-asset",
         "installation-source": "dist",
@@ -1104,7 +1113,8 @@
         "dist": {
             "type": "zip",
             "url": "https://api.github.com/repos/yiisoft/jquery-pjax/zipball/aef7b953107264f00234902a3880eb50dafc48be",
-            "reference": "aef7b953107264f00234902a3880eb50dafc48be"
+            "reference": "aef7b953107264f00234902a3880eb50dafc48be",
+            "shasum": null
         },
         "require": {
             "bower-asset/jquery": ">=1.8"
@@ -3051,61 +3061,6 @@
         ]
     },
     {
-        "name": "kartik-v/yii2-editable",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/kartik-v/yii2-editable.git",
-            "reference": "e07d78660e1d74cf831824855c46742d7ff784da"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/kartik-v/yii2-editable/zipball/e07d78660e1d74cf831824855c46742d7ff784da",
-            "reference": "e07d78660e1d74cf831824855c46742d7ff784da",
-            "shasum": ""
-        },
-        "require": {
-            "kartik-v/yii2-krajee-base": "~1.7",
-            "kartik-v/yii2-popover-x": "~1.3"
-        },
-        "time": "2017-06-28T05:11:45+00:00",
-        "type": "yii2-extension",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.7.x-dev"
-            }
-        },
-        "installation-source": "source",
-        "autoload": {
-            "psr-4": {
-                "kartik\\editable\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Kartik Visweswaran",
-                "email": "kartikv2@gmail.com",
-                "homepage": "http://www.krajee.com/"
-            }
-        ],
-        "description": "An enhanced editable widget for Yii 2.0 that allows easy editing of displayed data with numerous configuration possibilities.",
-        "homepage": "https://github.com/kartik-v/yii2-editable",
-        "keywords": [
-            "bootstrap",
-            "editable",
-            "input",
-            "jquery",
-            "popover",
-            "popover-x",
-            "widget"
-        ]
-    },
-    {
         "name": "kartik-v/yii2-export",
         "version": "v1.2.9",
         "version_normalized": "1.2.9.0",
@@ -3532,61 +3487,6 @@
         "keywords": [
             "bootstrap",
             "extension",
-            "jquery",
-            "range",
-            "sortable",
-            "widget",
-            "yii2"
-        ]
-    },
-    {
-        "name": "kartik-v/yii2-sortable-input",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/kartik-v/yii2-sortable-input.git",
-            "reference": "9b49072e5c5c83e74fbaa8f9d6928fd26cad375c"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/kartik-v/yii2-sortable-input/zipball/9b49072e5c5c83e74fbaa8f9d6928fd26cad375c",
-            "reference": "9b49072e5c5c83e74fbaa8f9d6928fd26cad375c",
-            "shasum": ""
-        },
-        "require": {
-            "kartik-v/yii2-sortable": "~1.2"
-        },
-        "time": "2018-11-05T12:36:39+00:00",
-        "type": "yii2-extension",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.2.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "kartik\\sortinput\\": "src"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Kartik Visweswaran",
-                "email": "kartikv2@gmail.com",
-                "homepage": "http://www.krajee.com/"
-            }
-        ],
-        "description": "Sortable input widget based on yii2-sortable extension.",
-        "homepage": "https://github.com/kartik-v/yii2-sortable-input",
-        "keywords": [
-            "bootstrap",
-            "extension",
-            "input",
             "jquery",
             "range",
             "sortable",
@@ -4518,6 +4418,7 @@
         "dist": {
             "type": "tar",
             "url": "https://registry.npmjs.org/fullcalendar/-/fullcalendar-3.8.0.tgz",
+            "reference": null,
             "shasum": "4c0fe494a62b0a8d640c6de8eb883b49a212b5dc"
         },
         "require": {
@@ -4630,6 +4531,7 @@
         "dist": {
             "type": "tar",
             "url": "https://registry.npmjs.org/jquery/-/jquery-3.2.1.tgz",
+            "reference": null,
             "shasum": "5c4d9de652af6cd0a770154a631bba12b015c787"
         },
         "require-dev": {
@@ -4711,6 +4613,7 @@
         "dist": {
             "type": "tar",
             "url": "https://registry.npmjs.org/moment/-/moment-2.20.1.tgz",
+            "reference": null,
             "shasum": "d6eb1a46cbcc14a2b2f9434112c1ff8907f313fd"
         },
         "require-dev": {
@@ -9206,6 +9109,222 @@
             "ZendFramework",
             "stdlib",
             "zf"
+        ]
+    },
+    {
+        "name": "lcobucci/jwt",
+        "version": "3.2.x-dev",
+        "version_normalized": "3.2.9999999.9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/lcobucci/jwt.git",
+            "reference": "f8c728a2c8a5d44513337ede08c501dbcd4b0cdd"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/lcobucci/jwt/zipball/f8c728a2c8a5d44513337ede08c501dbcd4b0cdd",
+            "reference": "f8c728a2c8a5d44513337ede08c501dbcd4b0cdd",
+            "shasum": ""
+        },
+        "require": {
+            "ext-openssl": "*",
+            "php": ">=5.5"
+        },
+        "require-dev": {
+            "mdanter/ecc": "~0.3.1",
+            "mikey179/vfsstream": "~1.5",
+            "phpmd/phpmd": "~2.2",
+            "phpunit/php-invoker": "~1.1",
+            "phpunit/phpunit": "~4.5",
+            "squizlabs/php_codesniffer": "~2.3"
+        },
+        "suggest": {
+            "mdanter/ecc": "Required to use Elliptic Curves based algorithms."
+        },
+        "time": "2018-12-01T21:00:24+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.1-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "Lcobucci\\JWT\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Luís Otávio Cobucci Oblonczyk",
+                "email": "lcobucci@gmail.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "A simple library to work with JSON Web Token and JSON Web Signature",
+        "keywords": [
+            "JWS",
+            "jwt"
+        ]
+    },
+    {
+        "name": "sizeg/yii2-jwt",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sizeg/yii2-jwt.git",
+            "reference": "22100b1313a8ee281525fa63d91d5ef12c06d959"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sizeg/yii2-jwt/zipball/22100b1313a8ee281525fa63d91d5ef12c06d959",
+            "reference": "22100b1313a8ee281525fa63d91d5ef12c06d959",
+            "shasum": ""
+        },
+        "require": {
+            "lcobucci/jwt": "~3.2.0",
+            "php": ">=5.5.0",
+            "yiisoft/yii2": "~2.0.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.8"
+        },
+        "time": "2019-03-20T06:36:38+00:00",
+        "type": "yii2-extension",
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "sizeg\\jwt\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "authors": [
+            {
+                "name": "Dmitriy Demin",
+                "email": "sizemail@gmail.com",
+                "homepage": "https://sizeg.tk"
+            }
+        ],
+        "description": "JWT based on Icobucci",
+        "keywords": [
+            "jwt",
+            "yii 2",
+            "yii2"
+        ]
+    },
+    {
+        "name": "kartik-v/yii2-editable",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/kartik-v/yii2-editable.git",
+            "reference": "e07d78660e1d74cf831824855c46742d7ff784da"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/kartik-v/yii2-editable/zipball/e07d78660e1d74cf831824855c46742d7ff784da",
+            "reference": "e07d78660e1d74cf831824855c46742d7ff784da",
+            "shasum": ""
+        },
+        "require": {
+            "kartik-v/yii2-krajee-base": "~1.7",
+            "kartik-v/yii2-popover-x": "~1.3"
+        },
+        "time": "2017-06-28T05:11:45+00:00",
+        "type": "yii2-extension",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.7.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "kartik\\editable\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Kartik Visweswaran",
+                "email": "kartikv2@gmail.com",
+                "homepage": "http://www.krajee.com/"
+            }
+        ],
+        "description": "An enhanced editable widget for Yii 2.0 that allows easy editing of displayed data with numerous configuration possibilities.",
+        "homepage": "https://github.com/kartik-v/yii2-editable",
+        "keywords": [
+            "bootstrap",
+            "editable",
+            "input",
+            "jquery",
+            "popover",
+            "popover-x",
+            "widget"
+        ]
+    },
+    {
+        "name": "kartik-v/yii2-sortable-input",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/kartik-v/yii2-sortable-input.git",
+            "reference": "9b49072e5c5c83e74fbaa8f9d6928fd26cad375c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/kartik-v/yii2-sortable-input/zipball/9b49072e5c5c83e74fbaa8f9d6928fd26cad375c",
+            "reference": "9b49072e5c5c83e74fbaa8f9d6928fd26cad375c",
+            "shasum": ""
+        },
+        "require": {
+            "kartik-v/yii2-sortable": "~1.2"
+        },
+        "time": "2018-11-05T12:36:39+00:00",
+        "type": "yii2-extension",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.2.x-dev"
+            }
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-4": {
+                "kartik\\sortinput\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Kartik Visweswaran",
+                "email": "kartikv2@gmail.com",
+                "homepage": "http://www.krajee.com/"
+            }
+        ],
+        "description": "Sortable input widget based on yii2-sortable extension.",
+        "homepage": "https://github.com/kartik-v/yii2-sortable-input",
+        "keywords": [
+            "bootstrap",
+            "extension",
+            "input",
+            "jquery",
+            "range",
+            "sortable",
+            "widget",
+            "yii2"
         ]
     }
 ]
