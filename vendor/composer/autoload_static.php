@@ -65,6 +65,7 @@ class ComposerStaticInitb2e31f2d92d734baadeb2c74aa89265e
         's' => 
         array (
             'skeeks\\yii2\\curl\\' => 17,
+            'sizeg\\jwt\\' => 10,
         ),
         'r' => 
         array (
@@ -187,6 +188,10 @@ class ComposerStaticInitb2e31f2d92d734baadeb2c74aa89265e
         'M' => 
         array (
             'Mpdf\\' => 5,
+        ),
+        'L' => 
+        array (
+            'Lcobucci\\JWT\\' => 13,
         ),
         'G' => 
         array (
@@ -346,6 +351,10 @@ class ComposerStaticInitb2e31f2d92d734baadeb2c74aa89265e
         'skeeks\\yii2\\curl\\' => 
         array (
             0 => __DIR__ . '/..' . '/skeeks/yii2-curl',
+        ),
+        'sizeg\\jwt\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/sizeg/yii2-jwt',
         ),
         'rmrevin\\yii\\fontawesome\\' => 
         array (
@@ -644,6 +653,10 @@ class ComposerStaticInitb2e31f2d92d734baadeb2c74aa89265e
         'Mpdf\\' => 
         array (
             0 => __DIR__ . '/..' . '/mpdf/mpdf/src',
+        ),
+        'Lcobucci\\JWT\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/lcobucci/jwt/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
