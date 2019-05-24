@@ -2,8 +2,8 @@
 
 namespace frontend\modules\api\controllers;
 
-use common\models\system\LoginForm2;
 use common\models\system\LoginForm;
+use common\models\inventory\Products;
 
 class RestapiController extends \yii\rest\Controller
 {
@@ -13,7 +13,7 @@ class RestapiController extends \yii\rest\Controller
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
             'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
-            'except' => ['login'],
+            'except' => ['login','getproducts'],
         ];
 
         return $behaviors;
@@ -67,9 +67,6 @@ class RestapiController extends \yii\rest\Controller
         return $this->render('index');
     }
 
-
-
-
     /**
      * @return \yii\web\Response
      */
@@ -86,5 +83,94 @@ class RestapiController extends \yii\rest\Controller
 
         ]);
     }
+
+
+
+    //************************************************
+    public function actionGetproducts($keyword = ""){
+
+        $products = Products::find()->select(['product_id','product_code','product_name','image1','producttype_id'])->where(['LIKE', 'product_name', $keyword])->all();
+        //product type 1 = consumables and 2 = non consumable
+        return $this->asJson([
+            'data' => $products,
+        ]);   
+    }
+
+    public function actionGetproduct($productcode){
+
+        $product = Products::find()->select(['product_id','product_code','product_name','image1','producttype_id'])->where(['product_code' => $productcode])->one();
+        //product type 1 = consumables and 2 = non consumable
+        if($product){
+             return $this->asJson([
+                'data' => $product,
+            ]);
+        }else{
+            return $this->asJson([
+                'success' => false,
+                'message' => 'no product code found',
+            ]);  
+        } 
+    }
+
+    public function actionUpdatethumbnail(){
+        $my_var = \Yii::$app->request->post();
+        if($my_var){
+            $product = Products::find()->where(['product_code' => $my_var['product_code']]); //find product using the primarykey
+            if($product){
+                //fetch and save the picture, if (success) update the product
+                //$product->Image1 = my_var/** productname + product code + extension */
+
+                if($product->save()){
+                    return $this->asJson([
+                        'success' => true,
+                        'message' => 'Product ('.$product_code.') updated!',
+                    ]);
+                }else{
+                    return $this->asJson([
+                        'success' => false,
+                        'message' => 'Product ('.$product_code.') failed to update!',
+                    ]); 
+                }
+                          
+            }else{
+                return $this->asJson([
+                    'success' => false,
+                    'message' => 'Product not found using code '.$my_var['product_id'],
+                ]); 
+            }
+        }else{
+            return $this->asJson([
+                    'success' => false,
+                    'message' => 'No Submission',
+                ]); 
+        }
+        
+    }
+
+
+    public function actionSetschedule(){
+        $my_var = \Yii::$app->request->post();
+        $product = Products::findOne($my_var['product_id']); //find product using the primarykey
+        if($product){
+            //create schedule
+             return $this->asJson([
+                'success' => true,
+                'message' => 'Schedule created for product code'.$my_var['product_name'],
+            ]); 
+        }else{
+            return $this->asJson([
+                'success' => false,
+                'message' => 'Product not found using id '.$my_var['product_id'],
+            ]); 
+        }
+    }
+
+    public function actionGetschedules(){
+         return $this->asJson([
+                'success' => false,
+                'message' => 'charchar',
+            ]); 
+    }
+    //************************************************
 
 }
