@@ -126,6 +126,10 @@ return [
         'orientation' => Pdf::ORIENT_PORTRAIT,
         'destination' => Pdf::DEST_BROWSER
         // refer settings section for all configuration options
-    ]
+    ],
+    'jwt' => [
+        'class' => 'sizeg\jwt\Jwt',
+        'key' => 'secret',
+    ],
 ];
  
