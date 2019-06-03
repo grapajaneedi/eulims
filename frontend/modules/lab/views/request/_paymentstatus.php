@@ -46,14 +46,16 @@ use common\models\system\Profile;
             'format' => 'raw',
             'enableSorting' => false,
             'value'=> function ($model){
-              
-               $paymentitem = Paymentitem::find()->where(['request_id' => $model->request_id])->one(); 
+               $request = Request::find()->where(['request_ref_num' => $model->request_ref_num])->one();
+               $paymentitem = Paymentitem::find()->where(['details' => $request->request_ref_num])->one(); 
                 if ($paymentitem){
                     $orderofpayment = Op::find()->where(['orderofpayment_id' => $paymentitem->orderofpayment_id])->one();
                     return $orderofpayment->transactionnum;
                 }else{
                     return "";
                 }
+
+           // return $request->request_ref_num;
               
               
               
@@ -66,7 +68,8 @@ use common\models\system\Profile;
             'format' => 'raw',
             'enableSorting' => false,
             'value'=> function ($model){
-                $paymentitem = Paymentitem::find()->where(['request_id' => $model->request_id])->one(); 
+                $request = Request::find()->where(['request_ref_num' => $model->request_ref_num])->one();
+               $paymentitem = Paymentitem::find()->where(['details' => $request->request_ref_num])->one(); 
                 
                 if ($paymentitem){
                     $orderofpayment = Op::find()->where(['orderofpayment_id' => $paymentitem->orderofpayment_id])->one();
@@ -86,11 +89,12 @@ use common\models\system\Profile;
             'format' => 'raw',
             'enableSorting' => false,
             'value'=> function ($model){
-                $paymentitem = Paymentitem::find()->where(['request_id' => $model->request_id])->one(); 
+                $request = Request::find()->where(['request_ref_num' => $model->request_ref_num])->one();
+                $paymentitem = Paymentitem::find()->where(['details' => $request->request_ref_num])->one(); 
 
                 if ($paymentitem){
                     $orderofpayment = Op::find()->where(['orderofpayment_id' => $paymentitem->orderofpayment_id])->one();
-                    return $orderofpayment->total_amount;
+                    return $paymentitem->amount;
                 }else{
                     return "";
                 }
