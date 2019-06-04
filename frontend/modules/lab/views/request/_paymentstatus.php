@@ -52,7 +52,7 @@ use common\models\system\Profile;
                     $orderofpayment = Op::find()->where(['orderofpayment_id' => $paymentitem->orderofpayment_id])->one();
                     return $orderofpayment->transactionnum;
                 }else{
-                    return "";
+                    return "No payment record";
                 }
 
            // return $request->request_ref_num;

@@ -189,7 +189,7 @@ if(Yii::$app->user->can('allow-cancel-request')){
                     {
                         return Html::button('<span"><b>PAID</span>', ['value'=>Url::to(['/lab/request/paymentstatus','id'=>$model->request_id]),'onclick'=>'LoadModal(this.title, this.value, true, 500);', 'class' => 'btn btn-success','title' => Yii::t('app', "Payment Status"), 'style'=>'width:100px']);
                     }else{
-                        return Html::button('<span"><b>UNPAID</span>', ['value'=>Url::to(['/lab/request/paymentstatus','id'=>$model->request_id]),'onclick'=>'LoadModal(this.title, this.value, true, 500);', 'class' => 'btn btn-danger','title' => Yii::t('app', "Payment Status"), 'style'=>'width:100px']);
+                        return Html::button('<span"><b>UNPAID</span>', ['value'=>Url::to(['/lab/request/paymentstatus','id'=>$model->request_id]),'onclick'=>'LoadModal(this.title, this.value, true, 500);', 'class' => 'btn btn-default','title' => Yii::t('app', "Payment Status"), 'style'=>'width:100px']);
                     }
                     // $Obj=$model->getPaymentStatusDetails($model->request_id);
                     // if($Obj){
