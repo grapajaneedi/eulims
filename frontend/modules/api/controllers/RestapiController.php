@@ -13,7 +13,7 @@ class RestapiController extends \yii\rest\Controller
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
             'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
-            'except' => ['login','getproducts'],
+            'except' => ['login'],
         ];
 
         return $behaviors;
@@ -27,6 +27,12 @@ class RestapiController extends \yii\rest\Controller
         // make a login precodure here
         $model = new LoginForm();
         $my_var = \Yii::$app->request->post();
+        if(!$my_var){
+            return $this->asJson([
+                'success' => false,
+                'message' => 'Email and Password empty',
+            ]);
+        }
         $model->email = $my_var['email'];
         $model->password = $my_var['password'];
         // var_dump($model); exit;
@@ -89,7 +95,7 @@ class RestapiController extends \yii\rest\Controller
     //************************************************
     public function actionGetproducts($keyword = ""){
 
-        $products = Products::find()->select(['product_id','product_code','product_name','image1','producttype_id'])->where(['LIKE', 'product_name', $keyword])->all();
+        $products = Products::find()->select(['product_id','product_code','product_name','Image1','producttype_id'])->where(['LIKE', 'product_name', $keyword])->all();
         //product type 1 = consumables and 2 = non consumable
         return $this->asJson([
             'data' => $products,
@@ -98,7 +104,7 @@ class RestapiController extends \yii\rest\Controller
 
     public function actionGetproduct($productcode){
 
-        $product = Products::find()->select(['product_id','product_code','product_name','image1','producttype_id'])->where(['product_code' => $productcode])->one();
+        $product = Products::find()->select(['product_id','product_code','product_name','Image1','producttype_id'])->where(['product_code' => $productcode])->one();
         //product type 1 = consumables and 2 = non consumable
         if($product){
              return $this->asJson([
