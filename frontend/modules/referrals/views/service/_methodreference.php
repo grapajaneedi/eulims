@@ -187,7 +187,7 @@ use common\components\ReferralComponent;
                         //'value' => 'List of Agencies',
                         'value' => function($data) use ($refcomponent,$count_methods,$img_url) {
                             if($count_methods > 0){
-                                $data = json_decode($refcomponent->offeredby($data['methodreference_id']),true);
+                                $data = json_decode($refcomponent->offeredBy($data['methodreference_id']),true);
                                 $img = '';
                                 $non_dost = [];
                                 $non_dost_img = '';

@@ -1,37 +1,14 @@
 <?php
 
-namespace frontend\modules\services\controllers;
+namespace frontend\modules\setup\controllers;
 
 use Yii;
-use common\models\lab\Packagelist;
-use common\models\lab\Methodreference;
-use common\models\lab\Testnamemethod;
-use common\models\lab\Package;
-use common\models\lab\PackagelistSearch;
-use common\models\lab\Analysis;
-use common\models\lab\AnalysisSearch;
-use common\models\lab\Test;
-use common\models\lab\TestSearch;
-use common\models\lab\Request;
-use common\models\lab\RequestSearch;
-use common\models\lab\Sample;
-use common\models\lab\SampleSearch;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\data\ActiveDataProvider;
-use yii\helpers\ArrayHelper;
-use common\models\services\Testcategory;
-use common\models\services\TestcategorySearch;
-use yii\helpers\Json;
 
-use common\models\lab\Testname;
-use common\models\lab\Sampletype;
 
 /**
  * PackagelistController implements the CRUD actions for Packagelist model.
  */
-class PackagelistController extends Controller
+class SetupController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -163,10 +140,10 @@ class PackagelistController extends Controller
                      $p = $post['Packagelist']['name'];
                      $r = str_replace("," , "", $post['Packagelist']['rate']);
 
-                    //  $Connection= Yii::$app->labdb;
-                    //  $sql="UPDATE `tbl_sample` SET `package_id`=$p, `package_rate`='$r' WHERE `sample_id`=".$sample_id;
-                    //  $Command=$Connection->createCommand($sql);
-                    //  $Command->execute();
+                     $Connection= Yii::$app->labdb;
+                     $sql="UPDATE `tbl_sample` SET `package_id`=$p, `package_rate`='$r' WHERE `sample_id`=".$sample_id;
+                     $Command=$Connection->createCommand($sql);
+                     $Command->execute();
 
                      $analysis = new Analysis();
                      $modelpackage =  Package::findOne(['id'=>$post['Packagelist']['name']]);
