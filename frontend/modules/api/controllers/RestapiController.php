@@ -4,6 +4,7 @@ namespace frontend\modules\api\controllers;
 
 use common\models\lab\Sample;
 use common\models\lab\Analysis;
+use common\models\lab\Workflow;
 use common\models\lab\Request;
 use common\models\lab\Procedure;
 use common\models\system\LoginForm;
@@ -144,8 +145,13 @@ class RestapiController extends \yii\rest\Controller
                 if (isset($_GET['samplecode'])) {
 
                 $sample = Sample::find()->select(['samplename','description'])->where(['sample_code'=>$_GET['samplecode']])->one();
-                $analysis = Analysis::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
-                //$procedures = Procudure::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
+                $analysis = Analysis::find()->select(['analysis_id','testname', 'method'])
+                ->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
+                //progress - count ng ilang ang natapos
+                //workflow - count ng workflow
+                //status
+
+                $workflow = Workflow::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
                // $tagginganalysis = Procedure::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
                 
                 return $this->asJson(['sampleCode'=>$sample->sample_code,

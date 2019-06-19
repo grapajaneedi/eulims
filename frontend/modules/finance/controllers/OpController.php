@@ -232,7 +232,7 @@ class OpController extends Controller
             'sql' => 'SELECT *, eulims_lab.fnGetCustomer(customer_id) as CustomerName FROM eulims_lab.tbl_request WHERE customer_id IN('.$id.') and request_ref_num IS NOT NULL and payment_status_id <> 2 and status_id <> 0',
              'key'=>'request_id',
         ]);
-        $dataProvider->pagination->pageSize=5;
+        $dataProvider->pagination->pageSize=false;
         if(Yii::$app->request->isAjax){
             return $this->renderAjax('_request', ['dataProvider'=>$dataProvider,'stat'=>0]);
         }
