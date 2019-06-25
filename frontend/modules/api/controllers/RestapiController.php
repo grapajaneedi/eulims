@@ -4,6 +4,7 @@ namespace frontend\modules\api\controllers;
 
 use common\models\lab\Sample;
 use common\models\lab\Analysis;
+use common\models\lab\Workflow;
 use common\models\lab\Request;
 use common\models\lab\Procedure;
 use common\models\system\LoginForm;
@@ -80,9 +81,11 @@ class RestapiController extends \yii\rest\Controller
                         'message' => 'Email and Password didn\'t match',
                     ]);
                 }
+
             
                
         }
+    }
 
         public function actionUser()
         {  
@@ -130,8 +133,13 @@ class RestapiController extends \yii\rest\Controller
                 if (isset($_GET['samplecode'])) {
 
                 $sample = Sample::find()->select(['samplename','description'])->where(['sample_code'=>$_GET['samplecode']])->one();
-                $analysis = Analysis::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
-                //$procedures = Procudure::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
+                $analysis = Analysis::find()->select(['analysis_id','testname', 'method'])
+                ->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
+                //progress - count ng ilang ang natapos
+                //workflow - count ng workflow
+                //status
+
+                $workflow = Workflow::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
                // $tagginganalysis = Procedure::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
                 
                 return $this->asJson(['sampleCode'=>$sample->sample_code,
@@ -186,7 +194,8 @@ class RestapiController extends \yii\rest\Controller
 
     //************************************************
     public function actionGetproducts($keyword = ""){
-        $products = Products::find()->select(['product_id','product_code','product_name','image1','producttype_id'])->where(['LIKE', 'product_name', $keyword])->all();
+        $products = Products::find()->select(['product_id','product_code','product_name','Image1','producttype_id'])->where(['LIKE', 'product_name', $keyword])->all();
+
         //product type 1 = consumables and 2 = non consumable
           
         return $this->asJson(
@@ -196,7 +205,7 @@ class RestapiController extends \yii\rest\Controller
 
     public function actionGetproduct($productcode){
 
-        $product = Products::find()->select(['product_id','product_code','product_name','image1','producttype_id'])->where(['product_code' => $productcode])->one();
+        $product = Products::find()->select(['product_id','product_code','product_name','Image1','producttype_id'])->where(['product_code' => $productcode])->one();
         //product type 1 = consumables and 2 = non consumable
         if($product){
              return $this->asJson([
