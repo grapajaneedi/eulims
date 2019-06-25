@@ -10,6 +10,10 @@ use common\models\system\LoginForm;
 use common\models\system\Profile;
 use common\models\system\User;
 use common\models\inventory\Products;
+use common\models\finance\CustomerWallet;
+use common\models\finance\CustomerTransaction;
+use common\models\lab\Booking;
+use common\models\system\Rstl;
 
 class RestapiController extends \yii\rest\Controller
 {
@@ -19,8 +23,7 @@ class RestapiController extends \yii\rest\Controller
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
             'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
-            'except' => ['login','getproducts', 'server'],
-           
+            'except' => ['login', 'server', 'getwallettransaction','getcustomerwallet','getcustonreq','setbooking','getrstl'],
         ];
 
         return $behaviors;
@@ -41,8 +44,6 @@ class RestapiController extends \yii\rest\Controller
      */
     public function actionLogin()
     {
-     
-  
             $model = new LoginForm();
             $my_var = \Yii::$app->request->post();
             $model->email = $my_var['email'];
@@ -187,9 +188,10 @@ class RestapiController extends \yii\rest\Controller
     public function actionGetproducts($keyword = ""){
         $products = Products::find()->select(['product_id','product_code','product_name','image1','producttype_id'])->where(['LIKE', 'product_name', $keyword])->all();
         //product type 1 = consumables and 2 = non consumable
-        return $this->asJson([
-            'data' => $products,
-        ]);   
+          
+        return $this->asJson(
+            $products
+        );
     }
 
     public function actionGetproduct($productcode){
@@ -198,8 +200,9 @@ class RestapiController extends \yii\rest\Controller
         //product type 1 = consumables and 2 = non consumable
         if($product){
              return $this->asJson([
-                'data' => $product,
+                $product,
             ]);
+
         }else{
             return $this->asJson([
                 'success' => false,
@@ -267,6 +270,111 @@ class RestapiController extends \yii\rest\Controller
                 'message' => 'charchar',
             ]); 
     }
+
+    public function actionGetcustonreq($id=50){
+        $model = Request::find()->select(['request_id','request_ref_num','request_datetime'])->where(['customer_id'=>$id, 'status_id'=>1])->all();
+
+        if($model){
+            return $this->asJson(
+                $model
+            ); 
+        }else{
+            return $this->asJson([
+                'success' => false,
+                'message' => 'No Request Found',
+            ]); 
+        }
+    }
+
+    public function actionGetcustcomreq($id){
+        $model = Request::find()->select(['request_id','request_ref_num','request_datetime'])->where(['customer_id'=>$id, 'status_id'=>2])->all();
+
+        if($model){
+            return $this->asJson(
+                $model
+            ); 
+        }else{
+            return $this->asJson([
+                'success' => false,
+                'message' => 'No Request Found',
+            ]); 
+        }
+    }
+
+    public function actionGetcustomerwallet($id=50){
+            $transactions = CustomerWallet::find()->where(['customer_id'=>$id])->one();
+        return $this->asJson(
+            $transactions
+        );
+    }
+
+     public function actionGetwallettransaction($id){
+        $transactions = CustomerTransaction::find()->where(['customerwallet_id'=>$id])->orderby('date DESC')->all();
+        return $this->asJson(
+            $transactions
+        );
+    }
     //************************************************
 
+    public function actionSetbooking(){ //create booking for customers
+        //set booking default to pending
+        $my_var = \Yii::$app->request->post();
+
+
+       if(!$my_var){
+            return $this->asJson([
+                'success' => false,
+                'message' => 'POST empty',
+            ]); 
+       }
+
+        //Booking
+        $bookling = new Booking;
+        $bookling->scheduled_date = $my_var['date'];
+        $bookling->booking_reference = '34ertgdsg';
+        $bookling->rstl_id = $my_var['lab'];
+        $bookling->date_created = $my_var['date'];
+        $bookling->qty_sample = $my_var['qty'];
+        $bookling->customer_id = $my_var['userid'];
+        $bookling->booking_status = 0;
+         // return $this->asJson($bookling); exit;
+
+        if($bookling->save()){
+            return $this->asJson([
+                'success' => true,
+                'message' => 'Booked Successfully',
+            ]); 
+        }
+        else{
+            return $this->asJson([
+                'success' => false,
+                'message' => 'Booking Failed',
+            ]); 
+        }
+    }
+
+    public function actionGetbookings($id){
+        $my_var = Booking::find()->orderby('scheduled_date DESC')->all();
+        return $this->asJson(
+            $my_var
+        );
+    }
+
+    public function actionGetsamples($id){
+        $model = Sample::find()->select(['sample_code','samplename','completed'])->where(['request_id'=>$id])->all();
+        if($model){
+            return $this->asJson(
+                $model
+            ); 
+        }
+    }
+
+    public function actionGetrstl(){
+        $model = Rstl::find()->all();
+        if($model){
+            return $this->asJson(
+                $model
+            ); 
+        }
+    }
 }
