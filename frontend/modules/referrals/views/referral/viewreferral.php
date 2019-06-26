@@ -149,7 +149,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'columns' => [
                         [
-                            'label'=>'Deposite Slip',
+                            'label'=>'Deposit Slip',
                             'value'=>function() use ($depositslip,$model,$request){
                                 $link = '';
                                 if($depositslip > 0){
@@ -190,7 +190,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'columns' => [
                         [ 
-                            'label'=>'Recieved By',
+                            'label'=>'Received By',
                             'format'=>'raw',
                             'value'=>$request['cro_receiving'],
                             'displayOnly'=>true,
