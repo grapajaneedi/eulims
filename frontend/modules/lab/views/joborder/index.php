@@ -14,6 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
+    <?php $this->registerJsFile("/js/services/services.js"); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -24,7 +25,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'panel' => [
                 'type' => GridView::TYPE_PRIMARY,
                 'heading' => '<span class="glyphicon glyphicon-book"></span>  ' . Html::encode($this->title),
-                'before'=> Html::button("<span class='glyphicon glyphicon-plus'></span> Create New Job Order", ["value"=>"/lab/labsampletype/create", "class" => "btn btn-success modal_services","title" => Yii::t("app", "Create New Lab Sample Type")]),
+                'before'=> Html::button("<span class='glyphicon glyphicon-plus'></span> Create New Job Order", ["value"=>"/lab/joborder/create", "class" => "btn btn-success modal_services","title" => Yii::t("app", "Create New Job Order")]),
             ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
@@ -33,7 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'customer_id',
             'joborder_date',
             'sampling_date',
-            'lsono',
+          //  'lsono',
             //'sample_received',
 
             ['class' => 'yii\grid\ActionColumn'],

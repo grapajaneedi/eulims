@@ -51,10 +51,10 @@ class Joborder extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'joborder_id' => 'Joborder ID',
-            'customer_id' => 'Customer ID',
-            'joborder_date' => 'Joborder Date',
-            'sampling_date' => 'Sampling Date',
+            'joborder_id' => 'L.S.O. No.',
+            'customer_id' => 'Client',
+            'joborder_date' => 'Date',
+            'sampling_date' => 'Sampling Site',
             'lsono' => 'Lsono',
             'sample_received' => 'Sample Received',
         ];

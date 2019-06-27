@@ -120,7 +120,7 @@ $services =  Services::find()->all();
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
                 [
-                    'header'=>'Action',
+                    'header'=>'Offer',
                     'format' => 'raw',
                     'enableSorting' => false,
                     'contentOptions' => ['style' => 'width:40px; white-space: normal;'],           
