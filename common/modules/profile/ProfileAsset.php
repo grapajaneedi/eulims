@@ -2,7 +2,6 @@
 namespace common\modules\profile;
 /*
  * Quarks Digital Solutions
- * Website Developed by: Nolan F. Sunico
  * Date Created: 30 Nov, 2018
  * Time Created: 5:03:57 PM
  * Module: ProfileAsset

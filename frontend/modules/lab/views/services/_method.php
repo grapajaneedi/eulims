@@ -126,7 +126,7 @@ $this->registerJs($js);
             ],
         'columns' => [
             [
-                'header'=>'Action',
+                'header'=>'Offer',
                 'hAlign'=>'center',
                 'format' => 'raw',
                 'contentOptions' => ['style' => 'width: 5%;word-wrap: break-word;white-space:pre-line;'],
@@ -136,12 +136,12 @@ $this->registerJs($js);
                     if ($typetestname){
                         $servicesquery = Services::find()->where(['method_reference_id' => $data['method_reference_id']])->andWhere(['rstl_id'=>  $GLOBALS['rstl_id']])->andWhere(['testname_method_id'=>  $typetestname->sampletype_testname_id])->one();        
                         if ($servicesquery){
-                            return "<span class='btn btn-success' id='offer'  onclick='unofferservices(".$data['method_reference_id'].")'>UNOFFER</span>";             
+                            return "<span class='btn btn-success' id='offer'  onclick='unofferservices(".$data['method_reference_id'].")'>NO</span>";             
                         }else{
-                            return "<span class='btn btn-danger' id='offer' onclick='offerservices(".$data['method_reference_id'].")'>OFFER</span>";                        
+                            return "<span class='btn btn-danger' id='offer' onclick='offerservices(".$data['method_reference_id'].")'>YES</span>";                        
                         }                         
                     }else{
-                            return "<span class='btn btn-danger' id='offer'  onclick='offerservices(".$data['method_reference_id'].")'>OFFER</span>";
+                            return "<span class='btn btn-danger' id='offer'  onclick='offerservices(".$data['method_reference_id'].")'>YES</span>";
                     } 
                 },
                 'enableSorting' => false,

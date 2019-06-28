@@ -15,7 +15,7 @@ backend/web/images/Thumbs.db
 nbproject
 
 #common/database
-common/config/db.php
+#common/config/db.php
 backend/web/uploads/user/photo/88cd72e20f7c9efd6b1f4db195ddf446d3bf5cfb.png
 frontend/web/88cd72e20f7c9efd6b1f4db195ddf446d3bf5cfb.png
 nbproject/private/private.xml

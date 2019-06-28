@@ -1,12 +1,6 @@
 <?php
 
-/*
- * Project Name: eulims * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 01 4, 18 , 8:53:17 AM * 
- * Module: IniObject * 
- */
+
 
 namespace common\components;
 use Yii;

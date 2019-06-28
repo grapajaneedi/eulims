@@ -1,5 +1,6 @@
 <?php
 namespace frontend\modules\lab\controllers;
+
 use Yii;
 use common\models\lab\Analysis;
 use common\models\lab\Sample;
@@ -458,6 +459,8 @@ class AnalysisController extends Controller
             if($model->delete()) {
                 $analysisquery = Analysis::find()->where(['analysis_id' => $id])->one();
                 $requestquery = Request::find()->where(['request_id' =>$model->request_id])->one();
+
+                
                 $discountquery = Discount::find()->where(['discount_id' => $requestquery->discount_id])->one();
                 $rate =  $discountquery->rate;       
                 $sql = "SELECT SUM(fee) as subtotal FROM tbl_analysis WHERE request_id=$model->request_id";

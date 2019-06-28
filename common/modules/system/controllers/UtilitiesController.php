@@ -2,8 +2,7 @@
 
 /*
  * Project Name: eulims_ * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
+ * Copyright(C)2018 Department of Science & Technology -IX *  
  * 09 7, 18 , 4:38:40 PM * 
  * Module: BackupController * 
  */

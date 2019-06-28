@@ -120,20 +120,6 @@ function isthere($file){
     <div class="row">
         <div class="col-sm-6">
             <?php
-              echo $form->field($model, 'srp')->widget(MaskMoney::classname(), [
-                  'readonly'=>true,
-                   'options'=>[
-                       'style'=>'text-align: right'
-                   ],
-                   'pluginOptions' => [
-                      'prefix' => '₱ ',
-                      'allowNegative' => false,
-                   ]
-                  ])->label('Srp');
-              ?>
-        </div> 
-        <div class="col-sm-6">
-            <?php
               echo $form->field($model, 'price')->widget(MaskMoney::classname(), [
                   'readonly'=>true,
                    'options'=>[

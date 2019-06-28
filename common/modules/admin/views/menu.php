@@ -3,7 +3,6 @@ use yii\helpers\Url;
 /* 
  * Project Name: eulims * 
  * Copyright(C)2017 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
  * 12 21, 17 , 12:53:52 PM * 
  * Module: menu * 
  */

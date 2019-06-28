@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Url;
 return [
-    'adminEmail' => 'nolansunico@gmail.com',
+    'adminEmail' => 'dostonelab@gmail.com',
     'uploadPath'=>"\web\uploads\user\photo",
     'uploadUrl'=>"/uploads/user/photo/",
     'maskMoneyOptions' => [

@@ -1,5 +1,4 @@
 <?php
-
 namespace frontend\modules\lab\controllers;
 
 use Yii;
@@ -19,7 +18,7 @@ use yii\filters\VerbFilter;
 use yii\db\Query;
 use yii\data\ActiveDataProvider;
 use common\models\system\Profile;
-
+ini_set("memory_limit", "200M");
 /**
  * TaggingController implements the CRUD actions for Tagging model.
  */

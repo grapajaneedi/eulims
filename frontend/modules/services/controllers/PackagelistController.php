@@ -163,10 +163,10 @@ class PackagelistController extends Controller
                      $p = $post['Packagelist']['name'];
                      $r = str_replace("," , "", $post['Packagelist']['rate']);
 
-                     $Connection= Yii::$app->labdb;
-                     $sql="UPDATE `tbl_sample` SET `package_id`=$p, `package_rate`='$r' WHERE `sample_id`=".$sample_id;
-                     $Command=$Connection->createCommand($sql);
-                     $Command->execute();
+                    //  $Connection= Yii::$app->labdb;
+                    //  $sql="UPDATE `tbl_sample` SET `package_id`=$p, `package_rate`='$r' WHERE `sample_id`=".$sample_id;
+                    //  $Command=$Connection->createCommand($sql);
+                    //  $Command->execute();
 
                      $analysis = new Analysis();
                      $modelpackage =  Package::findOne(['id'=>$post['Packagelist']['name']]);

@@ -182,21 +182,21 @@ $this->registerJs($js);
                             $analysis = Analysis::findOne(['analysis_id' => $model->analysis_id]);
                             $modelmethod=  Methodreference::findOne(['method'=>$analysis->method]); 
                             
-                            // if ($modelmethod){
-                            //     $testnamemethod = Testnamemethod::findOne(['testname_id'=>$analysis->test_id, 'method_id'=>$analysis->testcategory_id]);                           
-                            //     $count = Workflow::find()->where(['testname_method_id'=>$testnamemethod->testname_method_id])->count();     
+                            if ($modelmethod){
+                                $testnamemethod = Testnamemethod::findOne(['testname_id'=>$analysis->test_id, 'method_id'=>$analysis->testcategory_id]);                           
+                                $count = Workflow::find()->where(['testname_method_id'=>$testnamemethod->testname_method_id])->count();     
                                 
-                            //     if ($count==0){
-                            //         return $analysis->completed.'/'.$count;
-                            //     }else{
-                            //         $percent = $analysis->completed / $count * 100;
-                            //         $formattedNum = number_format($percent);
+                                if ($count==0){
+                                    return $analysis->completed.'/'.$count;
+                                }else{
+                                    $percent = $analysis->completed / $count * 100;
+                                    $formattedNum = number_format($percent);
                                     
-                            //         return $analysis->completed.'/'.$count." = ".$formattedNum."%";  
-                            //     }
-                            // }else{
-                            //     return "";
-                            // }
+                                    return $analysis->completed.'/'.$count." = ".$formattedNum."%";  
+                                }
+                            }else{
+                                return "";
+                            }
 
                             return "";
                            

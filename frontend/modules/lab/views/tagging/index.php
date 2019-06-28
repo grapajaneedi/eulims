@@ -26,15 +26,6 @@ use kartik\widgets\Select2;
 $lablist= ArrayHelper::map(Sample::find()->all(),'sample_id','sample_code');
 $sampletypelist= ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','type');
 
-// echo '<label class="control-label">Search or Scan Sample Code...</label>';
-// echo Select2::widget([
-//     'name' => 'state_10',
-//     'data' => $lablist,
-//     'options' => [
-//         'placeholder' => 'Select sample code ...',
-//     ],
-// ]);
-
 $this->title = 'Tagging';
 $this->params['breadcrumbs'][] = ['label' => 'Tagging', 'url' => ['/lab']];
 $this->params['breadcrumbs'][] = 'Sample Tagging';
@@ -42,7 +33,9 @@ $this->params['breadcrumbs'][] = 'Sample Tagging';
 $this->registerJsFile("/js/services/services.js");
 $func=new Functions();
 
+
 ?>
+<?php ini_set("memory_limit", "200M");?>
 <!-- <blockquote class="imgur-embed-pub" lang="en" data-id="a/lc3D4"><a href="//imgur.com/lc3D4">Tadpole Lessons</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script> -->
 
 <div class="tagging-index">

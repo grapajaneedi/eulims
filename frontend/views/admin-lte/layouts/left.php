@@ -37,11 +37,13 @@ if(Yii::$app->user->isGuest){
     }else{
        $UsernameDesignation=$CurrentUserName.'<br>'.$CurrentUserDesignation;
     }
+  
 	$unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'),true);
 	$unresponded = $unresponded_notification['num_notification'] > 0 ? $unresponded_notification['num_notification'] : ''; //no display if 0
 	
 	$unseen_bid_notification = json_decode(Yii::$app->runAction('/referrals/bidnotification/count_unseen_bidnotification'),true);
 	$unseen = $unseen_bid_notification['bid_notification'] > 0 ? $unseen_bid_notification['bid_notification'] : '';
+  
     //notification will run if the user is already logged in
 	$this->registerJs("
 		setInterval(function(e){
@@ -109,7 +111,7 @@ if(Yii::$app->user->isGuest){
                 'url'=>["/".strtolower($Item->PackageName)],
                 'visible'=>true
             ];
-          
+            $unresponded=""; //comment this
             //$ItemSubMenu[]=[];
             foreach ($MenuItems as $MenuItem => $mItem){
                 $icon=substr($mItem->icon,6,strlen($mItem->icon)-6);

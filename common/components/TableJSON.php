@@ -1,12 +1,5 @@
 <?php
 
-/*
- * Project Name: eulims_ * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 07 12, 18 , 4:17:09 PM * 
- * Module: TableJSON * 
- */
 
 namespace common\components;
 /**
