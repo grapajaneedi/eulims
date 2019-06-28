@@ -325,7 +325,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
     <div class="container">
         <div class="table-responsive">
         <?php
-            $gridColumns = [
+            $sampleGridColumns = [
                 [
                     'attribute'=>'sample_code',
                     'enableSorting' => false,
@@ -408,7 +408,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                     'before'=>($requeststatus > 0 && $notified == 0 && $hasTestingAgency == 0 && trim($model->request_ref_num) == "" && $checkTesting == 0) ? Html::button('<i class="glyphicon glyphicon-plus"></i> Add Sample', ['disabled'=>$enableRequest, 'value' => Url::to(['sample/create','request_id'=>$model->request_id]),'title'=>'Add Sample', 'onclick'=>'addSample(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn']) : Html::button('<i class="glyphicon glyphicon-print"></i> Print Label', ['disabled'=>!$enableRequest, 'onclick'=>"window.location.href = '" . \Yii::$app->urlManager->createUrl(['/reports/preview?url=/lab/request/printlabel','request_id'=>$model->request_id]) . "';" ,'title'=>'Print Label', 'class' => 'btn btn-success'])." ".$btnGetSamplecode,
                     'after'=>false,
                 ],
-                'columns' => $gridColumns,
+                'columns' => $sampleGridColumns,
                 'toolbar' => [
                     'content'=> Html::a('<i class="glyphicon glyphicon-repeat"></i> Refresh Grid', [Url::to(['request/view','id'=>$model->request_id])], [
                                 'class' => 'btn btn-default', 
@@ -615,7 +615,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
         <div class="table-responsive">
         <?php
             $requestId = $model->request_id;
-            $gridColumns = [
+            $agencyGridColumns = [
                 [
                     'attribute'=>'name',
                     'enableSorting' => false,
@@ -637,7 +637,6 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                     'enableSorting' => false,
                     'value' => function($data) use ($model,$referralcomp,$rstlId){
                         $estimated_due = json_decode($referralcomp->getDuedate($model->request_id,$rstlId,$data['agency_id']),true);
-
                         return $estimated_due == 0 ? null : date('F j, Y',strtotime($estimated_due));
                     },
                    'contentOptions' => [
@@ -703,7 +702,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                     'before'=>'<p class="text-primary"><strong>Note:</strong> Agency that offers the testname and method.</p>',
                     'after'=>false,
                 ],
-                'columns' => $gridColumns,
+                'columns' => $agencyGridColumns,
                 'toolbar' => [
                     'content'=> Html::a('<i class="glyphicon glyphicon-repeat"></i> Refresh Grid', [Url::to(['request/view','id'=>$model->request_id])], [
                                 'class' => 'btn btn-default', 
@@ -721,90 +720,95 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
     <div class="container">
         <div class="table-responsive">
         <?php
-        if($model->request_type_id == 2){
-           /* $gridColumns = [
-                [
-                    'attribute'=>'sample_code',
-                    'enableSorting' => false,
-                    'header' => 'Agency',
-                    'contentOptions' => [
-                        'style'=>'max-width:70px; overflow: auto; white-space: normal; word-wrap: break-word;'
+            if($model->request_type_id == 2 && $countBidnotice > 0){
+                $biddingGridColumns = [
+                    [
+                        'attribute'=>'name',
+                        'enableSorting' => false,
+                        'header' => 'Agency',
+                        'contentOptions' => [
+                            'style'=>'max-width:70px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                        ],
                     ],
-                ],
-                [
-                    'attribute'=>'samplename',
-                    'enableSorting' => false,
-                    'header' => 'Region',
-                ],
-                [
-                    'attribute'=>'description',
-                    'format' => 'raw',
-                    'header' => 'Turnaround Time (Estimated)',
-                    'enableSorting' => false,
-                    'value' => function($data){
-                        return ($data->request->lab_id == 2) ? "Sampling Date: <span style='color:#000077;'><b>".date("Y-m-d h:i A",strtotime($data->sampling_date))."</b></span>,&nbsp;".$data->description : $data->description;
-                    },
-                   'contentOptions' => [
-                        'style'=>'max-width:180px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                    [
+                        'attribute'=>'region',
+                        'enableSorting' => false,
+                        'header' => 'Region',
                     ],
-                ],
-                [
-                    'class' => 'kartik\grid\ActionColumn',
-                    'template' => '{notification}',
-                    'dropdown' => false,
-                    'dropdownOptions' => ['class' => 'pull-right'],
-                    'urlCreator' => function ($action, $model, $key, $index) {
-                        if ($action === 'delete') {
-                            $url ='/lab/sample/delete?id='.$model->sample_id;
-                            return $url;
-                        } 
-                        if ($action === 'cancel') {
-                            $url ='/lab/sample/cancel?id='.$model->sample_id;
-                            return $url;
-                        }
-                    },
-                    'headerOptions' => ['class' => 'kartik-sheet-style'],
-                    'buttons' => [
-                        'notification' => function ($url, $model) {
-                            if($model->active == 1){
-                                return Html::a('<span class="glyphicon glyphicon-bell"></span> Notify', '#', ['class'=>'btn btn-primary','title'=>'Send Notification','onclick' => 'sendNotification('.$model->sample_id.')']);
-                            } else {
-                                return null;
+                    [
+                        //'attribute'=>'description',
+                        'attribute'=>'agency_id',
+                        'format' => 'raw',
+                        'header' => 'Estimated due date',
+                        'enableSorting' => false,
+                        'value' => function($data) use ($model,$referralcomp,$rstlId){
+                            $estimated_due = json_decode($referralcomp->getBidDuedate($model->request_id,$rstlId,$data['agency_id']),true);
+                            return $estimated_due == 0 ? null : date('F j, Y',strtotime($estimated_due));
+                        },
+                       'contentOptions' => [
+                            'style'=>'max-width:180px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                        ],
+                    ],
+                    [
+                        'class' => 'kartik\grid\ActionColumn',
+                        'template' => '{notification}',
+                        'dropdown' => false,
+                        'dropdownOptions' => ['class' => 'pull-right'],
+                        'urlCreator' => function ($action, $model, $key, $index) {
+                            if ($action === 'delete') {
+                                $url ='/lab/sample/delete?id='.$model->sample_id;
+                                return $url;
+                            } 
+                            if ($action === 'cancel') {
+                                $url ='/lab/sample/cancel?id='.$model->sample_id;
+                                return $url;
                             }
                         },
+                        'headerOptions' => ['class' => 'kartik-sheet-style'],
+                        'buttons' => [
+                            'notification' => function ($url, $model) {
+                                if($model->active == 1){
+                                    return Html::a('<span class="glyphicon glyphicon-bell"></span> Notify', '#', ['class'=>'btn btn-primary','title'=>'Send Notification','onclick' => 'sendNotification('.$model->sample_id.')']);
+                                } else {
+                                    return null;
+                                }
+                            },
+                        ],
                     ],
-                ],
-            ];
+                ];
 
-            echo GridView::widget([
-                'id' => 'bidding-grid',
-                'dataProvider'=> $sampleDataProvider,
-                'pjax'=>true,
-                'pjaxSettings' => [
-                    'options' => [
-                        'enablePushState' => false,
-                    ]
-                ],
-                'responsive'=>true,
-                'striped'=>true,
-                'hover'=>true,
-                'panel' => [
-                    'heading'=>'<h3 class="panel-title">Bidding</h3>',
-                    'type'=>'primary',
-                    //'before'=>Html::button('<i class="glyphicon glyphicon-plus"></i> Add Sample', ['disabled'=>$enableRequest, 'value' => Url::to(['sample/create','request_id'=>$model->request_id]),'title'=>'Add Sample', 'onclick'=>'addSample(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn'])." ".Html::button('<i class="glyphicon glyphicon-print"></i> Print Label', ['disabled'=>!$enableRequest, 'onclick'=>"window.location.href = '" . \Yii::$app->urlManager->createUrl(['/reports/preview?url=/lab/request/printlabel','request_id'=>$model->request_id]) . "';" ,'title'=>'Print Label',  'class' => 'btn btn-success']),
-                    'before'=>'<p class="text-primary"><strong>Note:</strong> Agency who participated the bidding.</p>',
-                    'after'=>false,
-                ],
-                'columns' => $gridColumns,
-                'toolbar' => [
-                    'content'=> Html::a('<i class="glyphicon glyphicon-repeat"></i> Refresh Grid', [Url::to(['request/view','id'=>$model->request_id])], [
+                echo GridView::widget([
+                    'id' => 'bidding-grid',
+                    'dataProvider'=> $bidderDataprovider,
+                    'pjax'=>true,
+                    'pjaxSettings' => [
+                        'options' => [
+                            'enablePushState' => false,
+                        ]
+                    ],
+                    'responsive'=>true,
+                    'striped'=>true,
+                    'hover'=>true,
+                    'panel' => [
+                        'heading'=>'<h3 class="panel-title">Bidding</h3>',
+                        'type'=>'primary',
+                        //'before'=>Html::button('<i class="glyphicon glyphicon-plus"></i> Add Sample', ['disabled'=>$enableRequest, 'value' => Url::to(['sample/create','request_id'=>$model->request_id]),'title'=>'Add Sample', 'onclick'=>'addSample(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn'])." ".Html::button('<i class="glyphicon glyphicon-print"></i> Print Label', ['disabled'=>!$enableRequest, 'onclick'=>"window.location.href = '" . \Yii::$app->urlManager->createUrl(['/reports/preview?url=/lab/request/printlabel','request_id'=>$model->request_id]) . "';" ,'title'=>'Print Label',  'class' => 'btn btn-success']),
+                        'before'=>'<p class="text-primary"><strong>Note:</strong> Agency who participated the bidding.</p>',
+                        //'before' => Html::button('<span class="glyphicon glyphicon-share"></span> Open for Bidding', ['value'=>Url::toRoute(['/referrals/bid/open','request_id'=>$model->request_id]), 'onclick'=>'openBidding(this.value,this.title)', 'class' => 'btn btn-success','title' => 'Open for Bidding']),
+                        'after'=>false,
+                    ],
+                    'columns' => $biddingGridColumns,
+                    'toolbar' => [
+                        'content'=> Html::a('<i class="glyphicon glyphicon-repeat"></i> Refresh Grid', [Url::to(['request/view','id'=>$model->request_id])], [
                                 'class' => 'btn btn-default', 
                                 'title' => 'Refresh Grid'
                             ]),
-                    //'{toggleData}',
-                ],
-            ]);*/
-        }
+                        //'{toggleData}',
+                    ],
+                ]);
+            } else {
+                echo Html::button('<span class="glyphicon glyphicon-share"></span> Open for Bidding', ['value'=>Url::toRoute(['/referrals/referral/open','request_id'=>$model->request_id]), 'onclick'=>'openBidding(this.value,this.title)', 'class' => 'btn btn-success','title' => 'Open for Bidding']);
+            }
         ?>
         </div>
     </div>
@@ -921,6 +925,32 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                     action: function(thisDialog){
                         thisDialog.close();
                         $('.modal-title').html(header_title);
+                        $('#modal').modal('show')
+                            .find('#modalContent')
+                            .load(url);
+                    }
+                }, 
+                {
+                    label: 'Close',
+                    action: function(thisDialog){
+                        thisDialog.close();
+                    }
+                }
+            ]
+        });
+    }
+
+     function openBidding(url,title){
+        BootstrapDialog.show({
+            title: "<span class='glyphicon glyphicon-send'></span>&nbsp;&nbsp;" + title,
+            message: "<p class='note' style='margin:15px 0 0 15px;font-weight:bold;color:#990000;font-size:14px;'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:17px;'></span> Are you sure you want to open for bidding this referral request?</p>",
+            buttons: [
+                {
+                    label: 'Open',
+                    cssClass: 'btn-primary',
+                    action: function(thisDialog){
+                        thisDialog.close();
+                        $('.modal-title').html(title);
                         $('#modal').modal('show')
                             .find('#modalContent')
                             .load(url);

@@ -146,11 +146,36 @@ class RequestController extends Controller
 
             $as_receiving = !empty($referred_agency['receiving_agency']) && $referred_agency > 0 ? $referred_agency['receiving_agency']['name'] : null;
             $as_testing = !empty($referred_agency['testing_agency']) && $referred_agency > 0 ? $referred_agency['testing_agency']['name'] : null;
-			
-            $agencydataprovider = new ArrayDataProvider([
+
+            $bid = json_decode($refcomponent->getBidderAgency($id,Yii::$app->user->identity->profile->rstl_id),true);
+            $countBidnotice = json_decode($refcomponent->countBidnotice($id,Yii::$app->user->identity->profile->rstl_id),true);
+
+            if($bid == 0){
+                $countBid = 0;
+                $bidder = [];
+            } else {
+                $countBid = $bid['count_bid'];
+                $bidder = $bid['bidders'];
+                if($countBid > 0){
+                    $bidderAgencyId = implode(',', array_map(function ($data) {
+                        return $data['agency_id'];
+                    }, $bidder));
+                    $bidders = json_decode($refcomponent->listBidders($bidderAgencyId),true);
+                } else {
+                    $bidders = [];
+                }
+            }
+
+            $bidderDataprovider = new ArrayDataProvider([
+                'allModels' => $bidders,
+                'pagination'=>false,
+            ]);
+
+            $agencyDataprovider = new ArrayDataProvider([
                 'allModels' => $agency,
                 'pagination'=>false,
             ]);
+
         } else {
             $analysisQuery = Analysis::find()
                 ->where(['IN', 'sample_id', $ids]);
@@ -190,7 +215,8 @@ class RequestController extends Controller
                 'dataProvider' => $dataProvider,
                 'sampleDataProvider' => $sampleDataProvider,
                 'analysisdataprovider'=> $analysisdataprovider,
-                'agencydataprovider'=> $agencydataprovider,
+                'agencydataprovider'=> $agencyDataprovider,
+                'bidderDataprovider'=> $bidderDataprovider,
                 'modelref_request'=>$modelref_request,
                 'subtotal' => $subtotal,
                 'discounted' => $discounted,
@@ -203,6 +229,8 @@ class RequestController extends Controller
                 'officialreceipt' => $or,
                 'as_receiving' => $as_receiving,
                 'as_testing' => $as_testing,
+                'countBid' => $countBid,
+                'countBidnotice' => $countBidnotice,
             ]);
 
         } else {

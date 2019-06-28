@@ -329,7 +329,7 @@ class ReferralComponent extends Component {
             return 0;
         }
     }
-    //get notifications
+    //get referral notifications
     function listUnrespondedNofication($rstlId)
     {
         if($rstlId > 0) {
@@ -341,6 +341,74 @@ class ReferralComponent extends Component {
             return $list;
         } else {
             return false;
+        }
+    }
+    //get bid notifications
+    function listUnseenBidNofication($rstlId)
+    {
+        if($rstlId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/bidnotifications/countbidnotification?rstl_id='.$rstlId;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return false;
+        }
+    }
+    //get bidder agency
+    function getBidderAgency($requestId,$rstlId)
+    {
+        if($requestId > 0 && $rstlId > 0){
+            $apiUrl=$this->source.'/api/web/referral/bidnotifications/bidderagency?request_id='.$requestId.'&rstl_id='.$rstlId;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return false;
+        }
+    }
+    //list bidders
+    function listBidders($agencyId){
+        if($agencyId > 0){
+            $apiUrl=$this->source.'/api/web/referral/bidnotifications/listbidder?agency='.$agencyId;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return false;
+        }
+    }
+    //count bid notices
+    function countBidnotice($requestId,$rstlId){
+        if($requestId > 0 && $rstlId > 0){
+            $apiUrl=$this->source.'/api/web/referral/bidnotifications/bidnotice?request_id='.$requestId.'&rstl_id='.$rstlId;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return false;
+        }
+    }
+    //get bid estimated due date
+    function getBidDuedate($requestId,$rstlId,$senderId)
+    {
+        if($rstlId > 0 && $requestId > 0 && $senderId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/bidnotifications/showdue?request_id='.$requestId.'&rstl_id='.$rstlId.'&sender_id='.$senderId;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'Not valid request!';
         }
     }
     //get referral details via referral_id
@@ -376,6 +444,20 @@ class ReferralComponent extends Component {
     {
         if($rstlId > 0) {
             $apiUrl=$this->source.'/api/web/referral/notifications/listall?rstl_id='.$rstlId;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'Not valid request!';
+        }
+    }
+    //get all bid notifications of rstl
+    function getBidNotificationAll($rstlId)
+    {
+        if($rstlId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/bidnotifications/listall?rstl_id='.$rstlId;
             $curl = new curl\Curl();
             $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
             $curl->setOption(CURLOPT_TIMEOUT, 120);
@@ -587,6 +669,46 @@ class ReferralComponent extends Component {
             return $list;
         } else {
             return 0;
+        }
+    }
+    //check if test bid added
+    function checkTestbid($referralId,$analysisId,$bidderAgencyId)
+    {
+        if($referralId > 0 && $analysisId > 0 && $bidderAgencyId > 0) {
+            $testBid = Testbid::find()->where('referral_id =:referralId AND analysis_id =:analysisId AND bidder_agency_id =:bidderAgencyId',[':referralId'=>$referralId,':analysisId'=>$analysisId,':bidderAgencyId'=>$bidderAgencyId])->count();
+            return $testBid;
+        } else {
+            return 'false';
+        }
+    }
+    //function count all both unresponded referral and unseen bid notifications
+    function countAllNotification($rstlId)
+    {
+        if($rstlId > 0){
+            $bid =  json_decode($this->listUnseenBidNofication($rstlId),true);
+            $referral = json_decode($this->listUnrespondedNofication($rstlId),true);
+            $bid_notification = $bid['count_bidnotification'];
+            $referral_notification = $referral['count_notification'];
+            $allNotification = $bid_notification + $referral_notification;
+
+            return $allNotification;
+        } else {
+            return 'false';
+        }
+    }
+
+    //check bidder
+    function checkBidder($referralId,$agencyId)
+    {
+        if($agencyId > 0 && $referralId > 0){
+            $bid = Bid::find()->where('bidder_agency_id =:bidderAgencyId AND referral_id =:referralId',[':bidderAgencyId'=>$agencyId,':referralId'=>$referralId])->count();
+            if($bid > 0){
+                return 1; 
+            } else {
+                return 0;
+            }
+        } else {
+            return 'false';
         }
     }
 }
