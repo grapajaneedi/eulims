@@ -113,29 +113,6 @@ if (Yii::$app->controller->action->id === 'login') {
             }
         </script>
 		<script type="text/javascript">
-			function showNotifications(){
-				$.ajax({
-					url: '/referrals/notification/list_unresponded_notification',
-					//url: '',
-					success: function (data) {
-						$(".modal-title").html('Notifications');
-						$('#modalNotification').modal('show')
-							.find('#modalBody')
-							.load('/referrals/notification/list_unresponded_notification');
-							get_unresponded_notifications();
-						$(".content-image-loader").css("display", "none");
-						$('.content-image-loader').removeClass('content-img-loader');
-					},
-					beforeSend: function (xhr) {
-						$(".content-image-loader").css("display", "block");
-						$('.content-image-loader').addClass('content-img-loader');
-					}
-				});
-			}
-			$("#btn_unresponded").on('click', function(e) {
-				e.preventDefault();
-			});
-
 			function get_unresponded_notifications()
 			{
 				$.ajax({
@@ -144,13 +121,45 @@ if (Yii::$app->controller->action->id === 'login') {
 					method: 'GET',
 					success: function (data) {
 						if (data.num_notification > 0){
-							$('#count_noti_sub').html(data.num_notification);
-							$('#count_noti_menu').html(data.num_notification);
-						} else if(data.num_notification == 0) {
-							$('#count_noti_sub').html('');
+							$('#count_noti_sub_referral').html(data.num_notification);
+							$('#count_noti_menu').html(data.all_notifications);
+						} else if(data.num_notification == 0 && data.all_notifications == 0) {
+							$('#count_noti_sub_referral').html('');
 							$('#count_noti_menu').html('');
+						} else if(data.num_notification == 0 && data.all_notifications > 0) {
+							$('#count_noti_sub_referral').html('');
+							$('#count_noti_menu').html(data.all_notifications);
 						} else {
 							console.log(data.num_notification);
+						}
+					},
+					/*beforeSend: function (xhr) {
+						$("#modalContent").html("<img src='/images/img-loader64.gif' alt='' style='display: block;margin-left: auto;margin-right: auto;'>");
+					},*/
+					error: function (jqXHR, textStatus, errorThrown) {
+						console.log('error occured!');
+					}
+				});
+			}
+			
+			function get_unseen_bidnotifications()
+			{
+				$.ajax({
+					url: '/referrals/bidnotification/count_unseen_bidnotification',
+					dataType: 'json',
+					method: 'GET',
+					success: function (data) {
+						if (data.bid_notification > 0){
+							$('#count_noti_sub_bid').html(data.bid_notification);
+							$('#count_noti_menu').html(data.all_notifications);
+						} else if(data.bid_notification == 0 && data.all_notifications == 0) {
+							$('#count_noti_sub_bid').html('');
+							$('#count_noti_menu').html('');
+						} else if(data.bid_notification == 0 && data.all_notifications > 0) {
+							$('#count_noti_sub_bid').html('');
+							$('#count_noti_menu').html(data.all_notifications);
+						} else {
+							console.log(data.bid_notification);
 						}
 					},
 					/*beforeSend: function (xhr) {

@@ -3,12 +3,12 @@
 namespace frontend\modules\referrals\controllers;
 
 use Yii;
-use common\models\referral\Notification;
-use common\models\referral\NotificationSearch;
+//use common\models\referral\Notification;
+//use common\models\referral\NotificationSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use common\models\lab\exRequestreferral;
+//use common\models\lab\exRequestreferral;
 use yii\helpers\Json;
 use common\components\ReferralComponent;
 use yii\data\ArrayDataProvider;
@@ -61,7 +61,7 @@ class NotificationController extends Controller
         if($count > 0){
             $notice_list = $notification['notification'];
             foreach ($notice_list as $data) {
-                $notification_type = $data['notification_type_id'];
+                //$notification_type = $data['notification_type_id'];
                 switch($data['notification_type_id']){
                     case 1:
                         $agencyName = $this->getAgency($data['sender_id']);
@@ -116,16 +116,16 @@ class NotificationController extends Controller
     //get unresponded notifications
     public function actionCount_unresponded_notification()
     {   
-        
         if(isset(Yii::$app->user->identity->profile->rstl_id)){
             $rstlId = Yii::$app->user->identity->profile->rstl_id;
             $refcomponent = new ReferralComponent();
             $notification = json_decode($refcomponent->listUnrespondedNofication($rstlId),true);
+			$count_all_notifications = json_decode($refcomponent->countAllNotification($rstlId),true);
             
             if($notification == false){
-                return Json::encode(['num_notification'=>'server error or no connection']);
+                return Json::encode(['num_notification'=>null,'all_notifications'=>null]);
             } else {
-                return Json::encode(['num_notification'=>$notification['count_notification']]);
+                return Json::encode(['num_notification'=>$notification['count_notification'],'all_notifications'=>$count_all_notifications]);
             }
         } else {
             //return 'Session time out!';
@@ -150,8 +150,7 @@ class NotificationController extends Controller
         $notice_list = [];
         if(count($unresponded_notification) > 0) {
             foreach ($unresponded_notification as $data) {
-
-                $notification_type = $data['notification_type_id'];
+                //$notification_type = $data['notification_type_id'];
                 switch($data['notification_type_id']){
                     case 1:
                         $agencyName = $this->getAgency($data['sender_id']);
