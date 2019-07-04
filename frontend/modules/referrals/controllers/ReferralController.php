@@ -342,7 +342,7 @@ class ReferralController extends Controller
                 //check if each sample contains at least one analysis
                 $checkWithAnalysis = $this->checkWithAnalysis($requestId);
                 if(count($samples) != $checkWithAnalysis){
-                    return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Notification Fail: Make sure each sample contains at least one analysis.</div>";
+                    return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Notification Failed: Make sure each sample contains at least one analysis.</div>";
                 } else {
                     $connection= Yii::$app->labdb;
                     $connection->createCommand('SET FOREIGN_KEY_CHECKS=0')->execute();
@@ -431,7 +431,7 @@ class ReferralController extends Controller
                     switch ($referralResponse['response']) {
                         case 0:
                             $transaction->rollBack();
-                            return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Fail to save referral details.</div>";
+                            return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Failed to save referral details.</div>";
                             break;
                         case 1 :
                             //return "Referral details saved.";
@@ -483,7 +483,7 @@ class ReferralController extends Controller
                                         return $this->redirect(['/lab/request/view', 'id' => $requestId]);
                                     } else {
                                         $transaction->rollBack();
-                                        return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Notification Fail: Error occured when sending!</div>";
+                                        return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Notification Failed: Error occured when sending!</div>";
                                     }
                                 } else {
                                     $transaction->commit();
@@ -495,7 +495,7 @@ class ReferralController extends Controller
                                 }
                             } else {
                                 $transaction->rollBack();
-                                return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Server Error: Notification fail!</div>";
+                                return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Server Error: Notification failed!</div>";
                             }
                         }
                     }
@@ -554,7 +554,7 @@ class ReferralController extends Controller
                         return $this->redirect(['/referrals/notification']);
                     } else {
                         $transaction->rollBack();
-                        return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Server Error: Confirmation fail!</div>";
+                        return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Server Error: Confirmation failed!</div>";
                     }
                 } else {
                     $transaction->rollBack();
@@ -605,46 +605,83 @@ class ReferralController extends Controller
                 //check if each sample contains at least one analysis
                 $checkWithAnalysis = $this->checkWithAnalysis($requestId);
                 if(count($samples) != $checkWithAnalysis){
-                    return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Fail to send: Make sure each sample contains at least one analysis.</div>";
+                    return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Failed to send: Make sure each sample contains at least one analysis.</div>";
                 } else {
 
                     if($generateCode == 1){
                         $request = exRequestreferral::find()->where(['request_id'=>$requestId,'request_type_id'=>2])->one();
-                        $requestData = [
-                            'request_id' => $request->request_id,
-                            'request_ref_num' => $request->request_ref_num,
-                            'request_datetime' => $request->request_datetime,
-                            'rstl_id' => $request->rstl_id,
-                            'lab_id' => $request->lab_id,
-                            'customer_id' => $request->customer_id,
-                            'payment_type_id' => $request->payment_type_id,
-                            'modeofrelease_ids' => $request->modeofrelease_ids,
-                            'discount_id' => $request->discount_id,
-                            'discount' => $request->discount,
-                            'purpose_id' => $request->purpose_id,
-                            'total' => $request->total,
-                            //'report_due' => $request->report_due, //report due is updated base on the estimated due date set by the lab confirmed the referral
-                            'conforme' => $request->conforme,
-                            'receivedBy' => $request->receivedBy,
-                            'request_type_id' => $request->request_type_id,
-                            'sample_received_date' => $ref_request->sample_received_date,
-                            'user_id_receiving' => Yii::$app->user->identity->profile->user_id
-                        ];
-
-                        foreach ($samples as $sample) {
-                            $sampleData = [
-                                'sample_id' => $sample['sample_id'],
-                                'request_id' => $sample['request_id'],
-                                'sample_code' => $sample['sample_code'],
-                                'sample_month' => $sample['sample_month'],
-                                'sample_year' => $sample['sample_year']
+                        if(Yii::$app->request->get('bidding') == 1){
+                            $requestData = [
+                                'request_id' => $request->request_id,
+                                'request_ref_num' => $request->request_ref_num,
+                                'request_datetime' => $request->request_datetime,
+                                'rstl_id' => $request->rstl_id,
+                                'lab_id' => $request->lab_id,
+                                'customer_id' => $request->customer_id,
+                                'payment_type_id' => $request->payment_type_id,
+                                'modeofrelease_ids' => $request->modeofrelease_ids,
+                                'discount_id' => $request->discount_id,
+                                'discount' => $request->discount,
+                                'purpose_id' => $request->purpose_id,
+                                //'total' => $request->total,
+                                'total' => 0,
+                                //'report_due' => $request->report_due, //report due is updated base on the estimated due date set by the agency
+                                'conforme' => $request->conforme,
+                                'receivedBy' => $request->receivedBy,
+                                'request_type_id' => $request->request_type_id,
+                                'sample_received_date' => $ref_request->sample_received_date,
+                                'user_id_receiving' => Yii::$app->user->identity->profile->user_id
                             ];
-                            array_push($sample_data, $sampleData);
+
+                            foreach ($samples as $sample) {
+                                $sampleData = [
+                                    'sample_id' => $sample['sample_id'],
+                                    'request_id' => $sample['request_id'],
+                                    'sample_code' => $sample['sample_code'],
+                                    'sample_month' => $sample['sample_month'],
+                                    'sample_year' => $sample['sample_year']
+                                ];
+                                array_push($sample_data, $sampleData);
+                            }
+                            $data = Json::encode(['request_data'=>$requestData,'sample_data'=>$sample_data,'agency_id'=>$agency_id],JSON_NUMERIC_CHECK);
+
+                            $referralUrl='https://eulimsapi.onelab.ph/api/web/referral/referrals/sendbidreferral';
+                        } else {
+                            $requestData = [
+                                'request_id' => $request->request_id,
+                                'request_ref_num' => $request->request_ref_num,
+                                'request_datetime' => $request->request_datetime,
+                                'rstl_id' => $request->rstl_id,
+                                'lab_id' => $request->lab_id,
+                                'customer_id' => $request->customer_id,
+                                'payment_type_id' => $request->payment_type_id,
+                                'modeofrelease_ids' => $request->modeofrelease_ids,
+                                'discount_id' => $request->discount_id,
+                                'discount' => $request->discount,
+                                'purpose_id' => $request->purpose_id,
+                                'total' => $request->total,
+                                //'report_due' => $request->report_due, //report due is updated base on the estimated due date set by the lab confirmed the referral
+                                'conforme' => $request->conforme,
+                                'receivedBy' => $request->receivedBy,
+                                'request_type_id' => $request->request_type_id,
+                                'sample_received_date' => $ref_request->sample_received_date,
+                                'user_id_receiving' => Yii::$app->user->identity->profile->user_id
+                            ];
+
+                            foreach ($samples as $sample) {
+                                $sampleData = [
+                                    'sample_id' => $sample['sample_id'],
+                                    'request_id' => $sample['request_id'],
+                                    'sample_code' => $sample['sample_code'],
+                                    'sample_month' => $sample['sample_month'],
+                                    'sample_year' => $sample['sample_year']
+                                ];
+                                array_push($sample_data, $sampleData);
+                            }
+                            $data = Json::encode(['request_data'=>$requestData,'sample_data'=>$sample_data,'agency_id'=>$agency_id],JSON_NUMERIC_CHECK);
+
+                            $referralUrl='https://eulimsapi.onelab.ph/api/web/referral/referrals/sendreferral';
                         }
-
-                        $data = Json::encode(['request_data'=>$requestData,'sample_data'=>$sample_data,'agency_id'=>$agency_id],JSON_NUMERIC_CHECK);
-
-                        $referralUrl='https://eulimsapi.onelab.ph/api/web/referral/referrals/sendreferral';
                        
                         $curl = new curl\Curl();
                         $referralreturn = $curl->setRequestBody($data)
@@ -658,22 +695,60 @@ class ReferralController extends Controller
                         switch ($referralResponse['response']) {
                             case 0:
                                 $transaction->rollBack();
-                                return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Fail to send referral details.</div>";
+                                return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Failed to send referral details.</div>";
                                 break;
                             case 1 :
                                 //return "Referral details saved.";
-                                $requestUpdate = Request::find()->where(['request_id'=>$requestId,'request_type_id'=>2])->one();
-                                $requestUpdate->report_due = $referralResponse['estimated_due'];
+                                if(Yii::$app->request->get('bidding') == 1){
+                                    $analysisSave = 0;
+                                    $requestUpdate = Request::find()->where(['request_id'=>$requestId,'request_type_id'=>2])->one();
+                                    
+                                    $requestUpdate->report_due = $referralResponse['estimated_due'];
+                                    $requestUpdate->total = $referralResponse['total_fee'];
 
-                                $referral_request_update = Referralrequest::find()->where('request_id =:requestId AND notified =:notified',[':requestId'=>$requestId,':notified'=>1])->one();
-                                $referral_request_update->testing_agency_id = $agency_id;
+                                    foreach ($referralResponse['analyses_data'] as $analysisbid) {
+                                        $analysis = Analysis::find()->where('analysis_id =:analysisId AND rstl_id =:rstlId',[':analysisId'=>$analysisbid['local_analysis_id'],':rstlId'=>$rstlId])->one();
+                                        
+                                        $analysis->fee = $analysisbid['analysis_fee'];
+                                        $analysis->referral_analysis_id = $analysisbid['analysis_id'];
+                                        if($analysis->save(false)){
+                                            $analysisSave = 1;
+                                        } else {
+                                            $transaction->rollBack();
+                                            $analysisSave = 0;
+                                        }
+                                    }
 
-                                if($requestUpdate->save(false) && $referral_request_update->save()){
+                                    $referral_request_update = Referralrequest::find()->where('request_id =:requestId AND notified =:notified',[':requestId'=>$requestId,':notified'=>1])->one();
+                                    $referral_request_update->testing_agency_id = $agency_id;
+
+                                    if($requestUpdate->save(false) && $referral_request_update->save() && $analysisSave == 1){
+                                        goto send;
+                                    } else {
+                                        $transaction->rollBack();
+                                        return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Failed to update local data!</div>";
+                                    }
+                                } else {
+                                    $requestUpdate = Request::find()->where(['request_id'=>$requestId,'request_type_id'=>2])->one();
+                                    $requestUpdate->report_due = $referralResponse['estimated_due'];
+
+                                    $referral_request_update = Referralrequest::find()->where('request_id =:requestId AND notified =:notified',[':requestId'=>$requestId,':notified'=>1])->one();
+                                    $referral_request_update->testing_agency_id = $agency_id;
+
+                                    if($requestUpdate->save(false) && $referral_request_update->save()){
+                                        goto send;
+                                    } else {
+                                        $transaction->rollBack();
+                                        return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Failed to update local data!</div>";
+                                    }
+                                }
+
+                                /*if($requestUpdate->save(false) && $referral_request_update->save() && $analysisSave == 1){
                                     goto send;
                                 } else {
                                     $transaction->rollBack();
-                                    return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Fail to update report due!</div>";
-                                }
+                                    return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Failed to update local data!</div>";
+                                }*/
                                 break;
                             case 2:
                                 $transaction->rollBack();
@@ -696,8 +771,12 @@ class ReferralController extends Controller
                                 ];
                                 $notificationData = Json::encode(['notice_details'=>$details],JSON_NUMERIC_CHECK);
 
-                                //$notificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/notifications/send';
-                                $notificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/notifications/send';
+                                if(Yii::$app->request->get('bidding') == 1){
+                                    $notificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/notifications/sendbid';
+                                } else {
+                                    //$notificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/notifications/send';
+                                    $notificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/notifications/send';
+                                }
 
                                 $curlNoti = new curl\Curl();
                                 $notificationResponse = $curlNoti->setRequestBody($notificationData)
@@ -726,7 +805,7 @@ class ReferralController extends Controller
                         }
                     } else {
                         $transaction->rollBack();
-                        return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Failure to generate referral code.</div>";
+                        return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Failed to generate referral code.</div>";
                     }
                 }
             } else {
@@ -777,7 +856,7 @@ class ReferralController extends Controller
                     'discount_id' => $request['discount_id'],
                     'discount' => $request['discount'],
                     'purpose_id' => $request['purpose_id'],
-                    'total' => $request['total'],
+                    'total' => $request['total'], //fee is default to the currrent fee of test method
                     'report_due' => $request['report_due'], //initial estimated due date sent by the receiving lab
                     'conforme' => $request['conforme'],
                     'receivedBy' => $request['receivedBy'],
@@ -848,7 +927,7 @@ class ReferralController extends Controller
                 switch ($referralResponse['response']) {
                     case 0:
                         $transaction->rollBack();
-                        return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Fail to save referral details.</div>";
+                        return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Failed to save referral details.</div>";
                         break;
                     case 1 :
                         //return "Referral details saved.";
@@ -894,7 +973,7 @@ class ReferralController extends Controller
                                     return $this->redirect(['/lab/request/view', 'id' => $requestId]);
                                 } else {
                                     $transaction->rollBack();
-                                    return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Open Bidding Fail: Error occured to open bid!</div>";
+                                    return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Open Bidding Failed: Error occured to open bid!</div>";
                                 }
                             } else {
                                 $transaction->commit();
@@ -906,7 +985,7 @@ class ReferralController extends Controller
                             }
                         } else {
                             $transaction->rollBack();
-                            return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Server Error: Fail to open for bidding!</div>";
+                            return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Server Error: Failed to open for bidding!</div>";
                         }
                     }
                 }
@@ -1065,11 +1144,11 @@ class ReferralController extends Controller
                                 }
                             } else {
                                 $transaction->rollBack();
-                                return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Fail to update sample code!</div>";
+                                return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Failed to update sample code!</div>";
                             }
                         } else {
                             $transaction->rollBack();
-                            return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Fail to generate samplecode!</div>";
+                            return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Failed to generate samplecode!</div>";
                         }
                     } else {
                         $transaction->rollBack();
@@ -1223,28 +1302,34 @@ class ReferralController extends Controller
             $request->referral_id = $referral['referral_id'];
             if($request->save(false)){
                 foreach ($samples_analyses as $data_sample) {
-                    //update sample
-                    $sample = Sample::find()->where(['sample_id'=>$data_sample['local_sample_id'],'request_id'=>$data_sample['local_request_id']])->one();
-                    $sample->sample_code = $data_sample['sample_code'];
-                    $sample->referral_sample_id = $data_sample['sample_id'];
-                    if($sample->save(false)){
-                        foreach ($data_sample['analyses'] as $data_analysis) {
-                            //update analysis
-                            $analysis = Analysis::find()->where(['sample_id'=>$data_analysis['local_sample_id'],'analysis_id'=>$data_analysis['local_analysis_id']])->one();
-                            $analysis->referral_analysis_id = $data_analysis['analysis_id'];
-                            if($analysis->save(false)){
-                                $analysisSave = 1;
-                            } else {
-                                $transaction->rollBack();
-                                $analysisSave = 0;
-                                return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Analysis not updated!</div>";
-                            }
-                        }
-                        $sampleSave = 1;
-                    } else {
+                    if(empty($data_sample['sample_code'])){
                         $transaction->rollBack();
-                        $sampleSave = 0;
-                        return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Sample not updated!</div>";
+                        $requestSave = 0;
+                        return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Testing Lab didn't generate sample code yet!</div>";
+                    } else {
+                        //update sample
+                        $sample = Sample::find()->where(['sample_id'=>$data_sample['local_sample_id'],'request_id'=>$data_sample['local_request_id']])->one();
+                        $sample->sample_code = $data_sample['sample_code'];
+                        $sample->referral_sample_id = $data_sample['sample_id'];
+                        if($sample->save(false)){
+                            foreach ($data_sample['analyses'] as $data_analysis) {
+                                //update analysis
+                                $analysis = Analysis::find()->where(['sample_id'=>$data_analysis['local_sample_id'],'analysis_id'=>$data_analysis['local_analysis_id']])->one();
+                                $analysis->referral_analysis_id = $data_analysis['analysis_id'];
+                                if($analysis->save(false)){
+                                    $analysisSave = 1;
+                                } else {
+                                    $transaction->rollBack();
+                                    $analysisSave = 0;
+                                    return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Analysis not updated!</div>";
+                                }
+                            }
+                            $sampleSave = 1;
+                        } else {
+                            $transaction->rollBack();
+                            $sampleSave = 0;
+                            return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Sample not updated!</div>";
+                        }
                     }
                 }
                 $requestSave = 1;

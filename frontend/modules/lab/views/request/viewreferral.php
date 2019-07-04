@@ -621,13 +621,22 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                     'enableSorting' => false,
                     'header' => 'Agency',
                     'contentOptions' => [
-                        'style'=>'max-width:70px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                        'style'=>'max-width:200px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                    ],
+                    'headerOptions' => [
+                        'style'=>'text-align:center;'
                     ],
                 ],
                 [
 					'attribute'=>'region',
                     'enableSorting' => false,
                     'header' => 'Region',
+                    'contentOptions' => [
+                        'style'=>'max-width:200px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                    ],
+                    'headerOptions' => [
+                        'style'=>'text-align:center;'
+                    ],
                 ],
                 [
                     //'attribute'=>'description',
@@ -640,7 +649,10 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                         return $estimated_due == 0 ? null : date('F j, Y',strtotime($estimated_due));
                     },
                    'contentOptions' => [
-                        'style'=>'max-width:180px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                        'style'=>'max-width:100px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                    ],
+                    'headerOptions' => [
+                        'style'=>'text-align:center;'
                     ],
                 ],
                 [
@@ -659,7 +671,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                             if($model->status_id > 0) {
                                 switch ($checkNotify) {
                                     case 0:
-                                        alert('Not valid request!');
+                                        //alert('Not valid request!');
                                         if($checkActive != 1)
                                         {
                                             return 'Lab not active.';
@@ -673,7 +685,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                                         break;
                                     case 2: 
                                         //return '<span class="text-success">Notice sent.</span>';
-                                        return $checkConfirm == 1 ? Html::button('<span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Send', ['value'=>Url::to(['/referrals/referral/send','request_id'=>$model->request_id,'agency_id'=>$data['agency_id']]),'onclick'=>'sendReferral(this.value,this.title)','class' => 'btn btn-primary','title' => 'Send Referral '.$data['name']]) : '<span class="text-success">Notice sent.</span>';
+                                        return $checkConfirm == 1 ? Html::button('<span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Send', ['value'=>Url::to(['/referrals/referral/send','request_id'=>$model->request_id,'agency_id'=>$data['agency_id']]),'onclick'=>'sendReferral(this.value,this.title)','class' => 'btn btn-primary','title' => 'Send Referral to '.$data['name']]) : '<span class="text-success">Notice sent.</span>';
                                         break;
                                 }
                             } else {
@@ -720,57 +732,123 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
     <div class="container">
         <div class="table-responsive">
         <?php
-            if($model->request_type_id == 2 && $countBidnotice > 0){
+            if($model->request_type_id == 2 && $countBidnotice > 0 && empty($model->request_ref_num)){
                 $biddingGridColumns = [
                     [
-                        'attribute'=>'name',
+                        'attribute'=>'bidder_agency_id',
                         'enableSorting' => false,
                         'header' => 'Agency',
+                        'format' => 'raw',
                         'contentOptions' => [
-                            'style'=>'max-width:70px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                            'style'=>'max-width:200px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                        ],
+                        'value' => function($data) use ($model,$referralcomp,$rstlId){
+                            //$estimated_due = json_decode($referralcomp->getBidDuedate($model->request_id,$rstlId,$data['agency_id']),true);
+                            $agency = json_decode($referralcomp->listBidders($data['bidder_agency_id']),true);
+                            return $agency == false || empty($agency) ? null : $agency[0]['name'];
+                        },
+                        'headerOptions' => [
+                            'style'=>'text-align:center;'
                         ],
                     ],
-                    [
-                        'attribute'=>'region',
+                    /*[
+                        'attribute'=>'bidder_agency_id',
                         'enableSorting' => false,
                         'header' => 'Region',
+                        'contentOptions' => [
+                            'style'=>'max-width:200px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                        ],
+                        'value' => function($data) use ($model,$referralcomp,$rstlId){
+                            //$estimated_due = json_decode($referralcomp->getBidDuedate($model->request_id,$rstlId,$data['agency_id']),true);
+                            $agency = json_decode($referralcomp->listBidders($data['bidder_agency_id']),true);
+                            return $agency == false || empty($agency) ? null : $agency[0]['region'];
+                        },
+                    ],*/
+                    [
+                        'attribute'=>'sample_requirements',
+                        'enableSorting' => false,
+                        'format' => 'raw',
+                        'header' => 'Sample Requirements',
+                        'contentOptions' => [
+                            'style'=>'max-width:200px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                        ],
+                        'headerOptions' => [
+                            'style'=>'text-align:center;'
+                        ],
+                        //'value' => function($data){
+                        //    return nl2br($data['sample_requirements']);
+                        //},
+                    ],
+                    [
+                        'attribute'=>'bid_amount',
+                        'enableSorting' => false,
+                        'header' => 'Bid Amount',
+                        'format' => 'raw',
+                        'contentOptions' => [
+                            'style'=>'max-width:50px; overflow: auto; text-align:right; white-space: normal; word-wrap: break-word;'
+                        ],
+                        'headerOptions' => [
+                            'style'=>'text-align:center;'
+                        ],
+                        'value' => function($data){
+                            return number_format($data['bid_amount'],2);
+                        },
                     ],
                     [
                         //'attribute'=>'description',
-                        'attribute'=>'agency_id',
+                        'attribute'=>'estimated_due',
                         'format' => 'raw',
                         'header' => 'Estimated due date',
                         'enableSorting' => false,
-                        'value' => function($data) use ($model,$referralcomp,$rstlId){
-                            $estimated_due = json_decode($referralcomp->getBidDuedate($model->request_id,$rstlId,$data['agency_id']),true);
-                            return $estimated_due == 0 ? null : date('F j, Y',strtotime($estimated_due));
+                        //'value' => function($data) use ($model,$referralcomp,$rstlId){
+                        //    $estimated_due = json_decode($referralcomp->getBidDuedate($model->request_id,$rstlId,$data['agency_id']),true);
+                        //    return $estimated_due == 0 ? null : date('F j, Y',strtotime($estimated_due));
+                        //},
+                        'value' => function($data){
+                            return date('F j, Y',strtotime($data['estimated_due']));
                         },
                        'contentOptions' => [
-                            'style'=>'max-width:180px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                            'style'=>'max-width:100px; overflow: auto; text-align:center; white-space: normal; word-wrap: break-word;'
                         ],
+                        'headerOptions' => [
+                            'style'=>'text-align:center;'
+                        ],
+                    ],
+                    [
+                        'attribute'=>'remarks',
+                        'enableSorting' => false,
+                        'header' => 'Remarks',
+                        'format' => 'raw',
+                        'contentOptions' => [
+                            'style'=>'max-width:200px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                        ],
+                        'headerOptions' => [
+                            'style'=>'text-align:center;'
+                        ],
+                        //'value' => function($data){
+                        //    return nl2br($data['remarks']);
+                        //},
                     ],
                     [
                         'class' => 'kartik\grid\ActionColumn',
                         'template' => '{notification}',
                         'dropdown' => false,
                         'dropdownOptions' => ['class' => 'pull-right'],
-                        'urlCreator' => function ($action, $model, $key, $index) {
-                            if ($action === 'delete') {
-                                $url ='/lab/sample/delete?id='.$model->sample_id;
-                                return $url;
-                            } 
-                            if ($action === 'cancel') {
-                                $url ='/lab/sample/cancel?id='.$model->sample_id;
-                                return $url;
-                            }
-                        },
                         'headerOptions' => ['class' => 'kartik-sheet-style'],
                         'buttons' => [
-                            'notification' => function ($url, $model) {
-                                if($model->active == 1){
-                                    return Html::a('<span class="glyphicon glyphicon-bell"></span> Notify', '#', ['class'=>'btn btn-primary','title'=>'Send Notification','onclick' => 'sendNotification('.$model->sample_id.')']);
+                            'notification' => function ($url, $data) use ($model,$referralcomp) {
+                                $checkActiveAgency = $referralcomp->checkActiveAgency($data['bidder_agency_id']);
+                                $agency = json_decode($referralcomp->listBidders($data['bidder_agency_id']),true);
+                                $agency_name = $agency == false || empty($agency) ? null : $agency[0]['name'];
+
+                                if($model->status_id > 0) {
+                                    if($checkActiveAgency == 1){
+                                        return Html::button('<span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Send', ['value'=>Url::to(['/referrals/referral/send','request_id'=>$model->request_id,'agency_id'=>$data['bidder_agency_id'],'bidding'=>1]),'onclick'=>'sendReferral(this.value,this.title)','class' => 'btn btn-primary','title' => 'Send Referral to '.$agency_name]);
+                                    } else {
+                                        return '<span class="label label-danger">AGENCY NOT ACTIVE</span>';
+                                    }
                                 } else {
-                                    return null;
+                                    return "<span class='label label-danger'>Referral ".$model->status->status."</span>";
                                 }
                             },
                         ],
@@ -807,7 +885,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                     ],
                 ]);
             } else {
-                echo Html::button('<span class="glyphicon glyphicon-share"></span> Open for Bidding', ['value'=>Url::toRoute(['/referrals/referral/open','request_id'=>$model->request_id]), 'onclick'=>'openBidding(this.value,this.title)', 'class' => 'btn btn-success','title' => 'Open for Bidding']);
+                echo !empty($model->request_ref_num) ? "" : Html::button('<span class="glyphicon glyphicon-share"></span> Open for Bidding', ['value'=>Url::toRoute(['/referrals/referral/open','request_id'=>$model->request_id]), 'onclick'=>'openBidding(this.value,this.title)', 'class' => 'btn btn-success','title' => 'Open for Bidding']);
             }
         ?>
         </div>

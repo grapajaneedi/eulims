@@ -120,9 +120,17 @@ class SampleController extends Controller
             $model->rstl_id = $rstlId;
             //$model->sample_code = 0;
             $model->request_id = $request->request_id;
-            $model->sample_month = date_format(date_create($request->request_datetime),'m');
-            $model->sample_year = date_format(date_create($request->request_datetime),'Y');
+            //$model->sample_month = date_format(date_create($request->request_datetime),'m');
+            //$model->sample_year = date_format(date_create($request->request_datetime),'Y');
             //$model->sampling_date = date('Y-m-d');
+			
+			if($request->request_type_id == 2){
+				$model->sample_month = date('n',($request->created_at));
+				$model->sample_year = date('Y',($request->created_at));
+			} else {
+				$model->sample_month = date_format(date_create($request->request_datetime),'m');
+				$model->sample_year = date_format(date_create($request->request_datetime),'Y');
+			}
 
             if(isset($_POST['qnty'])){
                 $quantity = (int) $_POST['qnty'];
@@ -154,8 +162,15 @@ class SampleController extends Controller
                     $sample->samplename = $_POST['Sample']['samplename'];
                     $sample->description = $_POST['Sample']['description'];
                     $sample->request_id = $request->request_id;
-                    $sample->sample_month = date('m', strtotime($request->request_datetime));
-                    $sample->sample_year = date('Y', strtotime($request->request_datetime));
+                    //$sample->sample_month = date('m', strtotime($request->request_datetime));
+                    //$sample->sample_year = date('Y', strtotime($request->request_datetime));
+					if($request->request_type_id == 2){
+						$model->sample_month = date('n',($request->created_at));
+						$model->sample_year = date('Y',($request->created_at));
+					} else {
+						$sample->sample_month = date('m', strtotime($request->request_datetime));
+						$sample->sample_year = date('Y', strtotime($request->request_datetime));
+					}
                     $sample->save(false);
                 }
 				Yii::$app->session->setFlash('success', "Sample Successfully Created.");
@@ -214,8 +229,7 @@ class SampleController extends Controller
             //print_r(Yii::$app->request->post());
             //exit;
             $transaction = $connection->beginTransaction();
-            if($oldSampletypeId != $_POST['Sample']['sampletype_id'])
-            {
+            if($oldSampletypeId != $_POST['Sample']['sampletype_id']){
                 if($analysisCount > 0){
                     $analysisDelete = Analysis::deleteAll('sample_id = :sampleId',[':sampleId'=>$id]);
                     if($analysisDelete){
@@ -226,13 +240,15 @@ class SampleController extends Controller
                 } else {
                     $analysisSave = 1;
                 }
-            }
+            } else {
+				$analysisSave = 1;
+			}
             if(isset($_POST['Sample']['sampling_date'])){
                 $model->sampling_date = date('Y-m-d H:i:s', strtotime($_POST['Sample']['sampling_date']));
             } else {
                 $model->sampling_date = date('Y-m-d H:i:s');
             }
-            if(isset($analysisSave) == 0){        
+            if(isset($analysisSave) == 0){
                 $transaction->rollBack();
                 Yii::$app->session->setFlash('error', 'Error deleting analysis!');
                 return $this->redirect(['/lab/request/view', 'id' => $model->request_id]);
@@ -545,6 +561,8 @@ class SampleController extends Controller
                 {
                     //update samplecode to tbl_sample
                     $sample->sample_code = $samplecodeGenerated;
+					$sample->sample_month = date('m', strtotime($request->request_datetime));
+					$sample->sample_year = date('Y', strtotime($request->request_datetime));
                     $sample->save(false); //skip validation since only update of sample code is performed
                     $transaction->commit();
                     $return="true";

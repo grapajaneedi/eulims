@@ -16,7 +16,7 @@ use yii\helpers\Html;
 		</li></a>
 		<?php endforeach; ?>
 	<?php else: ?>
-		<li>No unresponded notification.</li>
+		<li>No unseen notification.</li>
 	<?php endif; ?>
 	<button type="button" class="btn btn-primary btn-xs btn-block" id="btn_see_all" style="font-size:13px;">See All</button>
   </ul>

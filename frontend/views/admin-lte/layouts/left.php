@@ -119,7 +119,7 @@ if(Yii::$app->user->isGuest){
                 $pkgdetails2=str_replace(" ","-",$pkgdetails1);
                 $SubmodulePermission="access-".$pkgdetails2; //access-Order of Payment
 				if($mItem->extra_element == 1){
-					$numNotification = '&nbsp;&nbsp;<span class="label label-danger" id="count_noti_sub">'.$unresponded.'</span>';
+					$numNotification = '&nbsp;&nbsp;<span class="label label-danger" id="count_noti_sub_referral">'.$unresponded.'</span>';
 					$showURL = '#';
 					$template = '<a href="{url}" onclick="showNotifications()" id="btn_unresponded">{label}</a>';
 				} elseif ($mItem->extra_element == 2) {
