@@ -150,6 +150,8 @@ class RequestController extends Controller
             $bid = json_decode($refcomponent->getBidderAgency($id,Yii::$app->user->identity->profile->rstl_id),true);
             $countBidnotice = json_decode($refcomponent->countBidnotice($id,Yii::$app->user->identity->profile->rstl_id),true);
 
+            $noSampleCode = Sample::find()->where("request_id =:requestId AND ISNULL(sample_code)",[':requestId'=>$id])->count();
+
             if($bid == 0){
                 $countBid = 0;
                 $bidder = [];
@@ -233,6 +235,7 @@ class RequestController extends Controller
                 'as_testing' => $as_testing,
                 'countBid' => $countBid,
                 'countBidnotice' => $countBidnotice,
+                'noSampleCode' => $noSampleCode,
             ]);
 
         } else {
