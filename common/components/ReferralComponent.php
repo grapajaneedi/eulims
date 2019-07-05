@@ -40,8 +40,8 @@ class ReferralComponent extends Component {
         if($testnameId > 0){
             $apiUrl=$this->source.'/api/web/referral/listdatas/testnameone?testname_id='.$testnameId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return json_decode($list);
         } else {
@@ -57,8 +57,8 @@ class ReferralComponent extends Component {
         if($methodrefId > 0){
             $apiUrl=$this->source.'/api/web/referral/listdatas/methodreferenceone?methodref_id='.$methodrefId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return json_decode($list);
         } else {
@@ -75,8 +75,8 @@ class ReferralComponent extends Component {
         if($discountId >= 0){
             $apiUrl=$this->source.'/api/web/referral/listdatas/discountbyid?discount_id='.$discountId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return json_decode($list);
         } else {
@@ -92,8 +92,8 @@ class ReferralComponent extends Component {
         if($customerId > 0){
             $apiUrl=$this->source.'/api/web/referral/customers/customerone?customer_id='.$customerId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -106,8 +106,8 @@ class ReferralComponent extends Component {
         if($labId > 0){
             $apiUrl=$this->source.'/api/web/referral/listdatas/sampletypebylab?lab_id='.$labId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -119,8 +119,8 @@ class ReferralComponent extends Component {
         if($labId > 0 && $sampletypeId > 0){
             $apiUrl=$this->source.'/api/web/referral/listdatas/testnamebylab_sampletype?lab_id='.$labId.'&sampletype_id='.$sampletypeId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -133,8 +133,8 @@ class ReferralComponent extends Component {
             //$apiUrl=$this->source.'/api/web/referral/listdatas/testnamemethodref?testname_id='.$testnameId.'&sampletype_id='.$sampletypeId.'&lab_id='.$labId;
             $apiUrl=$this->source.'/api/web/referral/services/methodrefs?testname_id='.$testnameId.'&sampletype_id='.$sampletypeId.'&lab_id='.$labId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -147,8 +147,8 @@ class ReferralComponent extends Component {
     {
         $apiUrl=$this->source.'/api/web/referral/listdatas/lab';
         $curl = new curl\Curl();
-        $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-        $curl->setOption(CURLOPT_TIMEOUT, 120);
+        $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+        $curl->setOption(CURLOPT_TIMEOUT, 180);
         $list = $curl->get($apiUrl);
 
         //$data = ArrayHelper::map(json_decode($list), 'lab_id', 'labname');
@@ -160,8 +160,8 @@ class ReferralComponent extends Component {
     {
         $apiUrl=$this->source.'/api/web/referral/listdatas/discount';
         $curl = new curl\Curl();
-        $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-        $curl->setOption(CURLOPT_TIMEOUT, 120);
+        $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+        $curl->setOption(CURLOPT_TIMEOUT, 180);
         $list = $curl->get($apiUrl);
 
         //$data = ArrayHelper::map(json_decode($list), 'discount_id', 'type');
@@ -173,8 +173,8 @@ class ReferralComponent extends Component {
     {
         $apiUrl=$this->source.'/api/web/referral/listdatas/purpose';
         $curl = new curl\Curl();
-        $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-        $curl->setOption(CURLOPT_TIMEOUT, 120);
+        $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+        $curl->setOption(CURLOPT_TIMEOUT, 180);
         $list = $curl->get($apiUrl);
 
         //$data = ArrayHelper::map(json_decode($list), 'purpose_id', 'name');
@@ -186,8 +186,8 @@ class ReferralComponent extends Component {
     {
         $apiUrl=$this->source.'/api/web/referral/listdatas/moderelease';
         $curl = new curl\Curl();
-        $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-        $curl->setOption(CURLOPT_TIMEOUT, 120);
+        $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+        $curl->setOption(CURLOPT_TIMEOUT, 180);
         $list = $curl->get($apiUrl);
 
         //$data = ArrayHelper::map(json_decode($list), 'modeofrelease_id', 'mode');
@@ -236,8 +236,8 @@ class ReferralComponent extends Component {
         $apiUrl=$this->source.'/api/web/referral/services/listmatchagency?rstl_id='.$request->rstl_id.'&lab_id='.$request->lab_id.'&sampletype_id='.$sampletypeId.'&testname_id='.$testnameId.'&methodref_id='.$methodrefId.'&package_id='.$packageId;
 
         $curl = new curl\Curl();
-        $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-        $curl->setOption(CURLOPT_TIMEOUT, 120);
+        $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+        $curl->setOption(CURLOPT_TIMEOUT, 180);
         $list = $curl->get($apiUrl);
 
         if($list == 'false'){
@@ -259,8 +259,8 @@ class ReferralComponent extends Component {
 
             $apiUrl=$this->source.'/api/web/referral/listdatas/listagency?agency_id='.$agencies;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -273,36 +273,78 @@ class ReferralComponent extends Component {
         if($requestId > 0 && $agencyId > 0) {
             $apiUrl=$this->source.'/api/web/referral/notifications/checknotify?request_id='.$requestId.'&agency_id='.$agencyId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
             return 'Not valid request!';
         }
     }
+    //check if bid notified
+    /*function checkBidNotify($requestId,$agencyId)
+    {
+        if($requestId > 0 && $agencyId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/bidnotifications/checknotify?request_id='.$requestId.'&agency_id='.$agencyId;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'Not valid request!';
+        }
+    }*/
     //check if confirmed
     function checkConfirm($requestId,$rstlId,$testingAgencyId)
     {
         if($requestId > 0 && $rstlId > 0 && $testingAgencyId > 0) {
             $apiUrl=$this->source.'/api/web/referral/notifications/checkconfirm?request_id='.$requestId.'&receiving_id='.$rstlId.'&testing_id='.$testingAgencyId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
             return 'Not valid request!';
         }
     }
+    //check if agency participated the bidding
+    /*function checkBidder($referralId,$agencyId)
+    {
+        if($agencyId > 0 && $referralId > 0){
+            $bid = Bid::find()->where('bidder_agency_id =:bidderAgencyId AND referral_id =:referralId',[':bidderAgencyId'=>$agencyId,':referralId'=>$referralId])->count();
+            if($bid > 0){
+                return 1; 
+            } else {
+                return 0;
+            }
+        } else {
+            return 'false';
+        }
+    }*/
     //check if active lab
     function checkActiveLab($labId, $agencyId)
     {
         if($labId > 0 && $agencyId > 0) {
             $apiUrl=$this->source.'/api/web/referral/referrals/checkactivelab?lab_id='.$labId.'&agency_id='.$agencyId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'Not valid request!';
+        }
+    }
+    //check if agency is active
+    function checkActiveAgency($agencyId)
+    {
+        if($agencyId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/referrals/checkactiveagency?agency_id='.$agencyId;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -315,8 +357,8 @@ class ReferralComponent extends Component {
         if($agencyId > 0 && $requestId > 0){
             $apiUrl=$this->source.'/api/web/referral/referrals/deletereferral';
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $data = Json::encode(['request_id'=>$requestId,'rstl_id'=>$agencyId],JSON_NUMERIC_CHECK);
             $response = $curl->setRequestBody($data)
             ->setHeaders([
@@ -335,8 +377,8 @@ class ReferralComponent extends Component {
         if($rstlId > 0) {
             $apiUrl=$this->source.'/api/web/referral/notifications/countnotification?rstl_id='.$rstlId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -349,8 +391,8 @@ class ReferralComponent extends Component {
         if($rstlId > 0) {
             $apiUrl=$this->source.'/api/web/referral/bidnotifications/countbidnotification?rstl_id='.$rstlId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -363,8 +405,8 @@ class ReferralComponent extends Component {
         if($requestId > 0 && $rstlId > 0){
             $apiUrl=$this->source.'/api/web/referral/bidnotifications/bidderagency?request_id='.$requestId.'&rstl_id='.$rstlId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -374,10 +416,10 @@ class ReferralComponent extends Component {
     //list bidders
     function listBidders($agencyId){
         if($agencyId > 0){
-            $apiUrl=$this->source.'/api/web/referral/bidnotifications/listbidder?agency='.$agencyId;
+            $apiUrl=$this->source.'/api/web/referral/bidnotifications/listbidder?agency_id='.$agencyId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -389,8 +431,8 @@ class ReferralComponent extends Component {
         if($requestId > 0 && $rstlId > 0){
             $apiUrl=$this->source.'/api/web/referral/bidnotifications/bidnotice?request_id='.$requestId.'&rstl_id='.$rstlId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -403,8 +445,8 @@ class ReferralComponent extends Component {
         if($rstlId > 0 && $requestId > 0 && $senderId > 0) {
             $apiUrl=$this->source.'/api/web/referral/bidnotifications/showdue?request_id='.$requestId.'&rstl_id='.$rstlId.'&sender_id='.$senderId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -417,8 +459,8 @@ class ReferralComponent extends Component {
         if($referralId > 0 && $rstlId > 0) {
             $apiUrl=$this->source.'/api/web/referral/referrals/viewdetail?referral_id='.$referralId.'&rstl_id='.$rstlId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -431,8 +473,8 @@ class ReferralComponent extends Component {
         if($referralId > 0 && $rstlId > 0) {
             $apiUrl=$this->source.'/api/web/referral/referrals/get_referral_detail?referral_id='.$referralId.'&rstl_id='.$rstlId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -445,8 +487,8 @@ class ReferralComponent extends Component {
         if($rstlId > 0) {
             $apiUrl=$this->source.'/api/web/referral/notifications/listall?rstl_id='.$rstlId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -459,8 +501,8 @@ class ReferralComponent extends Component {
         if($rstlId > 0) {
             $apiUrl=$this->source.'/api/web/referral/bidnotifications/listall?rstl_id='.$rstlId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -473,8 +515,8 @@ class ReferralComponent extends Component {
         if($rstlId > 0 && $notificationId > 0) {
             $apiUrl=$this->source.'/api/web/referral/notifications/notification_one?notification_id='.$notificationId.'&rstl_id='.$rstlId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -487,8 +529,8 @@ class ReferralComponent extends Component {
         if($rstlId > 0 && $requestId > 0 && $senderId > 0) {
             $apiUrl=$this->source.'/api/web/referral/notifications/showdue?request_id='.$requestId.'&rstl_id='.$rstlId.'&sender_id='.$senderId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -501,8 +543,8 @@ class ReferralComponent extends Component {
         if($rstlId > 0 && $referralId > 0) {
             $apiUrl=$this->source.'/api/web/referral/referrals/checkowner?referral_id='.$referralId.'&sender_id='.$rstlId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -515,8 +557,8 @@ class ReferralComponent extends Component {
         if($referralId > 0){
             $apiUrl=$this->source.'/api/web/referral/referrals/referral_one?referral_id='.$referralId.'&rstl_id='.$rstlId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -528,8 +570,8 @@ class ReferralComponent extends Component {
         if($requestId > 0 && $rstlId > 0) {
             $apiUrl=$this->source.'/api/web/referral/referrals/get_samplecode?request_id='.$requestId.'&rstl_id='.$rstlId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -541,8 +583,8 @@ class ReferralComponent extends Component {
         if($referralId > 0 && $rstlId > 0 && $type > 0) {
             $apiUrl=$this->source.'/api/web/referral/attachments/show_upload?referral_id='.$referralId.'&rstl_id='.$rstlId.'&type='.$type;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -569,8 +611,8 @@ class ReferralComponent extends Component {
          if($referralId > 0 && $rstlId > 0) {
             $apiUrl=$this->source.'/api/web/referral/referrals/referred_agency?referral_id='.$referralId.'&rstl_id='.$rstlId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -581,8 +623,8 @@ class ReferralComponent extends Component {
          if($rstlId > 0) {
             $apiUrl=$this->source.'/api/web/referral/referrals/referral_all?rstl_id='.$rstlId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -593,8 +635,8 @@ class ReferralComponent extends Component {
     function offerService($data){
         $referralUrl=$this->source.'/api/web/referral/services/offer';
         $curl = new curl\Curl();
-        $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-        $curl->setOption(CURLOPT_TIMEOUT, 120);
+        $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+        $curl->setOption(CURLOPT_TIMEOUT, 180);
         $referralreturn = $curl->setRequestBody($data)
         ->setHeaders([
             'Content-Type' => 'application/json',
@@ -607,8 +649,8 @@ class ReferralComponent extends Component {
     function removeService($data){
         $referralUrl=$this->source.'/api/web/referral/services/remove';
         $curl = new curl\Curl();
-        $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-        $curl->setOption(CURLOPT_TIMEOUT, 120);
+        $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+        $curl->setOption(CURLOPT_TIMEOUT, 180);
         $referralreturn = $curl->setRequestBody($data)
         ->setHeaders([
             'Content-Type' => 'application/json',
@@ -622,8 +664,8 @@ class ReferralComponent extends Component {
         if($rstlId > 0 && $methodrefId > 0) {
             $apiUrl=$this->source.'/api/web/referral/services/check_offered?methodref_id='.$methodrefId.'&rstl_id='.$rstlId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $check = $curl->get($apiUrl);
             return $check;
         } else {
@@ -635,8 +677,8 @@ class ReferralComponent extends Component {
         if($methodrefId > 0){
             $apiUrl=$this->source.'/api/web/referral/services/offeredby?methodref_id='.$methodrefId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $offeredby = $curl->get($apiUrl);
             return $offeredby;
         } else {
@@ -649,8 +691,8 @@ class ReferralComponent extends Component {
         if($packageId > 0){
             $apiUrl=$this->source.'/api/web/referral/packages/package_detail?package_id='.$packageId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -663,8 +705,8 @@ class ReferralComponent extends Component {
         if($labId > 0 && $sampletypeId > 0){
             $apiUrl=$this->source.'/api/web/referral/packages/listpackage?lab_id='.$labId.'&sampletype_id='.$sampletypeId;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $list = $curl->get($apiUrl);
             return $list;
         } else {
@@ -672,7 +714,7 @@ class ReferralComponent extends Component {
         }
     }
     //check if test bid added
-    function checkTestbid($referralId,$analysisId,$bidderAgencyId)
+    /*function checkTestbid($referralId,$analysisId,$bidderAgencyId)
     {
         if($referralId > 0 && $analysisId > 0 && $bidderAgencyId > 0) {
             $testBid = Testbid::find()->where('referral_id =:referralId AND analysis_id =:analysisId AND bidder_agency_id =:bidderAgencyId',[':referralId'=>$referralId,':analysisId'=>$analysisId,':bidderAgencyId'=>$bidderAgencyId])->count();
@@ -680,7 +722,7 @@ class ReferralComponent extends Component {
         } else {
             return 'false';
         }
-    }
+    }*/
     //function count all both unresponded referral and unseen bid notifications
     function countAllNotification($rstlId)
     {
@@ -696,17 +738,30 @@ class ReferralComponent extends Component {
             return 'false';
         }
     }
-
-    //check bidder
-    function checkBidder($referralId,$agencyId)
+    //function to get agency bid details for update to local ulims
+    function getBidDetails($referralId,$rstlId,$bidderAgencyId)
     {
-        if($agencyId > 0 && $referralId > 0){
-            $bid = Bid::find()->where('bidder_agency_id =:bidderAgencyId AND referral_id =:referralId',[':bidderAgencyId'=>$agencyId,':referralId'=>$referralId])->count();
-            if($bid > 0){
-                return 1; 
-            } else {
-                return 0;
-            }
+        if($referralId > 0 && $rstlId > 0 && $bidderAgencyId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/bids/bid_details?referral_id='.$referralId.'&rstl_id='.$rstlId.'&bidder_id='.$bidderAgencyId;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'false';
+        }
+    }
+    //function to get agency bid details for update to local ulims
+    function getTestbidDetails($referralId,$rstlId,$bidderAgencyId)
+    {
+        if($referralId > 0 && $rstlId > 0 && $bidderAgencyId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/bids/testbid_details?referral_id='.$referralId.'&rstl_id='.$rstlId.'&bidder_id='.$bidderAgencyId;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
+            $list = $curl->get($apiUrl);
+            return $list;
         } else {
             return 'false';
         }

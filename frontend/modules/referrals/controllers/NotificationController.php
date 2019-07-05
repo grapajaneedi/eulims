@@ -67,19 +67,19 @@ class NotificationController extends Controller
                         $agencyName = $this->getAgency($data['sender_id']);
                         $referral = $this->getReferral($data['referral_id']);
                         $checkOwner = json_decode($refcomponent->checkOwner($data['referral_id'],$rstlId),true);
-                        $arr_data = ['notice_sent'=>"<b>".$data['sender_name']."</b> of <b>".$agencyName."</b> notified a referral request.",'notice_id'=>$data['notification_id'],'notification_date'=>$data['notification_date'],'referral_id'=>$data['referral_id'],'owner'=>$checkOwner,'local_request_id'=>$referral['local_request_id']];
+                        $arr_data = ['notice_sent'=>"<b>".$data['sender_name']."</b> of <b>".$agencyName."</b> notified a referral request.",'notice_id'=>$data['notification_id'],'notification_date'=>$data['notification_date'],'referral_id'=>$data['referral_id'],'owner'=>$checkOwner,'local_request_id'=>$referral['local_request_id'],'responded'=>$data['responded']];
                     break;
                     case 2:
                         $agencyName = $this->getAgency($data['sender_id']);
                         $referral = $this->getReferral($data['referral_id']);
                         $checkOwner = json_decode($refcomponent->checkOwner($data['referral_id'],$rstlId),true);
-                        $arr_data = ['notice_sent'=>"<b>".$data['sender_name']."</b> of <b>".$agencyName."</b> confirmed the referral notification.",'notice_id'=>$data['notification_id'],'notification_date'=>$data['notification_date'],'referral_id'=>$data['referral_id'],'owner'=>$checkOwner,'local_request_id'=>$referral['local_request_id']];
+                        $arr_data = ['notice_sent'=>"<b>".$data['sender_name']."</b> of <b>".$agencyName."</b> confirmed the referral notification.",'notice_id'=>$data['notification_id'],'notification_date'=>$data['notification_date'],'referral_id'=>$data['referral_id'],'owner'=>$checkOwner,'local_request_id'=>$referral['local_request_id'],'responded'=>$data['responded']];
                     break;
                     case 3:
                         $agencyName = $this->getAgency($data['sender_id']);
                         $referral = $this->getReferral($data['referral_id']);
                         $checkOwner = json_decode($refcomponent->checkOwner($data['referral_id'],$rstlId),true);
-                        $arr_data = ['notice_sent'=>"<b>".$data['sender_name']."</b> of <b>".$agencyName."</b> sent a referral request with referral code <b style='color:#000099;'>".$referral['referralcode']."</b>",'notice_id'=>$data['notification_id'],'notification_date'=>$data['notification_date'],'referral_id'=>$data['referral_id'],'owner'=>$checkOwner,'local_request_id'=>$referral['local_request_id']];
+                        $arr_data = ['notice_sent'=>"<b>".$data['sender_name']."</b> of <b>".$agencyName."</b> sent a referral request with referral code <b style='color:#000099;'>".$referral['referralcode']."</b>",'notice_id'=>$data['notification_id'],'notification_date'=>$data['notification_date'],'referral_id'=>$data['referral_id'],'owner'=>$checkOwner,'local_request_id'=>$referral['local_request_id'],'responded'=>$data['responded']];
                     break;
                 }
                 array_push($list, $arr_data);
@@ -156,19 +156,19 @@ class NotificationController extends Controller
                         $agencyName = $this->getAgency($data['sender_id']);
                         $referral = $this->getReferral($data['referral_id']);
                         $checkOwner = json_decode($refcomponent->checkOwner($data['referral_id'],$rstlId),true);
-                        $arr_data = ['notice_sent'=>"<b>".$data['sender_name']."</b> of <b>".$agencyName."</b> notified a referral request.",'notice_id'=>$data['notification_id'],'notification_date'=>$data['notification_date'],'referral_id'=>$data['referral_id'],'owner'=>$checkOwner,'local_request_id'=>$referral['local_request_id']];
+                        $arr_data = ['notice_sent'=>"<b>".$data['sender_name']."</b> of <b>".$agencyName."</b> notified a referral request.",'notice_id'=>$data['notification_id'],'notification_date'=>$data['notification_date'],'referral_id'=>$data['referral_id'],'owner'=>$checkOwner,'local_request_id'=>$referral['local_request_id'],'responded'=>$data['responded']];
                     break;
                     case 2:
                         $agencyName = $this->getAgency($data['sender_id']);
                         $referral = $this->getReferral($data['referral_id']);
                         $checkOwner = json_decode($refcomponent->checkOwner($data['referral_id'],$rstlId),true);
-                        $arr_data = ['notice_sent'=>"<b>".$data['sender_name']."</b> of <b>".$agencyName."</b> confirmed the referral notification.",'notice_id'=>$data['notification_id'],'notification_date'=>$data['notification_date'],'referral_id'=>$data['referral_id'],'owner'=>$checkOwner,'local_request_id'=>$referral['local_request_id']];
+                        $arr_data = ['notice_sent'=>"<b>".$data['sender_name']."</b> of <b>".$agencyName."</b> confirmed the referral notification.",'notice_id'=>$data['notification_id'],'notification_date'=>$data['notification_date'],'referral_id'=>$data['referral_id'],'owner'=>$checkOwner,'local_request_id'=>$referral['local_request_id'],'responded'=>$data['responded']];
                     break;
                     case 3:
                         $agencyName = $this->getAgency($data['sender_id']);
                         $referral = $this->getReferral($data['referral_id']);
                         $checkOwner = json_decode($refcomponent->checkOwner($data['referral_id'],$rstlId),true);
-                        $arr_data = ['notice_sent'=>"<b>".$data['sender_name']."</b> of <b>".$agencyName."</b> sent a referral request with referral code <b style='color:#000099;'>".$referral['referralcode']."</b>",'notice_id'=>$data['notification_id'],'notification_date'=>$data['notification_date'],'referral_id'=>$data['referral_id'],'owner'=>$checkOwner,'local_request_id'=>$referral['local_request_id']];
+                        $arr_data = ['notice_sent'=>"<b>".$data['sender_name']."</b> of <b>".$agencyName."</b> sent a referral request with referral code <b style='color:#000099;'>".$referral['referralcode']."</b>",'notice_id'=>$data['notification_id'],'notification_date'=>$data['notification_date'],'referral_id'=>$data['referral_id'],'owner'=>$checkOwner,'local_request_id'=>$referral['local_request_id'],'responded'=>$data['responded']];
                     break;
                 }
                 array_push($notice_list, $arr_data);

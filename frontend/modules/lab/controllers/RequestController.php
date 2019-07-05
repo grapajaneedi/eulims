@@ -43,7 +43,7 @@ use yii\data\ArrayDataProvider;
 /**
  * RequestController implements the CRUD actions for Request model.
  */
-set_time_limit(120);
+set_time_limit(180);
 class RequestController extends Controller
 {
     /**
@@ -155,12 +155,14 @@ class RequestController extends Controller
                 $bidder = [];
             } else {
                 $countBid = $bid['count_bid'];
-                $bidder = $bid['bidders'];
                 if($countBid > 0){
-                    $bidderAgencyId = implode(',', array_map(function ($data) {
-                        return $data['agency_id'];
-                    }, $bidder));
-                    $bidders = json_decode($refcomponent->listBidders($bidderAgencyId),true);
+                    $bidders = $bid['bidders'];
+                    //$bidderAgencyId = implode(',', array_map(function ($data) {
+                    //    return $data['bidder_agency_id'];
+                    //}, $bidder));
+                    //$bidders = json_decode($refcomponent->listBidders($bidderAgencyId),true);
+                    //print_r($bidders);
+                    //exit;
                 } else {
                     $bidders = [];
                 }
@@ -852,8 +854,8 @@ class RequestController extends Controller
             //$apiUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/customers/searchname?keyword='.$query;
             $apiUrl='https://eulimsapi.onelab.ph/api/web/referral/customers/searchname?keyword='.$query;
             $curl = new curl\Curl();
-            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
-            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
             $show = $curl->get($apiUrl);
         } else {
             $show = ['results' => ['id' => '', 'text' => '']];

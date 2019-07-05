@@ -259,6 +259,8 @@ class Functions extends Component{
                 {
                     //update samplecode to tbl_sample
                     $sample->sample_code = $samplecodeGenerated;
+					$sample->sample_month = date('m', strtotime($request->request_datetime));
+					$sample->sample_year = date('Y', strtotime($request->request_datetime));
                     $sample->save(false); //skip validation since only update of sample code is performed
                     $transaction->commit();
                     $return="true";
