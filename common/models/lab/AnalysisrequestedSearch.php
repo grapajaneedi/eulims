@@ -10,7 +10,7 @@ use common\models\lab\Analysisrequested;
 /**
  * AnlysisrequestedSearch represents the model behind the search form of `common\models\lab\Analysisrequested`.
  */
-class AnlysisrequestedSearch extends Analysisrequested
+class AnalysisrequestedSearch extends Analysisrequested
 {
     /**
      * {@inheritdoc}

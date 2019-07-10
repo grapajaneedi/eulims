@@ -4,7 +4,7 @@ namespace frontend\modules\api\controllers;
 
 use Yii;
 use common\models\lab\Analysisrequested;
-use common\models\lab\AnlysisrequestedSearch;
+use common\models\lab\AnalysisrequestedSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -35,7 +35,7 @@ class AnalysisrequestedController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new AnlysisrequestedSearch();
+        $searchModel = new AnalysisrequestedSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
