@@ -232,13 +232,14 @@ class Functions extends Component{
         //$lab = Lab::findOne($request->lab_id);
         $year = date('Y', strtotime($request->request_datetime));
         $connection= Yii::$app->labdb;
+        $rstlId = Yii::$app->user->identity->profile->rstl_id;
         
         foreach ($request->samples as $samp){
             $transaction = $connection->beginTransaction();
             $return="false";
             try {
                 $proc = 'spGetNextGenerateSampleCode(:rstlId,:labId,:requestId)';
-                $params = [':rstlId'=>$GLOBALS['rstl_id'],':labId'=>$request->lab_id,':requestId'=>$request_id];
+                $params = [':rstlId'=>$rstlId,':labId'=>$request->lab_id,':requestId'=>$request_id];
                 $row = $this->ExecuteStoredProcedureOne($proc, $params, $connection);
                 $samplecodeGenerated = $row['GeneratedSampleCode'];
                 $samplecodeIncrement = $row['SampleIncrement'];
@@ -248,7 +249,7 @@ class Functions extends Component{
                 
                 //insert to tbl_samplecode
                 $samplecode = new Samplecode();
-                $samplecode->rstl_id = $GLOBALS['rstl_id'];
+                $samplecode->rstl_id = $rstlId;
                 $samplecode->reference_num = $request->request_ref_num;
                 $samplecode->sample_id = $sampleId;
                 $samplecode->lab_id = $request->lab_id;
