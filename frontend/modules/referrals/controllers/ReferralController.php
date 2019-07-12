@@ -19,6 +19,7 @@ use common\models\lab\Analysis;
 use common\models\lab\Analysisextend;
 use common\models\lab\Sample;
 use common\models\lab\Discount;
+use common\models\lab\Samplecode;
 use common\components\ReferralComponent;
 use common\components\Functions;
 use yii\data\ArrayDataProvider;
@@ -1312,17 +1313,34 @@ class ReferralController extends Controller
                         $sample->sample_code = $data_sample['sample_code'];
                         $sample->referral_sample_id = $data_sample['sample_id'];
                         if($sample->save(false)){
-                            foreach ($data_sample['analyses'] as $data_analysis) {
-                                //update analysis
-                                $analysis = Analysis::find()->where(['sample_id'=>$data_analysis['local_sample_id'],'analysis_id'=>$data_analysis['local_analysis_id']])->one();
-                                $analysis->referral_analysis_id = $data_analysis['analysis_id'];
-                                if($analysis->save(false)){
-                                    $analysisSave = 1;
-                                } else {
-                                    $transaction->rollBack();
-                                    $analysisSave = 0;
-                                    return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Analysis not updated!</div>";
+                            //insert to tbl_samplecode
+                            $samplecode = new Samplecode();
+                            $samplecode->rstl_id = $rstlId;
+                            $samplecode->reference_num = $referral['referral_code'];
+                            $samplecode->sample_id = $data_sample['local_sample_id'];
+                            $samplecode->lab_id = $referral['lab_id'];
+                            //$samplecode->number = $samplecodeIncrement;
+                            $samplecode->number = 0; //if the source is referral request
+                            $samplecode->year = date('Y',strtotime($request->request_datetime));
+                            $samplecode->source = 2;
+
+                            if($samplecode->save()){
+                                foreach ($data_sample['analyses'] as $data_analysis) {
+                                    //update analysis
+                                    $analysis = Analysis::find()->where(['sample_id'=>$data_analysis['local_sample_id'],'analysis_id'=>$data_analysis['local_analysis_id']])->one();
+                                    $analysis->referral_analysis_id = $data_analysis['analysis_id'];
+                                    if($analysis->save(false)){
+                                        $analysisSave = 1;
+                                    } else {
+                                        $transaction->rollBack();
+                                        $analysisSave = 0;
+                                        return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Analysis not updated!</div>";
+                                    }
                                 }
+                                $samplecodeSave = 1;
+                            } else {
+                                $transaction->rollBack();
+                                $samplecodeSave = 0;
                             }
                             $sampleSave = 1;
                         } else {
@@ -1338,7 +1356,7 @@ class ReferralController extends Controller
                 $requestSave = 0;
                 return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Request not updated!</div>";
             }
-            if($requestSave == 1 && $sampleSave == 1 && $analysisSave == 1){
+            if($requestSave == 1 && $sampleSave == 1 && $analysisSave == 1 && $samplecodeSave == 1){
                 $transaction->commit();
                 Yii::$app->session->setFlash('success', 'Sample code updated!');
                 return $this->redirect(['/lab/request/view', 'id' => $requestId]);
