@@ -2,6 +2,7 @@
 use kartik\select2\Select2;
 use yii\helpers\ArrayHelper;
 use common\models\address\Region;
+use common\models\address\Barangay;
 use kartik\widgets\DepDrop;
 use yii\helpers\Url;
 ?>
