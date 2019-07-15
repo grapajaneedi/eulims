@@ -57,6 +57,8 @@ class InfoController extends Controller
         ]);
     }
 
+
+
     public function actionSync(){
         //fetch the customer pool
         // $customers = Customer::find()->all();
@@ -71,8 +73,95 @@ class InfoController extends Controller
                  ])
              ->post($GLOBALS['api_url']."sync_customer");
 
-             echo $response ." number/s of customer is added <br/>";
+             echo $response;
         }
+    }
+
+    public function actionSyncrecord($id){
+
+        $model = Customer::find()->where(['customer_code'=>null,'customer_id'=>$id])->one();
+        
+
+        $curl = new Curl();
+
+         //enclose the to timeout in 20 seconds
+        try {
+            // $curl->setOption(CURLOPT_CONNECTTIMEOUT,5);
+            // $curl->setOption(CURLOPT_TIMEOUT, 5);
+            $response = $curl->setRawPostData(
+                 [
+                    'data' => json::encode($model),
+                 ])
+             ->post($GLOBALS['api_url']."sync_customer");
+
+             if($response==2){
+                //update the record's 
+                $model->sync_status = 2;
+                $model->save();
+
+                //notify user that the record may exist on the cloud server
+
+                echo "User's email already exist proceed to confirmation";
+             }else{
+                //update the model with the customer code
+                $model->sync_status = 1;
+                $model->customer_code=$response;
+                $model->save();
+                //user record sync
+                echo $response;
+             }
+            
+        } catch (Exception $e) {
+            echo "Syncing Failed...";
+        }
+        
+       
+       
+    }
+
+    public function actionConfirmrecord($id){
+
+
+        $model = Customer::find()->where(['customer_code'=>null,'customer_id'=>$id])->one();
+        $curl = new Curl();
+
+        try {
+           $response = $curl->setGetParams([
+                'email' => $model->email,
+             ])
+             ->get($GLOBALS['api_url']."confirm");
+
+            if ($curl->errorCode === null) {
+               
+               return $this->renderAjax('_view', [
+                    'model' => $response,
+                    'local'=>$model
+                ]);
+            }
+            
+        } catch (Exception $e) {
+            echo "Curl Failed...";
+        }
+    }
+
+    public function actionApplysync($code=null,$email){
+        if($code=null){
+            $session = Yii::$app->session;
+            $session->set('deletepopup',"Something Went Wrong!");
+            return $this->redirect(['index']);
+        }
+        $model = Customer::find()->where(['customer_code'=>null,'email'=>$email])->one();
+        $model->customer_code=$code;
+        $model->sync_status=1;
+        if($model->save()){
+            $session = Yii::$app->session;
+            $session->set('updatepopup',"executed");
+        }else{
+            $session = Yii::$app->session;
+            $session->set('updatepopup',"Something Went Wrong!");
+        }
+
+        return $this->redirect(['index']);
     }
 
     /**
@@ -269,4 +358,5 @@ class InfoController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
 }
