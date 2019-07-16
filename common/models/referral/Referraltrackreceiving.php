@@ -3,6 +3,7 @@
 namespace common\models\referral;
 
 use Yii;
+use common\models\referral\Referraltracktesting;
 
 /**
  * This is the model class for table "tbl_referraltrackreceiving".
@@ -84,5 +85,10 @@ class Referraltrackreceiving extends \yii\db\ActiveRecord
     public function getCourier()
     {
         return $this->hasOne(Courier::className(), ['courier_id' => 'courier_id']);
+    }
+    
+    public function getReferraltesting()
+    {
+        return $this->hasOne(Referraltracktesting::className(), ['referral_id' => 'referral_id']);
     }
 }

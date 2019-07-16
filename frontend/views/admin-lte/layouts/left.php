@@ -1,4 +1,4 @@
-<?php
+ <?php
 use common\models\system\User;
 use common\models\system\Package;
 use common\models\system\PackageDetails;
@@ -148,7 +148,7 @@ if(Yii::$app->user->isGuest){
             // } elseif($unresponded == '' && $unseen > 0){
             // 	$all_notification = $unseen;
             // } else {
-            // 	$all_notification = '';
+             	$all_notification = '';
             // }
 			
             $MainIcon=substr($Item->icon,6,strlen($Item->icon)-6);
