@@ -20,8 +20,14 @@ use common\models\lab\Analysisextend;
 use common\models\lab\Sample;
 use common\models\lab\Discount;
 use common\components\ReferralComponent;
+use common\components\ReferralFunctions;
 use common\components\Functions;
 use yii\data\ArrayDataProvider;
+use common\models\referral\Notification;
+use common\models\referral\Statuslogs;
+use common\models\referral\Referraltrackreceiving;
+use common\models\referral\Referraltracktesting;
+
 
 /**
  * ReferralController implements the CRUD actions for Referral model.
@@ -47,7 +53,7 @@ class ReferralController extends Controller
      * Lists all Referral models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex() 
     {
         //$searchModel = new ReferralSearch();
         //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
@@ -85,9 +91,9 @@ class ReferralController extends Controller
         {
             $refcomponent = new ReferralComponent();
             $referralDetails = json_decode($refcomponent->getReferraldetails($referralId,$rstlId),true);
-            //$noticeDetails = json_decode($this->getNotificationDetails($noticeId,$rstlId),true);
-            $noticeDetails = json_decode($refcomponent->getNotificationOne($noticeId,$rstlId),true);
-
+            $referralDetails = json_decode($refcomponent->getReferraldetails($referralId,$rstlId),true);
+            $noticeDetails = json_decode($this->getNotificationDetails($noticeId,$rstlId),true);
+            
             if($referralDetails != 0 && $noticeDetails != 0)
             {
                 $model = new Request(); //for declaration required in Detailview
@@ -159,6 +165,7 @@ class ReferralController extends Controller
 
     public function actionViewreferral($id)
     {
+        
         $referralId = (int) $id;
         $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
 
@@ -166,16 +173,27 @@ class ReferralController extends Controller
         {
             $refcomponent = new ReferralComponent();
             $referralDetails = json_decode($refcomponent->getReferraldetails($referralId,$rstlId),true);
-
+            /*echo "<pre>";
+            print_r($this->findModeltestingtrack($id));
+            echo "</pre>";
+            exit;*/
             if($referralDetails != 0)
             {
                 $model = new Request(); //for declaration required in Detailview
-
+               // $modelref = $this->findModelRef($id);       
                 $request = $referralDetails['request_data'];
                 $samples = $referralDetails['sample_data'];
                 $analyses = $referralDetails['analysis_data'];
                 $customer = $referralDetails['customer_data'];
-
+                $notification=$referralDetails['notification_data'];
+               /*echo "<pre>";
+                print_r($this->findModeltestingtrack($id));
+                print_r($this->findModelreceivedtrack($id));
+                echo "</pre>";
+               exit;*/
+               // $notification= Notification::find()->where('referral_id =:referralId',[':referralId'=>$id])->orderBy(['notification_type_id' => SORT_ASC])->all();
+                $statuslogs= Statuslogs::find()->where('referral_id =:referralId',[':referralId'=>$id])->all();
+                
                 //set third parameter to 1 for attachment type deposit slip
                 $deposit = json_decode($refcomponent->getAttachment($referralId,Yii::$app->user->identity->profile->rstl_id,1),true);
                 //set third parameter to 2 for attachment type or
@@ -185,6 +203,27 @@ class ReferralController extends Controller
                 $receiving_agency = !empty($referred_agency['receiving_agency']) && $referred_agency > 0 ? $referred_agency['receiving_agency']['name'] : null;
                 $testing_agency = !empty($referred_agency['testing_agency']) && $referred_agency > 0 ? $referred_agency['testing_agency']['name'] : null;
 
+                $testresult = json_decode($refcomponent->getAttachment($id,Yii::$app->user->identity->profile->rstl_id,3),true);
+              /*echo "<pre>";
+                print_r($testresult);
+                echo "</pre>"; */
+                if($testresult <> 0){
+                    $testresultDataProvider = new ArrayDataProvider([
+                        'allModels' => $testresult,
+                        'pagination'=> [
+                            'pageSize' => 10,
+                        ],
+                    ]); 
+                }else{
+                    $testresultDataProvider = new ArrayDataProvider([]);
+                }
+                $notificationDataProvider = new ArrayDataProvider([
+                    'allModels' => $notification,
+                    'pagination'=> [
+                        'pageSize' => 10,
+                    ],
+                ]);
+                
                 $sampleDataProvider = new ArrayDataProvider([
                     'allModels' => $samples,
                     'pagination'=> [
@@ -210,8 +249,13 @@ class ReferralController extends Controller
                 $discounted = $subtotal * ($rate/100);
                 $total = $subtotal - $discounted;
 
+                
+                $countreceiving=Referraltrackreceiving::find()->where('referral_id =:referralId',[':referralId'=>$id])->count();
+                $counttesting=Referraltracktesting::find()->where('referral_id =:referralId',[':referralId'=>$id])->count();
+                //print_r($testresult);exit;
                 return $this->render('viewreferral', [
                     'model' => $model,
+                   // 'modelref' => $modelref,
                     'request' => $request,
                     'customer' => $customer,
                     'sampleDataProvider' => $sampleDataProvider,
@@ -224,6 +268,14 @@ class ReferralController extends Controller
                     'testing_agency' => $testing_agency,
                     'depositslip' => $deposit,
                     'officialreceipt' => $or,
+                    'testresult' => $testresultDataProvider,
+                    'notificationDataProvider' => $notificationDataProvider,
+                    'logs'=>$statuslogs,
+                    'modelRefTracktesting'=>$this->findModeltestingtrack($id),
+                    'modelRefTrackreceiving'=>$this->findModelreceivedtrack($id),
+                    'counttesting'=> 1,
+                    'countreceiving'=>1
+                    
                 ]);
             } else {
                 Yii::$app->session->setFlash('error', "Invalid referral!");
@@ -1265,5 +1317,30 @@ class ReferralController extends Controller
             Yii::$app->session->setFlash('error', 'Invalid request!');
             return $this->redirect(['/lab/request/view', 'id' => $requestId]);
         }
+    }
+    protected function findModelRef($id)
+    {
+        if (($model = Referral::findOne($id)) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    protected function findModelreceivedtrack($referral_id)
+    {
+        $refcomponent = new ReferralComponent();
+        $referralreceivingDetails = json_decode($refcomponent->getTrackreceiving($referral_id),true);
+        
+        $received = $referralreceivingDetails['receiving_data'];
+        return $received;
+        
+    }  
+    protected function findModeltestingtrack($referral_id)
+    {
+        $refcomponent = new ReferralComponent();
+        $trackingdetails = json_decode($refcomponent->getTracktesting($referral_id),true);
+        $tracking=$trackingdetails['testing_data'];
+        return $tracking;
+        
     }
 }
