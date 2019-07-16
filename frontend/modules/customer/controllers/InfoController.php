@@ -105,10 +105,11 @@ class InfoController extends Controller
              }else{
                 //update the model with the customer code
                 $model->sync_status = 1;
+                $response = json_decode($response);
                 $model->customer_code=$response;
                 $model->save();
                 //user record sync
-                echo $response;
+                echo "Customer Code Sync with ID: ".$response;
              }
             
         } catch (Exception $e) {
@@ -144,8 +145,9 @@ class InfoController extends Controller
         }
     }
 
-    public function actionApplysync($code=null,$email){
-        if($code=null){
+    public function actionApplysync($code,$email){
+        // echo $code; exit;
+        if($code==null){
             $session = Yii::$app->session;
             $session->set('deletepopup',"Something Went Wrong!");
             return $this->redirect(['index']);

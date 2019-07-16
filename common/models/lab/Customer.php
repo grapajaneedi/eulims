@@ -29,7 +29,7 @@ use common\components\Functions;
  * @property int $customer_old_id 
  * @property int $Oldcolumn_municipalitycity_id 
  * @property int $Oldcolumn_district
-
+ * @property int $sync_status
  *
  * @property Customertype $customerType
  * @property Businessnature $businessNature
@@ -119,6 +119,7 @@ class Customer extends \yii\db\ActiveRecord
             'customer_old_id' => 'Customer Old ID', 
             'Oldcolumn_municipalitycity_id' => 'Oldcolumn Municipalitycity ID', 
             'Oldcolumn_district' => 'Oldcolumn District', 
+            'sync_status'=> 'Sync Status'
 
         ];
     }
