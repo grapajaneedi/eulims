@@ -20,6 +20,7 @@ use common\models\lab\TestnameSearch;
 use common\models\lab\Configlab;
 
 use common\models\lab\Lab;
+use common\models\lab\LabSearch;
 
 /**
  * SetupController implements the CRUD actions for Setup model.
@@ -51,15 +52,16 @@ class SetupController extends Controller
 
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        //$dataProvider->sort->defaultOrder = ['testName' => SORT_ASC];
 
-       
-      
+        $labsearchModel = new LabSearch();
+        $labdataProvider = $labsearchModel->search(Yii::$app->request->queryParams);
+        //$dataProvider->sort->defaultOrder = ['testName' => SORT_ASC];
 
         return $this->render('index', [
             //'userdataprovider' => $userdataprovider,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'labdataProvider'=> $labdataProvider,
         ]);
     }
 

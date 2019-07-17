@@ -169,7 +169,7 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
 
     
 <?= GridView::widget([
-        'dataProvider' => $dataProvider,
+        'dataProvider' => $labdataProvider,
         //'filterModel' => $searchModel,
         'pjax' => true,
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-products']],
@@ -179,7 +179,8 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
              //   'before'=> Html::button('<span class="glyphicon glyphicon-plus"></span> Create Test Name', ['value'=>'/lab/testname/create', 'class' => 'btn btn-success modal_services','title' => Yii::t('app', "Create New Test Name")]),
             ],
         'columns' => [
-            'username',
-            'email'
+           'labname',
+           'labcode',
+           'active',
         ],
     ]); ?>
