@@ -125,6 +125,12 @@ if($Request_Ref){//With Reference
     $EnablePrint="<a href='/reports/preview?url=/lab/request/print-request?id=".$model->request_id."' class='btn btn-primary' style='margin-left: 5px'><i class='fa fa-print'></i> Print Request</a>";
     $ClickButton='';
     $btnID="";
+
+    $enableRequest=false;
+    $ClickButton='addSample(this.value,this.title)';
+    $disableButton="";
+    $EnablePrint="<span class='btn btn-primary' disabled style='margin-left: 5px'><i class='fa fa-print'></i> Print Request</span>";
+    $btnID="id='btnSaveRequest'";
 }else{ // NO reference number yet
     $enableRequest=false;
     $ClickButton='addSample(this.value,this.title)';
@@ -602,9 +608,7 @@ $this->registerJs($PrintEvent);
                     Html::button('<i class="glyphicon glyphicon-plus"></i> Add Package', ['disabled'=>$enableRequest,'value' => Url::to(['/services/packagelist/createpackage','id'=>$model->request_id]),'title'=>'Add Package', 'onclick'=>$ClickButton, 'class' => 'btn btn-success','id' => 'btn_add_package'])." ".
                     Html::button('<i class="glyphicon glyphicon-plus"></i> Additional Fees', ['disabled'=>$enableRequest,'value' => Url::to(['/lab/fee/create','id'=>$model->request_id]),'title'=>'Add Additional Fees', 'onclick'=>$ClickButton, 'class' => 'btn btn-success','id' => 'btn_add_fees']),
                    'after'=>false,
-                 'footer'=>"<div class='row' style='margin-left: 2px;padding-top: 5px'><button value='/lab/request/saverequestransaction' ".$btnID." class='btn btn-success'><i class='fa fa-save'></i> Save Request</button>".$EnablePrint."</div>",
-                   //'footer'=>"<div class='row' style='margin-left: 2px;padding-top: 5px'>".Html::button('<i class="fa fa-save"></i> Save Request', ['disabled'=>$enableRequest,'value' => Url::to(['/lab/request/saverequestransaction']), 'onclick'=> $ClickButton, $disableButton, 'class' => 'btn btn-success',]).$EnablePrint."</div>",
-                    //."<button ".$disableButton." value='/lab/request/saverequestransaction' ".$btnID." class='btn btn-success'><i class='fa fa-save'></i> Save Request</button>".$EnablePrint."</div>",
+                   'footer'=>"<div class='row' style='margin-left: 2px;padding-top: 5px'><button ".$disableButton." value='/lab/request/saverequestransaction' ".$btnID." class='btn btn-success'><i class='fa fa-save'></i> Save Request</button>".$EnablePrint."</div>",
                 ],
                 'columns' => $analysisgridColumns,
                 'toolbar' => [

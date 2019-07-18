@@ -85,7 +85,7 @@ class RestapiController extends \yii\rest\Controller
             
                
         }
-    }
+
 
         public function actionUser()
         {  
