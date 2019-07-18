@@ -422,7 +422,6 @@ class RequestController extends Controller
         $post= Yii::$app->request->post();
         // echo $post['request_id'];
         //exit;
-        
         $return="Failed";
         $request_id=(int) $post['request_id'];
         $lab_id=(int) $post['lab_id'];
@@ -456,7 +455,7 @@ class RequestController extends Controller
         $Requestcode->number=$RequestIncrement;
         $Requestcode->year=$year;
         $Requestcode->cancelled=0;
-        $Requestcode->save();
+        $Requestcode->save(false);
         //Update tbl_request table
         $Request= Request::find()->where(['request_id'=>$request_id])->one($Connection);
         $Request->request_ref_num=$ReferenceNumber;
@@ -478,7 +477,7 @@ class RequestController extends Controller
         echo "</pre>";
         exit;
         */
-        if($Request->save()){
+        if($Request->save(false)){
             $Func=new Functions();
             $response=$Func->GenerateSampleCode($request_id);
             if($response){

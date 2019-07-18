@@ -62,8 +62,7 @@ if ($paymentitem){
 }
 // /lab/request/saverequestransaction
 $js=<<<SCRIPT
-    $("#btnSaveRequest").click(function(event){
-        event.preventDefault();
+    $("#btnSaveRequest").click(function(){
         var SampleRows=$sampleDataProvider->count;
         var AnalysisRows=$analysisdataprovider->count;
         var msg='';
@@ -76,7 +75,8 @@ $js=<<<SCRIPT
             }, function(result){
                if(result){
                     //document.write(result);
-                   location.reload();
+                  location.reload();
+               // console.log(result);
                }
             });
         }else{
