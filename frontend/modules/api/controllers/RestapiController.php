@@ -124,10 +124,10 @@ class RestapiController extends \yii\rest\Controller
             {  
                 if (isset($_GET['q'])) {
                 //limit for this year only
-                $samplecode = Sample::find()->select(['sample_id','sample_code'])
-                ->where(['LIKE', 'tbl_sample.sample_code', $_GET['q']])
-               // ->AndWhere(['LIKE', 'sample_year', '2018'])
-                ->all();
+            //     $samplecode = Sample::find()->select(['sample_id','sample_code'])
+            //     ->where(['LIKE', 'tbl_sample.sample_code', $_GET['q']])
+            //    // ->AndWhere(['LIKE', 'sample_year', '2018'])
+            //     ->all();
                 return $this->asJson(['sampleCodes'=>$samplecode]);
                            
                 }
