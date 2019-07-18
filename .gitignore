@@ -375,4 +375,4 @@ frontend/modules/referrals/views/notification/_list_item_20190514.php
 frontend/modules/referrals/views/notification/list_unresponded_notification_20190312.php
 frontend/modules/lab/views/request/viewreferral_bk.php
 frontend/modules/referrals/views/bid/view_20180912.php
-common/config/db.php
+frontend/modules/lab/controllers/RequestController_20190705.php

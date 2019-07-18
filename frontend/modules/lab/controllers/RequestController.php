@@ -417,28 +417,29 @@ class RequestController extends Controller
         $result=json_decode($response);
         return $result->description;
     }
-    public function actionSaverequestransaction($request_id,$lab_id,$rstl_id,$year){
-      
-        $year=str_pad($year, 6, "0", STR_PAD_LEFT);
+  
+    public function actionSaverequestransaction(){
+        $post= Yii::$app->request->post();
+        // echo $post['request_id'];
+        //exit;
+        
+        $return="Failed";
+        $request_id=(int) $post['request_id'];
+        $lab_id=(int) $post['lab_id'];
+        $rstl_id=(int) $post['rstl_id'];
+        $year=(int) $post['year'];
         // Generate Reference Number
-         /////////////////////Reference Number
-        $rstlcode= Rstl::find()->where(['rstl_id'=>$rstl_id])->one();
-        $labcode= Lab::find()->where(['lab_id'=>$lab_id])->one();
-        $lastnum= Requestcode::find()->where(['lab_id'=>$lab_id])->orderBy(['requestcode_id' => SORT_DESC])->one();
-        $num=$lastnum->number+1;
-        
-        $num=str_pad($num, 4, "0", STR_PAD_LEFT);
-        $refnum=$rstlcode->code."-".$year."-".$labcode->labcode."-".$num;
-        
-        //
-      
+        $func=new Functions();
+        $Proc="spGetNextGeneratedRequestCode(:RSTLID,:LabID)";
+        $Params=[
+            ':RSTLID'=>$rstl_id,
+            ':LabID'=>$lab_id
+        ];
         $Connection= Yii::$app->labdb;
         $Transaction =$Connection->beginTransaction();
-        $ReferenceNumber=$refnum;
-        $RequestIncrement=$num;
-        
-        
-       
+        $Row=$func->ExecuteStoredProcedureOne($Proc, $Params, $Connection);
+        $ReferenceNumber=$Row['GeneratedRequestCode'];
+        $RequestIncrement=$Row['RequestIncrement'];
         //Update the tbl_requestcode
         $Requestcode= Requestcode::find()->where([
             'rstl_id'=>$rstl_id,
@@ -477,7 +478,7 @@ class RequestController extends Controller
         echo "</pre>";
         exit;
         */
-        if($Request->save(false)){
+        if($Request->save()){
             $Func=new Functions();
             $response=$Func->GenerateSampleCode($request_id);
             if($response){
@@ -489,6 +490,10 @@ class RequestController extends Controller
                 Yii::$app->session->setFlash('danger', 'Request Reference # and Sample Code Failed to Generate!');
                 $return="Failed";
             }
+        }else{
+            Yii::$app->session->setFlash('danger', 'Request Reference # and Sample Code Failed to Generate!');
+            $Transaction->rollback();
+            $return="Failed";
         }
         return $return;
     }
