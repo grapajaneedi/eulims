@@ -32,7 +32,7 @@ class RestapiController extends \yii\rest\Controller
 
     protected function verbs(){
         return [
-            'login' => ['POST'],
+            //'login' => ['POST'],
             'user' => ['GET'],
             'samplecode' => ['GET'],
             'analysis' => ['GET'],
