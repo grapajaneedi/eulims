@@ -1,5 +1,7 @@
 <?php
 
+//PHYTO CHEMICAL
+
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
@@ -11,7 +13,7 @@ $this->params['breadcrumbs'][] = ['label' => 'Joborders', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="joborder-view">
-
+phyto chem
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
@@ -37,4 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+<?php
+    echo Html::button('<i class="glyphicon glyphicon-print"></i> Print Label', [ 'onclick'=>"window.location.href = '" . \Yii::$app->urlManager->createUrl(['/reports/preview?url=/lab/request/printlabel','request_id'=>$model->joborder_id]) . "';" ,'title'=>'Print Label',  'class' => 'btn btn-success']);
+?>
 </div> 

@@ -37,7 +37,28 @@ $this->params['breadcrumbs'][] = $this->title;
           //  'lsono',
             //'sample_received',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => kartik\grid\ActionColumn::className(),
+                'template' => '{view}{update}',
+                'buttons' => [     
+                    'view' => function ($url, $model){
+                        if ( $model->lab==2)
+                        {
+                            //micro
+                            return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value' => '/lab/joborder/micro?id=' . $model->joborder_id,'onclick'=>'location.href=this.value', 'class' => 'btn btn-primary', 'title' => Yii::t('app', "View Job Order")]);
+                        }else if ($model->lab==33){
+                            //phychem
+                            return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value' => '/lab/joborder/view?id=' . $model->joborder_id,'onclick'=>'location.href=this.value', 'class' => 'btn btn-primary', 'title' => Yii::t('app', "View Job Order")]);
+                        }else if ($model->lab==34){
+                            //phychem
+                            return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value' => '/lab/joborder/view?id=' . $model->joborder_id,'onclick'=>'location.href=this.value', 'class' => 'btn btn-primary', 'title' => Yii::t('app', "View Job Order")]);
+                        }    
+                    },
+                    'update' => function ($url, $model) {
+                        return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value' => $model->joborder_id == 2 ? '/lab/request/updatereferral?id='. $model->joborder_id : '/lab/request/update?id='. $model->joborder_id , 'onclick' => 'LoadModal(this.title, this.value);', 'class' => 'btn btn-success', 'title' => $model->joborder_id == 2 ? Yii::t('app', "Update Job Order") : Yii::t('app', "Update Job Order")]);
+                    },
+                ],
+            ],
         ],
     ]); ?>
 </div> 
