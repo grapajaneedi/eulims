@@ -376,3 +376,5 @@ frontend/modules/referrals/views/notification/list_unresponded_notification_2019
 frontend/modules/lab/views/request/viewreferral_bk.php
 frontend/modules/referrals/views/bid/view_20180912.php
 frontend/modules/lab/controllers/RequestController_20190705.php
+vendor/lcobucci/jwt/
+vendor/sizeg/yii2-jwt/
