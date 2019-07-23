@@ -24,7 +24,7 @@ class RestapiController extends \yii\rest\Controller
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
             'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
-            'except' => ['login', 'server', 'getwallettransaction','getcustomerwallet','getcustonreq','setbooking','getrstl'],
+            'except' => ['login', 'server', 'getwallettransaction','getcustomerwallet','getcustonreq','setbooking','getrstl','getproducts'],
         ];
 
         return $behaviors;
@@ -84,7 +84,7 @@ class RestapiController extends \yii\rest\Controller
 
             
                
-        }
+        
     }
 
         public function actionUser()
@@ -211,7 +211,6 @@ class RestapiController extends \yii\rest\Controller
              return $this->asJson([
                 $product,
             ]);
-
         }else{
             return $this->asJson([
                 'success' => false,
@@ -220,7 +219,7 @@ class RestapiController extends \yii\rest\Controller
         } 
     }
 
-    public function actionUpdatethumbnail(){
+    public function actionUpdatethumbnail(){    
         $my_var = \Yii::$app->request->post();
         if($my_var){
             $product = Products::find()->where(['product_code' => $my_var['product_code']]); //find product using the primarykey
