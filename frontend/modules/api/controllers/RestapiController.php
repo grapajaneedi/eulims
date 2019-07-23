@@ -25,7 +25,7 @@ class RestapiController extends \yii\rest\Controller
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
             'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
-            'except' => ['login', 'server', 'getwallettransaction','getcustomerwallet','getcustonreq','setbooking','getrstl','getproducts'],
+            'except' => ['login', 'server'],
         ];
 
         return $behaviors;
@@ -84,75 +84,71 @@ class RestapiController extends \yii\rest\Controller
                         'message' => 'Email and Password didn\'t match',
                     ]);
                 }
-
-            
-
-        
     }
 
 
-        public function actionUser()
-        {  
-            $user_id =\Yii::$app->user->identity->profile->user_id;
-            $users = User::find()->where(['LIKE', 'user_id', $user_id])->one();
-            $profile = Profile::find()->where(['user_id'=>$user_id])->one();
-            $role = AuthAssignment::find()->where(['user_id'=>$users->user_id])->one();
-            $signer = new \Lcobucci\JWT\Signer\Hmac\Sha256();
-            /** @var Jwt $jwt */
-            $jwt = \Yii::$app->jwt;
-            $token = $jwt->getBuilder()
-                ->setIssuer('http://example.com')// Configures the issuer (iss claim)
-                ->setAudience('http://example.org')// Configures the audience (aud claim)
-                ->setId('4f1g23a12aa', true)// Configures the id (jti claim), replicating as a header item
-                ->setIssuedAt(time())// Configures the time that the token was issue (iat claim)
-                ->setExpiration(time() + 3600 * 24)// Configures the expiration time of the token (exp claim)
-                ->set('uid', \Yii::$app->user->identity->user_id)// Configures a new claim, called "uid"
-                //->set('username', \Yii::$app->user->identity->username)// Configures a new claim, called "uid"
-                ->sign($signer, $jwt->key)// creates a signature using [[Jwt::$key]]
-                ->getToken(); // Retrieves the generated token
-            return $this->asJson([
-                    'token' => (string)$token,
-                    'user'=> (['email'=>$users->email,
-                    'firstName'=>$profile->firstname,
-                    'middleInitial' => $profile->middleinitial,
-                    'lastname' => $profile->lastname,
-                    'type' => $role->item_name]),
-                ]);
-                       
-            }
+    public function actionUser()
+    {  
+        $user_id =\Yii::$app->user->identity->profile->user_id;
+        $users = User::find()->where(['LIKE', 'user_id', $user_id])->one();
+        $profile = Profile::find()->where(['user_id'=>$user_id])->one();
+        $role = AuthAssignment::find()->where(['user_id'=>$users->user_id])->one();
+        $signer = new \Lcobucci\JWT\Signer\Hmac\Sha256();
+        /** @var Jwt $jwt */
+        $jwt = \Yii::$app->jwt;
+        $token = $jwt->getBuilder()
+            ->setIssuer('http://example.com')// Configures the issuer (iss claim)
+            ->setAudience('http://example.org')// Configures the audience (aud claim)
+            ->setId('4f1g23a12aa', true)// Configures the id (jti claim), replicating as a header item
+            ->setIssuedAt(time())// Configures the time that the token was issue (iat claim)
+            ->setExpiration(time() + 3600 * 24)// Configures the expiration time of the token (exp claim)
+            ->set('uid', \Yii::$app->user->identity->user_id)// Configures a new claim, called "uid"
+            //->set('username', \Yii::$app->user->identity->username)// Configures a new claim, called "uid"
+            ->sign($signer, $jwt->key)// creates a signature using [[Jwt::$key]]
+            ->getToken(); // Retrieves the generated token
+        return $this->asJson([
+                'token' => (string)$token,
+                'user'=> (['email'=>$users->email,
+                'firstName'=>$profile->firstname,
+                'middleInitial' => $profile->middleinitial,
+                'lastname' => $profile->lastname,
+                'type' => $role->item_name]),
+            ]);
+                   
+    }
 
-            public function actionSamplecode()
-            {  
-                if (isset($_GET['q'])) {
-                //limit for this year only
-            //     $samplecode = Sample::find()->select(['sample_id','sample_code'])
-            //     ->where(['LIKE', 'tbl_sample.sample_code', $_GET['q']])
-            //    // ->AndWhere(['LIKE', 'sample_year', '2018'])
-            //     ->all();
-                return $this->asJson(['sampleCodes'=>$samplecode]);
-                           
-                }
-            }
+    public function actionSamplecode()
+    {  
+        if (isset($_GET['q'])) {
+        //limit for this year only
+    //     $samplecode = Sample::find()->select(['sample_id','sample_code'])
+    //     ->where(['LIKE', 'tbl_sample.sample_code', $_GET['q']])
+    //    // ->AndWhere(['LIKE', 'sample_year', '2018'])
+    //     ->all();
+        return $this->asJson(['sampleCodes'=>$samplecode]);
+                   
+        }
+    }
 
-            public function actionAnalysis()
-            {  
-                if (isset($_GET['samplecode'])) {
+    public function actionAnalysis()
+    {  
+        if (isset($_GET['samplecode'])) {
 
-                $sample = Sample::find()->select(['samplename','description'])->where(['sample_code'=>$_GET['samplecode']])->one();
-                $analysis = Analysis::find()->select(['analysis_id','testname', 'method'])
-                ->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
-                //progress - count ng ilang ang natapos
-                //workflow - count ng workflow
-                //status
+        $sample = Sample::find()->select(['samplename','description'])->where(['sample_code'=>$_GET['samplecode']])->one();
+        $analysis = Analysis::find()->select(['analysis_id','testname', 'method'])
+        ->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
+        //progress - count ng ilang ang natapos
+        //workflow - count ng workflow
+        //status
 
-                $workflow = Workflow::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
-               // $tagginganalysis = Procedure::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
-                
-                return $this->asJson(['sampleCode'=>$sample->sample_code,
-                        'samples'=>$sample, 'tests'=>$analysis]);
-                           
-                }
-            }
+        $workflow = Workflow::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
+       // $tagginganalysis = Procedure::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
+        
+        return $this->asJson(['sampleCode'=>$sample->sample_code,
+                'samples'=>$sample, 'tests'=>$analysis]);
+                   
+        }
+    }
 
     public function actionIndex()
     {
@@ -194,9 +190,6 @@ class RestapiController extends \yii\rest\Controller
         return $this->asJson($data);   
     }
 
-    //************************************************
-  
-
 
     //************************************************
     public function actionGetproducts($keyword = ""){
@@ -225,7 +218,7 @@ class RestapiController extends \yii\rest\Controller
         } 
     }
 
-    public function actionUpdatethumbnail(){    
+    public function actionUpdatethumbnail(){
         $my_var = \Yii::$app->request->post();
         if($my_var){
             $product = Products::find()->where(['product_code' => $my_var['product_code']]); //find product using the primarykey
