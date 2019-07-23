@@ -115,6 +115,7 @@ class RestapiController extends \yii\rest\Controller
                 'middleInitial' => $profile->middleinitial,
                 'lastname' => $profile->lastname,
                 'type' => $role->item_name]),
+                'user_id'=> $users->user_id
             ]);
                    
     }
@@ -264,7 +265,7 @@ class RestapiController extends \yii\rest\Controller
             $model = new Equipmentservice;
             $model->inventory_transactions_id=$my_var['product_id'];
             $model->servicetype_id=$my_var['servicetype_id'];
-            $model->requested_by=$my_var['requested_by'];
+            $model->requested_by=1;
             $model->startdate=$my_var['startdate'];
             $model->enddate=$my_var['enddate'];
             $model->request_status=0;
