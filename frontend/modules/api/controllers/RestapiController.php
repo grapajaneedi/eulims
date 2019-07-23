@@ -12,6 +12,7 @@ use common\models\system\Profile;
 use common\models\system\User;
 use common\models\inventory\Products;
 use common\models\inventory\InventoryEntries;
+use common\models\inventory\Equipmentservice;
 use common\models\finance\CustomerWallet;
 use common\models\finance\CustomerTransaction;
 use common\models\lab\Booking;
@@ -194,7 +195,7 @@ class RestapiController extends \yii\rest\Controller
 
     //************************************************
     public function actionGetproducts($keyword = ""){
-        $products = Products::find()->select(['product_id','product_code','product_name','Image1','producttype_id'])->where(['LIKE', 'product_name', $keyword])->all();
+        $products = Products::find()->where(['LIKE', 'product_name', $keyword])->all();
 
         //product type 1 = consumables and 2 = non consumable
           
@@ -205,7 +206,7 @@ class RestapiController extends \yii\rest\Controller
 
     public function actionGetproduct($productcode){
 
-        $product = Products::find()->select(['product_id','product_code','product_name','Image1','producttype_id'])->where(['product_code' => $productcode])->one();
+        $product = Products::find()->where(['product_code' => $productcode])->one();
         //product type 1 = consumables and 2 = non consumable
         if($product){
              return $this->asJson([
@@ -260,7 +261,16 @@ class RestapiController extends \yii\rest\Controller
         $product = Products::findOne($my_var['product_id']); //find product using the primarykey
         if($product){
             //create schedule
-             return $this->asJson([
+            $model = new Equipmentservice;
+            $model->inventory_transactions_id=$my_var['product_id'];
+            $model->servicetype_id=$my_var['servicetype_id'];
+            $model->requested_by=$my_var['requested_by'];
+            $model->startdate=$my_var['startdate'];
+            $model->enddate=$my_var['enddate'];
+            $model->request_status=0;
+            $model->save();
+
+            return $this->asJson([
                 'success' => true,
                 'message' => 'Schedule created for product code'.$my_var['product_name'],
             ]); 
@@ -404,5 +414,9 @@ class RestapiController extends \yii\rest\Controller
             $model
         ); 
         
+    }
+
+    public function actionWithdraw(){
+        return true;
     }
 }
