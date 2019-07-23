@@ -399,14 +399,10 @@ class RestapiController extends \yii\rest\Controller
     public function actionGetentries($product_id){
         $model = InventoryEntries::find()->where(['product_id'=>$product_id])->all();
         // $model = InventoryEntries::find()->all();
-        if($model){
-            return $this->asJson(
-                $model
-            ); 
-        }else{
-            return $this->asJson(
-                'empty'
-            );
-        }
+       
+        return $this->asJson(
+            $model
+        ); 
+        
     }
 }
