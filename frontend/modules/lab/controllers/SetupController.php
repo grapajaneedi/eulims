@@ -11,8 +11,16 @@ use common\models\system\Profile;
 use yii\helpers\Json;
 
 use yii\data\ArrayDataProvider;
-//use common\models\system\Profile;
+
 use common\models\system\User;
+use common\models\system\UserSearch;
+
+
+use common\models\lab\TestnameSearch;
+use common\models\lab\Configlab;
+
+use common\models\lab\Lab;
+use common\models\lab\LabSearch;
 
 /**
  * SetupController implements the CRUD actions for Setup model.
@@ -42,19 +50,18 @@ class SetupController extends Controller
     {
         //$user = User::find()->all();
 
-        $user = User::find()
-        ->where(['user_id'=>1])->all();
-        $userdataprovider = new ArrayDataProvider([
-                'allModels' => $user,
-                'pagination' => [
-                    'pageSize' =>false,
-                ],
-             
-        ]);
-      
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $labsearchModel = new LabSearch();
+        $labdataProvider = $labsearchModel->search(Yii::$app->request->queryParams);
+        //$dataProvider->sort->defaultOrder = ['testName' => SORT_ASC];
 
         return $this->render('index', [
-            'userdataprovider' => $userdataprovider,
+            //'userdataprovider' => $userdataprovider,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'labdataProvider'=> $labdataProvider,
         ]);
     }
 

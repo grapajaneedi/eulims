@@ -53,9 +53,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Requests', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $rstlID=Yii::$app->user->identity->profile->rstl_id;//$GLOBALS['rstl_id'];
 $Year=date('Y', strtotime($model->request_datetime));
-$month=date('m', strtotime($model->request_datetime));
-$month_year=$month.$Year;
-
 $paymentitem= Paymentitem::find()->where(['request_id'=> $model->request_id])->one();
 
 if ($paymentitem){
@@ -64,21 +61,22 @@ if ($paymentitem){
     $analysistemplate = "{update} {delete}";
 }
 // /lab/request/saverequestransaction
-/*$js=<<<SCRIPT
+$js=<<<SCRIPT
     $("#btnSaveRequest").click(function(){
         var SampleRows=$sampleDataProvider->count;
         var AnalysisRows=$analysisdataprovider->count;
         var msg='';
         if(SampleRows>0 && AnalysisRows>0){
-            $.post('/lab/request/saverequestransaction?', {
+            $.post('/lab/request/saverequestransaction', {
                 request_id: $model->request_id,
                 lab_id: $model->lab_id,
                 rstl_id: $rstlID,
-                year: $month_year
+                year: $Year
             }, function(result){
                if(result){
                     //document.write(result);
-                  // location.reload();
+                  location.reload();
+               // console.log(result);
                }
             });
         }else{
@@ -93,7 +91,7 @@ if ($paymentitem){
         }
     });  
 SCRIPT;
-$this->registerJs($js); */
+$this->registerJs($js);
 if($model->request_ref_num==null || $model->status_id==0){
     $CancelButton='';
 }else{
@@ -287,7 +285,7 @@ $this->registerJs($PrintEvent);
                         [
                             'label'=>'Collection',
                             'format'=>'raw',
-                            'value'=>"₱".$payment_total,
+                            'value'=>"?".$payment_total,
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
                         ],
@@ -304,7 +302,7 @@ $this->registerJs($PrintEvent);
                         [
                             'label'=>'Unpaid Balance',
                             'format'=>'raw',
-                            'value'=>"₱".$UnpaidBalance,
+                            'value'=>"?".$UnpaidBalance,
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
                         ],
@@ -526,9 +524,9 @@ $this->registerJs($PrintEvent);
                                  $total = $subtotal - $discounted;
                                 
                                  if ($total <= 0){
-                                     return  '<div id="subtotal">₱'.number_format($subtotal, 2).'</div><div id="discount">₱0.00</div><div id="total"><b>₱'.number_format($total, 2).'</b></div>';
+                                     return  '<div id="subtotal">?'.number_format($subtotal, 2).'</div><div id="discount">?0.00</div><div id="total"><b>?'.number_format($total, 2).'</b></div>';
                                  }else{
-                                     return  '<div id="subtotal">₱'.number_format($subtotal, 2).'</div><div id="discount">₱'.number_format($discounted, 2).'</div><div id="total"><b>₱'.number_format($total, 2).'</b></div>';
+                                     return  '<div id="subtotal">?'.number_format($subtotal, 2).'</div><div id="discount">?'.number_format($discounted, 2).'</div><div id="total"><b>?'.number_format($total, 2).'</b></div>';
                                  }
                         }else{
                             return '';
@@ -602,7 +600,7 @@ $this->registerJs($PrintEvent);
                     Html::button('<i class="glyphicon glyphicon-plus"></i> Add Package', ['disabled'=>$enableRequest,'value' => Url::to(['/services/packagelist/createpackage','id'=>$model->request_id]),'title'=>'Add Package', 'onclick'=>$ClickButton, 'class' => 'btn btn-success','id' => 'btn_add_package'])." ".
                     Html::button('<i class="glyphicon glyphicon-plus"></i> Additional Fees', ['disabled'=>$enableRequest,'value' => Url::to(['/lab/fee/create','id'=>$model->request_id]),'title'=>'Add Additional Fees', 'onclick'=>$ClickButton, 'class' => 'btn btn-success','id' => 'btn_add_fees']),
                    'after'=>false,
-                   'footer'=>Html::a('<span class="glyphicon glyphicon-pencil">Save Request</span>', ['saverequestransaction', 'request_id' =>$model->request_id,'lab_id'=>$model->lab_id,'rstl_id'=>$rstlID,'year'=>$month_year], ['class' => 'btn btn-success']),
+                   'footer'=>"<div class='row' style='margin-left: 2px;padding-top: 5px'><button ".$disableButton." value='/lab/request/saverequestransaction' ".$btnID." class='btn btn-success'><i class='fa fa-save'></i> Save Request</button>".$EnablePrint."</div>",
                 ],
                 'columns' => $analysisgridColumns,
                 'toolbar' => [

@@ -16,7 +16,18 @@ use kartik\grid\GridView;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 ?>
+
+<?php $this->registerJsFile("/js/services/services.js"); ?>
+
 <?php
+
+echo Html::button('<span class=""></span> Laboratory Details', ['value'=>'/lab/testname/create', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Laboratory Details")])."&nbsp;&nbsp;&nbsp;";
+echo Html::button('<span class=""></span> User Accounts', ['value'=>'/lab/testname/create', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "User Accounts")])."&nbsp;&nbsp;&nbsp;";
+echo Html::button('<span class=""></span> Laboratories', ['value'=>'/lab/testname/create', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Laboratory Details")])."<br> &nbsp;";
+
+?>
+<?php
+
 $rstl =  Rstl::findOne(['rstl_id'=>11]);
 
 $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
@@ -141,31 +152,35 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
 ?>
 
 <?= GridView::widget([
-        'dataProvider' => $userdataprovider,
+        'dataProvider' => $dataProvider,
         //'filterModel' => $searchModel,
         'pjax' => true,
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-products']],
         'panel' => [
                 'type' => GridView::TYPE_PRIMARY,
-                'heading' => '<span class="glyphicon glyphicon-book"></span>  Users',
-                'before'=>  Html::button('<span class="glyphicon glyphicon-plus"></span> Create Sample Type Test Name', ['value'=>'/lab/sampletypetestname/create', 'class' => 'btn btn-success modal_services','title' => Yii::t('app', "Create New Sample Type Test Name")]),
+                'heading' => '<span class="glyphicon glyphicon-book"> </span> User Accounts ' . Html::encode($this->title),
+             //   'before'=> Html::button('<span class="glyphicon glyphicon-plus"></span> Create Test Name', ['value'=>'/lab/testname/create', 'class' => 'btn btn-success modal_services','title' => Yii::t('app', "Create New Test Name")]),
             ],
         'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-            [
-                'attribute' => 'sampletype_id',
-                'label' => 'Sample Type',
-                'value' => '',
-            
+            'username',
+            'email'
+        ],
+    ]); ?>
+
+    
+<?= GridView::widget([
+        'dataProvider' => $labdataProvider,
+        //'filterModel' => $searchModel,
+        'pjax' => true,
+        'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-products']],
+        'panel' => [
+                'type' => GridView::TYPE_PRIMARY,
+                'heading' => '<span class="glyphicon glyphicon-book"> </span> Laboratories ' . Html::encode($this->title),
+             //   'before'=> Html::button('<span class="glyphicon glyphicon-plus"></span> Create Test Name', ['value'=>'/lab/testname/create', 'class' => 'btn btn-success modal_services','title' => Yii::t('app', "Create New Test Name")]),
             ],
-            [
-                'attribute' => 'testname_id',
-                'label' => 'Test Name',
-                'value' =>'',
-               
-            ],
-            
-            
-           
+        'columns' => [
+           'labname',
+           'labcode',
+           'active',
         ],
     ]); ?>
