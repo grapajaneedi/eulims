@@ -11,6 +11,7 @@ use common\models\system\LoginForm;
 use common\models\system\Profile;
 use common\models\system\User;
 use common\models\inventory\Products;
+use common\models\inventory\InventoryEntries;
 use common\models\finance\CustomerWallet;
 use common\models\finance\CustomerTransaction;
 use common\models\lab\Booking;
@@ -382,6 +383,30 @@ class RestapiController extends \yii\rest\Controller
             return $this->asJson(
                 $model
             ); 
+        }
+    }
+
+    public function actionMailcode(){
+        //sends a code to a customer for account verification purpose
+
+    }
+
+    public function actionConfirmaccount(){
+        //sends a code and password along with the customer email to verify account and new password selection
+
+    }
+
+    public function actionGetentries($product_id){
+        $model = InventoryEntries::find()->where(['product_id'=>$product_id])->all();
+        // $model = InventoryEntries::find()->all();
+        if($model){
+            return $this->asJson(
+                $model
+            ); 
+        }else{
+            return $this->asJson(
+                'empty'
+            );
         }
     }
 }
