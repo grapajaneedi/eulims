@@ -739,10 +739,10 @@ class ReferralComponent extends Component {
         }
     }
     //function to get agency bid details for update to local ulims
-    function getBidDetails($referralId,$rstlId,$bidderAgencyId)
+    function getBidDetails($referralId,$rstlId,$bidderAgencyId,$bidId)
     {
-        if($referralId > 0 && $rstlId > 0 && $bidderAgencyId > 0) {
-            $apiUrl=$this->source.'/api/web/referral/bids/bid_details?referral_id='.$referralId.'&rstl_id='.$rstlId.'&bidder_id='.$bidderAgencyId;
+        if($referralId > 0 && $rstlId > 0 && $bidderAgencyId > 0 && $bidId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/bids/bid_details?referral_id='.$referralId.'&rstl_id='.$rstlId.'&bidder_id='.$bidderAgencyId.'&bid_id='.$bidId;
             $curl = new curl\Curl();
             $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
             $curl->setOption(CURLOPT_TIMEOUT, 180);
@@ -757,6 +757,20 @@ class ReferralComponent extends Component {
     {
         if($referralId > 0 && $rstlId > 0 && $bidderAgencyId > 0) {
             $apiUrl=$this->source.'/api/web/referral/bids/testbid_details?referral_id='.$referralId.'&rstl_id='.$rstlId.'&bidder_id='.$bidderAgencyId;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'false';
+        }
+    }
+    //function bid notification details
+    function getBidNoticeDetails($referralId,$rstlId,$noticeId,$seen)
+    {
+        if($referralId > 0 && $rstlId > 0 && $noticeId > 0 && $seen == 1) {
+            $apiUrl=$this->source.'/api/web/referral/bids/notice_details?referral_id='.$referralId.'&agency_id='.$rstlId.'&notice_id='.$noticeId.'&seen='.$seen;
             $curl = new curl\Curl();
             $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
             $curl->setOption(CURLOPT_TIMEOUT, 180);
