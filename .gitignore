@@ -379,3 +379,5 @@ frontend/modules/lab/controllers/RequestController_20190705.php
 common/components/ReferralComponent_20190704.php
 frontend/modules/referrals/controllers/BidController_20190711.php
 frontend/modules/lab/views/request/viewreferral_20190723_back.php
+vendor/lcobucci/jwt/
+vendor/sizeg/yii2-jwt/

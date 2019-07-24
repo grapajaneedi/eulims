@@ -53,9 +53,6 @@ $this->params['breadcrumbs'][] = ['label' => 'Requests', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 $rstlID=Yii::$app->user->identity->profile->rstl_id;//$GLOBALS['rstl_id'];
 $Year=date('Y', strtotime($model->request_datetime));
-$month=date('m', strtotime($model->request_datetime));
-$month_year=$month.$Year;
-
 $paymentitem= Paymentitem::find()->where(['request_id'=> $model->request_id])->one();
 
 if ($paymentitem){
@@ -64,21 +61,22 @@ if ($paymentitem){
     $analysistemplate = "{update} {delete}";
 }
 // /lab/request/saverequestransaction
-/*$js=<<<SCRIPT
+$js=<<<SCRIPT
     $("#btnSaveRequest").click(function(){
         var SampleRows=$sampleDataProvider->count;
         var AnalysisRows=$analysisdataprovider->count;
         var msg='';
         if(SampleRows>0 && AnalysisRows>0){
-            $.post('/lab/request/saverequestransaction?', {
+            $.post('/lab/request/saverequestransaction', {
                 request_id: $model->request_id,
                 lab_id: $model->lab_id,
                 rstl_id: $rstlID,
-                year: $month_year
+                year: $Year
             }, function(result){
                if(result){
                     //document.write(result);
-                  // location.reload();
+                  location.reload();
+               // console.log(result);
                }
             });
         }else{
@@ -93,7 +91,7 @@ if ($paymentitem){
         }
     });  
 SCRIPT;
-$this->registerJs($js); */
+$this->registerJs($js);
 if($model->request_ref_num==null || $model->status_id==0){
     $CancelButton='';
 }else{
@@ -125,12 +123,6 @@ if($Request_Ref){//With Reference
     $EnablePrint="<a href='/reports/preview?url=/lab/request/print-request?id=".$model->request_id."' class='btn btn-primary' style='margin-left: 5px'><i class='fa fa-print'></i> Print Request</a>";
     $ClickButton='';
     $btnID="";
-
-    $enableRequest=false;
-    $ClickButton='addSample(this.value,this.title)';
-    $disableButton="";
-    $EnablePrint="<span class='btn btn-primary' disabled style='margin-left: 5px'><i class='fa fa-print'></i> Print Request</span>";
-    $btnID="id='btnSaveRequest'";
 }else{ // NO reference number yet
     $enableRequest=false;
     $ClickButton='addSample(this.value,this.title)';
@@ -293,7 +285,7 @@ $this->registerJs($PrintEvent);
                         [
                             'label'=>'Collection',
                             'format'=>'raw',
-                            'value'=>"₱".$payment_total,
+                            'value'=>"?".$payment_total,
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
                         ],
@@ -310,7 +302,7 @@ $this->registerJs($PrintEvent);
                         [
                             'label'=>'Unpaid Balance',
                             'format'=>'raw',
-                            'value'=>"₱".$UnpaidBalance,
+                            'value'=>"?".$UnpaidBalance,
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
                         ],
@@ -532,9 +524,9 @@ $this->registerJs($PrintEvent);
                                  $total = $subtotal - $discounted;
                                 
                                  if ($total <= 0){
-                                     return  '<div id="subtotal">₱'.number_format($subtotal, 2).'</div><div id="discount">₱0.00</div><div id="total"><b>₱'.number_format($total, 2).'</b></div>';
+                                     return  '<div id="subtotal">?'.number_format($subtotal, 2).'</div><div id="discount">?0.00</div><div id="total"><b>?'.number_format($total, 2).'</b></div>';
                                  }else{
-                                     return  '<div id="subtotal">₱'.number_format($subtotal, 2).'</div><div id="discount">₱'.number_format($discounted, 2).'</div><div id="total"><b>₱'.number_format($total, 2).'</b></div>';
+                                     return  '<div id="subtotal">?'.number_format($subtotal, 2).'</div><div id="discount">?'.number_format($discounted, 2).'</div><div id="total"><b>?'.number_format($total, 2).'</b></div>';
                                  }
                         }else{
                             return '';

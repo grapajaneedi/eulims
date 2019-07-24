@@ -11,6 +11,8 @@ use common\models\system\LoginForm;
 use common\models\system\Profile;
 use common\models\system\User;
 use common\models\inventory\Products;
+use common\models\inventory\InventoryEntries;
+use common\models\inventory\Equipmentservice;
 use common\models\finance\CustomerWallet;
 use common\models\finance\CustomerTransaction;
 use common\models\lab\Booking;
@@ -25,7 +27,7 @@ class RestapiController extends \yii\rest\Controller
         $behaviors = parent::behaviors();
         $behaviors['authenticator'] = [
             'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
-            'except' => ['login', 'server', 'getwallettransaction','getcustomerwallet','getcustonreq','setbooking','getrstl'],
+            'except' => ['login', 'server'],
         ];
 
         return $behaviors;
@@ -84,74 +86,71 @@ class RestapiController extends \yii\rest\Controller
                         'message' => 'Email and Password didn\'t match',
                     ]);
                 }
+    }
 
-            
-               
+
+    public function actionUser()
+    {  
+        $user_id =\Yii::$app->user->identity->profile->user_id;
+        $users = User::find()->where(['LIKE', 'user_id', $user_id])->one();
+        $profile = Profile::find()->where(['user_id'=>$user_id])->one();
+        $role = AuthAssignment::find()->where(['user_id'=>$users->user_id])->one();
+        $signer = new \Lcobucci\JWT\Signer\Hmac\Sha256();
+        /** @var Jwt $jwt */
+        $jwt = \Yii::$app->jwt;
+        $token = $jwt->getBuilder()
+            ->setIssuer('http://example.com')// Configures the issuer (iss claim)
+            ->setAudience('http://example.org')// Configures the audience (aud claim)
+            ->setId('4f1g23a12aa', true)// Configures the id (jti claim), replicating as a header item
+            ->setIssuedAt(time())// Configures the time that the token was issue (iat claim)
+            ->setExpiration(time() + 3600 * 24)// Configures the expiration time of the token (exp claim)
+            ->set('uid', \Yii::$app->user->identity->user_id)// Configures a new claim, called "uid"
+            //->set('username', \Yii::$app->user->identity->username)// Configures a new claim, called "uid"
+            ->sign($signer, $jwt->key)// creates a signature using [[Jwt::$key]]
+            ->getToken(); // Retrieves the generated token
+        return $this->asJson([
+                'token' => (string)$token,
+                'user'=> (['email'=>$users->email,
+                'firstName'=>$profile->firstname,
+                'middleInitial' => $profile->middleinitial,
+                'lastname' => $profile->lastname,
+                'type' => $role->item_name]),
+            ]);
+                   
+    }
+
+    public function actionSamplecode()
+    {  
+        if (isset($_GET['q'])) {
+        //limit for this year only
+    //     $samplecode = Sample::find()->select(['sample_id','sample_code'])
+    //     ->where(['LIKE', 'tbl_sample.sample_code', $_GET['q']])
+    //    // ->AndWhere(['LIKE', 'sample_year', '2018'])
+    //     ->all();
+        return $this->asJson(['sampleCodes'=>$samplecode]);
+                   
         }
+    }
 
+    public function actionAnalysis()
+    {  
+        if (isset($_GET['samplecode'])) {
 
-        public function actionUser()
-        {  
-            $user_id =\Yii::$app->user->identity->profile->user_id;
-            $users = User::find()->where(['LIKE', 'user_id', $user_id])->one();
-            $profile = Profile::find()->where(['user_id'=>$user_id])->one();
-            $role = AuthAssignment::find()->where(['user_id'=>$users->user_id])->one();
-            $signer = new \Lcobucci\JWT\Signer\Hmac\Sha256();
-            /** @var Jwt $jwt */
-            $jwt = \Yii::$app->jwt;
-            $token = $jwt->getBuilder()
-                ->setIssuer('http://example.com')// Configures the issuer (iss claim)
-                ->setAudience('http://example.org')// Configures the audience (aud claim)
-                ->setId('4f1g23a12aa', true)// Configures the id (jti claim), replicating as a header item
-                ->setIssuedAt(time())// Configures the time that the token was issue (iat claim)
-                ->setExpiration(time() + 3600 * 24)// Configures the expiration time of the token (exp claim)
-                ->set('uid', \Yii::$app->user->identity->user_id)// Configures a new claim, called "uid"
-                //->set('username', \Yii::$app->user->identity->username)// Configures a new claim, called "uid"
-                ->sign($signer, $jwt->key)// creates a signature using [[Jwt::$key]]
-                ->getToken(); // Retrieves the generated token
-            return $this->asJson([
-                    'token' => (string)$token,
-                    'user'=> (['email'=>$users->email,
-                    'firstName'=>$profile->firstname,
-                    'middleInitial' => $profile->middleinitial,
-                    'lastname' => $profile->lastname,
-                    'type' => $role->item_name]),
-                ]);
-                       
-            }
+        $sample = Sample::find()->select(['samplename','description'])->where(['sample_code'=>$_GET['samplecode']])->one();
+        $analysis = Analysis::find()->select(['analysis_id','testname', 'method'])
+        ->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
+        //progress - count ng ilang ang natapos
+        //workflow - count ng workflow
+        //status
 
-            public function actionSamplecode()
-            {  
-                if (isset($_GET['q'])) {
-                //limit for this year only
-                $samplecode = Sample::find()->select(['sample_id','sample_code'])
-                ->where(['LIKE', 'tbl_sample.sample_code', $_GET['q']])
-               // ->AndWhere(['LIKE', 'sample_year', '2018'])
-                ->all();
-                return $this->asJson(['sampleCodes'=>$samplecode]);
-                           
-                }
-            }
-
-            public function actionAnalysis()
-            {  
-                if (isset($_GET['samplecode'])) {
-
-                $sample = Sample::find()->select(['samplename','description'])->where(['sample_code'=>$_GET['samplecode']])->one();
-                $analysis = Analysis::find()->select(['analysis_id','testname', 'method'])
-                ->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
-                //progress - count ng ilang ang natapos
-                //workflow - count ng workflow
-                //status
-
-                $workflow = Workflow::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
-               // $tagginganalysis = Procedure::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
-                
-                return $this->asJson(['sampleCode'=>$sample->sample_code,
-                        'samples'=>$sample, 'tests'=>$analysis]);
-                           
-                }
-            }
+        $workflow = Workflow::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
+       // $tagginganalysis = Procedure::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
+        
+        return $this->asJson(['sampleCode'=>$sample->sample_code,
+                'samples'=>$sample, 'tests'=>$analysis]);
+                   
+        }
+    }
 
     public function actionIndex()
     {
@@ -193,13 +192,10 @@ class RestapiController extends \yii\rest\Controller
         return $this->asJson($data);   
     }
 
-    //************************************************
-  
-
 
     //************************************************
     public function actionGetproducts($keyword = ""){
-        $products = Products::find()->select(['product_id','product_code','product_name','Image1','producttype_id'])->where(['LIKE', 'product_name', $keyword])->all();
+        $products = Products::find()->where(['LIKE', 'product_name', $keyword])->all();
 
         //product type 1 = consumables and 2 = non consumable
           
@@ -210,13 +206,12 @@ class RestapiController extends \yii\rest\Controller
 
     public function actionGetproduct($productcode){
 
-        $product = Products::find()->select(['product_id','product_code','product_name','Image1','producttype_id'])->where(['product_code' => $productcode])->one();
+        $product = Products::find()->where(['product_code' => $productcode])->one();
         //product type 1 = consumables and 2 = non consumable
         if($product){
              return $this->asJson([
                 $product,
             ]);
-
         }else{
             return $this->asJson([
                 'success' => false,
@@ -266,7 +261,16 @@ class RestapiController extends \yii\rest\Controller
         $product = Products::findOne($my_var['product_id']); //find product using the primarykey
         if($product){
             //create schedule
-             return $this->asJson([
+            $model = new Equipmentservice;
+            $model->inventory_transactions_id=$my_var['product_id'];
+            $model->servicetype_id=$my_var['servicetype_id'];
+            $model->requested_by=$my_var['requested_by'];
+            $model->startdate=$my_var['startdate'];
+            $model->enddate=$my_var['enddate'];
+            $model->request_status=0;
+            $model->save();
+
+            return $this->asJson([
                 'success' => true,
                 'message' => 'Schedule created for product code'.$my_var['product_name'],
             ]); 
@@ -390,5 +394,29 @@ class RestapiController extends \yii\rest\Controller
                 $model
             ); 
         }
+    }
+
+    public function actionMailcode(){
+        //sends a code to a customer for account verification purpose
+
+    }
+
+    public function actionConfirmaccount(){
+        //sends a code and password along with the customer email to verify account and new password selection
+
+    }
+
+    public function actionGetentries($product_id){
+        $model = InventoryEntries::find()->where(['product_id'=>$product_id])->all();
+        // $model = InventoryEntries::find()->all();
+       
+        return $this->asJson(
+            $model
+        ); 
+        
+    }
+
+    public function actionWithdraw(){
+        return true;
     }
 }
