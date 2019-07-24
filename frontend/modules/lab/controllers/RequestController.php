@@ -38,6 +38,7 @@ use frontend\modules\lab\components\Printing;
 use yii\helpers\Json;
 use yii\helpers\ArrayHelper;
 use yii\data\ArrayDataProvider;
+use common\models\lab\Lab;
 
 //use yii\helpers\Url;
 /**
@@ -416,6 +417,7 @@ class RequestController extends Controller
         $result=json_decode($response);
         return $result->description;
     }
+  
     public function actionSaverequestransaction(){
         $post= Yii::$app->request->post();
         // echo $post['request_id'];

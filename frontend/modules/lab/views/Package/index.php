@@ -106,40 +106,40 @@ $this->params['breadcrumbs'][] = $this->title;
                 'contentOptions' => ['style' => 'width: 50%;word-wrap: break-word;white-space:pre-line;'],
                 'value' => function($model) {
 
-                        if ($model->tests){
-                            $tet = $model->tests;  
-                            $sql = "SELECT GROUP_CONCAT(testname_id) FROM tbl_testname_method WHERE testname_method_id IN ($tet)";     
+                        // if ($model->tests){
+                        //     $tet = $model->tests;  
+                        //     $sql = "SELECT GROUP_CONCAT(testname_id) FROM tbl_testname_method WHERE testname_method_id IN ($tet)";     
                  
-                            $Connection = Yii::$app->labdb;
-                            $command = $Connection->createCommand($sql);
-                            $row = $command->queryOne();    
-                            $tests = $row['GROUP_CONCAT(testname_id)'];  
+                        //     $Connection = Yii::$app->labdb;
+                        //     $command = $Connection->createCommand($sql);
+                        //     $row = $command->queryOne();    
+                        //     $tests = $row['GROUP_CONCAT(testname_id)'];  
     
-                            $space = explode(',', $tests);
-                            $d = '';
-                            $newline = ", ";
-                            foreach ($space as $s){
-                                $d.= $s.$newline;
-                            }
+                        //     $space = explode(',', $tests);
+                        //     $d = '';
+                        //     $newline = ", ";
+                        //     foreach ($space as $s){
+                        //         $d.= $s.$newline;
+                        //     }
 
-                            $len = strlen($d);
+                        //     $len = strlen($d);
 
-                            $x = $len-2;
+                        //     $x = $len-2;
 
-                             $testname_id = substr($d ,0,$x);
-                            $sql_testname = "SELECT GROUP_CONCAT(testName) FROM tbl_testname WHERE testname_id IN ($testname_id)";     
+                        //      $testname_id = substr($d ,0,$x);
+                        //     $sql_testname = "SELECT GROUP_CONCAT(testName) FROM tbl_testname WHERE testname_id IN ($testname_id)";     
                  
-                            $Connection = Yii::$app->labdb;
-                            $command_testname = $Connection->createCommand($sql_testname);
-                            $row_testname = $command_testname->queryOne();    
-                            $testname = $row_testname['GROUP_CONCAT(testName)'];  
+                        //     $Connection = Yii::$app->labdb;
+                        //     $command_testname = $Connection->createCommand($sql_testname);
+                        //     $row_testname = $command_testname->queryOne();    
+                        //     $testname = $row_testname['GROUP_CONCAT(testName)'];  
 
-                            return $testname;
+                        //     return $testname;
                             
                             
-                        }else{
+                        // }else{
                             return "";
-                        }
+                      //  }
                       
 
                         

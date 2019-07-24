@@ -12,7 +12,10 @@ use Yii;
  * @property string $joborder_date
  * @property string $sampling_date
  * @property string $lsono
+ * @property string $lab
  * @property string $sample_received
+ * @property string $address
+ * @property string $telno
  */
 class Joborder extends \yii\db\ActiveRecord
 {
@@ -38,9 +41,9 @@ class Joborder extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['joborder_id', 'customer_id', 'joborder_date', 'sampling_date', 'lsono', 'sample_received'], 'required'],
+            [[ 'customer_id', 'joborder_date', 'sampling_date', 'lsono', 'sample_received', 'conforme', 'lab', 'address', 'telno'], 'required'],
             [['joborder_id', 'customer_id'], 'integer'],
-            [['joborder_date', 'sampling_date', 'lsono', 'sample_received'], 'string', 'max' => 200],
+            [['joborder_date', 'sampling_date', 'lsono', 'sample_received', 'lab'], 'string', 'max' => 200],
             [['joborder_id'], 'unique'],
         ];
     }
@@ -56,7 +59,10 @@ class Joborder extends \yii\db\ActiveRecord
             'joborder_date' => 'Date',
             'sampling_date' => 'Sampling Site',
             'lsono' => 'Lsono',
-            'sample_received' => 'Sample Received',
+            'address' => 'Address',
+            'telno' => 'Tel No.',
+            'sample_received' => 'Sample Received by',
+            'lab' => 'Lab',
         ];
     }
 }

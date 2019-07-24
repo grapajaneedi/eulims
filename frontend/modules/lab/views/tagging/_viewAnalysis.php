@@ -126,7 +126,7 @@ $this->registerJs($js);
                     'format' => 'raw',
                     'contentOptions' => ['style' => 'width: 5%;word-wrap: break-word;white-space:pre-line;'],
                     'value'=>function($model){
-                        return Html::button('<span class="glyphicon glyphicon-tag"></span>', ['value'=>Url::to(['/lab/tagging/tag','id'=>$model->analysis_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-success','title' => Yii::t('app', "Tagging")]);
+                        return Html::button('<span class="glyphicon glyphicon-ok"></span>', ['value'=>Url::to(['/lab/tagging/tag','id'=>$model->analysis_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-success','title' => Yii::t('app', "Tagging")]);
                     },
                     'enableSorting' => false,
                 ],

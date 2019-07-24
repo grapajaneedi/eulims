@@ -15,6 +15,7 @@ use common\models\finance\CustomerWallet;
 use common\models\finance\CustomerTransaction;
 use common\models\lab\Booking;
 use common\models\system\Rstl;
+use common\models\auth\AuthAssignment;
 
 class RestapiController extends \yii\rest\Controller
 {
@@ -67,13 +68,15 @@ class RestapiController extends \yii\rest\Controller
     
                     $users = User::find()->where(['LIKE', 'email', $my_var['email']])->one();
                     $profile = Profile::find()->where(['user_id'=>$users->user_id])->one();
+                    $role = AuthAssignment::find()->where(['user_id'=>$users->user_id])->one();
         
                     return $this->asJson([
                         'token' => (string)$token,
                         'user'=> (['email'=>$users->email,
                                     'firstName'=>$profile->firstname,
                                     'middleInitial' => $profile->middleinitial,
-                                    'lastname' => $profile->lastname]),
+                                    'lastname' => $profile->lastname,
+                                    'type' => $role->item_name,]),
                     ]);
                 } else {
                     return $this->asJson([
@@ -85,13 +88,14 @@ class RestapiController extends \yii\rest\Controller
             
                
         }
-    }
+
 
         public function actionUser()
         {  
             $user_id =\Yii::$app->user->identity->profile->user_id;
             $users = User::find()->where(['LIKE', 'user_id', $user_id])->one();
             $profile = Profile::find()->where(['user_id'=>$user_id])->one();
+            $role = AuthAssignment::find()->where(['user_id'=>$users->user_id])->one();
             $signer = new \Lcobucci\JWT\Signer\Hmac\Sha256();
             /** @var Jwt $jwt */
             $jwt = \Yii::$app->jwt;
@@ -110,7 +114,8 @@ class RestapiController extends \yii\rest\Controller
                     'user'=> (['email'=>$users->email,
                     'firstName'=>$profile->firstname,
                     'middleInitial' => $profile->middleinitial,
-                    'lastname' => $profile->lastname]),
+                    'lastname' => $profile->lastname,
+                    'type' => $role->item_name]),
                 ]);
                        
             }
@@ -121,7 +126,7 @@ class RestapiController extends \yii\rest\Controller
                 //limit for this year only
                 $samplecode = Sample::find()->select(['sample_id','sample_code'])
                 ->where(['LIKE', 'tbl_sample.sample_code', $_GET['q']])
-                ->AndWhere(['LIKE', 'sample_year', '2018'])
+               // ->AndWhere(['LIKE', 'sample_year', '2018'])
                 ->all();
                 return $this->asJson(['sampleCodes'=>$samplecode]);
                            

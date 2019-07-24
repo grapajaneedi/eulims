@@ -4,6 +4,10 @@ $server = "localhost";
 $username = "eulims";
 $password = "eulims";
 
+// $server = "192.168.1.96";
+// $username = "eulims";
+// $password = "D05793ul1ms!@#$%";
+
 return [
     'db'=>[
         'class' => 'yii\db\Connection',  

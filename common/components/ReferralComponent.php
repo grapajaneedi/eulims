@@ -780,4 +780,34 @@ class ReferralComponent extends Component {
             return 'false';
         }
     }
+    //get referral track receiving
+    function getTrackreceiving($referralId)
+    {
+       
+        if($referralId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/referraltrackreceivings/detail?referral_id='.$referralId;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'Not valid request!';
+        }
+    }
+    //get referral track testing
+    function getTracktesting($referralId)
+    {
+       
+        if($referralId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/referraltracktestings/detail?referral_id='.$referralId;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'Not valid request!';
+        }
+    }
 }
