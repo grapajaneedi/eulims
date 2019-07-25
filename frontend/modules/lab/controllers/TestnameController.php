@@ -76,12 +76,12 @@ class TestnameController extends Controller
             $testname = Testname::find()->where(['testName'=> $post['Testname']['testName']])->one();
 
             if($testname){
-                Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+              //  Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
                 return $this->runAction('index');
             }else{
                 $post= Yii::$app->request->post();
                 $model->save();  
-                Yii::$app->session->setFlash('success', 'Test Name Successfully Created'); 
+               // Yii::$app->session->setFlash('success', 'Test Name Successfully Created'); 
                 return $this->runAction('index');
             } 
         }
@@ -126,12 +126,12 @@ class TestnameController extends Controller
                     $testname = Testname::find()->where(['testName'=> $post['Testname']['testName']])->one();
         
                     if($testname){
-                        Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+                  //      Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
                         return $this->runAction('testname');
                     }else{
                         $post= Yii::$app->request->post();
                         $model->save();  
-                        Yii::$app->session->setFlash('success', 'Test Name Successfully Created'); 
+                  //      Yii::$app->session->setFlash('success', 'Test Name Successfully Created'); 
                         return $this->runAction('testname');
                    } 
 
@@ -154,12 +154,12 @@ class TestnameController extends Controller
             $testname = Testname::find()->where(['testName'=> $post['Testname']['testName']])->one();
 
             if($testname){
-                Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+           //     Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
                 return $this->runAction('testnamemethod');
             }else{
                 $post= Yii::$app->request->post();
                 $model->save();  
-                Yii::$app->session->setFlash('success', 'Test Name Successfully Created'); 
+           //     Yii::$app->session->setFlash('success', 'Test Name Successfully Created'); 
                 return $this->runAction('testnamemethod');
             } 
         }
@@ -185,7 +185,7 @@ class TestnameController extends Controller
         $model = $this->findModel($id);
         
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                    Yii::$app->session->setFlash('success', 'Test Name Successfully Updated'); 
+                 //   Yii::$app->session->setFlash('success', 'Test Name Successfully Updated'); 
                     return $this->redirect(['index']);
 
                 } else if (Yii::$app->request->isAjax) {
@@ -206,7 +206,7 @@ class TestnameController extends Controller
     {
         $model = $this->findModel($id); 
         if($model->delete()) {            
-            Yii::$app->session->setFlash('success', 'Test Name Successfully Deleted'); 
+           // Yii::$app->session->setFlash('success', 'Test Name Successfully Deleted'); 
             return $this->redirect(['index']);
         } else {
             return $model->error();

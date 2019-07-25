@@ -7,20 +7,25 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\lab\Testname;
+use common\models\system\RstlDetails;
 use common\models\system\Profile;
 use yii\helpers\Json;
-
+use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
 
 use common\models\system\User;
 use common\models\system\UserSearch;
 
-
 use common\models\lab\TestnameSearch;
-use common\models\lab\Configlab;
 
 use common\models\lab\Lab;
 use common\models\lab\LabSearch;
+
+use common\models\lab\CodeTemplate;
+use common\models\lab\RstlLab;
+use common\models\lab\Requestcode;
+use common\models\lab\Configlab;
+use common\models\lab\Samplecode;
 
 /**
  * SetupController implements the CRUD actions for Setup model.
@@ -48,20 +53,52 @@ class SetupController extends Controller
      */
     public function actionIndex()
     {
-        //$user = User::find()->all();
-
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $labsearchModel = new LabSearch();
         $labdataProvider = $labsearchModel->search(Yii::$app->request->queryParams);
-        //$dataProvider->sort->defaultOrder = ['testName' => SORT_ASC];
 
+        $codetemplate = CodeTemplate::find()->where(['generate_mode' => 0]);
+        $codetemplatedataprovider = new ActiveDataProvider([
+                'query' => $codetemplate,
+                'pagination' => [
+                    'pageSize' => false,
+                           ],                   
+        ]);
+
+        $rstllab = RstlLab::find()->where(['rstl_id' => 11]);
+        $rstllabdataprovider = new ActiveDataProvider([
+                'query' => $rstllab,
+                'pagination' => [
+                    'pageSize' => false,
+                           ],                   
+        ]);
+
+        $requestcode = Requestcode::find()->where(['rstl_id' => 11]);
+        $requestcodedataprovider = new ActiveDataProvider([
+                'query' => $requestcode,
+                'pagination' => [
+                    'pageSize' => false,
+                           ],                   
+        ]);
+
+        $configlab = Configlab::find()->where(['configlab_id' => 1]);
+        $configlabdataprovider = new ActiveDataProvider([
+                'query' => $configlab,
+                'pagination' => [
+                    'pageSize' => false,
+                           ],                   
+        ]);
+      
         return $this->render('index', [
-            //'userdataprovider' => $userdataprovider,
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'labdataProvider'=> $labdataProvider,
+            'codetemplatedataprovider'=>$codetemplatedataprovider,
+            'rstllabdataprovider'=>$rstllabdataprovider,
+            'configlabdataprovider'=>$configlabdataprovider,
+            'requestcodedataprovider'=>$requestcodedataprovider
         ]);
     }
 
@@ -78,6 +115,118 @@ class SetupController extends Controller
                     'model' => $this->findModel($id),
                 ]);
         }
+    }
+
+    public function actionLabdetails()
+    {
+                $model = new RstlDetails();
+               
+                $post= Yii::$app->request->post();
+                if ($model->load(Yii::$app->request->post())) {
+                            return $this->runAction('index');
+                        }      
+
+                if(Yii::$app->request->isAjax){
+                    return $this->renderAjax('labdetails', [
+                        'model' => $model,
+                    ]);
+               }
+    }
+
+    public function actionUseraccounts()
+    {
+                $model = new User();
+               
+                $post= Yii::$app->request->post();
+                if ($model->load(Yii::$app->request->post())) {
+                            return $this->runAction('index');
+                        }      
+
+                if(Yii::$app->request->isAjax){
+                    return $this->renderAjax('useraccounts', [
+                        'model' => $model,
+                    ]);
+               }
+    }
+
+    public function actionLab()
+    {
+        $model = new Lab();
+               
+        $post= Yii::$app->request->post();
+        if ($model->load(Yii::$app->request->post())) {
+                    return $this->runAction('index');
+                }      
+
+        if(Yii::$app->request->isAjax){
+            return $this->renderAjax('lab', [
+                'model' => $model,
+            ]);
+       }
+    }
+
+    public function actionRequestcodetemplate()
+    {
+        $model = new Requestcode();
+               
+        $post= Yii::$app->request->post();
+        if ($model->load(Yii::$app->request->post())) {
+                    return $this->runAction('index');
+                }      
+
+        if(Yii::$app->request->isAjax){
+            return $this->renderAjax('requestcodetemplate', [
+                'model' => $model,
+            ]);
+       }
+    }
+
+    public function actionConfiglab()
+    {
+        $model = new Configlab();
+               
+        $post= Yii::$app->request->post();
+        if ($model->load(Yii::$app->request->post())) {
+                    return $this->runAction('index');
+                }      
+
+        if(Yii::$app->request->isAjax){
+            return $this->renderAjax('configlab', [
+                'model' => $model,
+            ]);
+       }
+    }
+
+    public function actionRstllab()
+    {
+        $model = new Rstllab();
+               
+        $post= Yii::$app->request->post();
+        if ($model->load(Yii::$app->request->post())) {
+                    return $this->runAction('index');
+                }      
+
+        if(Yii::$app->request->isAjax){
+            return $this->renderAjax('rstllab', [
+                'model' => $model,
+            ]);
+       }
+    }
+
+    public function actionRequestcode()
+    {
+        $model = new Codetemplate();
+               
+        $post= Yii::$app->request->post();
+        if ($model->load(Yii::$app->request->post())) {
+                    return $this->runAction('index');
+                }      
+
+        if(Yii::$app->request->isAjax){
+            return $this->renderAjax('requestcodetemplate', [
+                'model' => $model,
+            ]);
+       }
     }
 
     /**

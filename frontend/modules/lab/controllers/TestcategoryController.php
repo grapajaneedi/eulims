@@ -86,11 +86,11 @@ class TestcategoryController extends Controller
                 if ($model->load(Yii::$app->request->post())) {
                     $testcategory = Testcategory::find()->where(['category'=> $post['Testcategory']['category']])->one();
                          if ($testcategory){
-                             Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+                            // Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
                               return $this->runAction('index');
                          }else{
                              $model->save();
-                             Yii::$app->session->setFlash('success', 'Test Category Successfully Created'); 
+                           //  Yii::$app->session->setFlash('success', 'Test Category Successfully Created'); 
                              return $this->runAction('index');
                          }      
         
@@ -111,7 +111,7 @@ class TestcategoryController extends Controller
                 if ($model->load(Yii::$app->request->post())) {
                     $testcategory = Testcategory::find()->where(['category'=> $post['Testcategory']['category']])->one();
                          if ($testcategory){
-                             Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+                            // Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
                               return $this->runAction('category');
                          }else{
                              $model->save();
@@ -141,7 +141,7 @@ class TestcategoryController extends Controller
         $model = $this->findModel($id);
         
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                    Yii::$app->session->setFlash('success', 'Test Category Successfully Updated'); 
+                   // Yii::$app->session->setFlash('success', 'Test Category Successfully Updated'); 
                     return $this->redirect(['index']);
 
                 } else if (Yii::$app->request->isAjax) {
@@ -162,7 +162,7 @@ class TestcategoryController extends Controller
     {
         $model = $this->findModel($id); 
         if($model->delete()) {            
-            Yii::$app->session->setFlash('success', 'Test Category Successfully Deleted'); 
+           // Yii::$app->session->setFlash('success', 'Test Category Successfully Deleted'); 
             return $this->redirect(['index']);
         } else {
             return $model->error();

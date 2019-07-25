@@ -20,18 +20,19 @@ use yii\helpers\Url;
 <?php $this->registerJsFile("/js/services/services.js"); ?>
 
 <?php
-
-echo Html::button('<span class=""></span> Laboratory Details', ['value'=>'/lab/testname/create', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Laboratory Details")])."&nbsp;&nbsp;&nbsp;";
-echo Html::button('<span class=""></span> User Accounts', ['value'=>'/lab/testname/create', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "User Accounts")])."&nbsp;&nbsp;&nbsp;";
-echo Html::button('<span class=""></span> Laboratories', ['value'=>'/lab/testname/create', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Laboratory Details")])."<br> &nbsp;";
-
+echo Html::button('<span class=""></span> Laboratory Details', ['value'=>'/lab/setup/labdetails', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Laboratory Details")])."&nbsp;&nbsp;&nbsp;";
+echo Html::button('<span class=""></span> User Accounts', ['value'=>'/lab/setup/useraccounts', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "User Accounts")])."&nbsp;&nbsp;&nbsp;";
+echo Html::button('<span class=""></span> Laboratories', ['value'=>'/lab/setup/lab', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Laboratory Details")])."&nbsp;&nbsp;&nbsp;";
+echo Html::button('<span class=""></span> Request Code Template', ['value'=>'/lab/setup/requestcodetemplate', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Request Code Template")])."&nbsp;&nbsp;&nbsp;";
+echo Html::button('<span class=""></span> Config Lab', ['value'=>'/lab/setup/configlab', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Config Lab")])."&nbsp;&nbsp;&nbsp;";
+echo Html::button('<span class=""></span> RSTL Lab', ['value'=>'/lab/setup/rstllab', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "RSTL Lab")])."&nbsp;&nbsp;&nbsp;";
+echo Html::button('<span class=""></span> Request Code', ['value'=>'/lab/setup/requestcode', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Request Code")])."<br> &nbsp;";
 ?>
 <?php
 
 $rstl =  Rstl::findOne(['rstl_id'=>11]);
 
 $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
-
 
    echo DetailView::widget([
    'model'=>$rstldetail,
@@ -41,12 +42,9 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
    'panel'=>[
        'heading'=>'<i class="glyphicon glyphicon-book"></i> Laboratory Details',
        'type'=>DetailView::TYPE_PRIMARY,
-       //'type' => DetailView::TYPE_INFO,
    ],
    'attributes'=>[
-       [
-           
-           
+       [     
            'columns' => [
                [
                    'label'=>'RSTL ID',
@@ -125,7 +123,6 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
                     ],
                 ],
         ],
-
         [
             'columns' => [
                     [
@@ -153,7 +150,6 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
 
 <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
         'pjax' => true,
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-products']],
         'panel' => [
@@ -163,11 +159,29 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
             ],
         'columns' => [
             'username',
-            'email'
+            'email',
+            [
+                'header'=>'Actions',
+                'hAlign'=>'center',
+                'format'=>'raw',
+                'value'=>function($data){     
+                    // $workflow = Workflow::find()->where(['testname_method_id' => $data->testname_method_id])->one();
+                    // if ($workflow){
+                       return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->user_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Create Workflow")]);
+                    // }else{
+                    //     return Html::button('<span class="glyphicon glyphicon-plus"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-success','title' => Yii::t('app', "Create Workflow")]);
+                    // }     
+                },
+                    'enableSorting' => false,
+                    'contentOptions' => ['style' => 'width:20px; white-space: normal;'],
+            ], 
         ],
     ]); ?>
 
     
+
+
+
 <?= GridView::widget([
         'dataProvider' => $labdataProvider,
         //'filterModel' => $searchModel,
@@ -175,12 +189,227 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-products']],
         'panel' => [
                 'type' => GridView::TYPE_PRIMARY,
-                'heading' => '<span class="glyphicon glyphicon-book"> </span> Laboratories ' . Html::encode($this->title),
+                'heading' => '<span class="glyphicon glyphicon-book"> </span> Laboratories' . Html::encode($this->title),
              //   'before'=> Html::button('<span class="glyphicon glyphicon-plus"></span> Create Test Name', ['value'=>'/lab/testname/create', 'class' => 'btn btn-success modal_services','title' => Yii::t('app', "Create New Test Name")]),
             ],
         'columns' => [
            'labname',
            'labcode',
-           'active',
+           [
+            'header'=>'Status',
+            'hAlign'=>'center',
+            'format'=>'raw',
+            'value'=>function($data){     
+                if ($data->active==0){
+                    return "<span class='badge btn-default' style='width:90px;height:20px'><b>INACTIVE</span>";
+                }else{
+                    return "<span class='badge btn-success' style='width:90px;height:20px'><b>ACTIVE</span>";
+                }
+              
+            },
+                'enableSorting' => false,
+                'contentOptions' => ['style' => 'width:20px; white-space: normal;'],
+        ], 
+           [
+            'header'=>'Actions',
+            'hAlign'=>'center',
+            'format'=>'raw',
+            'value'=>function($data){     
+                // $workflow = Workflow::find()->where(['testname_method_id' => $data->testname_method_id])->one();
+                // if ($workflow){
+                   return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->lab_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Create Workflow")]);
+                // }else{
+                //     return Html::button('<span class="glyphicon glyphicon-plus"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-success','title' => Yii::t('app', "Create Workflow")]);
+                // }     
+            },
+                'enableSorting' => false,
+                'contentOptions' => ['style' => 'width:20px; white-space: normal;'],
+        ], 
+        ],
+    ]); ?>
+
+
+
+<?= GridView::widget([
+      'id' => 'sample-grid',
+      'dataProvider'=> $codetemplatedataprovider,
+      'pjax'=>true,
+      'pjaxSettings' => [
+          'options' => [
+              'enablePushState' => false,
+          ]
+      ],
+      'containerOptions'=>[
+          'style'=>'overflow:auto; height:150px',
+      ],
+      'floatHeaderOptions' => ['scrollingTop' => true],
+      'responsive'=>true,
+      'striped'=>true,
+      'hover'=>true,
+      'bordered' => true,
+      'panel' => [
+         'heading'=>'<h3 class="panel-title">Request Code Template</h3>',
+         'type'=>'primary',
+         'before' => '',
+         'after'=>false,
+      ],
+      'toolbar' => false,
+        'columns' => [
+         'request_code_template',
+         'sample_code_template',
+         'generate_mode',
+         [
+            'header'=>'Actions',
+            'hAlign'=>'center',
+            'format'=>'raw',
+            'value'=>function($data){     
+                // $workflow = Workflow::find()->where(['testname_method_id' => $data->testname_method_id])->one();
+                // if ($workflow){
+                   return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->code_template_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Create Workflow")]);
+                // }else{
+                //     return Html::button('<span class="glyphicon glyphicon-plus"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-success','title' => Yii::t('app', "Create Workflow")]);
+                // }     
+            },
+                'enableSorting' => false,
+                'contentOptions' => ['style' => 'width:20px; white-space: normal;'],
+        ], 
+        ],
+    ]); ?>
+
+<?= GridView::widget([
+      'id' => 'sample-grid',
+      'dataProvider'=> $configlabdataprovider,
+      'pjax'=>true,
+      'pjaxSettings' => [
+          'options' => [
+              'enablePushState' => false,
+          ]
+      ],
+      'containerOptions'=>[
+          'style'=>'overflow:auto; height:150px',
+      ],
+      'floatHeaderOptions' => ['scrollingTop' => true],
+      'responsive'=>true,
+      'striped'=>true,
+      'hover'=>true,
+      'bordered' => true,
+      'panel' => [
+         'heading'=>'<h3 class="panel-title">Config Lab</h3>',
+         'type'=>'primary',
+         'before' => '',
+         'after'=>false,
+      ],
+      'toolbar' => false,
+        'columns' => [
+       //  'configlab_id',
+         'rstl_id',
+         'lab',
+         [
+            'header'=>'Actions',
+            'hAlign'=>'center',
+            'format'=>'raw',
+            'value'=>function($data){     
+                // $workflow = Workflow::find()->where(['testname_method_id' => $data->testname_method_id])->one();
+                // if ($workflow){
+                   return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->configlab_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Create Workflow")]);
+                // }else{
+                //     return Html::button('<span class="glyphicon glyphicon-plus"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-success','title' => Yii::t('app', "Create Workflow")]);
+                // }     
+            },
+                'enableSorting' => false,
+                'contentOptions' => ['style' => 'width:20px; white-space: normal;'],
+        ], 
+        ],
+    ]); ?>
+
+<?= GridView::widget([
+      'id' => 'sample-grid',
+      'dataProvider'=> $rstllabdataprovider,
+      'pjax'=>true,
+      'pjaxSettings' => [
+          'options' => [
+              'enablePushState' => false,
+          ]
+      ],
+      'containerOptions'=>[
+          'style'=>'overflow:auto; height:150px',
+      ],
+      'floatHeaderOptions' => ['scrollingTop' => true],
+      'responsive'=>true,
+      'striped'=>true,
+      'hover'=>true,
+      'bordered' => true,
+      'panel' => [
+         'heading'=>'<h3 class="panel-title">RSTL Lab</h3>',
+         'type'=>'primary',
+         'before' => '',
+         'after'=>false,
+      ],
+      'toolbar' => false,
+        'columns' => [
+         'lab_id',
+         [
+            'header'=>'Actions',
+            'hAlign'=>'center',
+            'format'=>'raw',
+            'value'=>function($data){     
+                // $workflow = Workflow::find()->where(['testname_method_id' => $data->testname_method_id])->one();
+                // if ($workflow){
+                   return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->rstl_lab_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Create Workflow")]);
+                // }else{
+                //     return Html::button('<span class="glyphicon glyphicon-plus"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-success','title' => Yii::t('app', "Create Workflow")]);
+                // }     
+            },
+                'enableSorting' => false,
+                'contentOptions' => ['style' => 'width:20px; white-space: normal;'],
+        ], 
+        ],
+    ]); ?>
+
+<?= GridView::widget([
+      'id' => 'sample-grid',
+      'dataProvider'=> $requestcodedataprovider,
+      'pjax'=>true,
+      'pjaxSettings' => [
+          'options' => [
+              'enablePushState' => false,
+          ]
+      ],
+      'containerOptions'=>[
+          'style'=>'overflow:auto; height:150px',
+      ],
+      'floatHeaderOptions' => ['scrollingTop' => true],
+      'responsive'=>true,
+      'striped'=>true,
+      'hover'=>true,
+      'bordered' => true,
+      'panel' => [
+         'heading'=>'<h3 class="panel-title">Request Code</h3>',
+         'type'=>'primary',
+         'before' => '',
+         'after'=>false,
+      ],
+      'toolbar' => false,
+        'columns' => [
+         'request_ref_num',
+         'rstl_id',
+         'lab_id',
+         'number',
+         'year',
+         [
+            'header'=>'Actions',
+            'hAlign'=>'center',
+            'format'=>'raw',
+            'value'=>function($data){     
+                // $workflow = Workflow::find()->where(['testname_method_id' => $data->testname_method_id])->one();
+                // if ($workflow){
+                   return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->requestcode_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Create Workflow")]);
+                // }else{
+                //     return Html::button('<span class="glyphicon glyphicon-plus"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-success','title' => Yii::t('app', "Create Workflow")]);
+                // }     
+            },
+                'enableSorting' => false,
+                'contentOptions' => ['style' => 'width:20px; white-space: normal;'],
+        ], 
         ],
     ]); ?>
