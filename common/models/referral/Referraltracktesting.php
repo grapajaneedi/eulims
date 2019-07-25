@@ -67,7 +67,7 @@ class Referraltracktesting extends \yii\db\ActiveRecord
             'analysis_started' => 'Analysis Started',
             'analysis_completed' => 'Analysis Completed',
             'cal_specimen_send_date' => 'Cal Specimen Send Date',
-            'courier_id' => 'Courier ID',
+            'courier_id' => 'Courier',
             'date_created' => 'Date Created',
         ];
     }
