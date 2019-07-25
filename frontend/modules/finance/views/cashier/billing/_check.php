@@ -3,13 +3,7 @@ use kartik\grid\GridView;
 use yii\helpers\Html;
 use kartik\money\MaskMoney;
 use kartik\widgets\DatePicker;
-/* 
- * Project Name: eulims_ * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 07 11, 18 , 2:55:03 PM * 
- * Module: _check * 
- */
+
 
 /* @var $this yii\web\View */
 $js=<<<SCRIPT

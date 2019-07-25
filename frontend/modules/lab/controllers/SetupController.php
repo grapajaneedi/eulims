@@ -119,12 +119,13 @@ class SetupController extends Controller
 
     public function actionLabdetails()
     {
+                //here
                 $model = new RstlDetails();
                
                 $post= Yii::$app->request->post();
                 if ($model->load(Yii::$app->request->post())) {
                             return $this->runAction('index');
-                        }      
+                    }      
 
                 if(Yii::$app->request->isAjax){
                     return $this->renderAjax('labdetails', [

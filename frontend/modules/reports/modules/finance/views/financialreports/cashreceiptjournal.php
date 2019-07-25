@@ -4,13 +4,7 @@
 //var_dump($stringTable);
 //echo $values;
 
-/*
- * Project Name: eulims_ * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 06 7, 18 , 2:51:15 PM * 
- * Module: cashreceiptjournal * 
- */
+
 
 $this->title = $moduleTitle;
 $this->params['breadcrumbs'][] = ['label' => 'Reports', 'url' => ['/reports']];

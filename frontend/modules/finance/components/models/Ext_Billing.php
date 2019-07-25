@@ -1,11 +1,5 @@
 <?php
-/*
- * Project Name: eulims_ * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 06 29, 18 , 9:24:09 AM * 
- * Module: Ext_Billing * 
- */
+
 
 namespace frontend\modules\finance\components\models;
 use common\models\finance\Billing;
