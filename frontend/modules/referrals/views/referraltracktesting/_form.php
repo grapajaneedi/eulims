@@ -6,18 +6,27 @@ use kartik\widgets\DatePicker;
 use common\models\referral\Courier;
 use yii\helpers\ArrayHelper;
 use kartik\select2\Select2;
+use common\components\ReferralComponent;
+use yii\helpers\Json;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\referral\Referraltracktesting */
 /* @var $form yii\widgets\ActiveForm */
-?>
+
+$refcomponent = new ReferralComponent();
+/*echo "<pre>";
+        var_dump($refcomponent->getCourierdata());
+        echo "</pre>"; 
+        exit; */
+
+?> 
 
 <div class="referraltracktesting-form">
 
     <?php $form = ActiveForm::begin(); ?>
   <div class="row">
         <div class="col-sm-6">
-            <?= $form->field($model, 'date_received_courier')->widget(DatePicker::classname(), [
+            <?=$form->field($model, 'date_received_courier')->widget(DatePicker::classname(), [
              'options' => ['placeholder' => 'Select Date ...',
              'autocomplete'=>'off'],
              'type' => DatePicker::TYPE_COMPONENT_APPEND,
@@ -34,7 +43,7 @@ use kartik\select2\Select2;
         </div>
              
         <div class="col-sm-6">
-            <?= $form->field($model, 'analysis_started')->widget(DatePicker::classname(), [
+            <?=$form->field($model, 'analysis_started')->widget(DatePicker::classname(), [
              'options' => ['placeholder' => 'Select Date ...',
              'autocomplete'=>'off'],
              'type' => DatePicker::TYPE_COMPONENT_APPEND,
@@ -47,9 +56,9 @@ use kartik\select2\Select2;
             ?>
         </div>
   </div>   
-   <div class="row">
+  <div class="row">
         <div class="col-sm-6">
-            <?= $form->field($model, 'analysis_completed')->widget(DatePicker::classname(), [
+            <?=$form->field($model, 'analysis_completed')->widget(DatePicker::classname(), [
              'options' => ['placeholder' => 'Select Date ...',
              'autocomplete'=>'off'],
              'type' => DatePicker::TYPE_COMPONENT_APPEND,
@@ -63,7 +72,7 @@ use kartik\select2\Select2;
         </div>
         
         <div class="col-sm-6">
-            <?= $form->field($model, 'cal_specimen_send_date')->widget(DatePicker::classname(), [
+            <?=$form->field($model, 'cal_specimen_send_date')->widget(DatePicker::classname(), [
              'options' => ['placeholder' => 'Select Date ...',
              'autocomplete'=>'off'],
              'type' => DatePicker::TYPE_COMPONENT_APPEND,
@@ -75,12 +84,12 @@ use kartik\select2\Select2;
              ]);
             ?>
         </div>
-  </div>              
+  </div>            
    
    <div class="row">
        <div class="col-sm-6">
            <?= $form->field($model, 'courier_id')->widget(Select2::classname(), [
-                'data' => ArrayHelper::map(Courier::find()->all(), 'courier_id', 'name'),
+                'data' => ArrayHelper::map($courier, 'courier_id', 'name'),
                 'theme' => Select2::THEME_BOOTSTRAP,
                 'options' => ['placeholder' => 'Select Courier ...'],
                 'pluginOptions' => [

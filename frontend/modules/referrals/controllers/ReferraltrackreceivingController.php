@@ -10,6 +10,9 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\db\Query;
 use common\models\referral\Referral;
+use common\components\ReferralComponent;
+use linslin\yii2\curl\Curl;
+use yii\helpers\Json;
 
 /**
  * ReferraltrackreceivingController implements the CRUD actions for Referraltrackreceiving model.
@@ -19,7 +22,7 @@ class ReferraltrackreceivingController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
+    public function behaviors() 
     {
         return [
             'verbs' => [
@@ -69,22 +72,41 @@ class ReferraltrackreceivingController extends Controller
     {
         
         $model = new Referraltrackreceiving();
-        
+        $refcomponent = new ReferralComponent();
+        $courier=json_decode($refcomponent->getCourierdata());
+        $rstlId=Yii::$app->user->identity->profile->rstl_id;
+        $referral=json_decode($refcomponent->getReferralOne($referralid, $rstlId));
+       
         if ($model->load(Yii::$app->request->post())) {
             
             $model->referral_id=$referralid;
             $model->date_created=date('Y-m-d H:i:s');
-            $model->testing_agency_id=$model->referral->testing_agency_id;
-            $model->receiving_agency_id=Yii::$app->user->identity->profile->rstl_id;
-            $model->sample_received_date=$model->referral->sample_received_date;
-            $model->save();
-            Yii::$app->session->setFlash('success', 'Successfully Created!');
-            return $this->redirect(['/referrals/referral/viewreferral', 'id' => $referralid]);      
+            $model->testing_agency_id=$referral->testing_agency_id;
+            $model->receiving_agency_id=$rstlId;
+            $model->sample_received_date=$referral->sample_received_date;
+            
+            $receivingData = Json::encode(['data'=>$model]);
+            $testingUrl ='https://eulimsapi.onelab.ph/api/web/referral/referraltrackreceivings/insertdata';
+
+            $curlReceiving = new Curl();
+            $receivingResponse = $curlReceiving->setRequestBody($receivingData)
+            ->setHeaders([
+                    'Content-Type' => 'application/json',
+                    'Content-Length' => strlen($receivingData), 
+            ])->post($testingUrl);
+
+            if($receivingResponse == 1){
+                    Yii::$app->session->setFlash('success', 'Track Receiving Successfully Created!');
+                    return $this->redirect(['/referrals/referral/viewreferral', 'id' => $referralid]);
+            }else{
+                    return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;$testingResponse!</div>";
+            } 
         }
 
         
         return $this->renderAjax('create', [
             'model' => $model,
+            'courier'=>$courier
         ]);
     }
 
@@ -95,18 +117,42 @@ class ReferraltrackreceivingController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id,$refid)
     {
-        $model = $this->findModel($id);
+        $model = new Referraltrackreceiving();
+        $refcomponent = new ReferralComponent();
+        $courier=json_decode($refcomponent->getCourierdata());
+        $referralreceivingDetails = json_decode($refcomponent->getTrackreceiving($refid));
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->referraltrackreceiving_id]);
-            Yii::$app->session->setFlash('success', 'Successfully Updated!');
-            return $this->redirect(['/referrals/referral/viewreferral', 'id' => $model->referral_id]); 
+        if($referralreceivingDetails){
+            $model->shipping_date=$referralreceivingDetails->shipping_date;
+            $model->cal_specimen_received_date=$referralreceivingDetails->cal_specimen_received_date;       
+            $model->courier_id=$referralreceivingDetails->courier_id;
+            $model->referral_id=$referralreceivingDetails->referral_id;
+            
+        }
+        if ($model->load(Yii::$app->request->post())) {
+            $receivingData = Json::encode(['data'=>$model]);
+            $receivingUrl ='https://eulimsapi.onelab.ph/api/web/referral/referraltrackreceivings/updatedata';
+
+            $curlReceiving = new Curl();
+            $receivingResponse = $curlReceiving->setRequestBody($receivingData)
+            ->setHeaders([
+                    'Content-Type' => 'application/json',
+                    'Content-Length' => strlen($receivingData),
+            ])->post($receivingUrl);
+
+            if($receivingResponse == 1){
+                    Yii::$app->session->setFlash('success', 'Track Receiving Successfully updated!');
+                    return $this->redirect(['/referrals/referral/viewreferral', 'id' => $refid]);
+            }else{
+                return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;$receivingResponse!</div>";
+            } 
         }
 
         return $this->renderAjax('update', [
             'model' => $model,
+            'courier'=>$courier
         ]);
     }
 

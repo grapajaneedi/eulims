@@ -64,7 +64,7 @@ class Referraltrackreceiving extends \yii\db\ActiveRecord
             'receiving_agency_id' => 'Receiving Agency ID',
             'testing_agency_id' => 'Testing Agency ID',
             'sample_received_date' => 'Sample Received Date',
-            'courier_id' => 'Courier ID',
+            'courier_id' => 'Courier',
             'shipping_date' => 'Shipping Date',
             'cal_specimen_received_date' => 'Cal Specimen Received Date',
             'date_created' => 'Date Created',

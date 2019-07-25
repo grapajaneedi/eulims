@@ -8,7 +8,9 @@ use common\models\referral\ReferraltracktestingSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-
+use common\components\ReferralComponent;
+use linslin\yii2\curl\Curl;
+use yii\helpers\Json;
 /**
  * ReferraltracktestingController implements the CRUD actions for Referraltracktesting model.
  */
@@ -64,21 +66,38 @@ class ReferraltracktestingController extends Controller
      */
     public function actionCreate($referralid,$receivingid)
     {
+       // echo $receivingid;exit;
         $model = new Referraltracktesting();
-
+        $refcomponent = new ReferralComponent();
+        $courier=json_decode($refcomponent->getCourierdata());
         if ($model->load(Yii::$app->request->post())) {
             $model->testing_agency_id=Yii::$app->user->identity->profile->rstl_id;
             $model->referral_id=$referralid;
             $model->date_created=date('Y-m-d H:i:s');
             $model->receiving_agency_id=$receivingid;
-            $model->save();
-            Yii::$app->session->setFlash('success', 'Successfully Created!');
-            return $this->redirect(['/referrals/referral/viewreferral', 'id' => $referralid]);
+           
+            $testingData = Json::encode(['data'=>$model]);
+            $testingUrl ='https://eulimsapi.onelab.ph/api/web/referral/referraltracktestings/insertdata';
+
+            $curlTesting = new Curl();
+            $testingResponse = $curlTesting->setRequestBody($testingData)
+            ->setHeaders([
+                    'Content-Type' => 'application/json',
+                    'Content-Length' => strlen($testingData), 
+            ])->post($testingUrl);
+
+            if($testingResponse == 1){
+                    Yii::$app->session->setFlash('success', 'Track Testing Successfully Created!');
+                    return $this->redirect(['/referrals/referral/viewreferral', 'id' => $referralid]);
+            }else{
+                    return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;$testingResponse!</div>";
+            } 
           
         }
 
         return $this->renderAjax('create', [
             'model' => $model,
+            'courier'=>$courier
         ]);
     }
 
@@ -89,18 +108,43 @@ class ReferraltracktestingController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($id,$refid)
     {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            //return $this->redirect(['view', 'id' => $model->referraltracktesting_id]);
-            Yii::$app->session->setFlash('success', 'Successfully Updated!');
-            return $this->redirect(['/referrals/referral/viewreferral', 'id' => $model->referral_id]); 
+        $model= new Referraltracktesting();
+        $refcomponent = new ReferralComponent();
+        $courier=json_decode($refcomponent->getCourierdata());
+        $referralreceivingDetails = json_decode($refcomponent->getTracktestingdata($id));
+        if($referralreceivingDetails){
+            $model->date_received_courier=$referralreceivingDetails->date_received_courier;
+            $model->analysis_started=$referralreceivingDetails->analysis_started;
+            $model->analysis_completed=$referralreceivingDetails->analysis_completed;
+            $model->cal_specimen_send_date=$referralreceivingDetails->cal_specimen_send_date;       
+            $model->courier_id=$referralreceivingDetails->courier_id;
+            $model->referraltracktesting_id=$referralreceivingDetails->referraltracktesting_id;
         }
+            
+        if ($model->load(Yii::$app->request->post())) {
+            $testingData = Json::encode(['data'=>$model]);
+            $testingUrl ='https://eulimsapi.onelab.ph/api/web/referral/referraltracktestings/updatedata';
 
+            $curlTesting = new Curl();
+            $testingResponse = $curlTesting->setRequestBody($testingData)
+            ->setHeaders([
+                    'Content-Type' => 'application/json',
+                    'Content-Length' => strlen($testingData),
+            ])->post($testingUrl);
+
+            if($testingResponse == 1){
+                    Yii::$app->session->setFlash('success', 'Track Testing Successfully updated!');
+                    return $this->redirect(['/referrals/referral/viewreferral', 'id' => $refid]);
+            }else{
+                     return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Walay data bes!</div>";
+            } 
+        }
+        
         return $this->renderAjax('update', [
             'model' => $model,
+            'courier'=>$courier
         ]);
     }
 
