@@ -174,10 +174,7 @@ class ReferralController extends Controller
         {
             $refcomponent = new ReferralComponent();
             $referralDetails = json_decode($refcomponent->getReferraldetails($referralId,$rstlId),true);
-            /*echo "<pre>";
-            print_r($this->findModeltestingtrack($id));
-            echo "</pre>";
-            exit;*/
+            
             if($referralDetails != 0)
             {
                 $model = new Request(); //for declaration required in Detailview
@@ -187,14 +184,13 @@ class ReferralController extends Controller
                 $analyses = $referralDetails['analysis_data'];
                 $customer = $referralDetails['customer_data'];
                 $notification=$referralDetails['notification_data'];
-               /*echo "<pre>";
-                print_r($this->findModeltestingtrack($id));
-                print_r($this->findModelreceivedtrack($id));
-                echo "</pre>";
-               exit;*/
-               // $notification= Notification::find()->where('referral_id =:referralId',[':referralId'=>$id])->orderBy(['notification_type_id' => SORT_ASC])->all();
-                $statuslogs= Statuslogs::find()->where('referral_id =:referralId',[':referralId'=>$id])->all();
-                
+                $statuslogs= json_decode($refcomponent->getStatuslogs($referralId));
+               
+               /*
+                *  echo"<pre>";
+               var_dump($statuslogs);
+                echo"</pre>";
+                exit; */
                 //set third parameter to 1 for attachment type deposit slip
                 $deposit = json_decode($refcomponent->getAttachment($referralId,Yii::$app->user->identity->profile->rstl_id,1),true);
                 //set third parameter to 2 for attachment type or
@@ -205,9 +201,7 @@ class ReferralController extends Controller
                 $testing_agency = !empty($referred_agency['testing_agency']) && $referred_agency > 0 ? $referred_agency['testing_agency']['name'] : null;
 
                 $testresult = json_decode($refcomponent->getAttachment($id,Yii::$app->user->identity->profile->rstl_id,3),true);
-              /*echo "<pre>";
-                print_r($testresult);
-                echo "</pre>"; */
+              
                 if($testresult <> 0){
                     $testresultDataProvider = new ArrayDataProvider([
                         'allModels' => $testresult,
@@ -250,9 +244,6 @@ class ReferralController extends Controller
                 $discounted = $subtotal * ($rate/100);
                 $total = $subtotal - $discounted;
 
-                
-                $countreceiving=Referraltrackreceiving::find()->where('referral_id =:referralId',[':referralId'=>$id])->count();
-                $counttesting=Referraltracktesting::find()->where('referral_id =:referralId',[':referralId'=>$id])->count();
                 //print_r($testresult);exit;
                 return $this->render('viewreferral', [
                     'model' => $model,
@@ -273,10 +264,8 @@ class ReferralController extends Controller
                     'notificationDataProvider' => $notificationDataProvider,
                     'logs'=>$statuslogs,
                     'modelRefTracktesting'=>$this->findModeltestingtrack($id),
-                    'modelRefTrackreceiving'=>$this->findModelreceivedtrack($id),
-                    'counttesting'=> 1,
-                    'countreceiving'=>1
-                    
+                    'modelRefTrackreceiving'=>$this->findModelreceivedtrack($id)
+               
                 ]);
             } else {
                 Yii::$app->session->setFlash('error', "Invalid referral!");
@@ -1432,18 +1421,19 @@ class ReferralController extends Controller
     protected function findModelreceivedtrack($referral_id)
     {
         $refcomponent = new ReferralComponent();
-        $referralreceivingDetails = json_decode($refcomponent->getTrackreceiving($referral_id),true);
+        $referralreceivingDetails = json_decode($refcomponent->getTrackreceiving($referral_id));
         
-        $received = $referralreceivingDetails['receiving_data'];
-        return $received;
+        //$received = $referralreceivingDetails['receiving_data'];
+        return $referralreceivingDetails;
         
     }  
     protected function findModeltestingtrack($referral_id)
     {
         $refcomponent = new ReferralComponent();
-        $trackingdetails = json_decode($refcomponent->getTracktesting($referral_id),true);
-        $tracking=$trackingdetails['testing_data'];
-        return $tracking;
+        $trackingdetails = json_decode($refcomponent->getTracktesting($referral_id));
+//        $tracking=$trackingdetails['testing_data'];
+        
+        return $trackingdetails;
         
     }
 }

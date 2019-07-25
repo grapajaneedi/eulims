@@ -766,6 +766,7 @@ class ReferralComponent extends Component {
             return 'false';
         }
     }
+
     //function bid notification details
     function getBidNoticeDetails($referralId,$rstlId,$noticeId,$seen)
     {
@@ -781,6 +782,9 @@ class ReferralComponent extends Component {
         }
     }
     //get referral track receiving
+
+    //get referral track receiving by referral id
+
     function getTrackreceiving($referralId)
     {
        
@@ -795,7 +799,7 @@ class ReferralComponent extends Component {
             return 'Not valid request!';
         }
     }
-    //get referral track testing
+    //get referral track testing by referral id
     function getTracktesting($referralId)
     {
        
@@ -810,4 +814,68 @@ class ReferralComponent extends Component {
             return 'Not valid request!';
         }
     }
+
 }
+
+    
+    //get Status Logs
+    function getStatuslogs($Id)
+    {
+       
+        if($Id > 0) {
+            $apiUrl=$this->source.'/api/web/referral/referrals/logs?id='.$Id;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'Not valid request!';
+        }
+    }
+    //get referral track testing by referral id
+    function getTracktestingdata($Id)
+    {
+       
+        if($Id > 0) {
+            $apiUrl=$this->source.'/api/web/referral/referraltracktestings/getdata?id='.$Id;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'Not valid request!';
+        }
+    }
+    //get Courier
+    function getCourierdata()
+    {
+       
+            $apiUrl=$this->source.'/api/web/referral/couriers/getdata';
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $list = $curl->get($apiUrl);
+            if($list){
+                return $list;
+            }else {
+                return 'Error in connection!';
+            }
+    }
+    function getCourierone($id)
+    {
+       
+            $apiUrl=$this->source.'/api/web/referral/couriers/getone?id='.$id;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $list = $curl->get($apiUrl);
+            if($list){
+                return $list;
+            }else {
+                return 'Error in connection!';
+            }
+    }
+}
+
