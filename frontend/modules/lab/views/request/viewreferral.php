@@ -1074,7 +1074,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
     }
 
     function sendReferral(url,title){
-        var str = title.slice(14);
+        var str = title.slice(17);
         var header_title = '';
 
         if(title.length > 73){
@@ -1091,7 +1091,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
 
         BootstrapDialog.show({
             title: "<span class='glyphicon glyphicon-send'></span>&nbsp;&nbsp;" + header_title,
-            message: "<p class='note' style='margin:15px 0 0 15px;font-weight:bold;color:#990000;font-size:14px;'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:17px;'></span> Are you sure you want to send the referral to <span class='agency-name' style='color:#000000;'>"+agency_name+"</span>?</p>",
+            message: "<p class='note' style='margin:15px 0 0 15px;font-weight:bold;color:#990000;font-size:14px;'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:17px;'></span> Are you sure you want to send the referral request to <span class='agency-name' style='color:#000000;'>"+agency_name+"</span>?</p>",
             buttons: [
                 {
                     label: 'Send',

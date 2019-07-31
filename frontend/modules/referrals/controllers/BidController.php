@@ -277,7 +277,7 @@ class BidController extends Controller
             return $this->render('viewreq', [
                 'referral' => $referral,
                 'countBid' => $countBid,
-                //'referralId' => $referralId,
+                'referralId' => $referralId,
                 'sampleDataProvider'=> $sampleDataprovider,
                 //'analysisDataProvider'=> $analysisDataprovider,
                 'testbidDataProvider'=> $testbidDataProvider,
