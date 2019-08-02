@@ -814,9 +814,6 @@ class ReferralComponent extends Component {
             return 'Not valid request!';
         }
     }
-
-}
-
     
     //get Status Logs
     function getStatuslogs($Id)
