@@ -6,13 +6,7 @@ use yii\grid\ActionColumn;
 use yii\helpers\Url;
 use kartik\grid\DataColumn;
 
-/* 
- * Project Name: eulims_ * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 06 26, 18 , 10:57:38 AM * 
- * Module: collectionreport * 
- */
+
 
 //echo $count
 $this->title = $moduleTitle;

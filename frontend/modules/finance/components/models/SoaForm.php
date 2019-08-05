@@ -1,12 +1,6 @@
 <?php
 
-/*
- * Project Name: eulims_ * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 07 4, 18 , 11:17:55 AM * 
- * Module: SoaForm * 
- */
+
 
 namespace frontend\modules\finance\components\models;
 use Yii;

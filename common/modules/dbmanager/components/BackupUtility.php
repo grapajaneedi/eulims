@@ -8,10 +8,7 @@ use yii\base\InvalidConfigException;
 use yii\helpers\FileHelper;
 
 /**
- * Backup component
- * Class Created by: Eng'r Nolan F. Sunico
- * December 5, 2018, 11:15 PM
- * this class performs dumping of data using mysqldump untility
+ 
  *
  * @package backup
  */

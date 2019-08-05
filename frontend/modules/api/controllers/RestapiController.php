@@ -36,6 +36,7 @@ class RestapiController extends \yii\rest\Controller
     protected function verbs(){
         return [
             'login' => ['POST'],
+            'logout' => ['POST'],
             'user' => ['GET'],
             'samplecode' => ['GET'],
             'analysis' => ['GET'],
@@ -121,14 +122,14 @@ class RestapiController extends \yii\rest\Controller
 
     public function actionSamplecode()
     {  
-        if (isset($_GET['q'])) {
+     $year = date("Y");
+     if (isset($_GET['q'])) {
         //limit for this year only
-    //     $samplecode = Sample::find()->select(['sample_id','sample_code'])
-    //     ->where(['LIKE', 'tbl_sample.sample_code', $_GET['q']])
-    //    // ->AndWhere(['LIKE', 'sample_year', '2018'])
-    //     ->all();
-        return $this->asJson(['sampleCodes'=>$samplecode]);
-                   
+        $samplecode = Sample::find()->select(['sample_id','sample_code'])
+        ->where(['LIKE', 'tbl_sample.sample_code', $_GET['q']])
+        ->AndWhere(['LIKE', 'sample_year', $year])
+        ->all();
+        return $this->asJson(['sampleCodes'=>$samplecode]);            
         }
     }
 
@@ -153,6 +154,11 @@ class RestapiController extends \yii\rest\Controller
     }
 
     public function actionIndex()
+    {
+        return $this->render('index');
+    }
+
+    public function actionLogout()
     {
         return $this->render('index');
     }

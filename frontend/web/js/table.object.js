@@ -1,18 +1,4 @@
-/* 
- * Quarks Digital Solutions
- * Website Developed by: Nolan F. Sunico
- * Date Created: 14 Jul, 2018
- * Time Created: 10:43:39 AM
- * Module: TableObject
- * Project: EULIMS.
- * sample on how to access html table using this class
-    var table=new tableobject("tblOR"); 
-    var tot=table.contentrowcount;//get the total rows in tbody
-    var fields=[tot+1,"2018010130881",1,1,1,2,""];// array contains the data 
-    // array that contained the class of each td
-    var fieldarr=["kv-align-center","kv-align-left","kv-align-center","kv-align-center","kv-align-center","kv-align-center",""];
-    table.insertrow(fields,fieldarr);
- */
+
 
 function selectRow(ctrl){
     $(ctrl).addClass('info').siblings().removeClass('info');

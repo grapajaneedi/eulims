@@ -114,7 +114,11 @@ $this->registerJs($js);
             ->Where(['tbl_lab_sampletype.lab_id'=>1])
             ->orderBy(['testcategory_id' => SORT_DESC])->all(),'testcategory_id','category');
         ?>
+
+        <!-- error here-->
         <?= Html::textInput('lab_id', $requestquery->lab_id, ['class' => 'form-control', 'id'=>'lab_id', 'type'=>'hidden'], ['readonly' => true]) ?>
+        <!-- error here-->
+
         <?= $form->field($model,'package_id')->widget(Select2::classname(),[
                         'data' => $category,
                         'theme' => Select2::THEME_KRAJEE,

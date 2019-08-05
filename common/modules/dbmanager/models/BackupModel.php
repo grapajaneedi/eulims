@@ -1,12 +1,7 @@
 <?php
 namespace common\modules\dbmanager\models;
 /*
- * Quarks Digital Solutions
- * Website Developed by: Nolan F. Sunico
- * Date Created: 4 Dec, 2018
- * Time Created: 11:48:49 PM
- * Module: BackupModel
- * Project: Port_Management_System.
+ *
  */
 
 /**

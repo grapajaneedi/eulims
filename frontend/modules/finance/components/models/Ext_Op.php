@@ -24,11 +24,5 @@ class Ext_Op extends Op
     }
 }
 
-/* 
- * Project Name: eulims_ * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 07 17, 18 , 2:27:41 PM * 
- * Module: Ext_Op * 
- */
+
 

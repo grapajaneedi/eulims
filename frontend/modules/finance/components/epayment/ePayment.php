@@ -7,13 +7,7 @@ use common\models\system\Rstl;
 use common\models\lab\Customer;
 use linslin\yii2\curl;
 
-/*
- * Project Name: eulims_ * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 08 6, 18 , 4:04:23 PM * 
- * Module: ePayment * 
- */
+
 
 /**
  * Description of ePayment

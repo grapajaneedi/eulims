@@ -1,11 +1,7 @@
 <?php
 
 /*
- * Project Name: eulims_ * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 10 29, 18 , 10:58:00 AM * 
- * Module: SubsidiaryCustomer * 
+ 
  */
 
 namespace api\modules\v1\models;

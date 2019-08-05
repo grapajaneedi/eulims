@@ -1,12 +1,6 @@
 <?php
 use kartik\grid\GridView;
-/*
- * Project Name: eulims_ * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 06 29, 18 , 3:17:41 PM * 
- * Module: _opgrid * 
- */
+
 
 /**
  * Description of _bigrid
