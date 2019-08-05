@@ -363,7 +363,6 @@ backend/web/uploads/packages/referrals.zip
 common/components/ReferralComponent_20190514.php
 frontend/modules/lab/controllers/RequestController_20190514.php
 frontend/modules/lab/views/request/viewreferral_20190514.php
-frontend/modules/referrals/controllers/BidnotificationController.php
 frontend/modules/referrals/controllers/ReferralController_20190514.php
 frontend/modules/referrals/controllers/BidController_20181010.php
 frontend/views/admin-lte/layouts/content_20190410.php

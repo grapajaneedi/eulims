@@ -123,8 +123,6 @@ class SampletypetestnameController extends Controller
                        // Yii::$app->session->setFlash('success', 'Sample Type Test Name Successfully Created'); 
                         return $this->runAction('index');
                     }      
-   
-
                 } else if (Yii::$app->request->isAjax) {
                     return $this->renderAjax('update', [
                         'model' => $model,

@@ -113,7 +113,7 @@ class Customer extends \yii\db\ActiveRecord
             'email' => 'Email',
             'customer_type_id' => 'Customer Type',
             'business_nature_id' => 'Business Nature',
-            'industrytype_id' => 'Industrytype',
+            'industrytype_id' => 'Industry Type',
             'classification_id' => 'Classification',
             'created_at' => 'Created At',
             'customer_old_id' => 'Customer Old ID', 
