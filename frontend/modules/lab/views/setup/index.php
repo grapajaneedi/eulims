@@ -20,28 +20,29 @@ $this->title = 'SETUP';
 
 ?>
 
-<div class="alert alert-info" style="background: #d4f7e8 !important;margin-top: 1px !important;">
+<!-- <div class="alert alert-info" style="background: #d4f7e8 !important;margin-top: 1px !important;">
      <a href="#" class="close" data-dismiss="alert" >×</a>
     <p class="note" style="color:#265e8d"><b>Note:</b> Please scan barcode in the dropdown list below. .</p>
      
-    </div>
+    </div> -->
     
+    <!-- tbl request code -->
 <?php $this->registerJsFile("/js/services/services.js"); ?>
 
 <?php
-echo Html::button('<span class=""></span> Laboratory Details', ['value'=>'/lab/setup/labdetails', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Laboratory Details")])."&nbsp;&nbsp;&nbsp;";
-echo Html::button('<span class=""></span> User Accounts', ['value'=>'/lab/setup/useraccounts', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "User Accounts")])."&nbsp;&nbsp;&nbsp;";
-echo Html::button('<span class=""></span> Laboratories', ['value'=>'/lab/setup/lab', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Laboratory Details")])."&nbsp;&nbsp;&nbsp;";
-echo Html::button('<span class=""></span> Request Code Template', ['value'=>'/lab/setup/requestcodetemplate', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Request Code Template")])."&nbsp;&nbsp;&nbsp;";
-echo Html::button('<span class=""></span> Config Lab', ['value'=>'/lab/setup/configlab', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Config Lab")])."&nbsp;&nbsp;&nbsp;";
-echo Html::button('<span class=""></span> RSTL Lab', ['value'=>'/lab/setup/rstllab', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "RSTL Lab")])."&nbsp;&nbsp;&nbsp;";
-echo Html::button('<span class=""></span> Request Code', ['value'=>'/lab/setup/requestcode', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Request Code")])."<br> &nbsp;";
+// echo Html::button('<span class=""></span> Laboratory Details', ['value'=>'/lab/setup/labdetails', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Laboratory Details")])."&nbsp;&nbsp;&nbsp;";
+// echo Html::button('<span class=""></span> User Accounts', ['value'=>'/lab/setup/useraccounts', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "User Accounts")])."&nbsp;&nbsp;&nbsp;";
+// echo Html::button('<span class=""></span> Laboratories', ['value'=>'/lab/setup/lab', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Laboratory Details")])."&nbsp;&nbsp;&nbsp;";
+// echo Html::button('<span class=""></span> Request Code Template', ['value'=>'/lab/setup/requestcodetemplate', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Request Code Template")])."&nbsp;&nbsp;&nbsp;";
+// echo Html::button('<span class=""></span> Config Lab', ['value'=>'/lab/setup/configlab', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Config Lab")])."&nbsp;&nbsp;&nbsp;";
+// echo Html::button('<span class=""></span> RSTL Lab', ['value'=>'/lab/setup/rstllab', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "RSTL Lab")])."&nbsp;&nbsp;&nbsp;";
+// echo Html::button('<span class=""></span> Request Code', ['value'=>'/lab/setup/requestcode', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Request Code")])."<br> &nbsp;";
 ?>
 <?php
+$rstl=Yii::$app->user->identity->profile->rstl_id;
+//$rstl =  Rstl::findOne(['rstl_id'=>11]);
 
-$rstl =  Rstl::findOne(['rstl_id'=>11]);
-
-$rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
+$rstldetail =  RstlDetails::findOne(['rstl_id'=>$rstl]);
 
    echo DetailView::widget([
    'model'=>$rstldetail,
