@@ -739,10 +739,10 @@ class ReferralComponent extends Component {
         }
     }
     //function to get agency bid details for update to local ulims
-    function getBidDetails($referralId,$rstlId,$bidderAgencyId)
+    function getBidDetails($referralId,$rstlId,$bidderAgencyId,$bidId)
     {
-        if($referralId > 0 && $rstlId > 0 && $bidderAgencyId > 0) {
-            $apiUrl=$this->source.'/api/web/referral/bids/bid_details?referral_id='.$referralId.'&rstl_id='.$rstlId.'&bidder_id='.$bidderAgencyId;
+        if($referralId > 0 && $rstlId > 0 && $bidderAgencyId > 0 && $bidId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/bids/bid_details?referral_id='.$referralId.'&rstl_id='.$rstlId.'&bidder_id='.$bidderAgencyId.'&bid_id='.$bidId;
             $curl = new curl\Curl();
             $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
             $curl->setOption(CURLOPT_TIMEOUT, 180);
@@ -766,7 +766,25 @@ class ReferralComponent extends Component {
             return 'false';
         }
     }
+
+    //function bid notification details
+    function getBidNoticeDetails($referralId,$rstlId,$noticeId,$seen)
+    {
+        if($referralId > 0 && $rstlId > 0 && $noticeId > 0 && $seen == 1) {
+            $apiUrl=$this->source.'/api/web/referral/bids/notice_details?referral_id='.$referralId.'&agency_id='.$rstlId.'&notice_id='.$noticeId.'&seen='.$seen;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'false';
+        }
+    }
     //get referral track receiving
+
+    //get referral track receiving by referral id
+
     function getTrackreceiving($referralId)
     {
        
@@ -781,7 +799,7 @@ class ReferralComponent extends Component {
             return 'Not valid request!';
         }
     }
-    //get referral track testing
+    //get referral track testing by referral id
     function getTracktesting($referralId)
     {
        
@@ -796,4 +814,65 @@ class ReferralComponent extends Component {
             return 'Not valid request!';
         }
     }
+    
+    //get Status Logs
+    function getStatuslogs($Id)
+    {
+       
+        if($Id > 0) {
+            $apiUrl=$this->source.'/api/web/referral/referrals/logs?id='.$Id;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'Not valid request!';
+        }
+    }
+    //get referral track testing by referral id
+    function getTracktestingdata($Id)
+    {
+       
+        if($Id > 0) {
+            $apiUrl=$this->source.'/api/web/referral/referraltracktestings/getdata?id='.$Id;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'Not valid request!';
+        }
+    }
+    //get Courier
+    function getCourierdata()
+    {
+       
+            $apiUrl=$this->source.'/api/web/referral/couriers/getdata';
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $list = $curl->get($apiUrl);
+            if($list){
+                return $list;
+            }else {
+                return 'Error in connection!';
+            }
+    }
+    function getCourierone($id)
+    {
+       
+            $apiUrl=$this->source.'/api/web/referral/couriers/getone?id='.$id;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 120);
+            $curl->setOption(CURLOPT_TIMEOUT, 120);
+            $list = $curl->get($apiUrl);
+            if($list){
+                return $list;
+            }else {
+                return 'Error in connection!';
+            }
+    }
 }
+

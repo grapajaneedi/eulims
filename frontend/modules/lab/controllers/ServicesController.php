@@ -252,7 +252,9 @@ class ServicesController extends Controller
         $decode_labsampletype=Json::decode($response_labsampletype);
 
         foreach ($decode_labsampletype as $labsampletype) {          
-            $labsampletypeid = $labsampletype['lab_sampletype_id'];        
+          //  $labsampletypeid = $labsampletype['lab_sampletype_id'];  
+            
+            $labsampletypeid = 2;
         }
 
         $apiUrl_sampletypetestnames="https://eulimsapi.onelab.ph/api/web/v1/sampletypetestnames/search?testname_id=".$methodreferenceid;

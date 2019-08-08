@@ -145,11 +145,11 @@ class TestnamemethodController extends Controller
 
             $testnamemethod = Testnamemethod::find()->where(['testname_id'=> $post['Testnamemethod']['testname_id'], 'method_id'=>$post['Testnamemethod']['method_id']])->one();
             if ($testnamemethod){
-                              Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+                           //   Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
                                return $this->runAction('index');
                           }else{
                               $model->save();
-                              Yii::$app->session->setFlash('success', 'Test Name Method Successfully Created'); 
+                             // Yii::$app->session->setFlash('success', 'Test Name Method Successfully Created'); 
                               return $this->runAction('index');
                           }   
                         }
@@ -387,7 +387,7 @@ class TestnamemethodController extends Controller
         $model = $this->findModel($id);
         
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                    Yii::$app->session->setFlash('success', 'Test Name Method Successfully Updated'); 
+                //    Yii::$app->session->setFlash('success', 'Test Name Method Successfully Updated'); 
                     return $this->redirect(['index']);
 
                 } else if (Yii::$app->request->isAjax) {
@@ -408,7 +408,7 @@ class TestnamemethodController extends Controller
     {
         $model = $this->findModel($id); 
         if($model->delete()) {            
-            Yii::$app->session->setFlash('success', 'Test Name Method Successfully Deleted'); 
+          //  Yii::$app->session->setFlash('success', 'Test Name Method Successfully Deleted'); 
             return $this->redirect(['index']);
         } else {
             return $model->error();

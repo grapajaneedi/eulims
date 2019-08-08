@@ -780,9 +780,9 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                         'headerOptions' => [
                             'style'=>'text-align:center;'
                         ],
-                        //'value' => function($data){
-                        //    return nl2br($data['sample_requirements']);
-                        //},
+                        'value' => function($data){
+                            return nl2br($data['sample_requirements']);
+                        },
                     ],
                     [
                         'attribute'=>'bid_amount',
@@ -824,6 +824,9 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                         'enableSorting' => false,
                         'header' => 'Remarks',
                         'format' => 'raw',
+                        'value' => function($data){
+                            return nl2br($data['remarks']);
+                        },
                         'contentOptions' => [
                             'style'=>'max-width:200px; overflow: auto; white-space: normal; word-wrap: break-word;'
                         ],
@@ -836,7 +839,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                     ],
                     [
                         'class' => 'kartik\grid\ActionColumn',
-                        'template' => '{notification}',
+                        'template' => '{notification} {viewbid}',
                         'dropdown' => false,
                         'dropdownOptions' => ['class' => 'pull-right'],
                         'headerOptions' => ['class' => 'kartik-sheet-style'],
@@ -849,6 +852,21 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                                 if($model->status_id > 0) {
                                     if($checkActiveAgency == 1){
                                         return Html::button('<span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;Send', ['value'=>Url::to(['/referrals/referral/send','request_id'=>$model->request_id,'agency_id'=>$data['bidder_agency_id'],'bidding'=>1]),'onclick'=>'sendReferral(this.value,this.title)','class' => 'btn btn-primary','title' => 'Send Referral to '.$agency_name]);
+                                    } else {
+                                        return '<span class="label label-danger">AGENCY NOT ACTIVE</span>';
+                                    }
+                                } else {
+                                    return "<span class='label label-danger'>Referral ".$model->status->status."</span>";
+                                }
+                            },
+                            'viewbid' => function ($url, $data) use ($model,$referralcomp) {
+                                $checkActiveAgency = $referralcomp->checkActiveAgency($data['bidder_agency_id']);
+                                //$agency = json_decode($referralcomp->listBidders($data['bidder_agency_id']),true);
+                                //$agency_name = $agency == false || empty($agency) ? null : $agency[0]['name'];
+
+                                if($model->status_id > 0) {
+                                    if($checkActiveAgency == 1){
+                                        return Html::button('<span class="glyphicon glyphicon-eye-open"></span>&nbsp;&nbsp;View Bid', ['value'=>Url::to(['/referrals/bid/viewbid_requirement','referral_id'=>$data['referral_id'],'bidder_agency_id'=>$data['bidder_agency_id'],'bid_id'=>$data['bid_id'],'request_id'=>$model->request_id]),'onclick'=>'viewBid(this.value,this.title)','class' => 'btn btn-primary','title' => 'View Bid Requirements']);
                                     } else {
                                         return '<span class="label label-danger">AGENCY NOT ACTIVE</span>';
                                     }
@@ -932,6 +950,12 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
     function addAnalysisReferral(url,title){
        //var url = 'Url::to(['sample/update']) . "?id=' + id;
        //var url = '/lab/sample/update?id='+id;
+        $(".modal-title").html(title);
+        $('#modalAnalysis').modal('show')
+            .find('#modalContent')
+            .load(url);
+    }
+    function viewBid(url,title){
         $(".modal-title").html(title);
         $('#modalAnalysis').modal('show')
             .find('#modalContent')
@@ -1050,7 +1074,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
     }
 
     function sendReferral(url,title){
-        var str = title.slice(14);
+        var str = title.slice(17);
         var header_title = '';
 
         if(title.length > 73){
@@ -1067,7 +1091,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
 
         BootstrapDialog.show({
             title: "<span class='glyphicon glyphicon-send'></span>&nbsp;&nbsp;" + header_title,
-            message: "<p class='note' style='margin:15px 0 0 15px;font-weight:bold;color:#990000;font-size:14px;'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:17px;'></span> Are you sure you want to send the referral to <span class='agency-name' style='color:#000000;'>"+agency_name+"</span>?</p>",
+            message: "<p class='note' style='margin:15px 0 0 15px;font-weight:bold;color:#990000;font-size:14px;'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:17px;'></span> Are you sure you want to send the referral request to <span class='agency-name' style='color:#000000;'>"+agency_name+"</span>?</p>",
             buttons: [
                 {
                     label: 'Send',

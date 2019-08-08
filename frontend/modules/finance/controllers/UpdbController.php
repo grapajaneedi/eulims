@@ -1,12 +1,6 @@
 <?php
 
-/*
- * Project Name: eulims_ * 
- * Copyright(C)2019 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 01 9, 19 , 3:07:12 PM * 
- * Module: UpdbController * 
- */
+
 
 namespace frontend\modules\finance\controllers;
 

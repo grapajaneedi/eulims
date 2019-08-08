@@ -1,11 +1,5 @@
 <?php
-/*
- * Project Name: eulims * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 10 24, 18 , 9:24:17 AM * 
- * Module: Dao Object * 
- */
+
 class Dao
 {
     private $server = "";

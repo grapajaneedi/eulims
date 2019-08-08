@@ -1,12 +1,6 @@
 <?php
 namespace frontend\modules\lab\components;
-/*
- * Project Name: eulims_ * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 07 27, 18 , 7:58:11 AM * 
- * Module: eRequest * 
- */
+
 use common\models\lab\Lab;
 use common\models\lab\Customer;
 use common\models\lab\Discount;

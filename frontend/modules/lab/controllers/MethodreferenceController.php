@@ -85,10 +85,10 @@ class MethodreferenceController extends Controller
 
             $methodreference = Methodreference::find()->where(['method'=> $post['Methodreference']['method'], 'reference'=> $post['Methodreference']['reference'], 'fee'=> $post['Methodreference']['fee']])->one();
             if ($methodreference){
-                Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+              //  Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
                 return $this->runAction('index');
             }else{
-                Yii::$app->session->setFlash('success', 'Method Reference Successfully Created'); 
+               // Yii::$app->session->setFlash('success', 'Method Reference Successfully Created'); 
                 $model->save();
                 return $this->runAction('index');
             }
@@ -114,10 +114,10 @@ class MethodreferenceController extends Controller
 
             $methodreference = Methodreference::find()->where(['method'=> $post['Methodreference']['method'], 'reference'=> $post['Methodreference']['reference'], 'fee'=> $post['Methodreference']['fee']])->one();
             if ($methodreference){
-                Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+              //  Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
                 return $this->runAction('index');
             }else{
-                Yii::$app->session->setFlash('success', 'Method Reference Successfully Created'); 
+               // Yii::$app->session->setFlash('success', 'Method Reference Successfully Created'); 
                 $model->save();
                 return $this->runAction('index');
             }
@@ -145,7 +145,7 @@ class MethodreferenceController extends Controller
         $model = $this->findModel($id);
         
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                    Yii::$app->session->setFlash('success', 'Method Reference Successfully Updated'); 
+                  //  Yii::$app->session->setFlash('success', 'Method Reference Successfully Updated'); 
                     return $this->redirect(['index']);
 
                 } else if (Yii::$app->request->isAjax) {
@@ -166,7 +166,7 @@ class MethodreferenceController extends Controller
     {
         $model = $this->findModel($id); 
         if($model->delete()) {            
-            Yii::$app->session->setFlash('success', 'Method Reference Successfully Deleted'); 
+           // Yii::$app->session->setFlash('success', 'Method Reference Successfully Deleted'); 
             return $this->redirect(['index']);
         } else {
             return $model->error();

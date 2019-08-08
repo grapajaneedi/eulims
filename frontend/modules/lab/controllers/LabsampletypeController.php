@@ -79,11 +79,11 @@ class LabsampletypeController extends Controller
             $labsampletype = Labsampletype::find()->where(['lab_id'=> $post['Labsampletype']['lab_id'], 'sampletype_id'=>$post['Labsampletype']['sampletype_id'],  'testcategory_id'=>$post['Labsampletype']['testcategory_id']])->one();
 
             if ($labsampletype){
-                Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
+               // Yii::$app->session->setFlash('warning', "The system has detected a duplicate record. You are not allowed to perform this operation."); 
                  return $this->runAction('index');
             }else{
                 $model->save();
-                Yii::$app->session->setFlash('success', 'Lab Sample Type Successfully Created'); 
+               // Yii::$app->session->setFlash('success', 'Lab Sample Type Successfully Created'); 
                 return $this->runAction('index');
             }
          

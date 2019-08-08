@@ -363,7 +363,6 @@ backend/web/uploads/packages/referrals.zip
 common/components/ReferralComponent_20190514.php
 frontend/modules/lab/controllers/RequestController_20190514.php
 frontend/modules/lab/views/request/viewreferral_20190514.php
-frontend/modules/referrals/controllers/BidnotificationController.php
 frontend/modules/referrals/controllers/ReferralController_20190514.php
 frontend/modules/referrals/controllers/BidController_20181010.php
 frontend/views/admin-lte/layouts/content_20190410.php
@@ -376,5 +375,10 @@ frontend/modules/referrals/views/notification/list_unresponded_notification_2019
 frontend/modules/lab/views/request/viewreferral_bk.php
 frontend/modules/referrals/views/bid/view_20180912.php
 frontend/modules/lab/controllers/RequestController_20190705.php
+common/components/ReferralComponent_20190704.php
+frontend/modules/referrals/controllers/BidController_20190711.php
+frontend/modules/lab/views/request/viewreferral_20190723_back.php
 vendor/lcobucci/jwt/
 vendor/sizeg/yii2-jwt/
+common/config/db.php
+common/config/db.php

@@ -2,14 +2,7 @@
 use miloschuman\highcharts\Highcharts;
 use miloschuman\highcharts\HighchartsAsset;
 use yii\web\JsExpression;
-/* 
- * Project Name: eulims_ * 
- * Copyright(C)2019 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 01 18, 19 , 8:58:38 AM * 
- * Module: _graphpage * 
- * 
- */
+
 
 //var_dump($column);
 

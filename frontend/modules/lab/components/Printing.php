@@ -1,12 +1,6 @@
 <?php
 
-/*
- * Project Name: eulims_ * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 08 14, 18 , 10:06:35 AM * 
- * Module: RequestPrinting * 
- */
+
 
 namespace frontend\modules\lab\components;
 
@@ -167,7 +161,7 @@ class Printing {
             $RequestTemplate .= "</tr>";
             $RequestTemplate .= "<tr>";
             $RequestTemplate .= "<td colspan='2'>&nbsp;</td>";
-            $RequestTemplate .= "<td style='text-align: left;padding-left: 50px'>Nolan F. Sunico</td>";
+            $RequestTemplate .= "<td style='text-align: left;padding-left: 50px'>CRO</td>";
             $RequestTemplate .= "<td style='text-align: right;padding-right: 10px'>11/14/2018 04:32 PM</td>";
             $RequestTemplate .= "<td>&nbsp;</td>";
             $RequestTemplate .= "<td></td>";

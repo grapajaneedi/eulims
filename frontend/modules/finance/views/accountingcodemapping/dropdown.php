@@ -4,13 +4,6 @@ use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 use kartik\widgets\Select2;
 use kartik\grid\GridView;
-/* 
- * Project Name: eulims * 
- * Copyright(C)2018 Department of Science & Technology -IX * 
- * Developer: Eng'r Nolan F. Sunico  * 
- * 05 22, 18 , 11:35:29 AM * 
- * Module: dropdown * 
- */
 
 
 ?>
