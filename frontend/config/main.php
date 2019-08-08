@@ -117,6 +117,15 @@ return [
             'enableAutoLogin' => true,
             'identityCookie' => ['name' => '_identity-frontend', 'httpOnly' => true],
         ],
+
+        'customeraccount' => [
+            'class'=>'yii\web\User',
+            'identityClass' => 'common\models\lab\Customeraccount',
+            'enableAutoLogin' => true,
+            'identityCookie' => ['name' => '_identity-customer', 'httpOnly' => true],
+        ],
+
+
         'view' => [
          'theme' => [
              'pathMap' => [
