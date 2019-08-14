@@ -65,10 +65,17 @@ class ReferralController extends Controller
 
         $referrals = json_decode($refcomponent->getReferralAll($rstlId),true);
 
-        $referralDataprovider = new ArrayDataProvider([
-            'allModels' => $referrals,
-            'pagination'=> ['pageSize' => 10],
-        ]);
+        if((int) $referrals == 0){
+            $referralDataprovider = new ArrayDataProvider([
+                'allModels' => [],
+                'pagination'=> ['pageSize' => 10],
+            ]);
+        } else {
+            $referralDataprovider = new ArrayDataProvider([
+                'allModels' => $referrals,
+                'pagination'=> ['pageSize' => 10],
+            ]);
+        }
 
         return $this->render('index', [
             //'searchModel' => $searchModel,

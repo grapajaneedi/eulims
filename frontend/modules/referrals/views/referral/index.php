@@ -103,7 +103,7 @@ $refcomp = new ReferralComponent();
                 'buttons' => [
                     'view' => function ($url, $data) {
 
-                        return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['referral/viewreferral','id'=>$data['referral_id']]),'onclick'=>'location.href=this.value', 'class' => 'btn btn-primary','title' => 'View '.$data['referral_code']]);
+                        return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['referral/viewreferral','id'=>$data['referral_id']]),'onclick'=>'window.open(this.value)','class' => 'btn btn-primary','title' => 'View '.$data['referral_code']]);
 
                         /*$checkActive = $referralcomp->checkActiveLab($model->lab_id,$data['agency_id']);
                         $checkNotify = $referralcomp->checkNotify($model->request_id,$data['agency_id']);
