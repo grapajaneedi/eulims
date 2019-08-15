@@ -153,11 +153,18 @@ class Op extends \yii\db\ActiveRecord
     
     public function getPersonnel($designation){
         $personnel= Profile::find()->where(['rstl_id'=> Yii::$app->user->identity->profile->rstl_id,'designation'=>$designation])->one();
-     
-        return ([
-            'name'=>$personnel->fullname,
-            'designation'=>$personnel->designation_unit ? $personnel->designation_unit : $personnel->designation 
-        ]);
+        if($personnel){
+            return ([
+                'name'=>$personnel->fullname,
+                'designation'=>$personnel->designation_unit ? $personnel->designation_unit : $personnel->designation 
+            ]);
+        }else{
+            return ([
+                'name'=>"",
+                'designation'=>"" 
+             ]);
+        }
+        
     }
     
     public function getBankAccount(){

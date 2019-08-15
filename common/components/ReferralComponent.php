@@ -874,5 +874,21 @@ class ReferralComponent extends Component {
                 return 'Error in connection!';
             }
     }
+    
+    function getCheckstatus($referralId,$statusId)
+    {
+        if($referralId > 0 && $statusId > 0) {
+            //$apiUrl=$this->source.'/api/web/referral/bids/notice_details?referral_id='.$referralId.'&agency_id='.$rstlId.'&notice_id='.$noticeId.'&seen='.$seen;
+            $apiUrl=$this->source.'/api/web/referral/statuslogs/checkstatuslogs?referralId='.$referralId.'&statusId='.$statusId;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'false';
+        }
+    }
+    
 }
 

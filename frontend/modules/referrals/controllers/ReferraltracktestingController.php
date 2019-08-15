@@ -75,7 +75,7 @@ class ReferraltracktestingController extends Controller
             $model->referral_id=$referralid;
             $model->date_created=date('Y-m-d H:i:s');
             $model->receiving_agency_id=$receivingid;
-           
+            
             $testingData = Json::encode(['data'=>$model]);
             $testingUrl ='https://eulimsapi.onelab.ph/api/web/referral/referraltracktestings/insertdata';
 
@@ -87,6 +87,34 @@ class ReferraltracktestingController extends Controller
             ])->post($testingUrl);
 
             if($testingResponse == 1){
+                    $stat=json_decode($refcomponent->getCheckstatus($referralid,3));
+                    if($stat == 0){
+                        $accepted=['referralid'=>$referralid,'statusid'=>3];
+                        $acceptedData = Json::encode(['data'=>$model]);
+                        $acceptedUrl ='https://eulimsapi.onelab.ph/api/web/referral/referraltracktestings/insertdata';
+
+                        $curlTesting = new Curl();
+                        $acceptedResponse = $curlTesting->setRequestBody($acceptedData)
+                        ->setHeaders([
+                                'Content-Type' => 'application/json',
+                                'Content-Length' => strlen($acceptedData), 
+                        ])->post($acceptedUrl);
+                    }
+            
+                    if($model->analysis_started <> ""){
+                        $test=ReferralController::Checkstatuslogs($refid, 4);
+                        if($test == 0){
+                            $analysisstarted=ReferralController::Statuslogs($refid,4); 
+                        }
+                    }
+                    if($model->analysis_completed <> ""){
+                        $test=ReferralController::Checkstatuslogs($refid, 5);
+                        if($test == 0){
+                            $analysiscompleted=ReferralController::Statuslogs($refid,5); 
+                        }
+                    }
+
+                    ///////////////
                     Yii::$app->session->setFlash('success', 'Track Testing Successfully Created!');
                     return $this->redirect(['/referrals/referral/viewreferral', 'id' => $referralid]);
             }else{
