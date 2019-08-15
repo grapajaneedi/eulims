@@ -94,7 +94,7 @@ class CourierController extends Controller
                     'Content-Length' => strlen($courierData), 
             ])->post($courierUrl);
             if($courierResponse == 1){
-                Yii::$app->session->setFlash('success', 'Successfully Added!');
+                Yii::$app->session->setFlash('success', 'Successfully Updated!');
                 return $this->redirect(['index']);
             }else{
                 return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;ataya nag error ka uy!</div>";

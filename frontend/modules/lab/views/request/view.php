@@ -237,7 +237,7 @@ $this->registerJs($PrintEvent);
                         [
                             'label'=>'Request Time',
                             'format'=>'raw',
-                            'value'=>Yii::$app->formatter->asDate($model->request_datetime, 'php:h:i a'),
+                            'value'=>date("h:i A",strtotime($model->request_datetime)),//Yii::$app->formatter->asDate($model->request_datetime, 'php:g:i a'),
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
                         ],
