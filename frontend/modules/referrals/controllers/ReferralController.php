@@ -99,8 +99,8 @@ class ReferralController extends Controller
         {
             $refcomponent = new ReferralComponent();
             $referralDetails = json_decode($refcomponent->getReferraldetails($referralId,$rstlId),true);
-            $referralDetails = json_decode($refcomponent->getReferraldetails($referralId,$rstlId),true);
-            $noticeDetails = json_decode($this->getNotificationDetails($noticeId,$rstlId),true);
+            //$noticeDetails = json_decode($this->getNotificationDetails($noticeId,$rstlId),true);
+            $noticeDetails = json_decode($refcomponent->getNotificationOne($noticeId,$rstlId),true);
             
             if($referralDetails != 0 && $noticeDetails != 0)
             {
