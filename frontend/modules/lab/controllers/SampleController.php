@@ -165,8 +165,8 @@ class SampleController extends Controller
                     //$sample->sample_month = date('m', strtotime($request->request_datetime));
                     //$sample->sample_year = date('Y', strtotime($request->request_datetime));
 					if($request->request_type_id == 2){
-						$model->sample_month = date('n',($request->created_at));
-						$model->sample_year = date('Y',($request->created_at));
+						$sample->sample_month = date('n',($request->created_at));
+						$sample->sample_year = date('Y',($request->created_at));
 					} else {
 						$sample->sample_month = date('m', strtotime($request->request_datetime));
 						$sample->sample_year = date('Y', strtotime($request->request_datetime));
