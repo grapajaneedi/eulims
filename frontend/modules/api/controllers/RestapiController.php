@@ -96,10 +96,12 @@ class RestapiController extends \yii\rest\Controller
                 }
     }
 
-    public function actionLogout(){
-        \Yii::$app->user->logout();
-        return "Logout";
-    }
+
+
+    // public function actionLogout(){
+    //     \Yii::$app->user->logout();
+    //     return "Logout";
+    // }
 
 
     public function actionUser()
@@ -133,13 +135,26 @@ class RestapiController extends \yii\rest\Controller
                    
     }
 
+    public function actionChangestatus()
+    {  
+     $year = date("Y");
+     if (isset($_GET['samplecode'])) {
+        //limit for this year only
+        $samplecode = Sample::find()->select(['sample_id','sample_code'])
+        ->where(['LIKE', 'tbl_sample.sample_code', $_GET['samplecode']])
+        ->AndWhere(['LIKE', 'sample_year', $year])
+        ->all();
+        return $this->asJson(['sampleCodes'=>$samplecode]);            
+        }
+    }
+
     public function actionSamplecode()
     {  
      $year = date("Y");
-     if (isset($_GET['q'])) {
+     if (isset($_GET['samplecode'])) {
         //limit for this year only
         $samplecode = Sample::find()->select(['sample_id','sample_code'])
-        ->where(['LIKE', 'tbl_sample.sample_code', $_GET['q']])
+        ->where(['LIKE', 'tbl_sample.sample_code', $_GET['samplecode']])
         ->AndWhere(['LIKE', 'sample_year', $year])
         ->all();
         return $this->asJson(['sampleCodes'=>$samplecode]);            
@@ -148,20 +163,36 @@ class RestapiController extends \yii\rest\Controller
 
     public function actionAnalysis()
     {  
-        if (isset($_GET['samplecode'])) {
-
-        $sample = Sample::find()->select(['samplename','description'])->where(['sample_code'=>$_GET['samplecode']])->one();
-        $analysis = Analysis::find()->select(['analysis_id','testname', 'method'])
-        ->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
+        if (isset($_GET['id'])) {
+            $year = date("Y");
+            $sample = Sample::find()->select(['sample_id','sample_code'])
+            ->where(['LIKE', 'tbl_sample.sample_code', $_GET['id']])
+            ->AndWhere(['LIKE', 'sample_year', $year])->one();
+        // $analysis = Analysis::find()->select(['analysis_id','testname', 'method'])
+        // ->where(['LIKE', 'sample_code', $_GET['id']])->all();
         //progress - count ng ilang ang natapos
         //workflow - count ng workflow
         //status
 
-        $workflow = Workflow::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
+        //$workflow = Workflow::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['id']])->all();
        // $tagginganalysis = Procedure::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
         
-        return $this->asJson(['sampleCode'=>$sample->sample_code,
-                'samples'=>$sample, 'tests'=>$analysis]);
+       return $this->asJson(['sampleCode'=>$sample->sample_code, 
+       'samples'=>['name'=>$sample->samplename, 
+       'description'=>$sample->description], 
+            'tests'=> ['id'=>null,
+            'name'=>null, 
+            'method'=>null,
+            'progress'=>null, 
+            'workflow'=>null, 
+            'status'=>null,
+                 'procedures'=>['procedure'=>null,
+                                 'startDate'=>null,
+                                  'endDate'=>null, 
+                                  'status'=>null]]]);
+
+        // return $this->asJson(['sampleCode'=>$sample->sample_code,
+        //         'samples'=>$sample, 'tests'=>$analysis]);
                    
         }
     }
