@@ -49,10 +49,10 @@ foreach($logs as $log){
        $statusongoing ="progress-done";
     }
     
-    if($log->referralstatus_id == 4){
+    if($log->referralstatus_id == 5){
        $statuscompleted ="progress-done";
     }
-    if($log->referralstatus_id == 5){
+    if($log->referralstatus_id == 6){
        $statusuploaded ="progress-done";
     }
 }
