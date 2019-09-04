@@ -116,7 +116,7 @@ $this->registerJs($js);
                 }         
             }else{
                       //sampletypetestname not exist
-                      return ['class'=>'success'];
+                      return ['class'=>'danger'];
             } 
        },
         'panel' => [
@@ -137,13 +137,13 @@ $this->registerJs($js);
                     if ($typetestname){
                         $servicesquery = Services::find()->where(['method_reference_id' => $data['method_reference_id']])->andWhere(['rstl_id'=>  $GLOBALS['rstl_id']])->andWhere(['testname_method_id'=>  $typetestname->sampletype_testname_id])->one();        
                         if ($servicesquery){
-                            return "<span class='btn btn-success' id='offer' onclick='offerservices(".$data['method_reference_id'].")'>YES</span>";                        
+                            return "<span class='btn btn-success' id='offer' onclick='offerservices(".$data['method_reference_id'].")'>YES</span>";                                 
                         }else{
-                             return "<span class='btn btn-danger' id='offer'  onclick='unofferservices(".$data['method_reference_id'].")'>NO</span>";             
-                          
+                            return "<span class='btn btn-danger' id='offer'  onclick='unofferservices(".$data['method_reference_id'].")'>NO</span>"; 
+                            
                         }                         
                     }else{
-                            return "<span class='btn btn-success' id='offer'  onclick='offerservices(".$data['method_reference_id'].")'>YES</span>";
+                        return "<span class='btn btn-danger' id='offer'  onclick='offerservices(".$data['method_reference_id'].")'>NO</span>";             
                     } 
                 },
                 'enableSorting' => false,
