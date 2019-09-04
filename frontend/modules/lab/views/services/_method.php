@@ -118,6 +118,8 @@ $this->registerJs($js);
                       //sampletypetestname not exist
                       return ['class'=>'danger'];
             } 
+
+            //updates
        },
         'panel' => [
                 'type' => GridView::TYPE_PRIMARY,
