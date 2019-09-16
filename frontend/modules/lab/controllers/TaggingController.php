@@ -301,16 +301,22 @@ class TaggingController extends Controller
                             }else{
                                 foreach ($ids as $workflow){  
                                     $workflows = Workflow::find()->where(['workflow_id' => $workflow])->one();
-                                    $tagging = new Tagging();
-                                    $profile= Profile::find()->where(['user_id'=> Yii::$app->user->id])->one();
-                                    $tagging->user_id = null;
-                                    $tagging->analysis_id = $workflows->workflow_id;
-                                    $tagging->start_date = null;
-                                    $tagging->tagging_status_id = 0;
-                                    $tagging->reason = 1;
-                                    $tagging->cancelled_by = $id;
-                                    $tagging->iso_accredited = 1;
-                                    $tagging->save(false);  
+
+                                    if ($workflow){
+                                        $tagging = new Tagging();
+                                        $profile= Profile::find()->where(['user_id'=> Yii::$app->user->id])->one();
+                                        $tagging->user_id = null;
+                                        $tagging->analysis_id = $workflows->workflow_id;
+                                        $tagging->start_date = null;
+                                        $tagging->tagging_status_id = 0;
+                                        $tagging->reason = 1;
+                                        $tagging->cancelled_by = $id;
+                                        $tagging->iso_accredited = 1;
+                                        $tagging->save(false);  
+                                    }else{
+                                        
+                                    }
+                                  
                                 }
                             }
                                     
