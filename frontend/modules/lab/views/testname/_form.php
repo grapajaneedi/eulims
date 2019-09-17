@@ -22,14 +22,21 @@ use yii\helpers\Url;
     <?php
         $model->status_id='Active';
     ?>
-    <?= $form->field($model,'status_id')->widget(Select2::classname(),[
+    <div class="row">
+        <div class="col-md-6">
+            <?= $form->field($model,'status_id')->widget(Select2::classname(),[
                     'data' => ['1'=>'Active', '0'=>'Inactive'],
                     'theme' => Select2::THEME_KRAJEE,
                     'options' => ['id'=>'sample-testcategory_id'],
                     'pluginOptions' => ['allowClear' => true],
             ])
-    ?>
-
+            ?>
+        </div>
+        <div class="col-md-6">
+            <?= $form->field($model, 'max_storage')->textInput(['maxlength' => true]) ?>
+        </div>
+    </div>
+    
     <div class="row">
              <div class="col-md-6">
              <?= $form->field($model, 'create_time')->textInput(['readonly' => true]) ?>
