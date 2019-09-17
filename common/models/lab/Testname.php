@@ -10,6 +10,7 @@ use Yii;
  * @property int $testname_id
  * @property string $testName
  * @property int $status_id
+ * @property string $max_storage 
  * @property string $create_time
  * @property string $update_time
  *
@@ -41,6 +42,7 @@ class Testname extends \yii\db\ActiveRecord
         return [
             [['testName', 'status_id'], 'required'],
             [['status_id'], 'integer'],
+            [['max_storage'], 'number'], 
             [['create_time', 'update_time'], 'safe'],
             [['testName'], 'string', 'max' => 200],
         ];
@@ -55,6 +57,7 @@ class Testname extends \yii\db\ActiveRecord
             'testname_id' => 'Testname ID',
             'testName' => 'Test Name',
             'status_id' => 'Status',
+            'max_storage' => 'Recommended Max Storage [hours(H)]',
             'create_time' => 'Create Time',
             'update_time' => 'Update Time',
         ];

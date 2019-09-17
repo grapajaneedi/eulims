@@ -45,6 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     
                 },
             ],
+            'max_storage',
             'create_time',
             'update_time',
 
