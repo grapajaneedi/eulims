@@ -5,7 +5,7 @@ namespace common\models\lab;
 use Yii;
 
 /**
- * This is the model class for table "tbl_referral_request".
+ * This is the model class for table "tbl_referral_request"..
  *
  * @property int $referral_request_id
  * @property int $request_id
