@@ -12,6 +12,33 @@ use yii\web\JsExpression;
 	         Analyses and their Recommended Maximum Storage
 	    </div>
 	</div>
+	<fieldset>
+        <legend>Status Legends</legend>
+        <div style='padding: 0 10px'>
+            <span class='badge legend-font btn-primary' ><span class="glyphicon glyphicon-star"> </span>  Done</span>
+            
+            <span class='badge legend-font btn-success' ><span class="glyphicon glyphicon-pencil"> </span>  Ongoing</span>
+
+            <span class='badge legend-font btn-warning' ><span class="glyphicon glyphicon-flash"> </span>  Critical</span>
+
+            <span class='badge legend-font btn-danger' ><span class="glyphicon glyphicon-comment"> </span>  Untouched</span>
+
+            <span class='badge legend-font' ><span class="glyphicon glyphicon-pushpin"> </span>  Pending</span>
+            
+        </div>
+        <div>
+            <i style="font-size: 8pt"><b style="color:#3c8dbc">Done</b> - The test is completed.
+            </i>
+            <br>
+            <i style="font-size: 8pt"><b style="color:#00a65a">Ongoing</b> - The test is currently running and up.</i>
+            <br>
+            <i style="font-size: 8pt"><b style="color:#f39c12">Critical</b> - The test needs to be started.</i>
+            <br>
+            <i style="font-size: 8pt"><b style="color:#ac2925">Untoched</b> - The test is forgotten.</i>
+            <br>
+            <i style="font-size: 8pt"><b style="color:#777">Pending</b> - The test will be started soon.</i>
+        </div>
+    </fieldset>
 	<div class="row">
 	<?= \yii2fullcalendar\yii2fullcalendar::widget(array(
 	      'events'=> Url::to(['/lab/testschedule/schedules']),
