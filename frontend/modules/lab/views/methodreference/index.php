@@ -63,10 +63,10 @@ $this->params['breadcrumbs'][] = $this->title;
           'template' => '{view}{update}{delete}',
             'buttons'=>[
                 'view'=>function ($url, $model) {
-                    return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['/lab/methodreference/view','id'=>$model->method_reference_id]), 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-primary','title' => Yii::t('app', "View Method Reference <font color='Blue'></font>")]);
+                    return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['/lab/methodreference/view','id'=>$model->method_reference_id]), 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-primary','title' => Yii::t('app', "View Method Reference")]);
                 },
                 'update'=>function ($url, $model) {
-                    return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/methodreference/update','id'=>$model->method_reference_id]),'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-success','title' => Yii::t('app', "Update Method Reference<font color='Blue'></font>")]);
+                    return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/methodreference/update','id'=>$model->method_reference_id]),'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-success','title' => Yii::t('app', "Update Method Reference")]);
                 },
                 'delete'=>function ($url, $model) {
                     $urls = '/lab/methodreference/delete?id='.$model->method_reference_id;

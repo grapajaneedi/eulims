@@ -221,6 +221,8 @@ class TaggingController extends Controller
                     ],
                  
             ]);
+
+            
             $procedure = Procedure::find()->where(['testname_id' => 1]);
 
          
@@ -332,8 +334,6 @@ class TaggingController extends Controller
                             $requestcount= Sample::find()
                             ->leftJoin('tbl_request', 'tbl_sample.request_id=tbl_request.request_id')   
                             ->all();  
-
-                           // $rcount = count($requestcount); 
 
                             $rcount= 2;
 

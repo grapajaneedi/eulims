@@ -50,10 +50,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'template' => '{view}{update}{delete}',
             'buttons'=>[
                 'view'=>function ($url, $model) {
-                    return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['/lab/issuancewithdrawal/view','id'=>$model->issuancewithdrawal_id]), 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-primary','title' => Yii::t('app', "View Issuance/ Withdrawal Form <font color='Blue'></font>")]);
+                    return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['/lab/issuancewithdrawal/view','id'=>$model->issuancewithdrawal_id]), 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-primary','title' => Yii::t('app', "View Issuance/ Withdrawal Form")]);
                 },
                 'update'=>function ($url, $model) {
-                    return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/issuancewithdrawal/update','id'=>$model->issuancewithdrawal_id]),'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-success','title' => Yii::t('app', "Update Issuance/ Withdrawal Form <font color='Blue'></font>")]);
+                    return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/issuancewithdrawal/update','id'=>$model->issuancewithdrawal_id]),'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-success','title' => Yii::t('app', "Update Issuance/ Withdrawal Form")]);
                 },
                 'delete'=>function ($url, $model) {
                     $urls = '/lab/issuancewithdrawal/delete?id='.$model->issuancewithdrawal_id;
