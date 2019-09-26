@@ -25,7 +25,7 @@ class TestscheduleController extends \yii\web\Controller
         $date2 = str_replace('-', '/', $date);
         $date2 = date('Y-m-d',strtotime($date2 . "+30 days")); //adding days should be accompanied by the standards of REcommended Maximum storage
 
-	    $analyses =Analysis::find()->where(['between','date_analysis',$date1,$date2])->all();
+	    $analyses =Analysis::find()->where(['between','date_analysis',$date1,$date2])->limit(20)->all();
 	 
     	foreach ($analyses as $schedule) {
     		$Event= new Schedule();
