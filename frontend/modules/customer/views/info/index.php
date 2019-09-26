@@ -104,12 +104,12 @@ if(Yii::$app->user->can('allow-create-op')){
                 'buttons'=>[
                     'update'=>function ($url, $model) {
                         $t = '/customer/info/update/?id='.$model->customer_id;
-                        return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to($t), 'class' => 'btn btn-success','title' => Yii::t('app', "Update Info of ".$model->customer_name),'name' => Yii::t('app', "Update Info of <font color='#272727'>[<b>".$model->customer_name."</b>]</font>"),'onclick'=>'openModal(this.value,this.title)']);
+                        return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to($t), 'class' => 'btn btn-success','title' => Yii::t('app', "Update Info of ".Html::encode($model->customer_name)),'name' => Yii::t('app', "Update Info of <font color='#272727'>[<b>".$model->customer_name."</b>]</font>"),'onclick'=>'openModal(this.value,this.title)']);
                         // return Html::a('<span class="glyphicon glyphicon-pencil"></span>', ['update', 'id' => $model->customer_id], ['class' => 'btn btn-success','target'=>'_']);
                     },
                     'view'=>function ($url, $model) {
                         $t = '/customer/info/view?id='.$model->customer_id;
-                        return Html::button('<span class="fa fa-eye"></span>', ['value'=>Url::to($t), 'class' => 'btn btn-primary','title' => Yii::t('app', "View Info of ".$model->customer_name),'name' => Yii::t('app', "View Info of  <font color='#272727'>[<b>".$model->customer_name."</b>]</font>"),'onclick'=>'openModal(this.value,this.title)']);
+                        return Html::button('<span class="fa fa-eye"></span>', ['value'=>Url::to($t), 'class' => 'btn btn-primary','title' => Yii::t('app', "View Info of ".Html::encode($model->customer_name)),'name' => Yii::t('app', "View Info of  <font color='#272727'>[<b>".$model->customer_name."</b>]</font>"),'onclick'=>'openModal(this.value,this.title)']);
                     },
                 ],
             ],
