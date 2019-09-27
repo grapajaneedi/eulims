@@ -28,7 +28,9 @@ class Schedule
 			case '4': //untouched
 				$this->backgroundColor='#ac2925';
 				break;
-			
+			case '5': //cancelled
+				$this->backgroundColor='#333';
+				break;
 			default: //pending
 				$this->backgroundColor='#777';
 				break;
@@ -52,6 +54,8 @@ class Schedule
 				$this->setbgcolor(1);
 			elseif($this->status==1)
 				$this->setbgcolor(2);
+			elseif($this->status==3)
+				$this->setbgcolor(5);
 			else
 				$this->setbgcolor(4);
 			return false;
@@ -64,6 +68,8 @@ class Schedule
 				$this->setbgcolor(1);
 			elseif($this->status==1)
 				$this->setbgcolor(2);
+			elseif($this->status==3)
+				$this->setbgcolor(5);
 			else
 				$this->setbgcolor(3);
 
@@ -78,6 +84,8 @@ class Schedule
 				$this->setbgcolor(1);
 			elseif($this->status==1)
 				$this->setbgcolor(2);
+			elseif($this->status==3)
+				$this->setbgcolor(5);
 			else
 				$this->setbgcolor(0);
 			return false;

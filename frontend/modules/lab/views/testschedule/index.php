@@ -24,6 +24,8 @@ use yii\web\JsExpression;
             <span class='badge legend-font btn-danger' ><span class="glyphicon glyphicon-comment"> </span>  Untouched</span>
 
             <span class='badge legend-font' ><span class="glyphicon glyphicon-pushpin"> </span>  Pending</span>
+
+            <span class='badge legend-font' style="background-color: #333" ><span class="glyphicon glyphicon-stop"> </span>  Cancelled</span>
             
         </div>
         <div>
@@ -37,6 +39,7 @@ use yii\web\JsExpression;
             <i style="font-size: 8pt"><b style="color:#ac2925">Untoched</b> - The test is forgotten.</i>
             <br>
             <i style="font-size: 8pt"><b style="color:#777">Pending</b> - The test will be started soon.</i>
+            <i style="font-size: 8pt"><b style="color:#333">Cancelled</b> - The test is cancelled.</i>
         </div>
     </fieldset>
 	<div class="row">
@@ -59,4 +62,14 @@ use yii\web\JsExpression;
 	?>
 	</div>
 </div>
+
+
+<?php
+
+
+$this->registerCss("table div div {
+		overflow: inherit !important;
+		white-space: normal !important;
+	}");
+?>
 
