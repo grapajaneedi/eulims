@@ -29,13 +29,15 @@ class TestscheduleController extends \yii\web\Controller
 	 
     	foreach ($analyses as $schedule) {
     		$testname = Testname::findOne($schedule->testname_id);
-	        if($testname){
-	        	$Event= new Schedule();
-		        $Event->id = $schedule->analysis_id;
-		        $Event->start =$schedule->date_analysis;
+    		$Event= new Schedule();
+	        $Event->id = $schedule->analysis_id;
+	        $Event->start =$schedule->date_analysis;
 
-		        $date = $schedule->date_analysis;
-		        $date1 = str_replace('-', '/', $date);
+	        $date = $schedule->date_analysis;
+	        $date1 = str_replace('-', '/', $date);
+
+	        if($testname){
+	        	
 	        	
 		        // $newdate = date('Y-m-d',strtotime($date1 ."+".$testname->max_storage." hours")); //update this statement
 
@@ -57,8 +59,15 @@ class TestscheduleController extends \yii\web\Controller
 		        $Event->status = $schedule->tagging?$schedule->tagging->tagging_status_id:0;
 		        $Event->knowthycolor();
 		        // $Event->backgroundColor='#777';
-		        $events[] = $Event;
+		       
 	        }
+	        else{
+	        	$Event->end = $Event->start;
+	        	$Event->title =$schedule->sample->samplename."(".$schedule->sample->sample_code.") - No Testname Yet";
+		        $Event->status = 0;
+		        $Event->setbgcolor(0);
+	        }
+	         $events[] = $Event;
 	        
     	}
 	    
