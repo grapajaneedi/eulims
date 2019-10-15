@@ -67,9 +67,9 @@ use kartik\money\MaskMoney;
                         'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
                         'pluginOptions'=>[
                             'depends'=>['deposit-deposit_type_id','deposit-or_series_id'],
-                           // 'placeholder'=>'Select Start O.R',
+                            'placeholder'=>'Select Start O.R',
                             'url'=>Url::to(['/finance/cashier/start-or']),
-                           // 'loadingText' => 'Loading...',
+                            'loadingText' => 'Loading...',
                     ],
                         'pluginEvents'=>[
                             'depdrop:error'=>"function(event,id,value){
@@ -88,9 +88,9 @@ use kartik\money\MaskMoney;
                         'select2Options'=>['pluginOptions'=>['allowClear'=>true]],
                         'pluginOptions'=>[
                             'depends'=>['deposit-start_or'],
-                           // 'placeholder'=>'Select End O.R',
+                            'placeholder'=>'Select End O.R',
                             'url'=>Url::to(['/finance/cashier/end-or']),
-                           // 'loadingText' => 'Loading...',
+                            'loadingText' => 'Loading...',
                     ],
                     ])->label('End O.R');
                  ?>
@@ -174,21 +174,7 @@ use kartik\money\MaskMoney;
     }
 </style>
 <script type="text/javascript">
-    $('#deposit-deposit_type_id').on('change',function(e) {
-    //   $('#deposit-or_series_id').prop('disabled',false);
-       /*e.preventDefault();
-         jQuery.ajax( {
-            type: 'POST',
-            url: '/finance/op/check-customer-wallet?customerid='+$(this).val(),
-            dataType: 'html',
-            success: function ( response ) {
-               $('#wallet').val(response);
-            },
-            error: function ( xhr, ajaxOptions, thrownError ) {
-                alert( thrownError );
-            }
-        });*/
-    });
+   
     $('#deposit-start_or').on('change',function() {
         $('#deposit-amount').val('');
     });
