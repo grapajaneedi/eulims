@@ -27,6 +27,7 @@ use yii2tech\spreadsheet\Myspreadsheet;
 use frontend\modules\reports\modules\finance\templates\Opspreadsheet;
 use yii\data\SqlDataProvider;
 use common\models\finance\PostedOp;
+use common\models\lab\Customer;
 /**
  * OrderofpaymentController implements the CRUD actions for Op model.
  */
@@ -144,18 +145,23 @@ class OpController extends Controller
         } 
         $model->order_date=date('Y-m-d');
         $model->payment_mode_id=1;
-        
+        $collectiontype=ArrayHelper::map(Collectiontype::find()->all(), 'collectiontype_id', 'natureofcollection');
+        $customer=ArrayHelper::map(Customer::find()->all(),'customer_id','customer_name');
         if(Yii::$app->request->isAjax){
             return $this->renderAjax('create', [
                 'model' => $model,
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
+                'collection_type' => $collectiontype,
+                'customers' => $customer
             ]);
         }else{
             return $this->render('create', [
                 'model' => $model,
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
+                'collection_type' => $collectiontype,
+                'customers' => $customer
             ]);
         }
         
