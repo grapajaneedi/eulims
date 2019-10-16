@@ -109,6 +109,7 @@ if(Yii::$app->user->isGuest){
                 'label' => '<img src="/images/icons/dashboard.png" style="width:20px">  <span>' . 'Dashboard' . '</span>', 
                 'icon'=>' " style="display:none;width:0px"',
                 'url'=>["/".strtolower($Item->PackageName)],
+                //'url'=>["/".strtolower($Item->PackageName)],
                 'visible'=>true
             ];
             $unresponded=""; //comment this
@@ -156,7 +157,8 @@ if(Yii::$app->user->isGuest){
             $ItemMenu[]=[
                 'label' => '<img src="/images/icons/' .$Item->icon. '.png" style="width:20px">  <span>' . ucwords($Item->PackageName) . $showNotification . '</span>', 
                 'icon'=>' " style="display:none;width:0px"',
-                'url' => ["/".$Item->PackageName."/index"],
+                'url' => "",
+                //'url' => ["/".$Item->PackageName."/index"],
                 'items'=>$ItemSubMenu,
                 'visible'=>Yii::$app->user->can($modulePermission)
             ]; 

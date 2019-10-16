@@ -75,7 +75,7 @@ class ReferraltracktestingController extends Controller
             $model->referral_id=$referralid;
             $model->date_created=date('Y-m-d H:i:s');
             $model->receiving_agency_id=$receivingid;
-           
+            
             $testingData = Json::encode(['data'=>$model]);
             $testingUrl ='https://eulimsapi.onelab.ph/api/web/referral/referraltracktestings/insertdata';
 
@@ -85,8 +85,55 @@ class ReferraltracktestingController extends Controller
                     'Content-Type' => 'application/json',
                     'Content-Length' => strlen($testingData), 
             ])->post($testingUrl);
-
+           
             if($testingResponse == 1){
+                    $stat=json_decode($refcomponent->getCheckstatus($referralid,3));
+                    if($stat == 0){
+                        $accepted=['referralid'=>$referralid,'statusid'=>3];
+                        $acceptedData = Json::encode(['data'=>$accepted]);
+                        $acceptedUrl ='https://eulimsapi.onelab.ph/api/web/referral/statuslogs/insertdata';
+
+                        $curlTesting = new Curl();
+                        $acceptedResponse = $curlTesting->setRequestBody($acceptedData)
+                        ->setHeaders([
+                                'Content-Type' => 'application/json',
+                                'Content-Length' => strlen($acceptedData), 
+                        ])->post($acceptedUrl);
+                    }
+            
+                   if($model->analysis_started <> ""){
+                        $stat1=json_decode($refcomponent->getCheckstatus($referralid,4));
+                        if($stat1 == 0){
+                            $ongoing=['referralid'=>$referralid,'statusid'=>4];
+                            $ongoingData = Json::encode(['data'=>$ongoing]);
+                            $ongoingUrl ='https://eulimsapi.onelab.ph/api/web/referral/statuslogs/insertdata';
+
+                            $curlTesting = new Curl();
+                            $ongoingResponse = $curlTesting->setRequestBody($ongoingData)
+                            ->setHeaders([
+                                    'Content-Type' => 'application/json',
+                                    'Content-Length' => strlen($ongoingData), 
+                            ])->post($ongoingUrl);
+                        }
+                    }
+                    if($model->analysis_completed <> ""){
+                        $stat2=json_decode($refcomponent->getCheckstatus($referralid,5));
+                        if($stat2 == 0){
+                            $completed=['referralid'=>$referralid,'statusid'=>5];
+                            
+                            $completedData = Json::encode(['data'=>$completed]);
+                            $completedUrl ='https://eulimsapi.onelab.ph/api/web/referral/statuslogs/insertdata';
+
+                            $curlTesting = new Curl();
+                            $completedResponse = $curlTesting->setRequestBody($completedData)
+                            ->setHeaders([
+                                    'Content-Type' => 'application/json',
+                                    'Content-Length' => strlen($completedData), 
+                            ])->post($completedUrl);
+                        }
+                    } 
+
+                    ///////////////
                     Yii::$app->session->setFlash('success', 'Track Testing Successfully Created!');
                     return $this->redirect(['/referrals/referral/viewreferral', 'id' => $referralid]);
             }else{
@@ -135,8 +182,39 @@ class ReferraltracktestingController extends Controller
             ])->post($testingUrl);
 
             if($testingResponse == 1){
-                    Yii::$app->session->setFlash('success', 'Track Testing Successfully updated!');
-                    return $this->redirect(['/referrals/referral/viewreferral', 'id' => $refid]);
+                if($model->analysis_started <> ""){
+                    $stat1=json_decode($refcomponent->getCheckstatus($refid,4));
+                    if($stat1 == 0){
+                        $ongoing=['referralid'=>$refid,'statusid'=>4];
+                        $ongoingData = Json::encode(['data'=>$ongoing]);
+                        $ongoingUrl ='https://eulimsapi.onelab.ph/api/web/referral/statuslogs/insertdata';
+
+                        $curlTesting = new Curl();
+                        $ongoingResponse = $curlTesting->setRequestBody($ongoingData)
+                        ->setHeaders([
+                                'Content-Type' => 'application/json',
+                                'Content-Length' => strlen($ongoingData), 
+                        ])->post($ongoingUrl);
+                    }
+                }
+                if($model->analysis_completed <> ""){
+                    $stat2=json_decode($refcomponent->getCheckstatus($refid,5));
+                    if($stat2 == 0){
+                        $completed=['referralid'=>$refid,'statusid'=>5];
+
+                        $completedData = Json::encode(['data'=>$completed]);
+                        $completedUrl ='https://eulimsapi.onelab.ph/api/web/referral/statuslogs/insertdata';
+
+                        $curlTesting = new Curl();
+                        $completedResponse = $curlTesting->setRequestBody($completedData)
+                        ->setHeaders([
+                                'Content-Type' => 'application/json',
+                                'Content-Length' => strlen($completedData), 
+                        ])->post($completedUrl);
+                    }
+                }     
+                Yii::$app->session->setFlash('success', 'Track Testing Successfully updated!');
+                return $this->redirect(['/referrals/referral/viewreferral', 'id' => $refid]);
             }else{
                      return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Walay data bes!</div>";
             } 

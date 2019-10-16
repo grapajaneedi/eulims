@@ -803,6 +803,9 @@ class ReferralController extends Controller
                                     $transaction->rollBack();
                                     return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Failed to update local data!</div>";
                                 }*/
+                                //Statuslog "Received"
+                               
+                                
                                 break;
                             case 2:
                                 $transaction->rollBack();
@@ -846,6 +849,24 @@ class ReferralController extends Controller
                                     } else {
                                         $transaction->commit();
                                         //return 'Notification sent.';
+                                        //EGG Statuslog
+                                            $refcomponent=new ReferralComponent();
+                                            $refid=$referralResponse['referral_id'];
+                                            $stat=json_decode($refcomponent->getCheckstatus($refid,1));
+
+                                            if($stat == 0){
+                                                $received=['referralid'=>$refid,'statusid'=>1];
+                                                $receivedData = Json::encode(['data'=>$received]);
+                                                $receivedUrl ='https://eulimsapi.onelab.ph/api/web/referral/statuslogs/insertdata';
+
+                                                $curlTesting = new curl\Curl();
+                                                $receivedResponse = $curlTesting->setRequestBody($receivedData)
+                                                ->setHeaders([
+                                                        'Content-Type' => 'application/json',
+                                                        'Content-Length' => strlen($receivedData), 
+                                                ])->post($receivedUrl);
+                                            }
+                                        //
                                         Yii::$app->session->setFlash('success', "Successfully sent");
                                         //delay for 2 seconds, before executing next line of code
                                         sleep(2);

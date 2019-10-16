@@ -7,12 +7,17 @@ use common\models\lab\Analysis;
 use common\models\lab\Workflow;
 use common\models\lab\Request;
 use common\models\lab\Procedure;
+use common\models\lab\Customer;
+use common\models\lab\Customeraccount;
+use common\models\lab\LogincForm;
 use common\models\system\LoginForm;
 use common\models\system\Profile;
 use common\models\system\User;
 use common\models\inventory\Products;
 use common\models\inventory\InventoryEntries;
 use common\models\inventory\Equipmentservice;
+use common\models\inventory\InventoryWithdrawal;
+use common\models\inventory\InventoryWithdrawaldetails;
 use common\models\finance\CustomerWallet;
 use common\models\finance\CustomerTransaction;
 use common\models\lab\Booking;
@@ -28,6 +33,7 @@ class RestapiController extends \yii\rest\Controller
         $behaviors['authenticator'] = [
             'class' => \sizeg\jwt\JwtHttpBearerAuth::class,
             'except' => ['login', 'server'],
+            // 'user'=> [\Yii::$app->customeraccount,\Yii::$app->user]
         ];
 
         return $behaviors;
@@ -41,6 +47,7 @@ class RestapiController extends \yii\rest\Controller
             'samplecode' => ['GET'],
             'analysis' => ['GET'],
            // 'server' => ['GET'],
+             'data' => ['GET'],
         ];
     }
 
@@ -90,6 +97,13 @@ class RestapiController extends \yii\rest\Controller
     }
 
 
+
+    // public function actionLogout(){
+    //     \Yii::$app->user->logout();
+    //     return "Logout";
+    // }
+
+
     public function actionUser()
     {  
         $user_id =\Yii::$app->user->identity->profile->user_id;
@@ -116,17 +130,31 @@ class RestapiController extends \yii\rest\Controller
                 'middleInitial' => $profile->middleinitial,
                 'lastname' => $profile->lastname,
                 'type' => $role->item_name]),
+                'user_id'=> $users->user_id
             ]);
                    
+    }
+
+    public function actionChangestatus()
+    {  
+     $year = date("Y");
+     if (isset($_GET['samplecode'])) {
+        //limit for this year only
+        $samplecode = Sample::find()->select(['sample_id','sample_code'])
+        ->where(['LIKE', 'tbl_sample.sample_code', $_GET['samplecode']])
+        ->AndWhere(['LIKE', 'sample_year', $year])
+        ->all();
+        return $this->asJson(['sampleCodes'=>$samplecode]);            
+        }
     }
 
     public function actionSamplecode()
     {  
      $year = date("Y");
-     if (isset($_GET['q'])) {
+     if (isset($_GET['samplecode'])) {
         //limit for this year only
         $samplecode = Sample::find()->select(['sample_id','sample_code'])
-        ->where(['LIKE', 'tbl_sample.sample_code', $_GET['q']])
+        ->where(['LIKE', 'tbl_sample.sample_code', $_GET['samplecode']])
         ->AndWhere(['LIKE', 'sample_year', $year])
         ->all();
         return $this->asJson(['sampleCodes'=>$samplecode]);            
@@ -135,20 +163,36 @@ class RestapiController extends \yii\rest\Controller
 
     public function actionAnalysis()
     {  
-        if (isset($_GET['samplecode'])) {
-
-        $sample = Sample::find()->select(['samplename','description'])->where(['sample_code'=>$_GET['samplecode']])->one();
-        $analysis = Analysis::find()->select(['analysis_id','testname', 'method'])
-        ->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
+        if (isset($_GET['id'])) {
+            $year = date("Y");
+            $sample = Sample::find()->select(['sample_id','sample_code'])
+            ->where(['LIKE', 'tbl_sample.sample_code', $_GET['id']])
+            ->AndWhere(['LIKE', 'sample_year', $year])->one();
+        // $analysis = Analysis::find()->select(['analysis_id','testname', 'method'])
+        // ->where(['LIKE', 'sample_code', $_GET['id']])->all();
         //progress - count ng ilang ang natapos
         //workflow - count ng workflow
         //status
 
-        $workflow = Workflow::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
+        //$workflow = Workflow::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['id']])->all();
        // $tagginganalysis = Procedure::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
         
-        return $this->asJson(['sampleCode'=>$sample->sample_code,
-                'samples'=>$sample, 'tests'=>$analysis]);
+       return $this->asJson(['sampleCode'=>$sample->sample_code, 
+       'samples'=>['name'=>$sample->samplename, 
+       'description'=>$sample->description], 
+            'tests'=> ['id'=>null,
+            'name'=>null, 
+            'method'=>null,
+            'progress'=>null, 
+            'workflow'=>null, 
+            'status'=>null,
+                 'procedures'=>['procedure'=>null,
+                                 'startDate'=>null,
+                                  'endDate'=>null, 
+                                  'status'=>null]]]);
+
+        // return $this->asJson(['sampleCode'=>$sample->sample_code,
+        //         'samples'=>$sample, 'tests'=>$analysis]);
                    
         }
     }
@@ -168,17 +212,16 @@ class RestapiController extends \yii\rest\Controller
      */
     public function actionData()
     {
-         $myvar = \Yii::$app->request->headers->get('Authorization');
+        return $this->getuserid();
+    }
 
-         $rawToken = explode("Bearer ", $myvar);
-         $rawToken = $rawToken[1];
-         $token = \Yii::$app->jwt->getParser()->parse((string) $rawToken);
-         var_dump($token->getClaim('uid')); exit;
+    function getuserid(){
+        $myvar = \Yii::$app->request->headers->get('Authorization');
 
-        return $this->asJson([
-            'success' => true,
-
-        ]);
+        $rawToken = explode("Bearer ", $myvar);
+        $rawToken = $rawToken[1];
+        $token = \Yii::$app->jwt->getParser()->parse((string) $rawToken);
+        return $token->getClaim('uid');
     }
 
      //************************************************
@@ -204,7 +247,6 @@ class RestapiController extends \yii\rest\Controller
         $products = Products::find()->where(['LIKE', 'product_name', $keyword])->all();
 
         //product type 1 = consumables and 2 = non consumable
-          
         return $this->asJson(
             $products
         );
@@ -215,9 +257,9 @@ class RestapiController extends \yii\rest\Controller
         $product = Products::find()->where(['product_code' => $productcode])->one();
         //product type 1 = consumables and 2 = non consumable
         if($product){
-             return $this->asJson([
-                $product,
-            ]);
+             return $this->asJson(
+                $product
+            );
         }else{
             return $this->asJson([
                 'success' => false,
@@ -270,7 +312,7 @@ class RestapiController extends \yii\rest\Controller
             $model = new Equipmentservice;
             $model->inventory_transactions_id=$my_var['product_id'];
             $model->servicetype_id=$my_var['servicetype_id'];
-            $model->requested_by=$my_var['requested_by'];
+            $model->requested_by=$this->getuserid();
             $model->startdate=$my_var['startdate'];
             $model->enddate=$my_var['enddate'];
             $model->request_status=0;
@@ -295,95 +337,6 @@ class RestapiController extends \yii\rest\Controller
             ]); 
     }
 
-    public function actionGetcustonreq($id=50){
-        $model = Request::find()->select(['request_id','request_ref_num','request_datetime'])->where(['customer_id'=>$id, 'status_id'=>1])->all();
-
-        if($model){
-            return $this->asJson(
-                $model
-            ); 
-        }else{
-            return $this->asJson([
-                'success' => false,
-                'message' => 'No Request Found',
-            ]); 
-        }
-    }
-
-    public function actionGetcustcomreq($id){
-        $model = Request::find()->select(['request_id','request_ref_num','request_datetime'])->where(['customer_id'=>$id, 'status_id'=>2])->all();
-
-        if($model){
-            return $this->asJson(
-                $model
-            ); 
-        }else{
-            return $this->asJson([
-                'success' => false,
-                'message' => 'No Request Found',
-            ]); 
-        }
-    }
-
-    public function actionGetcustomerwallet($id=50){
-            $transactions = CustomerWallet::find()->where(['customer_id'=>$id])->one();
-        return $this->asJson(
-            $transactions
-        );
-    }
-
-     public function actionGetwallettransaction($id){
-        $transactions = CustomerTransaction::find()->where(['customerwallet_id'=>$id])->orderby('date DESC')->all();
-        return $this->asJson(
-            $transactions
-        );
-    }
-    //************************************************
-
-    public function actionSetbooking(){ //create booking for customers
-        //set booking default to pending
-        $my_var = \Yii::$app->request->post();
-
-
-       if(!$my_var){
-            return $this->asJson([
-                'success' => false,
-                'message' => 'POST empty',
-            ]); 
-       }
-
-        //Booking
-        $bookling = new Booking;
-        $bookling->scheduled_date = $my_var['date'];
-        $bookling->booking_reference = '34ertgdsg';
-        $bookling->rstl_id = $my_var['lab'];
-        $bookling->date_created = $my_var['date'];
-        $bookling->qty_sample = $my_var['qty'];
-        $bookling->customer_id = $my_var['userid'];
-        $bookling->booking_status = 0;
-         // return $this->asJson($bookling); exit;
-
-        if($bookling->save()){
-            return $this->asJson([
-                'success' => true,
-                'message' => 'Booked Successfully',
-            ]); 
-        }
-        else{
-            return $this->asJson([
-                'success' => false,
-                'message' => 'Booking Failed',
-            ]); 
-        }
-    }
-
-    public function actionGetbookings($id){
-        $my_var = Booking::find()->orderby('scheduled_date DESC')->all();
-        return $this->asJson(
-            $my_var
-        );
-    }
-
     public function actionGetsamples($id){
         $model = Sample::find()->select(['sample_code','samplename','completed'])->where(['request_id'=>$id])->all();
         if($model){
@@ -402,19 +355,8 @@ class RestapiController extends \yii\rest\Controller
         }
     }
 
-    public function actionMailcode(){
-        //sends a code to a customer for account verification purpose
-
-    }
-
-    public function actionConfirmaccount(){
-        //sends a code and password along with the customer email to verify account and new password selection
-
-    }
-
     public function actionGetentries($product_id){
         $model = InventoryEntries::find()->where(['product_id'=>$product_id])->all();
-        // $model = InventoryEntries::find()->all();
        
         return $this->asJson(
             $model
@@ -423,6 +365,24 @@ class RestapiController extends \yii\rest\Controller
     }
 
     public function actionWithdraw(){
+        //use transaction per item
+        $my_var = \Yii::$app->request->post();
+        //first let us save the mother record before the child/item
+
+        $model = new InventoryWithdrawal;
+        $model->created_by=$this->getuserid();
+        $model->withdrawal_datetime=date('Y-m-d');
+        $model->lab_id=1;
+        $model->total_qty=0;//$key['Quantity'];
+        $model->total_cost=0;//$key['Subtotal'];
+        $model->remarks="transaction from mobile";
+        $model->save();
+
+        // the format is objects inside an array
+        foreach($my_var as $myvar) {
+            $entry = InventoryEntries::findOne($key['ID']); //get the entries record
+
+        }
         return true;
     }
 }

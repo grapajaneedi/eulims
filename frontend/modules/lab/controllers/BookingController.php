@@ -98,10 +98,10 @@ class BookingController extends Controller
     $events = array();
     
     //as of now get all the schedules
-    $schedules = Booking::find()->where(['rstl_id'=>$id,'booking_status'=>1])->all(); 
+    $schedules = Booking::find()->where(['rstl_id'=>$id,'booking_status'=>0])->all(); 
  
     foreach ($schedules AS $schedule){
-        $customer =Customer::find()->where(['customer_id'=>$schedule->customer_id])->one();
+        $customer =Customer::find()->where(['customer_id'=>396])->one();
         $Event= new Schedule();
         $Event->id = $schedule->booking_id;
         $Event->title =$customer->customer_name.": ".$schedule->description."\n Sample Qty:".$schedule->qty_sample;

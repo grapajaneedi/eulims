@@ -53,6 +53,8 @@ class SetupController extends Controller
      */
     public function actionIndex()
     {
+        $rstl=Yii::$app->user->identity->profile->rstl_id;
+
         $searchModel = new UserSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -67,7 +69,8 @@ class SetupController extends Controller
                            ],                   
         ]);
 
-        $rstllab = RstlLab::find()->where(['rstl_id' => 11]);
+        
+        $rstllab = RstlLab::find()->where(['rstl_id' => $rstl]);
         $rstllabdataprovider = new ActiveDataProvider([
                 'query' => $rstllab,
                 'pagination' => [
@@ -75,7 +78,7 @@ class SetupController extends Controller
                            ],                   
         ]);
 
-        $requestcode = Requestcode::find()->where(['rstl_id' => 11]);
+        $requestcode = Requestcode::find()->where(['rstl_id' => $rstl]);
         $requestcodedataprovider = new ActiveDataProvider([
                 'query' => $requestcode,
                 'pagination' => [

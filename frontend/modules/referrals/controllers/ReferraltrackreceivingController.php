@@ -96,6 +96,19 @@ class ReferraltrackreceivingController extends Controller
             ])->post($testingUrl);
 
             if($receivingResponse == 1){
+                    $stat=json_decode($refcomponent->getCheckstatus($referralid,2));
+                    if($stat == 0){
+                        $shipped=['referralid'=>$referralid,'statusid'=>2];
+                        $shippedData = Json::encode(['data'=>$shipped]);
+                        $shippedUrl ='https://eulimsapi.onelab.ph/api/web/referral/statuslogs/insertdata';
+
+                        $curlTesting = new Curl();
+                        $shippedResponse = $curlTesting->setRequestBody($shippedData)
+                        ->setHeaders([
+                                'Content-Type' => 'application/json',
+                                'Content-Length' => strlen($shippedData), 
+                        ])->post($shippedUrl);
+                    }
                     Yii::$app->session->setFlash('success', 'Track Receiving Successfully Created!');
                     return $this->redirect(['/referrals/referral/viewreferral', 'id' => $referralid]);
             }else{

@@ -48,15 +48,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'template' => '{view}',
             'buttons'=>[
                 'view'=>function ($url, $model) {
-                    return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['/lab/documentcontrolindex/view','id'=>$model->documentcontrolindex_id]), 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-primary','title' => Yii::t('app', "View Document Control Index Form <font color='Blue'></font>")]);
+                    return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['/lab/documentcontrolindex/view','id'=>$model->documentcontrolindex_id]), 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-primary','title' => Yii::t('app', "View Document Control Index Form")]);
                 },
-                // 'update'=>function ($url, $model) {
-                //     return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/documentcontrolindex/update','id'=>$model->documentcontrolindex_id]),'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-success','title' => Yii::t('app', "Update Document Control Index Form<font color='Blue'></font>")]);
-                // },
-                // 'delete'=>function ($url, $model) {
-                //     $urls = '/lab/documentcontrolindex/delete?id='.$model->documentcontrolindex_id;
-                //     return Html::a('<span class="glyphicon glyphicon-trash"></span>', $urls,['data-confirm'=>"Are you sure you want to delete this record?<b></b>", 'data-method'=>'post', 'class'=>'btn btn-danger','title'=>'Delete Lab Sample Type','data-pjax'=>'0']);
-                // },
+              
             ],
         ],
         ],

@@ -237,7 +237,7 @@ $this->registerJs($PrintEvent);
                         [
                             'label'=>'Request Time',
                             'format'=>'raw',
-                            'value'=>Yii::$app->formatter->asDate($model->request_datetime, 'php:h:i a'),
+                            'value'=>date("h:i A",strtotime($model->request_datetime)),//Yii::$app->formatter->asDate($model->request_datetime, 'php:g:i a'),
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
                         ],
@@ -285,7 +285,7 @@ $this->registerJs($PrintEvent);
                         [
                             'label'=>'Collection',
                             'format'=>'raw',
-                            'value'=>"?".$payment_total,
+                            'value'=>"₱".$payment_total,
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
                         ],
@@ -302,7 +302,7 @@ $this->registerJs($PrintEvent);
                         [
                             'label'=>'Unpaid Balance',
                             'format'=>'raw',
-                            'value'=>"?".$UnpaidBalance,
+                            'value'=>"₱".$UnpaidBalance,
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
                         ],
@@ -524,9 +524,9 @@ $this->registerJs($PrintEvent);
                                  $total = $subtotal - $discounted;
                                 
                                  if ($total <= 0){
-                                     return  '<div id="subtotal">?'.number_format($subtotal, 2).'</div><div id="discount">?0.00</div><div id="total"><b>?'.number_format($total, 2).'</b></div>';
+                                     return  '<div id="subtotal">₱'.number_format($subtotal, 2).'</div><div id="discount">₱0.00</div><div id="total"><b>₱'.number_format($total, 2).'</b></div>';
                                  }else{
-                                     return  '<div id="subtotal">?'.number_format($subtotal, 2).'</div><div id="discount">?'.number_format($discounted, 2).'</div><div id="total"><b>?'.number_format($total, 2).'</b></div>';
+                                     return  '<div id="subtotal">₱'.number_format($subtotal, 2).'</div><div id="discount">₱'.number_format($discounted, 2).'</div><div id="total"><b>₱'.number_format($total, 2).'</b></div>';
                                  }
                         }else{
                             return '';

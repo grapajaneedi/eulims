@@ -386,3 +386,4 @@ frontend/modules/pstc/controllers/PstcrequestController_20190925.php
 frontend/modules/pstc/views/pstcrequest/_formRequestDetails----.php
 frontend/modules/pstc/views/pstcrequest/_formRequestDetails_20190925.php
 backend/web/uploads/packages/pstc.zip
+common/config/db.php
