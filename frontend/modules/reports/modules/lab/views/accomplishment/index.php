@@ -115,7 +115,7 @@ $pdfFooter="{PAGENO}";
 			                    'mergeColumns'=>[[1]], // columns to merge in summary
 			                    'content'=>[             // content to show in each summary cell
 			                        1=>'SUB-TOTAL ('.Yii::$app->formatter->asDate($model->request_datetime, 'php:Y').')',
-			                        2=>GridView::F_SUM,
+			                       // 2=>GridView::F_SUM,
 			                        3=>GridView::F_SUM,
 			                        4=>GridView::F_SUM,
 			                        5=>GridView::F_SUM,
@@ -126,7 +126,7 @@ $pdfFooter="{PAGENO}";
 			                        10=>GridView::F_SUM,
 			                    ],
 			                    'contentFormats'=>[      // content reformatting for each summary cell
-			                        2=>['format'=>'number', 'decimals'=>0],
+			                        //2=>['format'=>'number', 'decimals'=>0],
 			                        3=>['format'=>'number', 'decimals'=>0],
 			                        4=>['format'=>'number', 'decimals'=>0],
 			                        5=>['format'=>'number', 'decimals'=>0],
@@ -138,7 +138,7 @@ $pdfFooter="{PAGENO}";
 			                    ],
 			                    'contentOptions'=>[      // content html attributes for each summary cell
 			                        1=>['style'=>'font-variant:small-caps'],
-			                        2=>['style'=>'text-align:center'],
+			                        //2=>['style'=>'text-align:center'],
 			                        3=>['style'=>'text-align:center'],
 			                        4=>['style'=>'text-align:center'],
 			                        5=>['style'=>'text-align:center'],
@@ -164,7 +164,7 @@ $pdfFooter="{PAGENO}";
 		                'pageSummary'=>'GRAND TOTAL',
 		                'pageSummaryOptions'=>['class'=>'text-left text-primary bg-success'],
 		            ],
-		            [
+		            /*[
 		                'attribute'=>'request_ref_num',
 		                'header' => 'No. of Customers',
 		                'headerOptions' => ['class' => 'text-center'],
@@ -176,7 +176,7 @@ $pdfFooter="{PAGENO}";
 		                'pageSummary'=>true,
         				'pageSummaryFunc'=>GridView::F_SUM,
         				'pageSummaryOptions'=>['class'=>'text-center text-primary'],
-		            ],
+		            ],*/
 		            [
 		                'attribute'=>'request_ref_num',
 		                'header' => 'No. of Requests',

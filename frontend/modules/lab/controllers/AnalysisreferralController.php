@@ -172,7 +172,7 @@ class AnalysisreferralController extends Controller
             }
             analysisfail: {
                 $transaction->rollBack();
-                Yii::$app->session->setFlash('error', "Analysis fail to save.");
+                Yii::$app->session->setFlash('error', "Analysis failed to save.");
                 return $this->redirect(['/lab/request/view', 'id' => $requestId]);
             }
         } elseif (Yii::$app->request->isAjax) {
@@ -290,7 +290,7 @@ class AnalysisreferralController extends Controller
             }
             analysisfail: {
                 $transaction->rollBack();
-                Yii::$app->session->setFlash('error', "Analysis fail to update.");
+                Yii::$app->session->setFlash('error', "Analysis failed to update.");
                 return $this->redirect(['/lab/request/view', 'id' => $requestId]);
             }
         } elseif (Yii::$app->request->isAjax) {
@@ -833,7 +833,7 @@ class AnalysisreferralController extends Controller
             }
             packagefail: {
                 $transaction->rollBack();
-                Yii::$app->session->setFlash('error', "Package fail to save!");
+                Yii::$app->session->setFlash('error', "Package failed to save!");
                 return $this->redirect(['/lab/request/view', 'id' => $requestId]);
             }
         } elseif (Yii::$app->request->isAjax) {
@@ -1002,7 +1002,7 @@ class AnalysisreferralController extends Controller
             }
             packagefail: {
                 $transaction->rollBack();
-                Yii::$app->session->setFlash('error', "Fail to update package!");
+                Yii::$app->session->setFlash('error', "Failed to update package!");
                 return $this->redirect(['/lab/request/view', 'id' => $requestId]);
             }
         } elseif (Yii::$app->request->isAjax) {
@@ -1050,15 +1050,15 @@ class AnalysisreferralController extends Controller
                         Yii::$app->session->setFlash('success', "Package successfully removed.");
                         return $this->redirect(['/lab/request/view', 'id' => $request_id]);
                     } else {
-                        Yii::$app->session->setFlash('error', "Fail to update total!");
+                        Yii::$app->session->setFlash('error', "Failed to update total!");
                         return $this->redirect(['/lab/request/view', 'id' => $request_id]);
                     }
                 } else {
-                    Yii::$app->session->setFlash('error', "Fail to delete package!");
+                    Yii::$app->session->setFlash('error', "Failed to delete package!");
                     return $this->redirect(['/lab/request/view', 'id' => $request_id]);
                 }
             } else {
-                Yii::$app->session->setFlash('error', "Fail to delete package!");
+                Yii::$app->session->setFlash('error', "Failed to delete package!");
                 return $this->redirect(['/lab/request/view', 'id' => $request_id]);
             }
         } else {
