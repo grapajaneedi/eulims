@@ -31,6 +31,8 @@ SCRIPT;
 
 ?>
 
+<?php ini_set("memory_limit", "1000M");?>
+
 <h3 style="color:#142142;font-family:verdana;text-align:center;font-size:150%;text-shadow: 
       4px 4px 0px #d5d5d5, 
       7px 7px 0px rgba(0, 0, 0, 0.2);"><b>Department of Science and Technology</b></h3>
