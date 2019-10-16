@@ -38,11 +38,11 @@ if(Yii::$app->user->isGuest){
        $UsernameDesignation=$CurrentUserName.'<br>'.$CurrentUserDesignation;
     }
   
-	$unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'),true);
-	$unresponded = $unresponded_notification['num_notification'] > 0 ? $unresponded_notification['num_notification'] : ''; //no display if 0
+	// $unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'),true);
+	// $unresponded = $unresponded_notification['num_notification'] > 0 ? $unresponded_notification['num_notification'] : ''; //no display if 0
 	
-	$unseen_bid_notification = json_decode(Yii::$app->runAction('/referrals/bidnotification/count_unseen_bidnotification'),true);
-	$unseen = $unseen_bid_notification['bid_notification'] > 0 ? $unseen_bid_notification['bid_notification'] : '';
+	// $unseen_bid_notification = json_decode(Yii::$app->runAction('/referrals/bidnotification/count_unseen_bidnotification'),true);
+	// $unseen = $unseen_bid_notification['bid_notification'] > 0 ? $unseen_bid_notification['bid_notification'] : '';
   
     //notification will run if the user is already logged in
 	$this->registerJs("
@@ -142,15 +142,15 @@ if(Yii::$app->user->isGuest){
                 array_push($ItemSubMenu, $ItemS);
             }
 			
-			if($unresponded > 0 && $unseen > 0){
-            	$all_notification = $unresponded + $unseen;
-            } elseif($unresponded > 0 && $unseen == ''){
-            	$all_notification = $unresponded;
-            } elseif($unresponded == '' && $unseen > 0){
-            	$all_notification = $unseen;
-            } else {
-             	$all_notification = '';
-            }
+			// if($unresponded > 0 && $unseen > 0){
+            // 	$all_notification = $unresponded + $unseen;
+            // } elseif($unresponded > 0 && $unseen == ''){
+            // 	$all_notification = $unresponded;
+            // } elseif($unresponded == '' && $unseen > 0){
+            // 	$all_notification = $unseen;
+            // } else {
+            //  	$all_notification = '';
+            // }
 			
             $MainIcon=substr($Item->icon,6,strlen($Item->icon)-6);
 			$showNotification = (stristr($Item->PackageName, 'referral')) ? '&nbsp;&nbsp;<span class="label label-danger" id="count_noti_menu">'.$all_notification.'</span>' : '';
