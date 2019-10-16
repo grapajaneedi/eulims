@@ -65,7 +65,12 @@ class ReferralController extends Controller
 
         $referrals = json_decode($refcomponent->getReferralAll($rstlId),true);
 
-        if((int) $referrals == 0){
+        //echo '<pre>';
+        //print_r($referrals);
+        //echo '</pre>';
+        //exit;
+
+        if($referrals == 0 || $referrals == 'false'){
             $referralDataprovider = new ArrayDataProvider([
                 'allModels' => [],
                 'pagination'=> ['pageSize' => 10],
@@ -1159,7 +1164,7 @@ class ReferralController extends Controller
                         }
                     }
 
-                    if($sampleSave == 1 && $analysisSave == 1 && $modelReferralrequest->save() && $updateReference){
+                    if($sampleSave == 1 && $analysisSave == 1 && $modelReferralrequest->save() && $updateReference) {
                         $func = new Functions();
                         $samplecode = $func->GenerateSampleCode($requestId);
                         $sample_data = [];
@@ -1229,7 +1234,7 @@ class ReferralController extends Controller
                     return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Request was not saved to local!</div>";
                 }
             } else {
-                $transaction->commit();
+                $transaction->rollBack();
                 Yii::$app->session->setFlash('error', 'Invalid request!');
                 return $this->redirect(['notifications']);
             }

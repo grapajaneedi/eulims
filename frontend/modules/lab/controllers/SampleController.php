@@ -54,7 +54,9 @@ class SampleController extends Controller
     public function actionIndex()
     {
         $searchModel = new SampleSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $showData = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = !empty($showData) ? $showData : $searchModel;
+        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 		$dataProvider->sort = false;
         $dataProvider->pagination->pageSize=10;
 
