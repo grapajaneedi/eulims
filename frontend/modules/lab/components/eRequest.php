@@ -16,6 +16,8 @@ class eRequest extends \common\models\lab\Request{
     public $customer_name;
     public $modeofreleaseids;
     public $request_date;
+    public $testcategory_id;
+    public $sampletype_id;
     
     /**
      * {@inheritdoc}
