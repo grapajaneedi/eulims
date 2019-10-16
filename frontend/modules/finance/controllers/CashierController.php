@@ -403,7 +403,7 @@ class CashierController extends \yii\web\Controller
                         $selected = $or['receipt_id'];
                     }
                 }
-                echo Json::encode(['output' => $out, 'selected'=>$selected]);
+                echo Json::encode(['output' => $out, 'selected'=>'']);
                 return;
             }
         }
@@ -412,35 +412,35 @@ class CashierController extends \yii\web\Controller
     
     public function actionEndOr() {
         $out = [];
-        if (isset($_POST['depdrop_parents']) <> '') {
-            $id = end($_POST['depdrop_parents']);
-            $receipt=$this->findModelReceipt($id);
-             $list=(new Query)
-            ->select('receipt_id,or_number')
-            ->from('eulims_finance.tbl_receipt')
-            ->where(['deposit_type_id' => $receipt->deposit_type_id])
-            ->andWhere(['or_series_id' => $receipt->or_series_id]) 
-            ->andWhere(['deposit_id'=>null]) 
-            ->andWhere(['>=', 'or_number',$receipt->or_number])
-            ->all();
-            
-            $selected  = null;
-            if ($id != null && count($list) > 0) {
-                $selected = '';
-                foreach ($list as $i => $test) {
-                    $out[] = ['id' => $test['receipt_id'], 'name' => $test['or_number']];
-                    if ($i == 0) {
-                        $selected = $test['receipt_id'];
+        if (isset($_POST['depdrop_parents'])) {
+            $id = $_POST['depdrop_parents'];
+            $receipt_id = empty($id[0]) ? null : $id[0];
+            if($receipt_id <> null){
+                $receipt=$this->findModelReceipt($receipt_id);
+                $list=(new Query)
+                ->select('receipt_id,or_number')
+                ->from('eulims_finance.tbl_receipt')
+                ->where(['deposit_type_id' => $receipt->deposit_type_id])
+                ->andWhere(['or_series_id' => $receipt->or_series_id]) 
+                ->andWhere(['deposit_id'=>null]) 
+                ->andWhere(['>=', 'or_number',$receipt->or_number])
+                ->all();
+                
+                $selected  = null;
+                if (count($list) > 0) {
+                    $selected = '';
+                    foreach ($list as $i => $test) {
+                        $out[] = ['id' => $test['receipt_id'], 'name' => $test['or_number']];
+                        if ($i == 0) {
+                            $selected = $test['receipt_id'];
+                        }
                     }
-                }
-                echo Json::encode(['output' => $out, 'selected'=>'']);
-                return;
+                    echo Json::encode(['output' => $out, 'selected'=>'']);
+                    return;
+                }        
             }
         }
-        else{
-            echo Json::encode(['output' => '', 'selected'=>'']);
-            exit;
-        }
+        echo Json::encode(['output' => '', 'selected'=>'']);
     }
    public function actionCalculateTotalDeposit($id,$endor) {
         $total = 0;

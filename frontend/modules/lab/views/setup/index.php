@@ -20,28 +20,29 @@ $this->title = 'SETUP';
 
 ?>
 
-<div class="alert alert-info" style="background: #d4f7e8 !important;margin-top: 1px !important;">
+<!-- <div class="alert alert-info" style="background: #d4f7e8 !important;margin-top: 1px !important;">
      <a href="#" class="close" data-dismiss="alert" >×</a>
     <p class="note" style="color:#265e8d"><b>Note:</b> Please scan barcode in the dropdown list below. .</p>
      
-    </div>
+    </div> -->
     
+    <!-- tbl request code -->
 <?php $this->registerJsFile("/js/services/services.js"); ?>
 
 <?php
-echo Html::button('<span class=""></span> Laboratory Details', ['value'=>'/lab/setup/labdetails', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Laboratory Details")])."&nbsp;&nbsp;&nbsp;";
-echo Html::button('<span class=""></span> User Accounts', ['value'=>'/lab/setup/useraccounts', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "User Accounts")])."&nbsp;&nbsp;&nbsp;";
-echo Html::button('<span class=""></span> Laboratories', ['value'=>'/lab/setup/lab', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Laboratory Details")])."&nbsp;&nbsp;&nbsp;";
-echo Html::button('<span class=""></span> Request Code Template', ['value'=>'/lab/setup/requestcodetemplate', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Request Code Template")])."&nbsp;&nbsp;&nbsp;";
-echo Html::button('<span class=""></span> Config Lab', ['value'=>'/lab/setup/configlab', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Config Lab")])."&nbsp;&nbsp;&nbsp;";
-echo Html::button('<span class=""></span> RSTL Lab', ['value'=>'/lab/setup/rstllab', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "RSTL Lab")])."&nbsp;&nbsp;&nbsp;";
-echo Html::button('<span class=""></span> Request Code', ['value'=>'/lab/setup/requestcode', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Request Code")])."<br> &nbsp;";
+// echo Html::button('<span class=""></span> Laboratory Details', ['value'=>'/lab/setup/labdetails', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Laboratory Details")])."&nbsp;&nbsp;&nbsp;";
+// echo Html::button('<span class=""></span> User Accounts', ['value'=>'/lab/setup/useraccounts', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "User Accounts")])."&nbsp;&nbsp;&nbsp;";
+// echo Html::button('<span class=""></span> Laboratories', ['value'=>'/lab/setup/lab', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Laboratory Details")])."&nbsp;&nbsp;&nbsp;";
+// echo Html::button('<span class=""></span> Request Code Template', ['value'=>'/lab/setup/requestcodetemplate', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Request Code Template")])."&nbsp;&nbsp;&nbsp;";
+// echo Html::button('<span class=""></span> Config Lab', ['value'=>'/lab/setup/configlab', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Config Lab")])."&nbsp;&nbsp;&nbsp;";
+// echo Html::button('<span class=""></span> RSTL Lab', ['value'=>'/lab/setup/rstllab', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "RSTL Lab")])."&nbsp;&nbsp;&nbsp;";
+// echo Html::button('<span class=""></span> Request Code', ['value'=>'/lab/setup/requestcode', 'class' => 'btn btn-primary modal_services','title' => Yii::t('app', "Request Code")])."<br> &nbsp;";
 ?>
 <?php
+$rstl=Yii::$app->user->identity->profile->rstl_id;
+//$rstl =  Rstl::findOne(['rstl_id'=>11]);
 
-$rstl =  Rstl::findOne(['rstl_id'=>11]);
-
-$rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
+$rstldetail =  RstlDetails::findOne(['rstl_id'=>$rstl]);
 
    echo DetailView::widget([
    'model'=>$rstldetail,
@@ -163,7 +164,7 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-products']],
         'panel' => [
                 'type' => GridView::TYPE_PRIMARY,
-                'heading' => '<span class="glyphicon glyphicon-book"> </span> User Accounts ' . Html::encode($this->title),
+                'heading' => '<span class="glyphicon glyphicon-book"> </span> User Accounts ',
              //   'before'=> Html::button('<span class="glyphicon glyphicon-plus"></span> Create Test Name', ['value'=>'/lab/testname/create', 'class' => 'btn btn-success modal_services','title' => Yii::t('app', "Create New Test Name")]),
             ],
         'columns' => [
@@ -176,7 +177,7 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
                 'value'=>function($data){     
                     // $workflow = Workflow::find()->where(['testname_method_id' => $data->testname_method_id])->one();
                     // if ($workflow){
-                       return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->user_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Create Workflow")]);
+                       return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->user_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Update User Account")]);
                     // }else{
                     //     return Html::button('<span class="glyphicon glyphicon-plus"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-success','title' => Yii::t('app', "Create Workflow")]);
                     // }     
@@ -198,7 +199,7 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
         'pjaxSettings' => ['options' => ['id' => 'kv-pjax-container-products']],
         'panel' => [
                 'type' => GridView::TYPE_PRIMARY,
-                'heading' => '<span class="glyphicon glyphicon-book"> </span> Laboratories' . Html::encode($this->title),
+                'heading' => '<span class="glyphicon glyphicon-book"> </span> Laboratories',
              //   'before'=> Html::button('<span class="glyphicon glyphicon-plus"></span> Create Test Name', ['value'=>'/lab/testname/create', 'class' => 'btn btn-success modal_services','title' => Yii::t('app', "Create New Test Name")]),
             ],
         'columns' => [
@@ -226,7 +227,7 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
             'value'=>function($data){     
                 // $workflow = Workflow::find()->where(['testname_method_id' => $data->testname_method_id])->one();
                 // if ($workflow){
-                   return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->lab_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Create Workflow")]);
+                   return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->lab_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Update Laboratory")]);
                 // }else{
                 //     return Html::button('<span class="glyphicon glyphicon-plus"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-success','title' => Yii::t('app', "Create Workflow")]);
                 // }     
@@ -274,7 +275,7 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
             'value'=>function($data){     
                 // $workflow = Workflow::find()->where(['testname_method_id' => $data->testname_method_id])->one();
                 // if ($workflow){
-                   return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->code_template_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Create Workflow")]);
+                   return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->code_template_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Update Request Code Template")]);
                 // }else{
                 //     return Html::button('<span class="glyphicon glyphicon-plus"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-success','title' => Yii::t('app', "Create Workflow")]);
                 // }     
@@ -311,7 +312,23 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
       'toolbar' => false,
         'columns' => [
        //  'configlab_id',
-         'rstl_id',
+            [     
+                'label' => 'RSTL ID',
+                'format' => 'raw',
+                'contentOptions' => ['style' => 'width: 50%;word-wrap: break-word;white-space:pre-line;'],  
+                'value' => function($data) {
+                    $rstl = Rstl::find()->where(['rstl_id'=>$data->rstl_id])->one();
+                    // $method_query = Methodreference::find()->where(['method_reference_id'=>$data->method_id])->one();
+
+                    // if ($method_query){
+                    //     return $method_query->method;
+                    // }else{
+                    //     return "";
+                    // }
+
+                    return $rstl->name;
+                }                        
+            ],
          'lab',
          [
             'header'=>'Actions',
@@ -320,7 +337,7 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
             'value'=>function($data){     
                 // $workflow = Workflow::find()->where(['testname_method_id' => $data->testname_method_id])->one();
                 // if ($workflow){
-                   return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->configlab_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Create Workflow")]);
+                   return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->configlab_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Update Config Lab")]);
                 // }else{
                 //     return Html::button('<span class="glyphicon glyphicon-plus"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-success','title' => Yii::t('app', "Create Workflow")]);
                 // }     
@@ -364,7 +381,7 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
             'value'=>function($data){     
                 // $workflow = Workflow::find()->where(['testname_method_id' => $data->testname_method_id])->one();
                 // if ($workflow){
-                   return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->rstl_lab_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Create Workflow")]);
+                   return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->rstl_lab_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Update RSTL Lab")]);
                 // }else{
                 //     return Html::button('<span class="glyphicon glyphicon-plus"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-success','title' => Yii::t('app', "Create Workflow")]);
                 // }     
@@ -412,7 +429,7 @@ $rstldetail =  RstlDetails::findOne(['rstl_id'=>11]);
             'value'=>function($data){     
                 // $workflow = Workflow::find()->where(['testname_method_id' => $data->testname_method_id])->one();
                 // if ($workflow){
-                   return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->requestcode_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Create Workflow")]);
+                   return Html::button('<span class="glyphicon glyphicon-edit"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->requestcode_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-warning','title' => Yii::t('app', "Update Request Code")]);
                 // }else{
                 //     return Html::button('<span class="glyphicon glyphicon-plus"></span>', ['value'=>Url::to(['/lab/testnamemethod/createworkflow?test_id='.$data->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value, true, 950);', 'class' => 'btn btn-success','title' => Yii::t('app', "Create Workflow")]);
                 // }     

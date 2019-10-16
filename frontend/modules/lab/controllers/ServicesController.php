@@ -418,7 +418,6 @@ class ServicesController extends Controller
             }  
          }
 
-
          $apiUrl_testnames="https://eulimsapi.onelab.ph/api/web/v1/testnames/search?testname_id=".$methodreferenceid;
          $curl = new curl\Curl();
          $curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
@@ -477,9 +476,6 @@ class ServicesController extends Controller
                 $sampletypetestname->testname_id = $var['testname_id'];
                 $sampletypetestname->added_by = $var['added_by'];
                 $sampletypetestname->save();
-
-
-              
             }
          }
           $apiUrl_methodreference="https://eulimsapi.onelab.ph/api/web/v1/methodreferences/search?method_reference_id=".$id;
@@ -531,7 +527,10 @@ class ServicesController extends Controller
 
         $apiUrl_sampletypetestnames="https://eulimsapi.onelab.ph/api/web/v1/sampletypetestnames/restore?sampletype_id=".$sampletypeid."&testname_id=".$methodreferenceid;
         
-            $curl = new curl\Curl();
+            $curl = new curl\Curl(
+
+
+            );
             $curl->setOption(CURLOPT_SSL_VERIFYPEER, false);
             $response_sampletypetestnames = $curl->get($apiUrl_sampletypetestnames);
             $decode_sampletypetestnames=Json::decode($response_sampletypetestnames);

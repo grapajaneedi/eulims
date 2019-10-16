@@ -45,6 +45,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     
                 },
             ],
+            'max_storage',
             'create_time',
             'update_time',
 
@@ -54,10 +55,10 @@ $this->params['breadcrumbs'][] = $this->title;
           'template' => '{view}{update}{delete}',
             'buttons'=>[
                 'view'=>function ($url, $model) {
-                    return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['/lab/testname/view','id'=>$model->testname_id]), 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-primary','title' => Yii::t('app', "View Test Name <font color='Blue'></font>")]);
+                    return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['/lab/testname/view','id'=>$model->testname_id]), 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-primary','title' => Yii::t('app', "View Test Name")]);
                 },
                 'update'=>function ($url, $model) {
-                    return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/testname/update','id'=>$model->testname_id]),'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-success','title' => Yii::t('app', "Update Test Name<font color='Blue'></font>")]);
+                    return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/testname/update','id'=>$model->testname_id]),'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-success','title' => Yii::t('app', "Update Test Name")]);
                 },
                 'delete'=>function ($url, $model) {
                     $urls = '/lab/testname/delete?id='.$model->testname_id;

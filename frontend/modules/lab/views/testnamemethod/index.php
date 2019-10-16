@@ -17,6 +17,7 @@ $testnamelist= ArrayHelper::map(Testname::find()->all(),'testname_id','testName'
 
 $this->title = 'Test Name Methods';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 
 <div class="testnamemethod-index">
@@ -35,25 +36,18 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            [
-                'attribute' => 'testname_id',
-                'label' => 'Test Name',
-                'value' => function($model) {
+            // [
+            //     'attribute' => 'testname_id',
+            //     'label' => 'Test Name',
+            //     'value' => function($model) {
 
-                    if ($model->testname){
-                        return $model->testname_method_id;
-                    }else{
-                        return "";
-                    }
+            //         if ($model->testname){
+            //             return $model->testname_method_id;
+            //         }else{
+            //             return "";
+            //         }
                     
-                },
-            //     'filterType' => GridView::FILTER_SELECT2,
-            //     'filter' => $testnamelist,
-            //     'filterWidgetOptions' => [
-            //         'pluginOptions' => ['allowClear' => true],
-            //    ],
-             //  'filterInputOptions' => ['placeholder' => 'Test Name', 'testcategory_id' => 'grid-products-search-category_type_id']
-            ],
+            // ],
             [
                 'attribute' => 'testname_id',
                 'label' => 'Test Name',
@@ -98,10 +92,10 @@ $this->params['breadcrumbs'][] = $this->title;
            'template' => '{view}{update}{delete}{workflow}',
             'buttons'=>[
                 'view'=>function ($url, $model) {
-                    return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['/lab/testnamemethod/view','id'=>$model->testname_method_id]), 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-primary','title' => Yii::t('app', "View Test Name Method<font color='Blue'></font>")]);
+                    return Html::button('<span class="glyphicon glyphicon-eye-open"></span>', ['value'=>Url::to(['/lab/testnamemethod/view','id'=>$model->testname_method_id]), 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-primary','title' => Yii::t('app', "View Test Name Method")]);
                 },
                 'update'=>function ($url, $model) {
-                    return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/testnamemethod/update','id'=>$model->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-success','title' => Yii::t('app', "Update Test Name Method<font color='Blue'></font>")]);
+                    return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/testnamemethod/update','id'=>$model->testname_method_id]),'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-success','title' => Yii::t('app', "Update Test Name Method")]);
                 },
                 'delete'=>function ($url, $model) {
                     $urls = '/lab/testnamemethod/delete?id='.$model->testname_method_id;

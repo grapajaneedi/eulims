@@ -12,9 +12,11 @@ use yii\web\UploadedFile;
 use yii\helpers\Url;
 use common\models\lab\exRequestreferral;
 use common\components\ReferralFunctions;
-use linslin\yii2\curl;
+//use linslin\yii2\curl;
 use common\models\referral\Referral;
-
+use common\components\ReferralComponent;
+use yii\helpers\Json;
+use linslin\yii2\curl\Curl;
 /**
  * AttachmentController implements the CRUD actions for Attachment model.
  */
@@ -286,9 +288,17 @@ class AttachmentController extends Controller
     {
         //echo $referralid;
         //exit;
+        $refcomponent = new ReferralComponent();
+        $rstlid= Yii::$app->user->identity->profile->rstl_id;
         if(!empty($referralid)){
             $referralId = (int) $referralid;
-            $referral = $this->findReferral($referralId);
+            // $referral = $this->findReferral($referralId);
+            $referral=json_decode($refcomponent->getReferralOne($referralid, $rstlid));
+            /*echo"<pre>";
+            echo $referral->referral_code;
+            echo"</pre>";
+            exit;*/
+            
         } else {
             Yii::$app->session->setFlash('error', "Referral ID not valid!");
             return $this->redirect(['/referrals/referral']);
@@ -330,6 +340,21 @@ class AttachmentController extends Controller
                     $response = curl_exec($ch);
 
                     if($response == 1){
+                        
+                        $stat=json_decode($refcomponent->getCheckstatus($referralId,6));
+                        if($stat == 0){
+                            $upload=['referralid'=>$referralId,'statusid'=>6];
+                            $uploadData = Json::encode(['data'=>$upload]);
+                            $uploadUrl ='https://eulimsapi.onelab.ph/api/web/referral/statuslogs/insertdata';
+
+                            $curlTesting = new Curl();
+                            $uploadResponse = $curlTesting->setRequestBody($uploadData)
+                            ->setHeaders([
+                                    'Content-Type' => 'application/json',
+                                    'Content-Length' => strlen($uploadData), 
+                            ])->post($uploadUrl);
+                        }
+                        
                         Yii::$app->session->setFlash('success', "Test result successfully uploaded.");
                         return $this->redirect(['/referrals/referral/viewreferral','id'=>$referralId]);
                     } elseif($response == 0) {
@@ -355,7 +380,7 @@ class AttachmentController extends Controller
     public function actionDownload()
     {
         set_time_limit(120);
-
+        $refcomponent = new ReferralComponent();
         if(Yii::$app->request->get('referral_id')){
             $referralId = (int) Yii::$app->request->get('referral_id');
         } else {
@@ -373,9 +398,11 @@ class AttachmentController extends Controller
         if($fileId > 0){
             $function = new ReferralFunctions();
 
-            $referral = $this->findReferral($referralId);
+           // $referral = $this->findReferral($referralId);
+            
             $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
-
+            $referral=json_decode($refcomponent->getReferralOne($referralId, $rstlId));
+            
             $file_download = $function->downloadAttachment($referral->referral_id,$rstlId,$fileId);
 
             if($file_download == 'false'){

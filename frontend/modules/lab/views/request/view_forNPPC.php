@@ -579,9 +579,9 @@ $this->registerJs($PrintEvent);
                   if ($tagging){
 
                    if ($tagging->tagging_status_id==1) {
-                        return Html::button('<span style="width:90px;height:20px"><b>ONGOING</span>', ['value'=>Url::to(['/lab/tagging/status','id'=>$model->analysis_id]),'onclick'=>'LoadModal(this.title, this.value, true, 600);', 'class' => 'btn btn-primary','title' => Yii::t('app', "Analysis Status<font color='Blue'></font>")]);
+                        return Html::button('<span style="width:90px;height:20px"><b>ONGOING</span>', ['value'=>Url::to(['/lab/tagging/status','id'=>$model->analysis_id]),'onclick'=>'LoadModal(this.title, this.value, true, 600);', 'class' => 'btn btn-primary','title' => Yii::t('app', "Analysis Status")]);
                       }else if ($tagging->tagging_status_id==2) {
-                        return Html::button('<span style="width:90px;height:20px"><b>COMPLETED</span>', ['value'=>Url::to(['/lab/tagging/status','id'=>$model->analysis_id]),'onclick'=>'LoadModal(this.title, this.value, true, 600);', 'class' => 'btn btn-success','title' => Yii::t('app', "Analysis Status<font color='Blue'></font>")]);
+                        return Html::button('<span style="width:90px;height:20px"><b>COMPLETED</span>', ['value'=>Url::to(['/lab/tagging/status','id'=>$model->analysis_id]),'onclick'=>'LoadModal(this.title, this.value, true, 600);', 'class' => 'btn btn-success','title' => Yii::t('app', "Analysis Status")]);
                       }
                       else if ($tagging->tagging_status_id==3) {
                           return "<span class='badge btn-warning' style='width:90px;height:20px'><b>ASSIGNED</span>";
@@ -592,7 +592,7 @@ $this->registerJs($PrintEvent);
                        
                 
                   }else{
-                   return Html::button('<span"><b>PENDING</span>', ['value'=>Url::to(['/lab/tagging/status','id'=>$model->analysis_id]),'onclick'=>'LoadModal(this.title, this.value, true, 600);', 'class' => 'btn btn-default','title' => Yii::t('app', "Analysis Status<font color='Blue'></font>")]);
+                   return Html::button('<span"><b>PENDING</span>', ['value'=>Url::to(['/lab/tagging/status','id'=>$model->analysis_id]),'onclick'=>'LoadModal(this.title, this.value, true, 600);', 'class' => 'btn btn-default','title' => Yii::t('app', "Analysis Status")]);
                 }
                  
                 },
@@ -605,7 +605,7 @@ $this->registerJs($PrintEvent);
                 'template' => $analysistemplate,
                 'buttons'=>[
                     'update'=>function ($url, $model) {
-                        return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/analysis/update','id'=>$model->analysis_id]), 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-primary','title' => Yii::t('app', "Update Analysis <font color='Blue'></font>")]);
+                        return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/analysis/update','id'=>$model->analysis_id]), 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-primary','title' => Yii::t('app', "Update Analysis")]);
                     },
                     'delete'=>function ($url, $model) {
                         $urls = '/lab/analysis/delete?id='.$model->analysis_id;

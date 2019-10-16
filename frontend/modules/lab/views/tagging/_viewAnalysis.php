@@ -179,24 +179,31 @@ $this->registerJs($js);
                         'format' => 'raw',
                         'enableSorting' => false,
                         'value'=> function ($model){
-                            $analysis = Analysis::findOne(['analysis_id' => $model->analysis_id]);
-                            $modelmethod=  Methodreference::findOne(['method'=>$analysis->method]); 
+                            // $analysis = Analysis::findOne(['analysis_id' => $model->analysis_id]);
+                            // $modelmethod=  Methodreference::findOne(['method'=>$analysis->method]); 
                             
-                            if ($modelmethod){
-                                $testnamemethod = Testnamemethod::findOne(['testname_id'=>$analysis->test_id, 'method_id'=>$analysis->testcategory_id]);                           
-                                $count = Workflow::find()->where(['testname_method_id'=>$testnamemethod->testname_method_id])->count();     
+                            // if ($modelmethod){
+                            //     $testnamemethod = Testnamemethod::findOne(['testname_id'=>$analysis->test_id, 'method_id'=>$analysis->testcategory_id]);                           
+                            //     if ($testnamemethod){
+                            //         return "";
+                            //     }
+                            //     $count = Workflow::find()->where(['testname_method_id'=>$testnamemethod->testname_method_id])->count();     
+                            //     if ($testnamemethod->testname_method_id){
+                            //         return "";
+                            //     }
                                 
-                                if ($count==0){
-                                    return $analysis->completed.'/'.$count;
-                                }else{
-                                    $percent = $analysis->completed / $count * 100;
-                                    $formattedNum = number_format($percent);
+
+                            //     if ($count==0){
+                            //         return $analysis->completed.'/'.$count;
+                            //     }else{
+                            //         $percent = $analysis->completed / $count * 100;
+                            //         $formattedNum = number_format($percent);
                                     
-                                    return $analysis->completed.'/'.$count." = ".$formattedNum."%";  
-                                }
-                            }else{
-                                return "";
-                            }
+                            //         return $analysis->completed.'/'.$count." = ".$formattedNum."%";  
+                            //     }
+                            // }else{
+                            //     return "";
+                            // }
 
                             return "";
                            
@@ -219,39 +226,43 @@ $this->registerJs($js);
                           'hAlign'=>'center',
                           'format'=>'raw',
                           'value' => function($model) {
-                            $analysis = Analysis::findOne(['analysis_id' => $model->analysis_id]);
-                            $modelmethod=  Methodreference::findOne(['method'=>$analysis->method]);                              
-                            $testnamemethod = Testnamemethod::findOne(['testname_id'=>$analysis->test_id, 'method_id'=>$analysis->testcategory_id]);                           
-                            $count = Workflow::find()->where(['testname_method_id'=>$testnamemethod->testname_method_id])->count();     
+                            // $analysis = Analysis::findOne(['analysis_id' => $model->analysis_id]);
+                            // $modelmethod=  Methodreference::findOne(['method'=>$analysis->method]);                              
+                            // $testnamemethod = Testnamemethod::findOne(['testname_id'=>$analysis->test_id, 'method_id'=>$analysis->testcategory_id]);                           
+                            // if ($testnamemethod){
+                            //     return "";
+                            // }
+                            // $count = Workflow::find()->where(['testname_method_id'=>$testnamemethod->testname_method_id])->count();     
+                            
                             
                          
-                             if ($analysis->completed==0) {
-                                return "<span class='badge btn-default' style='width:90px;height:20px'>PENDING</span>";
-                                }else if ($analysis->completed==$count) {
+                            //  if ($analysis->completed==0) {
+                            //     return "<span class='badge btn-default' style='width:90px;height:20px'>PENDING</span>";
+                            //     }else if ($analysis->completed==$count) {
 
                                   
-                                    $samples = Sample::find()->where(['sample_id' =>$analysis->sample_id])->one();
-                                    $samplecount= Tagginganalysis::find()
-                                    ->leftJoin('tbl_analysis', 'tbl_tagging_analysis.cancelled_by=tbl_analysis.analysis_id')
-                                    ->leftJoin('tbl_sample', 'tbl_analysis.sample_id=tbl_sample.sample_id')    
-                                    ->where(['tbl_tagging_analysis.tagging_status_id'=>2, 'tbl_analysis.sample_id'=>$samples->sample_id ])
-                                    ->all();  
-                                    $scount = count($samplecount); 
+                            //         $samples = Sample::find()->where(['sample_id' =>$analysis->sample_id])->one();
+                            //         $samplecount= Tagginganalysis::find()
+                            //         ->leftJoin('tbl_analysis', 'tbl_tagging_analysis.cancelled_by=tbl_analysis.analysis_id')
+                            //         ->leftJoin('tbl_sample', 'tbl_analysis.sample_id=tbl_sample.sample_id')    
+                            //         ->where(['tbl_tagging_analysis.tagging_status_id'=>2, 'tbl_analysis.sample_id'=>$samples->sample_id ])
+                            //         ->all();  
+                            //         $scount = count($samplecount); 
 
-                                    $Connection= Yii::$app->labdb;
-                                    $sql="UPDATE `tbl_sample` SET `completed`='$scount' WHERE `sample_id`=".$analysis->sample_id;
-                                    $Command=$Connection->createCommand($sql);
-                                    $Command->execute(); 
+                            //         $Connection= Yii::$app->labdb;
+                            //         $sql="UPDATE `tbl_sample` SET `completed`='$scount' WHERE `sample_id`=".$analysis->sample_id;
+                            //         $Command=$Connection->createCommand($sql);
+                            //         $Command->execute(); 
 
-                                    return "<span class='badge btn-success' style='width:90px;height:20px'>COMPLETED</span>";
+                            //         return "<span class='badge btn-success' style='width:90px;height:20px'>COMPLETED</span>";
                                     
-                                }
-                                else if ($analysis->completed>=1) {
-                                    return "<span class='badge btn-primary' style='width:90px;height:20px'>ONGOING</span>";
-                                }
-                                else if ($analysis->completed==0) {
+                            //     }
+                            //     else if ($analysis->completed>=1) {
+                            //         return "<span class='badge btn-primary' style='width:90px;height:20px'>ONGOING</span>";
+                            //     }
+                            //     else if ($analysis->completed==0) {
                                     
-                                }
+                            //     }
 
                             return "";
                           

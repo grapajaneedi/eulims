@@ -235,12 +235,6 @@ if(Yii::$app->user->can('allow-cancel-op')){
   </div>
 </div>
 <script type="text/javascript">
-    $('#btnOP').click(function(){
-        $('.modal-title').html($(this).attr('title'));
-        $('#modal').modal('show')
-            .find('#modalContent')
-            .load($(this).attr('value'));
-    });
     function addOp(url,title){
         LoadModal(title,url,'true','700px');
     }

@@ -2,6 +2,7 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+
 $controller = $this->context;
 $menus = $controller->module->menus;
 $route = $controller->route;

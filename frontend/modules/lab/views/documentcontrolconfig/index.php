@@ -38,7 +38,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'template' => '{update}',
             'buttons'=>[
                 'update'=>function ($url, $model) {
-                    return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/documentcontrolconfig/update','id'=>$model->documentcontrolconfig_id]),'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-success','title' => Yii::t('app', "Update Document Control Config<font color='Blue'></font>")]);
+                    return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/documentcontrolconfig/update','id'=>$model->documentcontrolconfig_id]),'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-success','title' => Yii::t('app', "Update Document Control Config")]);
                 },
             ],
         ],
