@@ -35,7 +35,7 @@ $func=new Functions();
 
 
 ?>
-<?php ini_set("memory_limit", "1000M");?>
+<?php ini_set("memory_limit", "100000M");?>
 <!-- <blockquote class="imgur-embed-pub" lang="en" data-id="a/lc3D4"><a href="//imgur.com/lc3D4">Tadpole Lessons</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script> -->
 
 <div class="tagging-index">
