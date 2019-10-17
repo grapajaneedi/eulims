@@ -29,7 +29,12 @@ $requestlist= ArrayHelper::map(Businessnature::find()->orderBy(['nature' => SORT
                     $btn_style = ';height: 45px;width: 45px; border-radius: 50%;display: inline-block;color:#0f096d;box-shadow: inset 0px 25px 0 rgba(255,255,255,0.3), 0 5px 5px rgba(0, 0, 0, 0.3);';
                     $space = '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
                     ?>
+                    
    <div class="csf-form" style="margin: 0 70px;">
+   <?php echo Html::button("<span class='glyphicon glyphicon-refresh'></span> Reset",['value' => '/lab/csf/index','onclick'=>'location.href=this.value', 'class' => 'btn btn-primary', 'title' => Yii::t('app', "View Request")]); ?>
+                     <br>
+                     <br>
+                   
     <?php $form = ActiveForm::begin(); ?>         
     <div class="row">
         <div class="col-sm-6">
@@ -50,6 +55,7 @@ $requestlist= ArrayHelper::map(Businessnature::find()->orderBy(['nature' => SORT
                             (<b>1</b>) Very Dissatisfied <br>        
                         </div>
                 </div>
+               
                 <div class="panel panel-info">
                 <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;"><b>Information</b></div>
                     <div class="panel-body">
@@ -206,14 +212,17 @@ $requestlist= ArrayHelper::map(Businessnature::find()->orderBy(['nature' => SORT
         <div class="panel panel-info">
         <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;"><b>Please give us your comments/ suggestions to improve our services. Also, let us know other test you require that we are not able to provide yet.</b></div>
             <div class="panel-body">
-                 <?= $form->field($model, 'essay')->textArea(['rows' => '5'])->label(false) ?>
+                 <?= $form->field($model, 'essay')->textArea(['rows' => '10'])->label(false) ?>
             </div>  
         </div>    
+       
             <?php $form->field($model, 'r_date')->hiddenInput()->label(false) ?>
         </div>
         </div>
         <div class="row" style="float: right;padding-right: 30px">
-        <?= Html::submitButton('Submit Answers', ['class' => 'btn btn-primary']) ?>
+      
+
+         <?php echo Html::submitButton('Submit Feedback', ['class' => 'btn btn-primary']) ?>
         <?php if($model->isNewRecord){ ?>
         <?php } ?>
     <?php ActiveForm::end(); ?>

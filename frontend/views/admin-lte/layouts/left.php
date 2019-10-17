@@ -120,13 +120,13 @@ if(Yii::$app->user->isGuest){
                 $pkgdetails2=str_replace(" ","-",$pkgdetails1);
                 $SubmodulePermission="access-".$pkgdetails2; //access-Order of Payment
 				if($mItem->extra_element == 1){
-					$numNotification = '&nbsp;&nbsp;<span class="label label-danger" id="count_noti_sub_referral">'.$unresponded.'</span>';
-					$showURL = '#';
-					$template = '<a href="{url}" onclick="showNotifications()" id="btn_unresponded">{label}</a>';
+				//	$numNotification = '&nbsp;&nbsp;<span class="label label-danger" id="count_noti_sub_referral">'.$unresponded.'</span>';
+					// $showURL = '#';
+					// $template = '<a href="{url}" onclick="showNotifications()" id="btn_unresponded">{label}</a>';
 				} elseif ($mItem->extra_element == 2) {
-					$numNotification = '&nbsp;&nbsp;<span class="label label-danger" id="count_noti_sub_bid">'.$unseen.'</span>';
-					$showURL = '#';
-					$template = '<a href="{url}" onclick="showBidNotifications()" id="btn_unseen_bid">{label}</a>';
+				//	$numNotification = '&nbsp;&nbsp;<span class="label label-danger" id="count_noti_sub_bid">'.$unseen.'</span>';
+					// $showURL = '#';
+					// $template = '<a href="{url}" onclick="showBidNotifications()" id="btn_unseen_bid">{label}</a>';
 				} else {
 					$numNotification = '';
 					$template = '<a href="{url}">{label}</a>';
@@ -153,10 +153,10 @@ if(Yii::$app->user->isGuest){
             // }
 			
             $MainIcon=substr($Item->icon,6,strlen($Item->icon)-6);
-			$showNotification = (stristr($Item->PackageName, 'referral')) ? '&nbsp;&nbsp;<span class="label label-danger" id="count_noti_menu">'.$all_notification.'</span>' : '';
+		//	$showNotification = (stristr($Item->PackageName, 'referral')) ? '&nbsp;&nbsp;<span class="label label-danger" id="count_noti_menu">'.$all_notification.'</span>' : '';
             $ItemMenu[]=[
-                'label' => '<img src="/images/icons/' .$Item->icon. '.png" style="width:20px">  <span>' . ucwords($Item->PackageName) . $showNotification . '</span>', 
-                'icon'=>' " style="display:none;width:0px"',
+                // 'label' => '<img src="/images/icons/' .$Item->icon. '.png" style="width:20px">  <span>' . ucwords($Item->PackageName) . $showNotification . '</span>', 
+                // 'icon'=>' " style="display:none;width:0px"',
                 'url' => "",
                 //'url' => ["/".$Item->PackageName."/index"],
                 'items'=>$ItemSubMenu,
