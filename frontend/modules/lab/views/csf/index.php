@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 use common\models\lab\Request;
+use common\models\lab\Lab;
 use common\models\lab\Markettype;
 use common\models\lab\Paymenttype;
 use yii\helpers\Url;
@@ -108,7 +109,7 @@ SCRIPT;
                             ['itemOptions' => ['onchange'=>$js]]
                         ); ?>
                         <?php echo $form->field($model, 'service')->radioList(
-                                                    ArrayHelper::map(Markettype::find()->all(),'id','type'),
+                                                    ArrayHelper::map(Lab::find()->where(['active'=> 1])->all(),'lab_id','labname'),
                                                     ['itemOptions' => ['onchange'=>$js]]
                         ); ?>
                       
@@ -263,16 +264,10 @@ SCRIPT;
             </div>
        
         </div>    
-        
-        <div class="panel panel-info">
-        <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;"><b>Signature</b></div>
-            <div class="panel-body">
-                 <?= $form->field($model, 'r_date')->textArea(['rows' => '3'])->label(false) ?>
-            </div>
-       
-        </div>    
 
-          
+        
+
+            <?php $form->field($model, 'r_date')->hiddenInput()->label(false) ?>
         </div>
         </div>
        

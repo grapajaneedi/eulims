@@ -89,4 +89,13 @@ class Csf extends \yii\db\ActiveRecord
             'r_date' => 'R Date',
         ];
     }
+
+    public function getMarkettype()
+    {
+        return $this->hasOne(Markettype::className(), ['id' => 'tom']);
+    }
+    public function getLab()
+    {
+        return $this->hasOne(Lab::className(), ['lab_id' => 'service']);
+    }
 }

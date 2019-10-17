@@ -3,7 +3,6 @@
 
 use yii\helpers\Html;
 use kartik\detail\DetailView;
-use common\models\lab\Markettype;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\lab\Csf */
@@ -17,18 +16,15 @@ use common\models\lab\Markettype;
    
 
     <div class="panel panel-info">
-                            <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:200%;"><b>Customer Satisfaction Feedback Results</b></div>
+                            <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:100%;"><b>Customer Satisfaction Feedback Results</b></div>
                             <div class="panel-body">
-                            <h1 style="color:#1a4c8f;font-family:Century Gothic;text-align:center;font-size:500%;text-shadow: 
-      4px 4px 0px #d5d5d5, 
-      7px 7px 0px rgba(0, 0, 0, 0.2);"><b>Thank you!</b></h1>
+                           
        <h1 style="color:black;font-family:Century Gothic;text-align:center;font-size:200%;text-shadow: 
       4px 4px 0px #d5d5d5, 
       7px 7px 0px rgba(0, 0, 0, 0.2);"><b><?php echo $model->name?></b></h1>
 
                     
-                                      <h4 style="text-align:center;">You recently gave us some really helpful ratings and comments about our services. We wanted to let you know that we will use your feedback for our future improvements.<br>
-                                      We really appreciate the time you took to answer the survey.<br></h4>
+                                      <h4 style="text-align:center;">SUMMARY<br></h4>
 
                                     
 
@@ -278,5 +274,9 @@ use common\models\lab\Markettype;
 
     ]);
     ?>
+
+<div class="row" style="float: right;padding-right: 30px">
+            <?php echo Html::button('<i class="glyphicon glyphicon-print"></i> Print Label', [ 'onclick'=>"window.location.href = '" . \Yii::$app->urlManager->createUrl(['/reports/preview?url=/lab/request/printlabel','request_id'=>$model->id, 'class' => 'btn btn-success'])]) ?>
+       
 
 </div>
