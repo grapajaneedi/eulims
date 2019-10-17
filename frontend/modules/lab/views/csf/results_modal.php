@@ -81,7 +81,7 @@ use kartik\detail\DetailView;
                     'columns' => [
                         [
                             'label'=>'Type of Market',
-                            'value'=> $model->markettype->type,
+                            'value'=> $model->markettype ? $model->markettype->type : "",
                             'displayOnly'=>true,
                         ],
                       
@@ -92,7 +92,7 @@ use kartik\detail\DetailView;
                         [
                             'label'=>'What services of the RSTL have you availed?',
                             'format'=>'raw',
-                            'value'=>$model->lab->labname,
+                            'value'=> $model->lab ? $model->lab->labname : "",
                             'displayOnly'=>true
                         ],
                     ],
