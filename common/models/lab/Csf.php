@@ -55,7 +55,7 @@ class Csf extends \yii\db\ActiveRecord
         return [
             [['d_deliverytime', 'd_accuracy', 'd_speed', 'd_cost', 'd_attitude', 'd_overall', 'i_deliverytime', 'i_accuracy', 'i_speed', 'i_cost', 'i_attitude', 'i_overall', 'recommend'], 'integer'],
             [['r_date'], 'safe'],
-            [['name', 'essay'], 'string', 'max' => 500],
+            [['name', 'essay', 'ref_num'], 'string', 'max' => 500],
             [['nob', 'tom', 'service'], 'string', 'max' => 200],
         ];
     }

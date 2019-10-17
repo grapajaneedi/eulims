@@ -44,6 +44,7 @@ $tomlist= ArrayHelper::map(Markettype::find()->all(),'id','type');
             ],
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            'ref_num',
             'name',
             [
                 'attribute' => 'service',
@@ -51,7 +52,7 @@ $tomlist= ArrayHelper::map(Markettype::find()->all(),'id','type');
                 'value' => function($model) {
                     $lab = Lab::find()->where(['lab_id' => $model->service])->one();
 
-                        if ($lab->labname){
+                        if ($lab){
                             return $lab->labname;
                         }else{
                            return "None";
@@ -71,8 +72,8 @@ $tomlist= ArrayHelper::map(Markettype::find()->all(),'id','type');
                 'attribute' => 'r_date',
                 'label' => 'Date and Time',
                 'value' => function($model) {
-                    if ($lab->r_date){
-                        return $lab->r_date;
+                    if ($model){
+                        return $model->r_date;
                     }else{
                        return "None";
                     }
@@ -85,7 +86,7 @@ $tomlist= ArrayHelper::map(Markettype::find()->all(),'id','type');
                 'label' => 'Type of Market',
                 'value' => function($model) {
                     $tom = Markettype::find()->where(['id' => $model->tom])->one();
-                    if ($tom->type){
+                    if ($tom){
                         return $tom->type;
                     }else{
                        return "None";

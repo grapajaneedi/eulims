@@ -4,7 +4,7 @@
 use yii\helpers\Html;
 use kartik\detail\DetailView;
 use common\models\lab\Markettype;
-
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $model common\models\lab\Csf */
 
@@ -40,3 +40,7 @@ use common\models\lab\Markettype;
        
 
 </div>
+<?php 
+echo Html::button("<span class='glyphicon glyphicon-plus'></span> Submit New Customer Satisfaction Index",['value' => '/lab/csf/index','onclick'=>'location.href=this.value', 'class' => 'btn btn-primary', 'title' => Yii::t('app', "View Request")]);
+
+?>

@@ -48,6 +48,17 @@ use kartik\detail\DetailView;
                 [
                     'columns' => [
                         [
+                            'label'=>'Request Reference Number',
+                            'value'=>$model->ref_num,
+                            'displayOnly'=>true,
+                         
+                        ],
+                      
+                    ],
+                ],
+                [
+                    'columns' => [
+                        [
                             'label'=>'Date',
                             'value'=>$model->r_date,
                             'displayOnly'=>true,
