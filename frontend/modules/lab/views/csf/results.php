@@ -50,7 +50,13 @@ $tomlist= ArrayHelper::map(Markettype::find()->all(),'id','type');
                 'label' => 'Laboratory',
                 'value' => function($model) {
                     $lab = Lab::find()->where(['lab_id' => $model->service])->one();
-                        return $lab->labname;
+
+                        if ($lab->labname){
+                            return $lab->labname;
+                        }else{
+                           return "None";
+                        }
+                       
                     
                     
                 },
@@ -65,7 +71,11 @@ $tomlist= ArrayHelper::map(Markettype::find()->all(),'id','type');
                 'attribute' => 'r_date',
                 'label' => 'Date and Time',
                 'value' => function($model) {
-                    return $model->r_date;
+                    if ($lab->r_date){
+                        return $lab->r_date;
+                    }else{
+                       return "None";
+                    }
                     
                 },
             ],
@@ -75,7 +85,11 @@ $tomlist= ArrayHelper::map(Markettype::find()->all(),'id','type');
                 'label' => 'Type of Market',
                 'value' => function($model) {
                     $tom = Markettype::find()->where(['id' => $model->tom])->one();
+                    if ($tom->type){
                         return $tom->type;
+                    }else{
+                       return "None";
+                    }
                     
                     
                 },
