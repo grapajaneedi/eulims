@@ -28,7 +28,7 @@ use yii\helpers\Url;
 
                     
                                     
-                                      <center><h1>We really appreciate the time you took to answer the survey.</h1></center><br></h4>
+                                      <center><h1>We really appreciate the time you took to answer the survey</h1></center><br></h4>
 
                                     
 
