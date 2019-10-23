@@ -459,7 +459,15 @@ $Session= Yii::$app->session;
                 </li>
         </ul>
     </div>
-    
+    <div class="container">
+     <?php
+        echo "<a href='/referrals/referral/printref?id=".$request['referral_id']."' class='btn btn-success' style='margin-left: 5px'  target='_blank'><i class='fa fa-print'></i> Print Referral</a>";
+        echo "<br /><br />";
+       /* echo "<pre>";
+        print_r($request);
+        echo "</pre>";*/
+     ?>
+     </div>
       <div class="container">
          <div class="panel panel-primary">
         
