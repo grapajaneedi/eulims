@@ -19,7 +19,7 @@ class CsfSearch extends Csf
     {
         return [
             [['id', 'd_deliverytime', 'd_accuracy', 'd_speed', 'd_cost', 'd_attitude', 'd_overall', 'i_deliverytime', 'i_accuracy', 'i_speed', 'i_cost', 'i_attitude', 'i_overall', 'recommend'], 'integer'],
-            [['name', 'nob', 'tom', 'service', 'essay', 'r_date'], 'safe'],
+            [['name', 'nob', 'tom', 'service', 'essay', 'r_date', 'ref_num'], 'safe'],
         ];
     }
 
@@ -60,6 +60,7 @@ class CsfSearch extends Csf
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'ref_num' => $this->ref_num,
             'd_deliverytime' => $this->d_deliverytime,
             'd_accuracy' => $this->d_accuracy,
             'd_speed' => $this->d_speed,

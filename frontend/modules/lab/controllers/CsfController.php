@@ -48,6 +48,26 @@ class CsfController extends Controller
         ]);
     }
 
+    public function actionResult()
+    {
+        $searchModel = new CsfSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('results', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    public function actionResultmodal($id)
+    {
+        if(Yii::$app->request->isAjax){
+            return $this->renderAjax('results_modal', [
+                    'model' => $this->findModel($id),
+                ]);
+        }
+    }
+
     /**
      * Displays a single Csf model.
      * @param integer $id
