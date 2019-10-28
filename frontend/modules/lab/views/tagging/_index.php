@@ -53,7 +53,7 @@ $func=new Functions();
        <?php $form = ActiveForm::begin(); ?>
        <?php
                $disabled=false; 
-               echo $func->GetSampleCode($form,$model,$disabled,"");
+              // echo $func->GetSampleCode($form,$model,$disabled,"");
        ?>    
        <?php ActiveForm::end(); ?>
            </div>
