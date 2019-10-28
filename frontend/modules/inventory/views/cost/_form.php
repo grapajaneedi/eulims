@@ -30,7 +30,7 @@ use kartik\date\DatePicker;
     ?>
 	
     <?php
-     echo "<b>Manufacturing Date</b>";
+     echo "<b>Date Received</b>";
     echo DatePicker::widget([
         'model' => $model,
         'attribute' => 'date_received',
