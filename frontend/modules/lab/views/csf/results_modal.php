@@ -3,6 +3,7 @@
 
 use yii\helpers\Html;
 use kartik\detail\DetailView;
+use common\models\lab\Csf;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\lab\Csf */
@@ -11,10 +12,26 @@ use kartik\detail\DetailView;
 ?>
 <div class="csf-view">
 
+<?php
+ $csf = Csf::find()->where(['id'=>$model->id])->one();
+
+ $delivery = $csf->d_deliverytime + $csf->d_accuracy + $csf->d_speed + $csf->d_cost + $csf->d_attitude + $csf->d_overall;
+
+ $d = $delivery / 6;
+
+ $importance = $csf->i_deliverytime + $csf->i_accuracy + $csf->i_speed + $csf->i_cost + $csf->i_attitude + $csf->i_overall;
+ $i = $importance / 6;
+?>
+
+<div class="row" style="float: right;padding-right: 30px">
+<?php echo Html::button("<span class='glyphicon glyphicon-print'></span> Print CSF",['value' => '/lab/csf/index','onclick'=>'location.href=this.value', 'class' => 'btn btn-primary', 'title' => Yii::t('app', "View Request")]); ?>
+
+
+</div>
     <h1><?= Html::encode($this->title) ?></h1>
 
    
-
+    
     <div class="panel panel-info">
                             <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:100%;"><b>Customer Satisfaction Feedback Results</b></div>
                             <div class="panel-body">
@@ -24,7 +41,7 @@ use kartik\detail\DetailView;
       7px 7px 0px rgba(0, 0, 0, 0.2);"><b><?php echo $model->name?></b></h1>
 
                     
-                                      <h4 style="text-align:center;">SUMMARY<br></h4>
+                                      <h4 style="text-align:center;">SUMMARY</h4><br>Delivery of Service: <?php echo round($d) ?>/5<br>Importance: <?php echo round($i) ?>/5<br>Recommendations: <?php echo $csf->recommend?>/10
 
                                     
 
@@ -32,6 +49,7 @@ use kartik\detail\DetailView;
                         
                         </div>
                 </div>
+              
 
         <?php
         
@@ -274,7 +292,7 @@ use kartik\detail\DetailView;
                     [
                         'label'=>'Comments and Suggestions',
                         'format'=>'raw',
-                        'value'=>$model->name,
+                        'value'=>$model->essay,
                         'displayOnly'=>true
                     ],
                 ],
@@ -286,8 +304,4 @@ use kartik\detail\DetailView;
     ]);
     ?>
 
-<div class="row" style="float: right;padding-right: 30px">
-            <?php echo Html::button('<i class="glyphicon glyphicon-print"></i> Print Label', [ 'onclick'=>"window.location.href = '" . \Yii::$app->urlManager->createUrl(['/reports/preview?url=/lab/request/printlabel','request_id'=>$model->id, 'class' => 'btn btn-success'])]) ?>
-       
 
-</div>

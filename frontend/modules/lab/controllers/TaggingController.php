@@ -58,7 +58,7 @@ class TaggingController extends Controller
              
         ]);
 
-        return $this->render('index', [
+        return $this->render('_index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'model'=>$model,
