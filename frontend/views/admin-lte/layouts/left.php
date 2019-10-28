@@ -38,8 +38,8 @@ if(Yii::$app->user->isGuest){
        $UsernameDesignation=$CurrentUserName.'<br>'.$CurrentUserDesignation;
     }
   
-	// $unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'),true);
-	// $unresponded = $unresponded_notification['num_notification'] > 0 ? $unresponded_notification['num_notification'] : ''; //no display if 0
+	$unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'),true);
+	$unresponded = $unresponded_notification['num_notification'] > 0 ? $unresponded_notification['num_notification'] : ''; //no display if 0
 	
 	// $unseen_bid_notification = json_decode(Yii::$app->runAction('/referrals/bidnotification/count_unseen_bidnotification'),true);
 	// $unseen = $unseen_bid_notification['bid_notification'] > 0 ? $unseen_bid_notification['bid_notification'] : '';
@@ -120,9 +120,9 @@ if(Yii::$app->user->isGuest){
                 $pkgdetails2=str_replace(" ","-",$pkgdetails1);
                 $SubmodulePermission="access-".$pkgdetails2; //access-Order of Payment
 				if($mItem->extra_element == 1){
-					// $numNotification = '&nbsp;&nbsp;<span class="label label-danger" id="count_noti_sub_referral">'.$unresponded.'</span>';
-					// $showURL = '#';
-					// $template = '<a href="{url}" onclick="showNotifications()" id="btn_unresponded">{label}</a>';
+					$numNotification = '&nbsp;&nbsp;<span class="label label-danger" id="count_noti_sub_referral">'.$unresponded.'</span>';
+					$showURL = '#';
+					$template = '<a href="{url}" onclick="showNotifications()" id="btn_unresponded">{label}</a>';
 				} elseif ($mItem->extra_element == 2) {
 					$numNotification = '&nbsp;&nbsp;<span class="label label-danger" id="count_noti_sub_bid">'.$unseen.'</span>';
 					$showURL = '#';
@@ -153,15 +153,15 @@ if(Yii::$app->user->isGuest){
             // }
 			
             $MainIcon=substr($Item->icon,6,strlen($Item->icon)-6);
-			//$showNotification = (stristr($Item->PackageName, 'referral')) ? '&nbsp;&nbsp;<span class="label label-danger" id="count_noti_menu">'.$all_notification.'</span>' : '';
-            // $ItemMenu[]=[
-            //     'label' => '<img src="/images/icons/' .$Item->icon. '.png" style="width:20px">  <span>' . ucwords($Item->PackageName) . $showNotification . '</span>', 
-            //     'icon'=>' " style="display:none;width:0px"',
-            //     'url' => "",
-            //     //'url' => ["/".$Item->PackageName."/index"],
-            //     'items'=>$ItemSubMenu,
-            //     'visible'=>Yii::$app->user->can($modulePermission)
-            // ]; 
+			$showNotification = (stristr($Item->PackageName, 'referral')) ? '&nbsp;&nbsp;<span class="label label-danger" id="count_noti_menu">'.$all_notification.'</span>' : '';
+            $ItemMenu[]=[
+                'label' => '<img src="/images/icons/' .$Item->icon. '.png" style="width:20px">  <span>' . ucwords($Item->PackageName) . $showNotification . '</span>', 
+                'icon'=>' " style="display:none;width:0px"',
+                'url' => "",
+                //'url' => ["/".$Item->PackageName."/index"],
+                'items'=>$ItemSubMenu,
+                'visible'=>Yii::$app->user->can($modulePermission)
+            ]; 
              unset($ItemSubMenu);
         }
         // Fixed Sub Menu Item
@@ -197,16 +197,16 @@ if(Yii::$app->user->isGuest){
             ],
             'visible'=>Yii::$app->user->can('access-system')
         ];
-        //array_push($ItemMenu, $SubItem);
+        array_push($ItemMenu, $SubItem);
         ?>
          <?php 
-        //  echo dmstr\widgets\Menu::widget(
-        //     [
-        //         'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
-        //         'items' => $ItemMenu,
-        //         'encodeLabels' => false,
-        //     ]
-        // );
+         echo dmstr\widgets\Menu::widget(
+            [
+                'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
+                'items' => $ItemMenu,
+                'encodeLabels' => false,
+            ]
+        );
         ?>
     </section>
 
