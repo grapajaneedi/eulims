@@ -365,24 +365,71 @@ class RestapiController extends \yii\rest\Controller
     }
 
     public function actionWithdraw(){
-        //use transaction per item
+        //gets the data sent by the mobile app, items to be withdrawn
         $my_var = \Yii::$app->request->post();
-        //first let us save the mother record before the child/item
 
-        $model = new InventoryWithdrawal;
-        $model->created_by=$this->getuserid();
-        $model->withdrawal_datetime=date('Y-m-d');
-        $model->lab_id=1;
-        $model->total_qty=0;//$key['Quantity'];
-        $model->total_cost=0;//$key['Subtotal'];
-        $model->remarks="transaction from mobile";
-        $model->save();
+        //playing safe
+        $session = Yii::$app->session;
+        try{
+            //begin transaction
+            $connection = Yii::$app->inventorydb;
+            $transaction = $connection->beginTransaction();
 
-        // the format is objects inside an array
-        foreach($my_var as $myvar) {
-            $entry = InventoryEntries::findOne($key['ID']); //get the entries record
+            if($my_var){//condition to check if there are items to be withdraw
 
+                $model = new InventoryWithdrawal;
+                $model->created_by=$this->getuserid();
+                $model->withdrawal_datetime=date('Y-m-d');
+                $model->lab_id=1; //check if the user has lab_id
+                $model->total_qty=0;
+                $model->total_cost=0;
+                $model->remarks="Transaction made from mobile";
+                if(!$model->save()){ //if the header failed to save
+                    $transaction->rollBack();
+                    throw new Exception("Cannot save header of Withdrawal Items!", 1);
+                }
+
+                // the format is objects inside an array
+                foreach($my_var as $myvar) {
+                    $entry = InventoryEntries::findOne($key['ID']); //get the entries record
+                    
+                    if($key['Quantity']>$entry->quantity_onhand){ // cart qty > withdrawable ~> throw ERR
+                        $transaction->rollBack();
+                        throw new Exception("Withdrawable Quantity is less than the desired Quantity!", 1);
+                     }
+
+                     //subtract qty in Entries tbl
+                     $entry->quantity_onhand = (int)$entry->quantity_onhand - (int)$key['Quantity']; 
+                     if($entry->save()){
+                        $func = new Functions();
+                        $func->checkreorderpoint($entry->product_id);
+                        //create record of withdrawaldetails item
+                        $item = new InventoryWithdrawaldetails();
+                        $item->inventory_withdrawal_id =$model->inventory_withdrawal_id;
+                        $item->inventory_transactions_id=$key['ID'];
+                        $item->quantity=$key['Quantity'];
+                        $item->price=$key['Subtotal'];
+                        $item->withdarawal_status_id=2;
+                        $item->save();
+                      }
+                }
+
+                $transaction->commit();
+                return $this->asJson([
+                    'success' => true,
+                    'message' => 'Processed Successfully!',
+                ]);
+            }else{
+                return $this->asJson([
+                    'success' => false,
+                    'message' => 'Cart Empty',
+                ]); 
+            }
+
+        }catch (Exception $e) {
+            $transaction->rollBack();
+            throw $e;
         }
-        return true;
+
     }
 }
