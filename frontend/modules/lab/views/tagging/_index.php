@@ -53,15 +53,15 @@ $func=new Functions();
        <?php $form = ActiveForm::begin(); ?>
        <?php
                $disabled=false; 
-              // echo $func->GetSampleCode($form,$model,$disabled,"");
+               echo $func->GetSampleCode($form,$model,$disabled,"");
        ?>    
        <?php ActiveForm::end(); ?>
            </div>
               </div>
 <?php
-//  $this->render('index', [
-//                     'model' => $model,
-//                     'searchModel' => $searchModel,
-//                     'dataProvider' => $dataProvider,
+ $this->render('index', [
+                    'model' => $model,
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
                    
-//                 ]) ?>   
+                ]) ?>   
