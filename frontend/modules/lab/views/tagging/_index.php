@@ -58,8 +58,8 @@ $func=new Functions();
        <?php ActiveForm::end(); ?>
            </div>
               </div>
-<?php
- $this->render('index', [
+<?=
+                $this->render('index', [
                     'model' => $model,
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
