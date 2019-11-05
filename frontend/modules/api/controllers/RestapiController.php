@@ -7,6 +7,7 @@ use common\models\lab\Analysis;
 use common\models\lab\Workflow;
 use common\models\lab\Request;
 use common\models\lab\Procedure;
+use common\models\lab\Tagging;
 use common\models\lab\Customer;
 use common\models\lab\Customeraccount;
 use common\models\lab\LogincForm;
@@ -164,35 +165,32 @@ class RestapiController extends \yii\rest\Controller
     public function actionAnalysis()
     {  
         if (isset($_GET['id'])) {
+
+            $code = $_GET['id'];
             $year = date("Y");
-            $sample = Sample::find()->select(['sample_id','sample_code'])
+            $sample = Sample::find()->select(['sample_id','sample_code', 'samplename', 'description'])
             ->where(['LIKE', 'tbl_sample.sample_code', $_GET['id']])
             ->AndWhere(['LIKE', 'sample_year', $year])->one();
-        // $analysis = Analysis::find()->select(['analysis_id','testname', 'method'])
-        // ->where(['LIKE', 'sample_code', $_GET['id']])->all();
-        //progress - count ng ilang ang natapos
-        //workflow - count ng workflow
-        //status
 
-        //$workflow = Workflow::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['id']])->all();
-       // $tagginganalysis = Procedure::find()->select(['sample_id','sample_code'])->where(['LIKE', 'sample_code', $_GET['samplecode']])->all();
-        
-       return $this->asJson(['sampleCode'=>$sample->sample_code, 
-       'samples'=>['name'=>$sample->samplename, 
-       'description'=>$sample->description], 
-            'tests'=> ['id'=>null,
-            'name'=>null, 
-            'method'=>null,
-            'progress'=>null, 
-            'workflow'=>null, 
-            'status'=>null,
-                 'procedures'=>['procedure'=>null,
-                                 'startDate'=>null,
-                                  'endDate'=>null, 
-                                  'status'=>null]]]);
+            $analysis = Analysis::find()->select(['tbl_analysis.analysis_id','tbl_analysis.testname', 'tbl_analysis.method', 'tbl_tagging.tagging_status_id', 'tbl_tagging.start_date', 'tbl_tagging.end_date'])
+            ->leftJoin('tbl_tagging', 'tbl_tagging.analysis_id=tbl_analysis.analysis_id')
+            ->where(['LIKE', 'tbl_analysis.sample_id', $sample->sample_id])->all();
 
-        // return $this->asJson(['sampleCode'=>$sample->sample_code,
-        //         'samples'=>$sample, 'tests'=>$analysis]);
+          
+           
+            if ($sample){
+                return $this->asJson(['sampleCode'=>$sample->sample_code, 
+                'samples'=>['name'=>$sample->samplename, 
+                'description'=>$sample->description], 
+                'tests'=>$analysis]);
+
+                //echo print_r($analysis);
+            }else{
+                return $this->asJson(['sampleCode'=>'Not found']);
+            }
+          
+
+       
                    
         }
     }
