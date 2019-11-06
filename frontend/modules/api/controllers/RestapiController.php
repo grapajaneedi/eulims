@@ -6,6 +6,7 @@ use common\models\lab\Sample;
 use common\models\lab\Analysis;
 use common\models\lab\Workflow;
 use common\models\lab\Request;
+use common\models\lab\Sample;
 use common\models\lab\Procedure;
 use common\models\lab\Tagging;
 use common\models\lab\Customer;
