@@ -143,6 +143,8 @@ class TaggingController extends Controller
     }
 
     public function actionGetsamplecode($q = null, $id = null) {
+        $year = date("Y");
+
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $out = ['results' => ['id' => '', 'text' => '']];
         if (!is_null($q)) {
@@ -150,6 +152,7 @@ class TaggingController extends Controller
             $query->select('sample_id as id, sample_code AS text')
                     ->from('tbl_sample')
                     ->where(['like', 'sample_code', $q])
+                    ->Andwhere(['sample_year'=>$year])
                     ->limit(20);
             $command = $query->createCommand();
             $command->db= \Yii::$app->labdb;

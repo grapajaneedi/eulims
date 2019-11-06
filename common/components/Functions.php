@@ -315,7 +315,7 @@ SCRIPT;
                     'options' => ['placeholder' => 'Search or Scan Sample Code ...','disabled'=>$disabled,'class'=>'.input-group.input-group-sm'],
                     'pluginOptions' => [
                         'allowClear' => true,
-                        'minimumInputLength' => 3,
+                        'minimumInputLength' => 2,
                         'language' => [
                             'errorLoading' => new JsExpression("function () { return 'Waiting for results...'; }"),
                         ],
