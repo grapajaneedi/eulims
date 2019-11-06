@@ -1,12 +1,12 @@
 <?php
 
-// $server = "localhost";
-// $username = "eulims";
-// $password = "eulims";
-
-$server = "192.168.1.96";
+$server = "localhost";
 $username = "eulims";
-$password = "D05793ul1ms!@#$%";
+$password = "eulims";
+
+// $server = "192.168.1.96";
+// $username = "eulims";
+// $password = "D05793ul1ms!@#$%";
 return [
     'db'=>[
         'class' => 'yii\db\Connection',  
@@ -25,7 +25,7 @@ return [
         'tablePrefix' => 'tbl_',
     ],
     'inventorydb'=>[
-        'class' => 'yii\db\Connection',  
+        'class' => 'yii\db\Connection',
         'dsn' => 'mysql:host='.$server.';dbname=eulims_inventory',
         'username' => $username,
         'password' => $password,
