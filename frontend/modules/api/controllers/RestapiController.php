@@ -23,6 +23,7 @@ use common\models\finance\CustomerTransaction;
 use common\models\lab\Booking;
 use common\models\system\Rstl;
 use common\models\auth\AuthAssignment;
+use common\components\Functions;
 
 class RestapiController extends \yii\rest\Controller
 {
@@ -320,7 +321,7 @@ class RestapiController extends \yii\rest\Controller
 
             return $this->asJson([
                 'success' => true,
-                'message' => 'Schedule created for product code'.$my_var['product_name'],
+                'message' => 'Schedule created for product code '.$product->product_name,
             ]); 
         }else{
             return $this->asJson([
@@ -369,10 +370,10 @@ class RestapiController extends \yii\rest\Controller
         $my_var = \Yii::$app->request->post();
 
         //playing safe
-        $session = Yii::$app->session;
+        $session = \Yii::$app->session;
         try{
             //begin transaction
-            $connection = Yii::$app->inventorydb;
+            $connection = \Yii::$app->inventorydb;
             $transaction = $connection->beginTransaction();
 
             if($my_var){//condition to check if there are items to be withdraw
@@ -386,29 +387,29 @@ class RestapiController extends \yii\rest\Controller
                 $model->remarks="Transaction made from mobile";
                 if(!$model->save()){ //if the header failed to save
                     $transaction->rollBack();
-                    throw new Exception("Cannot save header of Withdrawal Items!", 1);
+                    throw new \Exception("Cannot save header of Withdrawal Items!", 1);
                 }
 
                 // the format is objects inside an array
-                foreach($my_var as $myvar) {
-                    $entry = InventoryEntries::findOne($key['ID']); //get the entries record
+                foreach($my_var as $key) {
+                    $entry = InventoryEntries::findOne($key['id']); //get the entries record
                     
-                    if($key['Quantity']>$entry->quantity_onhand){ // cart qty > withdrawable ~> throw ERR
+                    if($key['quantity']>$entry->quantity_onhand){ // cart qty > withdrawable ~> throw ERR
                         $transaction->rollBack();
-                        throw new Exception("Withdrawable Quantity is less than the desired Quantity!", 1);
+                        throw new \Exception("Withdrawable Quantity is less than the desired Quantity!", 1);
                      }
 
                      //subtract qty in Entries tbl
-                     $entry->quantity_onhand = (int)$entry->quantity_onhand - (int)$key['Quantity']; 
+                     $entry->quantity_onhand = (int)$entry->quantity_onhand - (int)$key['quantity']; 
                      if($entry->save()){
                         $func = new Functions();
                         $func->checkreorderpoint($entry->product_id);
                         //create record of withdrawaldetails item
                         $item = new InventoryWithdrawaldetails();
                         $item->inventory_withdrawal_id =$model->inventory_withdrawal_id;
-                        $item->inventory_transactions_id=$key['ID'];
-                        $item->quantity=$key['Quantity'];
-                        $item->price=$key['Subtotal'];
+                        $item->inventory_transactions_id=$key['id'];
+                        $item->quantity=$key['quantity'];
+                        $item->price=$entry->amount*(int)$key['quantity'];
                         $item->withdarawal_status_id=2;
                         $item->save();
                       }
@@ -426,7 +427,7 @@ class RestapiController extends \yii\rest\Controller
                 ]); 
             }
 
-        }catch (Exception $e) {
+        }catch (\Exception $e) {
             $transaction->rollBack();
             throw $e;
         }

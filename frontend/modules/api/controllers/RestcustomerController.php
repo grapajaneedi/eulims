@@ -12,6 +12,7 @@ use common\models\lab\Request;
 use common\models\finance\CustomerWallet;
 use common\models\finance\CustomerTransaction;
 use common\models\lab\Booking;
+use common\components\Functions;
 
 class RestcustomerController extends \yii\rest\Controller
 {
