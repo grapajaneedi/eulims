@@ -175,11 +175,11 @@ class SampleController extends Controller
 					}
                     $sample->save(false);
                 }
-				Yii::$app->session->setFlash('success', "Sample Successfully Created.");
+				//Yii::$app->session->setFlash('success', "Sample Successfully Created.");
                 return $this->redirect(['/lab/request/view', 'id' => $requestId]);
             } else {
                 if($model->save(false)){
-					Yii::$app->session->setFlash('success', "Sample Successfully Created.");
+				//	Yii::$app->session->setFlash('success', "Sample Successfully Created.");
                     return $this->redirect(['/lab/request/view', 'id' => $requestId]);
                 }
             }
@@ -257,11 +257,11 @@ class SampleController extends Controller
             } else {
                 if($model->save(false) && isset($analysisSave) == 1){
                     $transaction->commit();
-    				Yii::$app->session->setFlash('success', $model->samplename." Successfully Updated.");
+    			//	Yii::$app->session->setFlash('success', $model->samplename." Successfully Updated.");
                     return $this->redirect(['/lab/request/view', 'id' => $model->request_id]);
                 } else {
                     $transaction->rollBack();
-                    Yii::$app->session->setFlash('error', 'Error occured during update!');
+                //    Yii::$app->session->setFlash('error', 'Error occured during update!');
                     return $this->redirect(['view', 'id' => $model->request_id]);
                 }
             }
