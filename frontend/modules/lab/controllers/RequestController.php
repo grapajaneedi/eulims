@@ -514,7 +514,7 @@ class RequestController extends Controller
          * 
          */
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Request Successfully Created!');
+           // Yii::$app->session->setFlash('success', 'Request Successfully Created!');
             return $this->redirect(['view', 'id' => $model->request_id]); ///lab/request/view?id=1
         } else {
             $date = new DateTime();
@@ -565,7 +565,7 @@ class RequestController extends Controller
         $model= eRequest::findOne($id);
         
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            Yii::$app->session->setFlash('success', 'Request Successfully Updated!');
+            //Yii::$app->session->setFlash('success', 'Request Successfully Updated!');
             return $this->redirect(['view', 'id' => $model->request_id]);
         } else {
             if($model->request_ref_num){
@@ -683,7 +683,7 @@ class RequestController extends Controller
                     print_r($modelReferralrequest->getErrors());
                     //return false;
                 }
-                Yii::$app->session->setFlash('success', 'Referral Request Successfully Created!');
+              //  Yii::$app->session->setFlash('success', 'Referral Request Successfully Created!');
                 return $this->redirect(['view', 'id' => $model->request_id]); ///lab/request/view?id=1
             } else {
                 $transaction->rollBack();
