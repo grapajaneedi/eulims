@@ -81,6 +81,14 @@ switch(\Yii::$app->session['config-item']){
         break;
 }
 $Session= Yii::$app->session;
+
+if(empty($request['referral_code'])){
+    $labelpanel = '<i class="glyphicon glyphicon-book"></i> Referral Code ' . $request['referral_code'];
+} else {
+    //$btnPrint = "<a href='/referrals/referral/print-referral?id=".$model->referral_id."' class='btn-sm btn-default' style='color:#000000;margin-left:15px;'><i class='fa fa-print'></i> Print</a>";
+    $btnPrint = "<a href='/referrals/referral/printref?id=".$request['referral_id']."' class='btn btn-success' style='margin-left: 5px'  target='_blank'><i class='fa fa-print'></i> Print Referral</a>";
+    $labelpanel = '<i class="glyphicon glyphicon-book"></i> Referral Code ' . $request['referral_code'] .' '.$btnPrint;
+}
 ?>
 <div class="section-request">
 <div class="request-view ">
@@ -93,7 +101,7 @@ $Session= Yii::$app->session;
             'hover'=>true,
             'mode'=>DetailView::MODE_VIEW,
             'panel'=>[
-                'heading'=>'<i class="glyphicon glyphicon-book"></i> Referral Code ' . $request['referral_code'],
+				'heading'=>$labelpanel,
                 'type'=>DetailView::TYPE_PRIMARY,
             ],
             'buttons1' => '',
@@ -418,7 +426,7 @@ $Session= Yii::$app->session;
             ]);
         ?>
     </div>
-    
+    <?php if($request['referral_code']){ ?>
     <div class="container" <?php echo $haveStatus; ?>>
         <ul class="progress-track">
                 <li class="<?php echo $statusreceived; ?> progress-tooltip">
@@ -461,8 +469,8 @@ $Session= Yii::$app->session;
     </div>
     <div class="container">
      <?php
-        echo "<a href='/referrals/referral/printref?id=".$request['referral_id']."' class='btn btn-success' style='margin-left: 5px'  target='_blank'><i class='fa fa-print'></i> Print Referral</a>";
-        echo "<br /><br />";
+       // echo "<a href='/referrals/referral/printref?id=".$request['referral_id']."' class='btn btn-success' style='margin-left: 5px'  target='_blank'><i class='fa fa-print'></i> Print Referral</a>";
+       // echo "<br /><br />";
        /* echo "<pre>";
         print_r($request);
         echo "</pre>";*/
@@ -507,7 +515,7 @@ $Session= Yii::$app->session;
         </div>
         </div>      
     </div>
-    
+    <?php } ?>
 </div>
 </div>
 <style type="text/css">
