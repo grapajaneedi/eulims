@@ -342,12 +342,12 @@ class CashierController extends \yii\web\Controller
         if ($model->load(Yii::$app->request->post())) {
             $session = Yii::$app->session;
             try  {
-                $model->rstl_id=$GLOBALS['rstl_id'];
+                $model->rstl_id=Yii::$app->user->identity->profile->rstl_id;
                 $model->start_or=$this->findModelReceipt($model->start_or)->or_number;
                 $model->end_or=$this->findModelReceipt($model->end_or)->or_number;
                 $model->save(false);
                 $this->update_receipt_depositid($model->start_or, $model->end_or, $model->deposit_id);
-                $session->set('savepopup',"executed");
+                 Yii::$app->session->setFlash('success', 'Successfully Created!');
                  return $this->redirect(['/finance/cashier/deposit/']);
             } catch (Exception $e) {
                 return $e;
@@ -602,12 +602,13 @@ class CashierController extends \yii\web\Controller
          $total_collection=$receipt->total;
          $sum = Check::find()->where(['receipt_id'=>$receiptid])->sum('amount');
          $func= new Functions();
-         
+         $rstl_id=Yii::$app->user->identity->profile->rstl_id;
          if ($model->load(Yii::$app->request->post())) {
             $session = Yii::$app->session;
             
             try  {
                 $model->receipt_id=$receiptid;
+				$model->rstl_id=$rstl_id;
                 if($model->save()){
                    if ($model->amount > $total_collection){
                        Yii::$app->session->setFlash('info','Excess amount will be credited to customer wallet!');

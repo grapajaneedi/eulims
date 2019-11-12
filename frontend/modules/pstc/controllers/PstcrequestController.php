@@ -17,6 +17,8 @@ use common\models\lab\Requestcode;
 use common\models\lab\Discount;
 use common\models\lab\Labsampletype;
 use common\models\lab\Sampletype;
+use common\models\lab\Testcategory;
+use common\models\lab\Lab;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -387,6 +389,11 @@ class PstcrequestController extends Controller
         if($rstlId > 0 && $pstcId > 0 && $requestId > 0) {
             $details = json_decode($function->getViewRequest($requestId,$rstlId,$pstcId),true);
 
+            // echo "<pre>";
+            // print_r($details);
+            // echo "</pre>";
+            // exit;
+
             $request = $details['request_data'];
             $samples = $details['sample_data'];
             $analyses = $details['analyses_data'];
@@ -492,9 +499,11 @@ class PstcrequestController extends Controller
                         //print_r($generate_code);
                         //exit;
                         $sample_data = [];
+                        $analysis_data = [];
                         if($generate_code == "success") {
                             $local_samples = Sample::find()->where(['request_id'=>$local_requestId])->asArray()->all();
                             $local_request = Request::findOne($local_requestId);
+                            $local_analyses = Analysis::find()->where(['request_id'=>$local_requestId])->asArray()->all();
 
                             $requestData = [
                                 'pstc_request_id' => $local_request->pstc_request_id,
@@ -515,12 +524,48 @@ class PstcrequestController extends Controller
                                     'sample_code' => $data['sample_code'],
                                     'sample_month' => $data['sample_month'],
                                     'sample_year' => $data['sample_year'],
+                                    'rstl_id' => $local_request->rstl_id,
+                                    'pstc_id' => $pstcId,
+                                    'sample_description' => $data['description'],
+                                    'sample_name' => $data['samplename'],
+                                    'local_sample_id' => $data['sample_id'],
+                                    'local_request_id' => $local_requestId,
+                                    'sampletype_id' => $data['sampletype_id'],
+                                    'testcategory_id' => $data['testcategory_id'],
                                 ];
                                 array_push($sample_data, $sampleData);
                             }
 
-                            $pstc_request_details = Json::encode(['request_data'=>$requestData,'sample_data'=>$sample_data,'local_request_id'=>$local_requestId],JSON_NUMERIC_CHECK);
-                            $pstcUrl='https://eulimsapi.onelab.ph/api/web/referral/pstcrequests/updaterequest_details';
+                            foreach ($local_analyses as $data) {
+                                $analysisData = [
+                                    'analysis_id' => $data['pstcanalysis_id'],
+                                    'local_analysis_id' => $data['analysis_id'],
+                                    'local_sample_id' => $data['sample_id'],
+                                    'rstl_id' => $local_request->rstl_id,
+                                    'test_id' => $data['test_id'],
+                                    'testname' => $data['testname'],
+                                    'methodref_id' => $data['methodref_id'],
+                                    'method' => $data['method'],
+                                    'reference' => $data['references'],
+                                    'package_id' => $data['package_id'],
+                                    'package_name' => $data['package_name'],
+                                    'quantity' => $data['quantity'],
+                                    'fee' => $data['fee'],
+                                    'pstc_id' => $pstcId,
+                                    'date_analysis' => $data['date_analysis'],
+                                    'is_package' => $data['is_package'],
+                                    'is_package_name' => $data['is_package_name'],
+                                    'sampletype_id' => $data['sample_type_id'],
+                                    'testcategory_id' => $data['testcategory_id'],
+                                    'type_fee_id' => $data['type_fee_id'],
+                                    'local_user_id' => (int) Yii::$app->user->identity->profile->user_id,
+                                ];
+                                array_push($analysis_data, $analysisData);
+                            }
+
+                            $pstc_request_details = Json::encode(['request_data'=>$requestData,'sample_data'=>$sample_data,'analysis_data'=>$analysisData,'local_request_id'=>$local_requestId],JSON_NUMERIC_CHECK);
+                            //$pstcUrl='https://eulimsapi.onelab.ph/api/web/referral/pstcrequests/updaterequest_details';
+                            $pstcUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/pstcrequests/updaterequest_details';
                        
                             $curl = new curl\Curl();
                             $pstc_return = $curl->setRequestBody($pstc_request_details)
@@ -528,6 +573,11 @@ class PstcrequestController extends Controller
                                 'Content-Type' => 'application/json',
                                 'Content-Length' => strlen($pstc_request_details),
                             ])->post($pstcUrl);
+
+                            echo "<pre>";
+                            print_r(Json::decode($pstc_request_details,true));
+                            echo "</pre>";
+                            exit;
 
                             if($pstc_return == 1){
                                 $transaction->commit();
@@ -573,6 +623,8 @@ class PstcrequestController extends Controller
             $model->request_type_id = 1;
             $model->modeofreleaseids = '1';
             $model->payment_status_id = 1;
+            //$model->testcategory_id = ;
+            //$model->sampletype_id = ;
             $model->request_date = date("Y-m-d");
             $model->customer_id = $request['customer_id'];
             $model->conforme = $request['submitted_by'];
@@ -597,8 +649,11 @@ class PstcrequestController extends Controller
                     'total' => $total,
                     'countSample' => count($samples),
                     'countAnalysis' => count($analyses),
-                    'testcategory' => null,
-                    'sampletype' => null,
+                    //'testcategory' => null,
+                    //'sampletype' => null,
+                    'testcategory' => ArrayHelper::map(Testcategory::find()->all(),'testcategory_id','category'), //data should be in synched in ulims portal
+                    'laboratory' => ArrayHelper::map(Lab::find()->all(),'lab_id','labname'), //data should be in synched in ulims portal
+                    'sampletype' => ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','type'), //data should be in synched in ulims portal
                 ]);
             } else {
                 return $this->renderAjax('_formRequestDetails', [
@@ -614,8 +669,11 @@ class PstcrequestController extends Controller
                     'total' => $total,
                     'countSample' => count($samples),
                     'countAnalysis' => count($analyses),
-                    'testcategory' => null,
-                    'sampletype' => null,
+                    //'testcategory' => null,
+                    //'sampletype' => null,
+                    'testcategory' => ArrayHelper::map(Testcategory::find()->all(),'testcategory_id','category'), //data should be in synched in ulims portal
+                    'laboratory' => ArrayHelper::map(Lab::find()->all(),'lab_id','labname'), //data should be in synched in ulims portal
+                    'sampletype' => ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','type'), //data should be in synched in ulims portal
                 ]);
             }
         }
@@ -876,7 +934,8 @@ class PstcrequestController extends Controller
                         }
 
                         $pstc_request_details = Json::encode(['request_data'=>$requestData,'sample_data'=>$sample_data,'local_request_id'=>$local_requestId],JSON_NUMERIC_CHECK);
-                        $pstcUrl='https://eulimsapi.onelab.ph/api/web/referral/pstcrequests/updaterequest_details';
+                        //$pstcUrl='https://eulimsapi.onelab.ph/api/web/referral/pstcrequests/updaterequest_details';
+                        $pstcUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/pstcrequests/updaterequest_details';
                    
                         $curl = new curl\Curl();
                         $pstc_return = $curl->setRequestBody($pstc_request_details)

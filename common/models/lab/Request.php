@@ -292,4 +292,12 @@ class Request extends \yii\db\ActiveRecord
     {
         return $this->hasOne(ReferralRequest::className(), ['request_id' => 'request_id']);
     }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRequesttype()
+    {
+        return $this->hasOne(RequestType::className(), ['request_type_id' => 'request_type_id']);
+    }
 }

@@ -89,10 +89,10 @@ class Orspreadsheet extends Spreadsheet
 
         
          #set password
-         $this->getDocument()->getActiveSheet()->getProtection()->setSheet(true);
+         /*$this->getDocument()->getActiveSheet()->getProtection()->setSheet(true);
          $this->getDocument()->getSecurity()->setLockWindows(true);
          $this->getDocument()->getSecurity()->setLockStructure(true);
-         $this->getDocument()->getSecurity()->setWorkbookPassword("PhpSpreadsheet");
+         $this->getDocument()->getSecurity()->setWorkbookPassword("PhpSpreadsheet"); */
 
         // Parent::setDocument($document);
     }
