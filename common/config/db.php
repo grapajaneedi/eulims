@@ -25,7 +25,7 @@ return [
         'tablePrefix' => 'tbl_',
     ],
     'inventorydb'=>[
-        'class' => 'yii\db\Connection',  
+        'class' => 'yii\db\Connection',
         'dsn' => 'mysql:host='.$server.';dbname=eulims_inventory',
         'username' => $username,
         'password' => $password,
