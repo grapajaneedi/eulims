@@ -363,7 +363,7 @@ $model->modeofreleaseids=$model->modeofrelease_ids;
 </div>
 <div class="row">
     <div class="col-md-6">
-    <?= $form->field($model, 'contact_num')->textInput(['readonly' => $disabled])->label('Conforme Contact Number') ?>
+    <?= $form->field($model, 'contact_num')->textInput(['readonly' => $disabled]) ?>
     </div>
     <div class="col-md-6">
     

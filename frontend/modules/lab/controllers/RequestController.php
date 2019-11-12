@@ -532,7 +532,7 @@ class RequestController extends Controller
             $model->total=0.00;
             $model->posted=0;
             $model->status_id=1;
-            $model->contact_num="123456789";
+           // $model->contact_num="123456789";
            // $model->request_type_id=1;
             $model->modeofreleaseids='1';
             $model->payment_status_id=1;
