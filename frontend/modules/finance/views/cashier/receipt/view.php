@@ -134,7 +134,7 @@ $add_extra=Html::button('<i class="glyphicon glyphicon-plus"></i> Excess Payment
     </div>
     </div>
     <?php
-     if($model->payment_mode_id == 2 && $model->total > 0){
+     if($model->payment_mode_id == 2){
          
         ?>
           <div class="main-container-check">
