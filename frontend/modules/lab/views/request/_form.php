@@ -78,7 +78,7 @@ $model->modeofreleaseids=$model->modeofrelease_ids;
 <div class="row">
     <div class="col-md-6">
     <?= $form->field($model, 'request_type_id')->widget(Select2::classname(), [
-        'data' => ArrayHelper::map(RequestType::find()->where('request_type_id !=:requestTypeId',[':requestTypeId'=>2])->all(),'request_type_id','request_type'),
+        'data' => ArrayHelper::map(RequestType::find()->where('request_type_id =:requestTypeId',[':requestTypeId'=>1])->all(),'request_type_id','request_type'),
         'language' => 'en',
         'options' => ['placeholder' => 'Select Request Type','disabled'=>$disabled],
         'pluginOptions' => [

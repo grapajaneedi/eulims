@@ -11,6 +11,7 @@ use common\models\lab\Request;
 use common\components\Functions;
 use common\models\lab\Customer;
 use common\models\lab\Sample;
+use common\models\lab\RequestType;
 use yii\bootstrap\Modal;
 use common\models\finance\Paymentitem;
 use yii\helpers\Url;
@@ -103,7 +104,7 @@ if(Yii::$app->user->can('allow-cancel-request')){
                 'label'=>'Customer',
                 'vAlign' => 'middle',
                 'width' => '400px',
-               
+                'format' => 'raw',
                 'value' => function ($model, $key, $index, $widget) { 
                     return $model->customer ? $model->customer->customer_name : "";
                 },
@@ -115,7 +116,7 @@ if(Yii::$app->user->can('allow-cancel-request')){
                 ],
                 'filterInputOptions' => ['placeholder' => 'Select Customer'],
                 'contentOptions' => ['style' => 'width: 50%;word-wrap: break-word;white-space:pre-line;'],
-            ],      
+            ],
             [
                 'label'=>'Total',
                 'attribute'=>'total',
@@ -202,6 +203,24 @@ if(Yii::$app->user->can('allow-cancel-request')){
                     // }
                    //
                 }
+            ],
+            [
+                'attribute' => 'request_type_id', 
+                'label'=>'Request Type',
+                'vAlign' => 'middle',
+                'value' => function ($model, $key, $index, $widget) { 
+                   return !empty($model->requesttype) ? $model->requesttype->request_type : "";
+                },
+                'filterType' => GridView::FILTER_SELECT2,
+                'filter' => ArrayHelper::map(RequestType::find()->asArray()->all(), 'request_type_id', 'request_type'), 
+                'format' => 'raw',
+                'width' => '20px',
+                'filterWidgetOptions' => [
+                    'pluginOptions' => ['allowClear' => true],
+                ],
+                'filterInputOptions' => ['placeholder' => 'Select Type','id' => 'grid-search-request_type_id'],
+                'contentOptions' => ['class' => 'text-center','style'=>'width: 50%;'],
+                'headerOptions' => ['class' => 'text-center'],
             ],
             [
                 'class' => kartik\grid\ActionColumn::className(),

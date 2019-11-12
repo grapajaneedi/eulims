@@ -62,7 +62,7 @@ $func=new Functions();
                 'filterWidgetOptions' => [
                     'pluginOptions' => ['allowClear' => true],
                 ],
-                'filterInputOptions' => ['placeholder' => 'Sample Type', 'id' => 'grid-op-search-sampletype_id'],
+                'filterInputOptions' => ['placeholder' => 'Sample Type', 'id' => 'grid-search-sampletype_id'],
 				'headerOptions' => ['class' => 'text-center'],
             ],
             [
