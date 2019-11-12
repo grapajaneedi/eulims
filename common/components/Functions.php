@@ -291,6 +291,9 @@ class Functions extends Component{
     function GetSampleCode($form,$model,$disabled=false,$Label=false){
         //isali sa query na year 2018(this year) ang ioutput na sample codes para hindi malito 
         //pag multi year na gamitin
+
+       
+
 $dataExp = <<< SCRIPT
          function (params, page) {
                 return {
