@@ -130,6 +130,7 @@ if($Request_Ref){//With Reference
     $EnablePrint="<span class='btn btn-primary' disabled style='margin-left: 5px'><i class='fa fa-print'></i> Print Request</span>";
     $btnID="id='btnSaveRequest'";
 }
+
 $Params=[
     'mRequestID'=>$model->request_id
 ];
@@ -443,6 +444,12 @@ $this->registerJs($PrintEvent);
             $enableRequest = false;
         }
 
+        if($model->discount > 0 || !empty($Request_Ref) || $samplecount == 0){
+            $enablePackage = true;
+        } else {
+            $enablePackage = false;
+        }
+
         $analysisgridColumns = [
             [
                 'attribute'=>'sample_name',
@@ -597,7 +604,7 @@ $this->registerJs($PrintEvent);
                     'heading'=>'<h3 class="panel-title">Analysis</h3>',
                     'type'=>'primary',
                     'before'=>Html::button('<i class="glyphicon glyphicon-plus"></i> Add Analysis', ['disabled'=>$enableRequest,'value' => Url::to(['analysis/create','id'=>$model->request_id]),'title'=>'Add Analyses', 'onclick'=> $ClickButton, 'class' => 'btn btn-success','id' => 'btn_add_analysis'])."   ".
-                    Html::button('<i class="glyphicon glyphicon-plus"></i> Add Package', ['disabled'=>$enableRequest,'value' => Url::to(['/services/packagelist/createpackage','id'=>$model->request_id]),'title'=>'Add Package', 'onclick'=>$ClickButton, 'class' => 'btn btn-success','id' => 'btn_add_package'])." ".
+                    Html::button('<i class="glyphicon glyphicon-plus"></i> Add Package', ['disabled'=>$enablePackage,'value' => $model->discount > 0 ? '' : Url::to(['/services/packagelist/createpackage','id'=>$model->request_id]),'title'=>'Add Package', 'onclick'=>$model->discount > 0 ? '' : $ClickButton, 'class' => 'btn btn-success','id' => 'btn_add_package'])." ".
                     Html::button('<i class="glyphicon glyphicon-plus"></i> Additional Fees', ['disabled'=>$enableRequest,'value' => Url::to(['/lab/fee/create','id'=>$model->request_id]),'title'=>'Add Additional Fees', 'onclick'=>$ClickButton, 'class' => 'btn btn-success','id' => 'btn_add_fees']),
                    'after'=>false,
                    'footer'=>"<div class='row' style='margin-left: 2px;padding-top: 5px'><button ".$disableButton." value='/lab/request/saverequestransaction' ".$btnID." class='btn btn-success'><i class='fa fa-save'></i> Save Request</button>".$EnablePrint."</div>",
