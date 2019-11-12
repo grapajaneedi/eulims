@@ -46,21 +46,21 @@ class Orspreadsheet extends Spreadsheet
         }
         
         $paymentitem_Query = Paymentitem::find()->where(['receipt_id' => $this->model->receipt_id])->all();
-        $row=16;
+        $row=10;
         $count=0;
         
-        $this->getDocument()->getActiveSheet()->setCellValue('C9', date('F d, Y',strtotime($this->model->receiptDate)));
+        $this->getDocument()->getActiveSheet()->setCellValue('C3', date('F d, Y',strtotime($this->model->receiptDate)));
         $rstl= Rstl::find()->where(['rstl_id'=>$this->model->rstl_id])->one();
-        $this->getDocument()->getActiveSheet()->setCellValue('B11', $rstl->name);
-        $this->getDocument()->getActiveSheet()->setCellValue('A12', $this->model->payor);
-        $this->getDocument()->getActiveSheet()->setCellValue('A15', $this->model->collectiontype ? $this->model->collectiontype->natureofcollection : "");
+        $this->getDocument()->getActiveSheet()->setCellValue('B5', $rstl->name);
+        $this->getDocument()->getActiveSheet()->setCellValue('A6', $this->model->payor);
+        $this->getDocument()->getActiveSheet()->setCellValue('A9', $this->model->collectiontype ? $this->model->collectiontype->natureofcollection : "");
         foreach ($paymentitem_Query as $i => $or) {
            $this->getDocument()->getActiveSheet()->setCellValue('A'.$row, $or['details']);
            $this->getDocument()->getActiveSheet()->setCellValue('D'.$row, number_format($or['amount'],2));
            $row++; 
         }
-        $this->getDocument()->getActiveSheet()->setCellValue('D25', number_format($this->model->total,2));
-        $this->getDocument()->getActiveSheet()->setCellValue('A26','                                        '.$amountinwords);
+        $this->getDocument()->getActiveSheet()->setCellValue('D19', number_format($this->model->total,2));
+        $this->getDocument()->getActiveSheet()->setCellValue('A20','                                        '.$amountinwords);
         
         $paymentmode=$this->model->paymentMode->payment_mode;
         $cash='';
@@ -71,20 +71,20 @@ class Orspreadsheet extends Spreadsheet
             $space.="&nbsp;";
         }
         if($paymentmode == 'Cash'){
-            $this->getDocument()->getActiveSheet()->setCellValue('A30', "/");
+            $this->getDocument()->getActiveSheet()->setCellValue('A23', "/");
         }
         else if($paymentmode == 'Check'){
-            $row1=33;
-            $this->getDocument()->getActiveSheet()->setCellValue('A33', "/");
+            $row1=26;
+            $this->getDocument()->getActiveSheet()->setCellValue('A26', "/");
             $check_Query = Check::find()->where(['receipt_id' => $this->model->receipt_id])->all();
             foreach ($check_Query as $i => $check) {
-                $bnk=$check['bank'].'                  '.$check['checknumber'].'        '.$check['checkdate'];
-                $this->getDocument()->getActiveSheet()->setCellValue('B'.$row1, $bnk);   
+                $bnk=$check['bank'].'     '.$check['checknumber'] .'     '.$check['checkdate'];
+                $this->getDocument()->getActiveSheet()->setCellValue('B'.$row1, $bnk);				
                 $row1++;
             }
         }
         else if($paymentmode == 'Money Order'){
-            $this->getDocument()->getActiveSheet()->setCellValue('A35', "/");
+            $this->getDocument()->getActiveSheet()->setCellValue('A29', "/");
         }
 
         
