@@ -435,6 +435,12 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
             $enableRequest = false;
         }
 
+        if($model->discount > 0 || !empty($Request_Ref) || $samplecount == 0){
+            $enablePackage = true;
+        } else {
+            $enablePackage = false;
+        }
+
         $analysisgridColumns = [
             [
                 'attribute'=>'sample_name',
@@ -605,7 +611,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                     'heading'=>'<h3 class="panel-title">Analysis</h3>',
                     'type'=>'primary',
                     'before'=>($requeststatus > 0 && $notified == 0 && $hasTestingAgency == 0 && trim($model->request_ref_num) == "") ? Html::button('<i class="glyphicon glyphicon-plus"></i> Add Analysis', ['disabled'=>$enableRequest,'value' => $model->request_type_id == 2 ? Url::to(['analysisreferral/create','request_id'=>$model->request_id]) : "",'title'=>'Add Analyses', 'onclick'=> $model->request_type_id == 2 ? $ClickButtonAnalysisReferral : "", 'class' => 'btn btn-success','id' => 'btn_add_analysis'])."   ".
-                    Html::button('<i class="glyphicon glyphicon-plus"></i> Add Package', ['disabled'=>$enableRequest,'value' => Url::to(['analysisreferral/package','request_id'=>$model->request_id]),'title'=>'Add Package', 'onclick'=>$ClickButtonAnalysisReferral, 'class' => 'btn btn-success','id' => 'btn_add_package']) : null,
+                    Html::button('<i class="glyphicon glyphicon-plus"></i> Add Package', ['disabled'=>$enablePackage,'value' => $model->discount > 0 ? '' : Url::to(['analysisreferral/package','request_id'=>$model->request_id]),'title'=>'Add Package', 'onclick'=>$model->discount > 0 ? 'BootstrapDialog.alert({type:BootstrapDialog.TYPE_DANGER,title:"Warning",message:"Add package not allowed for request with discount!"})' : $ClickButtonAnalysisReferral, 'class' => 'btn btn-success','id' => 'btn_add_package']) : null,
                    'after'=>false,
                    'footer'=>(($model->request_type_id == 2 && $notified == 1 && $hasTestingAgency > 0 && trim($model->request_ref_num) != "") || $checkTesting == 1) ? "<div class='row' style='margin-left: 2px;padding-top: 5px'>".$EnablePrint."</div>" : null,
                 ],
@@ -1142,6 +1148,21 @@ Modal::begin([
     echo "<div>&nbsp;</div>";
     echo "</div></div>";
 Modal::end();
+?>
+
+<?php
+// Warning alert for no selected sample or method
+echo Dialog::widget([
+    'libName' => 'errorWarning', // a custom lib name
+    'overrideYiiConfirm' => false,
+    'options' => [  // customized BootstrapDialog options
+        'size' => Dialog::SIZE_SMALL, // large dialog text
+        'type' => Dialog::TYPE_DANGER, // bootstrap contextual color
+        'title' => "<i class='glyphicon glyphicon-alert' style='font-size:20px'></i> Warning",
+        'buttonLabel' => 'Close',
+    ]
+]);
+
 ?>
 <style type="text/css">
 /* Absolute Center Spinner */
