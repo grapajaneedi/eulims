@@ -41,8 +41,8 @@ if(Yii::$app->user->isGuest){
 	$unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'),true);
 	$unresponded = $unresponded_notification['num_notification'] > 0 ? $unresponded_notification['num_notification'] : ''; //no display if 0
 	
-	$unseen_bid_notification = json_decode(Yii::$app->runAction('/referrals/bidnotification/count_unseen_bidnotification'),true);
-	$unseen = $unseen_bid_notification['bid_notification'] > 0 ? $unseen_bid_notification['bid_notification'] : '';
+	 $unseen_bid_notification = json_decode(Yii::$app->runAction('/referrals/bidnotification/count_unseen_bidnotification'),true);
+	 $unseen = $unseen_bid_notification['bid_notification'] > 0 ? $unseen_bid_notification['bid_notification'] : '';
   
     //notification will run if the user is already logged in
 	$this->registerJs("
@@ -145,11 +145,11 @@ if(Yii::$app->user->isGuest){
 			if($unresponded > 0 && $unseen > 0){
             	$all_notification = $unresponded + $unseen;
             } elseif($unresponded > 0 && $unseen == ''){
-            	$all_notification = $unresponded;
+             	$all_notification = $unresponded;
             } elseif($unresponded == '' && $unseen > 0){
-            	$all_notification = $unseen;
+           	$all_notification = $unseen;
             } else {
-             	$all_notification = '';
+              	$all_notification = '';
             }
 			
             $MainIcon=substr($Item->icon,6,strlen($Item->icon)-6);
@@ -162,7 +162,7 @@ if(Yii::$app->user->isGuest){
                 'items'=>$ItemSubMenu,
                 'visible'=>Yii::$app->user->can($modulePermission)
             ]; 
-            unset($ItemSubMenu);
+             unset($ItemSubMenu);
         }
         // Fixed Sub Menu Item
         $SubItem=[
@@ -199,7 +199,8 @@ if(Yii::$app->user->isGuest){
         ];
         array_push($ItemMenu, $SubItem);
         ?>
-         <?php echo dmstr\widgets\Menu::widget(
+         <?php 
+         echo dmstr\widgets\Menu::widget(
             [
                 'options' => ['class' => 'sidebar-menu tree', 'data-widget'=> 'tree'],
                 'items' => $ItemMenu,

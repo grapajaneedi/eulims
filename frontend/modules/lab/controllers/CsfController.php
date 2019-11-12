@@ -1,20 +1,20 @@
 <?php
 
-namespace frontend\modules\inventory\controllers;
+namespace frontend\modules\lab\controllers;
 
 use Yii;
-use common\models\inventory\Suppliers;
-use common\models\inventory\SuppliersSearch;
+use common\models\lab\Csf;
+use common\models\lab\CsfSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use console\controllers\HelloController;
-
+use common\models\lab\Request;
+use common\models\lab\Customer;
 
 /**
- * SuppliersController implements the CRUD actions for Suppliers model.
+ * CsfController implements the CRUD actions for Csf model.
  */
-class SuppliersController extends Controller
+class CsfController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -32,23 +32,44 @@ class SuppliersController extends Controller
     }
 
     /**
-     * Lists all Suppliers models.
+     * Lists all Csf models.
      * @return mixed
      */
     public function actionIndex()
     {
+        $model = new Csf();
 
-        $searchModel = new SuppliersSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
 
         return $this->render('index', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionResult()
+    {
+        $searchModel = new CsfSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('results', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
+    public function actionResultmodal($id)
+    {
+        if(Yii::$app->request->isAjax){
+            return $this->renderAjax('results_modal', [
+                    'model' => $this->findModel($id),
+                ]);
+        }
+    }
+
     /**
-     * Displays a single Suppliers model.
+     * Displays a single Csf model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -61,27 +82,47 @@ class SuppliersController extends Controller
     }
 
     /**
-     * Creates a new Suppliers model.
+     * Creates a new Csf model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Suppliers();
+        $model = new Csf();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            // return $this->redirect(['view', 'id' => $model->suppliers_id]);
-            Yii::$app->session->setFlash('success', 'New Supplier Successfully Added!');
-            return $this->redirect(['index']);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
-        return $this->renderAjax('create', [
+        $model->service=0;
+        return $this->render('create', [
             'model' => $model,
         ]);
     }
 
+    public function actionGetcustomer()
+	{
+        
+        $ref_num = $_GET['ref_num'];
+
+         if(isset($_GET['ref_num'])){
+            $id = $_GET['ref_num'];
+
+            $request = Request::find()->where(['request_ref_num'=>$id])->all();
+            $customer = Customer::find()->where(['customer_id'=>$request->customer_id])->all();
+            $customer_name = $customer->customer_name;
+        } else {
+            $customer_name = "Error getting customer name";
+         }
+        return Json::encode([
+            'custo'=>$title,
+        ]);
+
+	
+     }
+
     /**
-     * Updates an existing Suppliers model.
+     * Updates an existing Csf model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -92,7 +133,7 @@ class SuppliersController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->suppliers_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -101,7 +142,7 @@ class SuppliersController extends Controller
     }
 
     /**
-     * Deletes an existing Suppliers model.
+     * Deletes an existing Csf model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -115,15 +156,15 @@ class SuppliersController extends Controller
     }
 
     /**
-     * Finds the Suppliers model based on its primary key value.
+     * Finds the Csf model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Suppliers the loaded model
+     * @return Csf the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Suppliers::findOne($id)) !== null) {
+        if (($model = Csf::findOne($id)) !== null) {
             return $model;
         }
 
