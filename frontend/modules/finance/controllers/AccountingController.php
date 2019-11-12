@@ -173,6 +173,7 @@ class AccountingController extends Controller
               //-------------------------------------------------------------//
         } 
         $model->order_date=date('Y-m-d');
+		$model->collectiontype_id=3; //SETUP
         if(Yii::$app->request->isAjax){
             return $this->renderAjax('op/create', [
                 'model' => $model,

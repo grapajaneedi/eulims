@@ -1,2 +1,8 @@
 
 common/config/db.php
+frontend/views/admin-lte/layouts/left.php
+common/config/db.php
+vendor/kartik-v/yii2-datecontrol/
+vendor/kartik-v/yii2-editable/
+vendor/kartik-v/yii2-widget-datepicker/
+common/config/db.php
