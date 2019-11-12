@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             ],
            
             'panel' => [
-                'type'=>'primary', 'before'=>Html::button('<i class="glyphicon glyphicon-plus"></i> Create Collection Type', ['value' => Url::to(['/finance/collectiontype/create']),'title'=>'Create Collection Type', 'onclick'=>'addType(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn']),
+                'type'=>'primary', 'before'=>Html::button('<i class="glyphicon glyphicon-plus"></i> Create Collection Type', ['value' => Url::to(['/finance/collectiontype/create']),'title'=>'Create Collection Type', 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-success','id' => 'modalBtn']),
                 'heading' => '<span class="glyphicon glyphicon-book"></span>  ' . Html::encode($this->title),
                 
             ],
@@ -39,10 +39,8 @@ $this->params['breadcrumbs'][] = $this->title;
                     'template' => $Buttontemplate,
                     'buttons'=>[
                     'update'=>function ($url, $model) {
-                        $t = '/finance/collectiontype/update?id='.$model->collectiontype_id;
-                        //return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to($t), 'class' => 'btn btn-success btn-modal']);
-                        return Html::button('<i class="glyphicon glyphicon-pencil"></i>', ['value' => Url::to($t),'title'=>'Update Collection Type', 'onclick'=>'editType(this.value,this.title)', 'class' => 'btn btn-success']);
-                    },
+						return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/finance/collectiontype/update','id'=>$model->collectiontype_id]), 'onclick'=>'LoadModal(this.title, this.value);', 'class' => 'btn btn-primary','title' => Yii::t('app', "Update ")]);
+					},
                     
                 ],
                 ],
@@ -50,18 +48,3 @@ $this->params['breadcrumbs'][] = $this->title;
         ]); ?>
     </div>
 </div>
-<script type="text/javascript">
-    function addType(url,title){
-         $(".modal-title").html(title);
-         $('#modal').modal('show')
-            .find('#modalContent')
-            .load(url);
-    }
-    function editType(url,title){
-         $(".modal-title").html(title);
-         $('#modal').modal('show')
-            .find('#modalContent')
-            .load(url);
-    }
-  
-</script>
