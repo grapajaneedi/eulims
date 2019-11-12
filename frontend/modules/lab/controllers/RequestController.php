@@ -532,9 +532,11 @@ class RequestController extends Controller
             $model->total=0.00;
             $model->posted=0;
             $model->status_id=1;
-            $model->request_type_id=0;
+            $model->contact_num="123456789";
+           // $model->request_type_id=1;
             $model->modeofreleaseids='1';
             $model->payment_status_id=1;
+           // $model->request_type_id=1;
             $model->request_date=date("Y-m-d");
             if($profile){
                 $model->receivedBy=$profile->firstname.' '. strtoupper(substr($profile->middleinitial,0,1)).'. '.$profile->lastname;
@@ -546,6 +548,7 @@ class RequestController extends Controller
                     'model' => $model,
                 ]);
             }else{
+                
                 return $this->renderAjax('create', [
                     'model' => $model,
                 ]);

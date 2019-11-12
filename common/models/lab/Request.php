@@ -30,6 +30,7 @@ use yii\db\ActiveRecord;
  * @property int $status_id
  * @property int $selected 
  * @property int $request_type_id
+ * @property int $contact_num
  *
  * @property string $position 
  * @property string $recommended_due_date 
@@ -102,11 +103,11 @@ class Request extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['request_datetime', 'rstl_id', 'lab_id', 'customer_id', 'payment_type_id', 'discount_id', 'purpose_id', 'report_due', 'conforme', 'receivedBy', 'created_at','request_type_id'], 'required'],
+            [['request_datetime', 'rstl_id', 'lab_id', 'customer_id', 'payment_type_id', 'discount_id', 'purpose_id', 'report_due', 'conforme', 'contact_num','receivedBy', 'created_at','request_type_id',], 'required'],
             [['request_datetime', 'report_due', 'recommended_due_date', 'est_date_completion', 'equipment_release_date', 'certificate_release_date'], 'safe'],
-            [['rstl_id', 'lab_id', 'customer_id', 'payment_type_id', 'discount_id', 'purpose_id', 'created_at', 'posted', 'status_id', 'selected', 'request_type_id','payment_status_id'], 'integer'],
-            [['discount', 'total'], 'number'],
-            [['request_ref_num', 'modeofrelease_ids', 'conforme', 'receivedBy'], 'string', 'max' => 50],
+            [['rstl_id', 'lab_id', 'customer_id', 'payment_type_id', 'discount_id', 'purpose_id', 'created_at', 'posted', 'status_id', 'selected', 'request_type_id','payment_status_id','contact_num' ], 'integer'],
+            [['discount', 'total', ], 'number'],
+            [['request_ref_num', 'modeofrelease_ids', 'conforme', 'receivedBy', 'contact_num'], 'string', 'max' => 50],
             [['position', 'items_receive_by', 'released_by', 'received_by'], 'string', 'max' => 100],
             [['request_ref_num'], 'unique'],
             /*['report_due', 'compare','compareAttribute'=>'request_date','operator'=>'>=','message'=>'Report Due should not be less than the request date!', 'when' => function($model) {
@@ -163,6 +164,7 @@ class Request extends \yii\db\ActiveRecord
             'received_by' => 'Received By',
             'payment_status_id'=>'Payment Status',
             'customer_old_id'=>'customer_old_id',
+            'contact_num'=>'Conforme Contact Number',
         ];
     }
 

@@ -317,18 +317,36 @@ $this->registerJs($PrintEvent);
                 [
                     'columns' => [
                         [
-                            'attribute'=>'receivedBy', 
+                            'attribute'=>'conforme', 
                             'format'=>'raw',
                             'displayOnly'=>true,
                             'valueColOptions'=>['style'=>'width:30%']
                         ],
                         [
-                            'attribute'=>'conforme',
+                            'attribute'=>'receivedBy',
                             'format'=>'raw',
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
                         ],
                     ],
+                    
+                ],
+                [
+                    'columns' => [
+                        // [
+                        //     'attribute'=>'receivedBy', 
+                        //     'format'=>'raw',
+                        //     'displayOnly'=>true,
+                        //     'valueColOptions'=>['style'=>'width:30%']
+                        // ],
+                        [
+                            'attribute'=>'contact_num',
+                            'format'=>'raw',
+                            'valueColOptions'=>['style'=>'width:90%'], 
+                            'displayOnly'=>true
+                        ],
+                    ],
+                    
                 ],
             ],
 
