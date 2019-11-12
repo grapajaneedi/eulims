@@ -7,6 +7,7 @@ use yii\helpers\ArrayHelper;
 use common\models\lab\Lab;
 use kartik\datetime\DateTimePicker;
 use common\models\lab\Customer;
+
 use yii\web\JsExpression;
 use kartik\widgets\DatePicker;
 use common\models\lab\Paymenttype;
@@ -116,31 +117,18 @@ $model->modeofreleaseids=$model->modeofrelease_ids;
 </div>
 <div class="row">
     <div class="col-md-6">
-     <?= $form->field($model, 'lab_id')->widget(DepDrop::classname(), [
-        //'data' => ArrayHelper::map(Lab::find()->all(),'lab_id','labname'),
-        'type'=>DepDrop::TYPE_SELECT2,
-        'language' => 'en',
-        'options' => ['placeholder' => 'Select Laboratory','disabled'=>$disabled],
-        'pluginOptions' => [
-            'allowClear' => true
-        ],
-        'pluginOptions'=>[
-           'depends'=>['rstlid','erequest-request_type_id'],
-           'placeholder'=>'Select Laboratory',
-           'url'=>Url::to(['/api/ajax/getlab']),
-           'LoadingText'=>'Loading...'
-        ],
-        'pluginEvents'=>[
-            "change" => "function() { 
-                if(this.value==3){//Metrology
-                   $('#div_met').show();
-                }else{
-                   $('#div_met').hide();
-                }
+   
 
-            }",
+<?= $form->field($model, 'lab_id')->widget(Select2::classname(), [
+        'data' => ArrayHelper::map(Lab::find()->where('active =:active',[':active'=>1])->all(),'lab_id','labname'),
+        'language' => 'en',
+        'options' => ['placeholder' => 'Select Lab','readonly'=>'readonly'],
+        'pluginOptions' => [
+            'allowClear' => false
         ]
-    ])->label('Laboratory'); ?>
+    ])->label('Lab'); ?>
+
+
     </div>
     <div class="col-md-6">
         <label class="control-label">Payment Type</label>
