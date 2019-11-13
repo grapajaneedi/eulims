@@ -521,7 +521,7 @@ class RequestController extends Controller
             $date2 = new DateTime();
             $profile= Profile::find()->where(['user_id'=> Yii::$app->user->id])->one();
             date_add($date2,date_interval_create_from_date_string("1 day"));
-            $model->request_datetime=date("Y-m-d h:i:s");
+            $model->request_datetime=date("Y-m-d H:i:s");
             $model->report_due=date_format($date2,"Y-m-d");
             $model->created_at=date('U');
             $model->rstl_id= Yii::$app->user->identity->profile->rstl_id;//$GLOBALS['rstl_id'];

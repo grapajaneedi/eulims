@@ -154,6 +154,7 @@ class TaggingController extends Controller
             $query->select('sample_id as id, sample_code AS text')
                     ->from('tbl_sample')
                     ->where(['like', 'sample_code', $q])
+                    
                     ->limit(20);
             $command = $query->createCommand();
             $command->db= \Yii::$app->labdb;

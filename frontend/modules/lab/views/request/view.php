@@ -8,6 +8,7 @@ use common\components\Functions;
 use common\models\lab\Cancelledrequest;
 use common\models\lab\Discount;
 use common\models\lab\Request;
+use common\models\lab\Tagging;
 use common\models\lab\Sample;
 use common\models\lab\Tagginganalysis;
 use common\models\lab\Sampletype;
@@ -563,25 +564,45 @@ $this->registerJs($PrintEvent);
                 'hAlign'=>'center',
                 'format'=>'raw',
                 'value' => function($model) {
-                  $tagging = Tagginganalysis::findOne(['cancelled_by' => $model->analysis_id]);             
-                  if ($tagging){
+                //   $tagging = Tagginganalysis::findOne(['cancelled_by' => $model->analysis_id]);             
+                //   if ($tagging){
 
-                   if ($tagging->tagging_status_id==1) {
-                        return Html::button('<span style="width:90px;height:20px"><b>ONGOING</span>', ['value'=>Url::to(['/lab/tagging/status','id'=>$model->analysis_id]),'onclick'=>'LoadModal(this.title, this.value, true, 600);', 'class' => 'btn btn-primary','title' => Yii::t('app', "Analysis Status")]);
-                      }else if ($tagging->tagging_status_id==2) {
-                        return Html::button('<span style="width:90px;height:20px"><b>COMPLETED</span>', ['value'=>Url::to(['/lab/tagging/status','id'=>$model->analysis_id]),'onclick'=>'LoadModal(this.title, this.value, true, 600);', 'class' => 'btn btn-success','title' => Yii::t('app', "Analysis Status")]);
-                      }
-                      else if ($tagging->tagging_status_id==3) {
-                          return "<span class='badge btn-warning' style='width:90px;height:20px'><b>ASSIGNED</span>";
-                      }
-                      else if ($tagging->tagging_status_id==4) {
-                          return "<span class='badge btn-danger' style='width:90px;height:20px'><b>CANCELLED</span>";
-                      }
+                //    if ($tagging->tagging_status_id==1) {
+                //         return Html::button('<span style="width:90px;height:20px"><b>ONGOING</span>', ['value'=>Url::to(['/lab/tagging/status','id'=>$model->analysis_id]),'onclick'=>'LoadModal(this.title, this.value, true, 600);', 'class' => 'btn btn-primary','title' => Yii::t('app', "Analysis Status")]);
+                //       }else if ($tagging->tagging_status_id==2) {
+                //         return Html::button('<span style="width:90px;height:20px"><b>COMPLETED</span>', ['value'=>Url::to(['/lab/tagging/status','id'=>$model->analysis_id]),'onclick'=>'LoadModal(this.title, this.value, true, 600);', 'class' => 'btn btn-success','title' => Yii::t('app', "Analysis Status")]);
+                //       }
+                //       else if ($tagging->tagging_status_id==3) {
+                //           return "<span class='badge btn-warning' style='width:90px;height:20px'><b>ASSIGNED</span>";
+                //       }
+                //       else if ($tagging->tagging_status_id==4) {
+                //           return "<span class='badge btn-danger' style='width:90px;height:20px'><b>CANCELLED</span>";
+                //       }
                        
                 
-                  }else{
-                   return Html::button('<span"><b>PENDING</span>', ['value'=>Url::to(['/lab/tagging/status','id'=>$model->analysis_id]),'onclick'=>'LoadModal(this.title, this.value, true, 600);', 'class' => 'btn btn-default','title' => Yii::t('app', "Analysis Status")]);
-                }
+                //   }else{
+                //    return Html::button('<span"><b>PENDING</span>', ['value'=>Url::to(['/lab/tagging/status','id'=>$model->analysis_id]),'onclick'=>'LoadModal(this.title, this.value, true, 600);', 'class' => 'btn btn-default','title' => Yii::t('app', "Analysis Status")]);
+                // }
+
+                $tagging = Tagging::findOne(['analysis_id' => $model->analysis_id]); 
+                if ($tagging){
+
+                    if ($tagging->tagging_status_id==1) {
+                           return "<span class='badge btn-primary' style='width:90px;height:20px'>ONGOING</span>";
+                       }else if ($tagging->tagging_status_id==2) {
+                           return "<span class='badge btn-success' style='width:90px;height:20px'>COMPLETED</span>";
+                       }
+                       else if ($tagging->tagging_status_id==3) {
+                           return "<span class='badge btn-warning' style='width:90px;height:20px'>ASSIGNED</span>";
+                       }
+                       else if ($tagging->tagging_status_id==4) {
+                           return "<span class='badge btn-danger' style='width:90px;height:20px'>CANCELLED</span>";
+                       }
+                        
+                 
+                   }else{
+                       return "<span class='badge btn-default' style='width:80px;height:20px'>PENDING</span>";
+                   }
                  
                 },
                 'enableSorting' => false,

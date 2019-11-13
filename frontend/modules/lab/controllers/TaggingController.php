@@ -143,6 +143,9 @@ class TaggingController extends Controller
     }
 
     public function actionGetsamplecode($q = null, $id = null) {
+
+        //insert type of lab
+        $lab = Yii::$app->user->identity->profile->lab_id;
         $year = date("Y");
 
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -153,6 +156,7 @@ class TaggingController extends Controller
                     ->from('tbl_sample')
                     ->where(['like', 'sample_code', $q])
                     ->Andwhere(['sample_year'=>$year])
+                    ->orderBy(['sample_id'=>SORT_DESC])
                     ->limit(20);
             $command = $query->createCommand();
             $command->db= \Yii::$app->labdb;
@@ -349,5 +353,30 @@ class TaggingController extends Controller
             'id'=>$id,
          ]);
 	
-	 }
+     }
+     
+     public function actionSamplestatus($id)
+     {
+        $id = $_GET['id'];
+
+        $request = Request::find()->where(['request_id' => $id])->one();
+        $sample = Sample::find()->where(['request_id' => $id]);
+
+       // $samplesQuery = Sample::find()->where(['sample_id' =>$analysis_id]);
+
+        $sampledataprovider = new ActiveDataProvider([
+            'query' => $sample,
+            'pagination' => [
+                'pageSize' => false,
+                    ],                 
+        ]);
+
+        if(Yii::$app->request->isAjax){
+                 return $this->renderAjax('_samplestatus', [
+                'sampledataprovider'=>$sampledataprovider,
+                'request'=>$request,
+                ]);
+        }
+           
+     }
 }

@@ -44,8 +44,8 @@ $js=<<<SCRIPT
         $("#erequest-discount_id").val(0).trigger('change');
         $("#erequest-discount_id").prop('disabled',false);
     }else{//Fully Subsidized
-        $("#erequest-discount_id").val(0).trigger('change');
-        $("#erequest-discount_id").prop('disabled',true);
+        $("#erequest-discount_id").val(8).trigger('change');
+       
     }
     $("#erequest-payment_type_id").val(this.value);  
 SCRIPT;
