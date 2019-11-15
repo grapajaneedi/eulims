@@ -134,7 +134,7 @@ class Request extends \yii\db\ActiveRecord
     {
         return [
             'request_id' => 'Request ID',
-            'request_ref_num' => 'Request Ref Num',
+            'request_ref_num' => 'Request Reference Number',
             'request_datetime' => 'Request Datetime',
             'rstl_id' => 'Rstl ID',
             'lab_id' => 'Laboratory',
@@ -149,7 +149,7 @@ class Request extends \yii\db\ActiveRecord
             'report_due' => 'Report Due',
             'conforme' => 'Conforme',
             'receivedBy' => 'Received By',
-            'created_at' => 'Created At',
+            'created_at' => 'Code',
             'posted' => 'Posted',
             'status_id' => 'Status',
             //'customer_name'=>'Customer Name',
