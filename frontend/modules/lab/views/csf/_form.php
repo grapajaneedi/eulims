@@ -84,50 +84,50 @@ $requestlist= ArrayHelper::map(Businessnature::find()->orderBy(['nature' => SORT
                     <div class="panel-body">
                  
                     <?= $form->field($model, 'd_deliverytime')->hiddenInput()->label("Delivery Time") ?>
-                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class' => 'd_deliverytime', 'value'=>'5', 'style'=>'background-color: #3CB371 !important;'.$btn_style]).$space ?> 
-                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class' => 'd_deliverytime', 'value'=>'4', 'style'=>'background-color: #98FB98 !important;'.$btn_style]).$space ?>                 
+                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class' => 'd_deliverytime', 'value'=>'5', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?> 
+                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class' => 'd_deliverytime', 'value'=>'4', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>                 
                     <?php echo Html::button($neutral, ['onclick'=>'changeColor(this)', 'class' => 'd_deliverytime', 'value'=>'3', 'style'=>'background-color: #F5DEB3 !important'.$btn_style]).$space ?>
-                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class' => 'd_deliverytime', 'value'=>'2', 'style'=>'background-color: #FFA07A !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class' => 'd_deliverytime','value'=>'1', 'style'=>'background-color: #DC143C !important;'.$btn_style]).$space ?>           
+                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class' => 'd_deliverytime', 'value'=>'2', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class' => 'd_deliverytime','value'=>'1', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>           
                     <br>
                     <br>     
                     <?= $form->field($model, 'd_accuracy')->hiddenInput()->label("Correctness and accuracy of test results") ?>
-                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class' => 'd_accuracy', 'value'=>'5', 'style'=>'background-color: #3CB371 !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class' => 'd_accuracy', 'value'=>'4', 'style'=>'background-color: #98FB98 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class' => 'd_accuracy', 'value'=>'5', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class' => 'd_accuracy', 'value'=>'4', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
                     <?php echo Html::button($neutral, ['onclick'=>'changeColor(this)', 'class' => 'd_accuracy', 'value'=>'3', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class' => 'd_accuracy', 'value'=>'2', 'style'=>'background-color: #FFA07A !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class' => 'd_accuracy','value'=>'1', 'style'=>'background-color: #DC143C !important;'.$btn_style]).$space ?>   
+                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class' => 'd_accuracy', 'value'=>'2', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class' => 'd_accuracy','value'=>'1', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>   
                     <br>
                     <br>
                     <?= $form->field($model, 'd_speed')->hiddenInput()->label("Speed of Service") ?>
-                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_speed', 'value'=>'5', 'style'=>'background-color: #3CB371 !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_speed', 'value'=>'4', 'style'=>'background-color: #98FB98 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_speed', 'value'=>'5', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_speed', 'value'=>'4', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
                     <?php echo Html::button($neutral, ['onclick'=>'changeColor(this)', 'class'=>'d_speed', 'value'=>'3', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_speed', 'value'=>'2', 'style'=>'background-color: #FFA07A !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)','class'=>'d_speed', 'value'=>'1', 'style'=>'background-color: #DC143C !important;'.$btn_style]).$space ?>        
+                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_speed', 'value'=>'2', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)','class'=>'d_speed', 'value'=>'1', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>        
                    <br>
                     <br>
                      <?= $form->field($model, 'd_cost')->hiddenInput()->label("Cost") ?>
-                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_cost', 'value'=> '5', 'style'=>'background-color: #3CB371 !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_cost', 'value'=> '4', 'style'=>'background-color: #98FB98 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_cost', 'value'=> '5', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_cost', 'value'=> '4', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
                     <?php echo Html::button($neutral, ['onclick'=>'changeColor(this)', 'class'=>'d_cost', 'value'=> '3', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_cost', 'value'=> '2', 'style'=>'background-color: #FFA07A !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_cost', 'value'=> '1', 'style'=>'background-color: #DC143C !important;'.$btn_style]).$space ?>                
+                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_cost', 'value'=> '2', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_cost', 'value'=> '1', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>                
                     <br>
                     <br>
                     <?= $form->field($model, 'd_attitude')->hiddenInput()->label("Attitude of staff") ?>
-                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_attitude', 'value'=>'5','style'=>'background-color: #3CB371 !important;'.$btn_style]).$space ?> 
-                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_attitude', 'value'=>'4','style'=>'background-color: #98FB98 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_attitude', 'value'=>'5','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?> 
+                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_attitude', 'value'=>'4','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
                     <?php echo Html::button($neutral, ['onclick'=>'changeColor(this)', 'class'=>'d_attitude', 'value'=>'3','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_attitude', 'value'=>'2','style'=>'background-color: #FFA07A !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_attitude', 'value'=>'1', 'style'=>'background-color: #DC143C !important;'.$btn_style]).$space ?>          
+                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_attitude', 'value'=>'2','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_attitude', 'value'=>'1', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>          
                    <br>
                     <br>  <?= $form->field($model, 'd_overall')->hiddenInput()->label("Over-all customer experience") ?>
-                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_overall', 'value'=>'5','style'=>'background-color: #3CB371 !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_overall', 'value'=>'4','style'=>'background-color: #98FB98 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_overall', 'value'=>'5','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_overall', 'value'=>'4','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
                     <?php echo Html::button($neutral, ['onclick'=>'changeColor(this)', 'class'=>'d_overall', 'value'=>'3','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_overall', 'value'=>'2','style'=>'background-color: #FFA07A !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_overall', 'value'=>'1','style'=>'background-color: #DC143C !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_overall', 'value'=>'2','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'d_overall', 'value'=>'1','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
                     </div>
                 </div>
             </div>
@@ -137,51 +137,51 @@ $requestlist= ArrayHelper::map(Businessnature::find()->orderBy(['nature' => SORT
         <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;"><b>How <font color="red">Important</font> are these items to you?</b></div>
                 <div class="panel-body">               
                 <?= $form->field($model, 'i_deliverytime')->hiddenInput()->label("Delivery Time") ?>
-                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_deliverytime', 'value'=>'5','style'=>'background-color: #3CB371 !important;'.$btn_style]).$space ?>   
-                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_deliverytime', 'value'=>'4','style'=>'background-color: #98FB98 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_deliverytime', 'value'=>'5','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>   
+                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_deliverytime', 'value'=>'4','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
                     <?php echo Html::button($neutral, ['onclick'=>'changeColor(this)', 'class'=>'i_deliverytime', 'value'=>'3','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?> 
-                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_deliverytime',  'value'=>'2','style'=>'background-color: #FFA07A !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_deliverytime', 'value'=>'1','style'=>'background-color: #DC143C !important;'.$btn_style]).$space ?>  
+                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_deliverytime',  'value'=>'2','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_deliverytime', 'value'=>'1','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>  
                     <br>
                     <br>
                     <?= $form->field($model, 'i_accuracy')->hiddenInput()->label("Correctness and accuracy of test results") ?>
-                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_accuracy', 'value'=>'5','style'=>'background-color: #3CB371 !important;'.$btn_style]).$space ?>  
-                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_accuracy', 'value'=>'4','style'=>'background-color: #98FB98 !important;'.$btn_style]).$space ?>    
+                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_accuracy', 'value'=>'5','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>  
+                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_accuracy', 'value'=>'4','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>    
                     <?php echo Html::button($neutral, ['onclick'=>'changeColor(this)', 'class'=>'i_accuracy', 'value'=>'3','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_accuracy', 'value'=>'2','style'=>'background-color: #FFA07A !important;'.$btn_style]).$space ?>             
-                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_accuracy', 'value'=>'1','style'=>'background-color: #DC143C !important;'.$btn_style]).$space ?>        
+                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_accuracy', 'value'=>'2','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>             
+                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_accuracy', 'value'=>'1','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>        
                     <br>
                     <br>
                     <?= $form->field($model, 'i_speed')->hiddenInput()->label("Speed of Service") ?>
-                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_speed', 'value'=>'5','style'=>'background-color: #3CB371 !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_speed', 'value'=>'4','style'=>'background-color: #98FB98 !important;'.$btn_style]).$space ?> 
+                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_speed', 'value'=>'5','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_speed', 'value'=>'4','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?> 
                     <?php echo Html::button($neutral, ['onclick'=>'changeColor(this)', 'class'=>'i_speed', 'value'=>'3','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?> 
-                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_speed', 'value'=>'2','style'=>'background-color: #FFA07A !important'.$btn_style]).$space ?> 
-                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_speed', 'value'=>'1','style'=>'background-color: #DC143C !important;'.$btn_style]).$space ?>          
+                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_speed', 'value'=>'2','style'=>'background-color: #F5DEB3 !important'.$btn_style]).$space ?> 
+                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_speed', 'value'=>'1','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>          
                     <br>
                     <br>
                     <?= $form->field($model, 'i_cost')->hiddenInput()->label("Cost") ?>
-                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_cost', 'value'=>'5','style'=>'background-color: #3CB371 !important;'.$btn_style]).$space ?>         
-                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_cost', 'value'=>'4','style'=>'background-color: #98FB98 !important;'.$btn_style]).$space ?>        
+                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_cost', 'value'=>'5','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>         
+                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_cost', 'value'=>'4','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>        
                     <?php echo Html::button($neutral, ['onclick'=>'changeColor(this)', 'class'=>'i_cost', 'value'=>'3','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button( $unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_cost', 'value'=>'2','style'=>'background-color: #FFA07A !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_cost', 'value'=>'1','style'=>'background-color: #DC143C !important;'.$btn_style]).$space ?>                  
+                    <?php echo Html::button( $unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_cost', 'value'=>'2','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_cost', 'value'=>'1','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>                  
                     <br>
                     <br>
                     <?= $form->field($model, 'i_attitude')->hiddenInput()->label("Attitude of Staff") ?>
-                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_attitude', 'value'=>'5','style'=>'background-color: #3CB371 !important;'.$btn_style]).$space ?>             
-                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_attitude', 'value'=>'4','style'=>'background-color: #98FB98 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_attitude', 'value'=>'5','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>             
+                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_attitude', 'value'=>'4','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
                     <?php echo Html::button($neutral, ['onclick'=>'changeColor(this)', 'class'=>'i_attitude', 'value'=>'3','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_attitude', 'value'=>'2','style'=>'background-color: #FFA07A !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_attitude', 'value'=>'1','style'=>'background-color: #DC143C !important;'.$btn_style]).$space ?>                   
+                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_attitude', 'value'=>'2','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_attitude', 'value'=>'1','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>                   
                     <br>
                     <br>
                     <?= $form->field($model, 'i_overall')->hiddenInput()->label("Over-all customer experience") ?>
-                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_overall', 'value'=>'5','style'=>'background-color: #3CB371 !important;'.$btn_style]).$space ?>
-                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_overall', 'value'=>'4','style'=>'background-color: #98FB98 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($extremely_satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_overall', 'value'=>'5','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($satisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_overall', 'value'=>'4','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
                     <?php echo Html::button($neutral, ['onclick'=>'changeColor(this)', 'class'=>'i_overall', 'value'=>'3','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>                  
-                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_overall', 'value'=>'2','style'=>'background-color: #FFA07A !important;'.$btn_style]).$space ?>     
-                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_overall', 'value'=>'1','style'=>'background-color: #DC143C !important;'.$btn_style]).$space ?>          
+                    <?php echo Html::button($unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_overall', 'value'=>'2','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>     
+                    <?php echo Html::button($extremely_unsatisfied, ['onclick'=>'changeColor(this)', 'class'=>'i_overall', 'value'=>'1','style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>          
                                      
                     <br>
                     <br>
@@ -192,16 +192,16 @@ $requestlist= ArrayHelper::map(Businessnature::find()->orderBy(['nature' => SORT
 
                 <div class="panel-body">
                     <?= $form->field($model, 'recommend')->hiddenInput()->label("Recommend")->label(false) ?>
-                    <?php echo Html::button('<b><font size="4">10</b>', ['onclick'=>'changeColor_rec(this)','class'=>'recommend', 'value'=>'10','style'=>'background-color: #3CB371 !important;'.$btn_style]) ?>
-                    <?php echo Html::button('<b><font size="4">9</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'9','style'=>'background-color: #008000 !important;'.$btn_style]) ?>
-                    <?php echo Html::button('<b><font size="4">8</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'8','style'=>'background-color: #32CD32 !important;'.$btn_style]) ?>
-                    <?php echo Html::button('<b><font size="4">7</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'7','value' => '2', 'style'=>'background-color: #98FB98 !important;'.$btn_style]) ?>
-                    <?php echo Html::button('<b><font size="4">6</b>', ['onclick'=>'changeColor_rec(this)',' class'=>'recommend', 'value'=>'6','style'=>'background-color: #FFEFD5 !important;'.$btn_style]) ?>
-                    <?php echo Html::button('<b><font size="4">5</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'5','style'=>'background-color: #FFA07A !important;'.$btn_style]) ?>
-                    <?php echo Html::button('<b><font size="4">4</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'4','style'=>'background-color: #E9967A !important;'.$btn_style]) ?>
-                    <?php echo Html::button('<b><font size="4">3</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'2','value' => '2', 'style'=>'background-color: #CD5C5C !important;'.$btn_style]) ?>     
-                    <?php echo Html::button('<b><font size="4">2</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'1','style'=>'background-color: #DC143C !important;'.$btn_style])?>    
-                    <?php echo Html::button('<b><font size="4">1</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'1','style'=>'background-color: #DC143C !important;'.$btn_style])?>            
+                    <?php echo Html::button('<b><font size="4">10</b>', ['onclick'=>'changeColor_rec(this)','class'=>'recommend', 'value'=>'10','style'=>'background-color: #F5DEB3 !important;'.$btn_style]) ?>
+                    <?php echo Html::button('<b><font size="4">9</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'9','style'=>'background-color: #F5DEB3 !important;'.$btn_style]) ?>
+                    <?php echo Html::button('<b><font size="4">8</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'8','style'=>'background-color: #F5DEB3 !important;'.$btn_style]) ?>
+                    <?php echo Html::button('<b><font size="4">7</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'7','value' => '2', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]) ?>
+                    <?php echo Html::button('<b><font size="4">6</b>', ['onclick'=>'changeColor_rec(this)',' class'=>'recommend', 'value'=>'6','style'=>'background-color: #F5DEB3 !important;'.$btn_style]) ?>
+                    <?php echo Html::button('<b><font size="4">5</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'5','style'=>'background-color: #F5DEB3 !important;'.$btn_style]) ?>
+                    <?php echo Html::button('<b><font size="4">4</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'4','style'=>'background-color: #F5DEB3 !important;'.$btn_style]) ?>
+                    <?php echo Html::button('<b><font size="4">3</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'2','value' => '2', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]) ?>     
+                    <?php echo Html::button('<b><font size="4">2</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'1','style'=>'background-color: #F5DEB3 !important;'.$btn_style])?>    
+                    <?php echo Html::button('<b><font size="4">1</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'1','style'=>'background-color: #F5DEB3 !important;'.$btn_style])?>            
                  </div>     
         </div>
         <div class="panel panel-info">
