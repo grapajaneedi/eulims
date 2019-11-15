@@ -192,15 +192,16 @@ $requestlist= ArrayHelper::map(Businessnature::find()->orderBy(['nature' => SORT
 
                 <div class="panel-body">
                     <?= $form->field($model, 'recommend')->hiddenInput()->label("Recommend")->label(false) ?>
-                    <?php echo Html::button('10', ['onclick'=>'changeColor_rec(this)','class'=>'recommend', 'value'=>'10','style'=>'background-color: #006400;'.$btn_style]) ?>
-                    <?php echo Html::button('9', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'9','style'=>'background-color: #008000;'.$btn_style]) ?>
-                    <?php echo Html::button('8', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'8','style'=>'background-color: #32CD32;'.$btn_style]) ?>
-                    <?php echo Html::button('7', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'7','value' => '2', 'style'=>'background-color: #98FB98;'.$btn_style]) ?>
-                    <?php echo Html::button('6', ['onclick'=>'changeColor_rec(this)',' class'=>'recommend', 'value'=>'6','style'=>'background-color: #FFEFD5;'.$btn_style]) ?>
-                    <?php echo Html::button('5', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'5','style'=>'background-color: #FFA07A;'.$btn_style]) ?>
-                    <?php echo Html::button('4', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'4','style'=>'background-color: #E9967A;'.$btn_style]) ?>
-                    <?php echo Html::button('2', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'2','value' => '2', 'style'=>'background-color: #CD5C5C;'.$btn_style]) ?>     
-                    <?php echo Html::button('1', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'1','style'=>'background-color: #DC143C;'.$btn_style])?>        
+                    <?php echo Html::button('<b><font size="4">10</b>', ['onclick'=>'changeColor_rec(this)','class'=>'recommend', 'value'=>'10','style'=>'background-color: #3CB371 !important;'.$btn_style]) ?>
+                    <?php echo Html::button('<b><font size="4">9</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'9','style'=>'background-color: #008000 !important;'.$btn_style]) ?>
+                    <?php echo Html::button('<b><font size="4">8</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'8','style'=>'background-color: #32CD32 !important;'.$btn_style]) ?>
+                    <?php echo Html::button('<b><font size="4">7</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'7','value' => '2', 'style'=>'background-color: #98FB98 !important;'.$btn_style]) ?>
+                    <?php echo Html::button('<b><font size="4">6</b>', ['onclick'=>'changeColor_rec(this)',' class'=>'recommend', 'value'=>'6','style'=>'background-color: #FFEFD5 !important;'.$btn_style]) ?>
+                    <?php echo Html::button('<b><font size="4">5</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'5','style'=>'background-color: #FFA07A !important;'.$btn_style]) ?>
+                    <?php echo Html::button('<b><font size="4">4</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'4','style'=>'background-color: #E9967A !important;'.$btn_style]) ?>
+                    <?php echo Html::button('<b><font size="4">3</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'2','value' => '2', 'style'=>'background-color: #CD5C5C !important;'.$btn_style]) ?>     
+                    <?php echo Html::button('<b><font size="4">2</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'1','style'=>'background-color: #DC143C !important;'.$btn_style])?>    
+                    <?php echo Html::button('<b><font size="4">1</b>', ['onclick'=>'changeColor_rec(this)', 'class'=>'recommend', 'value'=>'1','style'=>'background-color: #DC143C !important;'.$btn_style])?>            
                  </div>     
         </div>
         <div class="panel panel-info">
