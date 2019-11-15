@@ -8,6 +8,7 @@ use common\components\NumbersToWords;
 use common\models\system\Rstl;
 use common\models\finance\Paymentitem;
 use common\models\finance\Check;
+use common\models\finance\ExcessPayment;
  /**
 * 
 */
@@ -38,14 +39,10 @@ class Orspreadsheet extends Spreadsheet
         $this->setDocument(IOFactory::load($this->location."OR.xlsx"));
             
         $numbertowords=new NumbersToWords();
-        $amountinwords=$numbertowords->convert($this->model->total);
-        $whole_number=(int)$this->model->total;
-        $remainder=$this->model->total - $whole_number;
-        if (!$remainder){
-            $amountinwords.=" And 00/100";
-        }
         
         $paymentitem_Query = Paymentitem::find()->where(['receipt_id' => $this->model->receipt_id])->all();
+		
+		
         $row=10;
         $count=0;
         
@@ -59,7 +56,25 @@ class Orspreadsheet extends Spreadsheet
            $this->getDocument()->getActiveSheet()->setCellValue('D'.$row, number_format($or['amount'],2));
            $row++; 
         }
-        $this->getDocument()->getActiveSheet()->setCellValue('D19', number_format($this->model->total,2));
+		//for excess payment from check to customer wallet
+		$excess_amount=0;
+		$excesspayment_Query = ExcessPayment::find()->where(['receipt_id' => $this->model->receipt_id])->all();
+		foreach ($excesspayment_Query as $i => $excess) {
+		   $this->getDocument()->getActiveSheet()->setCellValue('A'.$row, "Credited to Customer Wallet");
+           $this->getDocument()->getActiveSheet()->setCellValue('D'.$row, number_format($excess['amount'],2));
+		   $excess_amount=$excess['amount'];
+		}
+		//////////////////////
+		$gtotal=$this->model->total + $excess_amount;
+		
+		$amountinwords=$numbertowords->convert($gtotal);
+        $whole_number=(int)$gtotal;
+        $remainder=$gtotal - $whole_number;
+        if (!$remainder){
+            $amountinwords.=" And 00/100";
+        }
+		
+        $this->getDocument()->getActiveSheet()->setCellValue('D19', number_format($gtotal,2));
         $this->getDocument()->getActiveSheet()->setCellValue('A20','                                        '.$amountinwords);
         
         $paymentmode=$this->model->paymentMode->payment_mode;
