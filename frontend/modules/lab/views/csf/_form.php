@@ -41,7 +41,7 @@ $requestlist= ArrayHelper::map(Businessnature::find()->orderBy(['nature' => SORT
                     ?>
                     
    <div class="csf-form" style="margin: 0 70px;">
-   <?php echo Html::button("<span class='glyphicon glyphicon-refresh'></span> Reset",['value' => '/lab/csf/index','onclick'=>'location.href=this.value', 'class' => 'btn btn-primary', 'title' => Yii::t('app', "View Request")]); ?>
+   <?php //echo Html::button("<span class='glyphicon glyphicon-refresh'></span> Reset",['value' => '/lab/csf/index','onclick'=>'location.href=this.value', 'class' => 'btn btn-primary', 'title' => Yii::t('app', "View Request")]); ?>
                      <br>
                      <br>
                    
@@ -207,7 +207,7 @@ $requestlist= ArrayHelper::map(Businessnature::find()->orderBy(['nature' => SORT
         <div class="panel panel-info">
         <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;"><b>Please give us your comments/ suggestions to improve our services. Also, let us know other test you require that we are not able to provide yet.</b></div>
             <div class="panel-body">
-                 <?= $form->field($model, 'essay')->textArea(['rows' => '10'])->label(false) ?>
+                 <?= $form->field($model, 'essay')->textArea(['rows' => '3'])->label(false) ?>
             </div>  
         </div>    
        

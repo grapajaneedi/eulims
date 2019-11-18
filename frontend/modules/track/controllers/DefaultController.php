@@ -4,6 +4,7 @@ namespace frontend\modules\track\controllers;
 
 use yii\web\Controller;
 use common\models\lab\Request;
+use common\models\lab\RequestSearch;
 use Yii;
 
 /**
@@ -23,10 +24,25 @@ class DefaultController extends Controller
         $post= Yii::$app->request->post();
         if ($model->load(Yii::$app->request->post())) {
 
-            
-            return $this->render('view', [
-                'model' => $model,
-            ]);
+            $searchModel = new RequestSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+           
+            $req = $_POST['Request']['request_ref_num'];
+            $created = $_POST['Request']['created_at'];
+
+            $request = Request::find()->where(['request_ref_num' => $req, 'created_at'=>$created])->one();     
+
+            if ($request){
+                return $this->render('view', [
+                    'model' => $model,
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                    'request'=>$request,
+                ]);
+            }else{
+                return $this->redirect(['index']);
+            }
+           
         }
 
 

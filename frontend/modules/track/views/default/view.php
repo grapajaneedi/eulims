@@ -1,88 +1,280 @@
 <?php
-
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use kartik\detail\DetailView;
+use common\components\Functions;
+use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\lab\Request */
 
-$this->title = $model->request_id;
-$this->params['breadcrumbs'][] = ['label' => 'Requests', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
-
-echo "request ref num".$model->request_ref_num;
-echo $model->request_ref_num;
-
-//unique tracking number - request id and reference number
 ?>
+<div class="row" style='min-height: 0px;'>
+  <div class="col-sm-1" style='min-height: 0px;'>
+    <img src='/uploads/dost.svg' style=' width: 90; height: 90px;margin-left:30px;margin-top:20px' /> 
+  </div>
+
+  <div class="col-sm-11" style='min-height: 0px;'>
+    <h3 style="color:#142142;font-family:Century Gothic;font-size:200%;7px 7px 0px rgba(0, 0, 0, 0.2);"><b>&nbsp;&nbsp;Department of Science and Technology</b></h3>
+    <h3 style="color:#1a4c8f;font-family:Century Gothic;font-size:200%;7px 7px 0px rgba(0, 0, 0, 0.2);"><b>&nbsp;&nbsp;REGIONAL STANDARDS AND TESTING LABORATORY</b></h3>
+  </div>
+</div>
+
 <div class="request-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Tracking Widget</title>
+  <style>
+    .tracking-widget {
+      display: flex;
+      width: 980px;
+      min-height: 140px;
+      margin: 12px auto;
+      padding: 5px;
+      align-items: center;
+    }
 
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->request_id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->request_id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
+    .tracking-widget > .status {
+      text-align: center;
+    }
+
+    .tracking-widget > .status > .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 96px;
+      height: 96px;
+      background-color: #fafafa;
+      border: 4px solid #9e9e9e;
+      border-radius: 50%;
+    }
+
+    .tracking-widget > .status.done > .icon, .tracking-widget > .status.done + .connector {
+      border-color: #2b2bb3;
+      background-color: #68b4ed;
+    }
+
+    .tracking-widget > .status > .icon > img {
+      width: 60%;
+      height: 60%;
+    }
+    .tracking-widget > .status > div {
+      font-size: 11px;
+      margin-top: 4px;
+    }
+    .tracking-widget > .connector {
+      flex: 1;
+      border: 2px solid #999999;
+      height: 0;
+      margin-bottom: 13px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="col-sm-8">
+<div class="alert alert-info" style="!important;margin-top: 1px !important;">
+     <a href="#" class="close" data-dismiss="alert" >×</a>
+    <p class="note" ><b>Request Status:</b> Request Started Analysis
+    </p>  
+    </div>
+<div class="panel panel-info">
+<div class="panel-body">
+  <div class="tracking-widget">
+    <div class="status done">
+      <div class="icon">
+        <img src="/uploads/track/t1-people-carry-solid.svg" />
+      </div>
+      <div style="font-family:Century Gothic;font-size:80%;">Sample Received<br></div>
+    </div>
+    <div class="connector"></div>
+    <div class="status done">
+      <div class="icon">
+        <img src="/uploads/track/t2-flask-solid.svg" />
+      </div>
+      <div style="font-family:Century Gothic;font-size:80%;">Analysis Started<br></div>
+    </div>
+    <div class="connector"></div>
+    <div class="status ">
+      <div class="icon">
+        <img src="/uploads/track/t3-clipboard-check-solid.svg" />
+      </div>
+      <div style="font-family:Century Gothic;font-size:80%;">Done Analyzing<br></div>
+    </div>
+    <div class="connector"></div>
+    <div class="status">
+      <div class="icon">
+        <img src="/uploads/track/t4-file-contract-solid.svg" />
+      </div>
+      <div style="font-family:Century Gothic;font-size:80%;">Paid<br></div>
+    </div>
+    <div class="connector"></div>
+    <div class="status">
+      <div class="icon">
+        <img src="/uploads/track/t4-file-contract-solid.svg" />
+      </div>
+      <div style="font-family:Century Gothic;font-size:80%;">Reports Claimed<br></div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+<div class="col-sm-4">
+<?php
+        echo DetailView::widget([
+        'model'=>$model,
+        'responsive'=>true,
+        'hover'=>true,
+        'mode'=>DetailView::MODE_VIEW,
+        'panel'=>[
+            'heading'=>'<i class="glyphicon glyphicon-info-sign"></i> Request Details',
+            'type'=>DetailView::TYPE_PRIMARY,
+        ],
+        'attributes'=>[
+            [
+                'columns' => [
+                    [
+                        'label'=>'Request Ref #',
+                        'value'=>$request->request_ref_num,
+                        'displayOnly'=>true,    
+                    ],
+                ],
             ],
-        ]) ?>
-    </p>
+            [
+              'columns' => [
+                  [
+                      'label'=>'Due Date',
+                      'value'=>$request->report_due,
+                      'displayOnly'=>true,       
+                  ],            
+              ],
+          ],
+            [
+                'columns' => [
+                    [
+                        'label'=>'Request Date',
+                        'value'=>$request->request_datetime,
+                        'displayOnly'=>true,       
+                    ],            
+                ],
+            ],
+            [
+                'columns' => [
+                    [
+                        'label'=>'Customer',
+                        'format'=>'raw',
+                        'value'=>$request->customer ? $request->customer->customer_name : "",
+                        'displayOnly'=>true
+                    ],
+                ],         
+              ], 
+              [
+                'columns' => [
+                    [
+                        'label'=>'Tel no.',
+                        'format'=>'raw',
+                        'value'=>$request->customer ? $request->customer->tel : "",
+                        'displayOnly'=>true
+                    ],
+                ],         
+              ], 
+              [
+                'columns' => [
+                    [
+                        'label'=>'Address',
+                        'format'=>'raw',
+                        'value'=>$request->customer ? $request->customer->address : "",
+                        'displayOnly'=>true
+                    ],
+                ],         
+              ], 
+            
+        ],
+    ]);
+    ?>
+       </div>
+</body>
+</html>
 
-    <?php
-    //  DetailView::widget([
-    //     'model' => $model,
-    //     'attributes' => [
-    //         'request_id',
-    //         'request_ref_num',
-    //         'request_datetime',
-    //         'rstl_id',
-    //         'lab_id',
-    //         'customer_id',
-    //         'payment_type_id',
-    //         'modeofrelease_ids',
-    //         'discount',
-    //         'discount_id',
-    //         'purpose_id',
-    //         'total',
-    //         'report_due',
-    //         'conforme',
-    //         'receivedBy',
-    //         'created_at',
-    //         'posted',
-    //         'status_id',
-    //         'selected',
-    //         'other_fees_id',
-    //         'request_type_id',
-    //         'position',
-    //         'recommended_due_date',
-    //         'est_date_completion',
-    //         'items_receive_by',
-    //         'equipment_release_date',
-    //         'certificate_release_date',
-    //         'released_by',
-    //         'received_by',
-    //         'payment_status_id',
-    //         'completed',
-    //         'request_old_id',
-    //         'oldColumn_requestId',
-    //         'oldColumn_sublabId',
-    //         'oldColumn_orId',
-    //         'oldColumn_completed',
-    //         'oldColumn_cancelled',
-    //         'oldColumn_create_time',
-    //         'customer_old_id',
-    //         'tmpCustomerID',
-    //         'local_request_id',
-    //         'local_customer_id',
-    //         'is_sync_up',
-    //         'is_updated',
-    //         'is_deleted',
-    //         'sample_received_date',
-    //         'referral_id',
-    //         'contact_num',
-    //     ],
-    // ]) ?>
-
+</div>
+   
+<div class="row" style="padding-left:15px;padding-right:15px">
+<div class="col-sm-12">       
+<?php    
+        echo DetailView::widget([
+        'model'=>$model,
+        'responsive'=>true,
+        'hover'=>true,
+        'mode'=>DetailView::MODE_VIEW,
+        'panel'=>[
+            'heading'=>'<i class="glyphicon glyphicon-info-sign"></i> Request Tracking',
+            'type'=>DetailView::TYPE_PRIMARY,
+        ],
+        'attributes'=>[
+            [
+                'columns' => [
+                    [
+                        'label'=>'Sample Received',
+                        'value'=>$request->request_datetime,
+                        'displayOnly'=>true,    
+                    ],
+                ],
+            ],
+            [
+              'columns' => [
+                  [
+                      'label'=>'Analysis Started',
+                      'value'=>'',
+                      'displayOnly'=>true,       
+                  ],            
+              ],
+          ],
+            [
+                'columns' => [
+                    [
+                        'label'=>'Done Analyzing',
+                        'value'=>'',
+                        'displayOnly'=>true,       
+                    ],            
+                ],
+            ],
+            [
+                'columns' => [
+                    [
+                        'label'=>'Paid',
+                        'format'=>'raw',
+                        'value'=>'',
+                        'displayOnly'=>true
+                    ],
+                ],         
+              ], 
+              [
+                'columns' => [
+                    [
+                        'label'=>'Reports Claimed',
+                        'format'=>'raw',
+                        'value'=>'',
+                        'displayOnly'=>true
+                    ],
+                ],         
+              ], 
+              [
+                'columns' => [
+                    [
+                        'label'=>'OR Date.',
+                        'format'=>'raw',
+                        'value'=>'',
+                        'displayOnly'=>true
+                    ],
+                ],         
+              ], 
+            
+        ],
+    ]);
+    ?>
+</div>
 </div>
