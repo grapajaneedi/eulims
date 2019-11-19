@@ -97,7 +97,7 @@ $this->registerJs($js);
         'panel' => [
                 'type' => GridView::TYPE_PRIMARY,
                 'heading' => '<span class="glyphicon glyphicon-book"></span>  Analysis' ,
-                'footer'=>Html::button('<i class="glyphicon glyphicon-tag"></i> Start Analysis', ['disabled'=>false,'value' => Url::to(['tagging/startanalysis','id'=>1]), 'onclick'=>'startanalysis()','title'=>'Start Analysis', 'class' => 'btn btn-success','id' => 'btn_start_analysis'])." ".
+                'footer'=>Html::button('<i class="glyphicon glyphicon-ok"></i> Start Analysis', ['disabled'=>false,'value' => Url::to(['tagging/startanalysis','id'=>1]), 'onclick'=>'startanalysis()','title'=>'Start Analysis', 'class' => 'btn btn-success','id' => 'btn_start_analysis'])." ".
                 Html::button('<i class="glyphicon glyphicon-ok"></i> Completed', ['disabled'=>false,'value' => Url::to(['tagging/completedanalysis','id'=>1]),'title'=>'Completed', 'onclick'=>'completedanalysis()', 'class' => 'btn btn-success','id' => 'btn_complete_analysis']),
             ],
             'pjaxSettings' => [
@@ -117,6 +117,8 @@ $this->registerJs($js);
                         'width' => '100px',
                         'enableSorting' => false,
                         'value' => function($model) {
+
+                            //return Html::a($model->testname, ['value'=>Url::to(['/lab/csf/resultmodal','id'=>$model->analysis_id]), 'class' => 'btn btn-primary','onclick'=>'LoadModal(this.title, this.value);','title' => Yii::t('app', "View Results")]);
                             return "<b>".$model->testname."</b>";
                         },
                         'contentOptions' => ['style' => 'width:40px; white-space: normal;'],                 
@@ -199,6 +201,17 @@ $this->registerJs($js);
                         'enableSorting' => false,
                         'contentOptions' => ['style' => 'width:40px; white-space: normal;'],
                 ],
+                
+                ['class' => 'kartik\grid\ActionColumn',
+                'contentOptions' => ['style' => 'width: 8.7%'],
+                'template' => '{view}',
+                'buttons'=>[
+                    'view'=>function ($url, $model) {
+                        return Html::button('<span class="glyphicon glyphicon-pencil"></span>', ['value'=>Url::to(['/lab/tagging/updateanalysis','id'=>$model->analysis_id]), 'class' => 'btn btn-primary','onclick'=>'LoadModal(this.title, this.value);','title' => Yii::t('app', "Update Analysis")]);
+                    },
+                   
+                ],
+            ],
             
         ],
     ]); 

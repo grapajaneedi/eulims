@@ -112,6 +112,53 @@ class TaggingController extends Controller
         ]);
     }
 
+    public function actionUpdateanalysis($id)
+    {
+        $taggingmodel = Tagging::find()->where(['analysis_id'=>$id])->one();
+        $analysis = Analysis::find()->where(['analysis_id'=>$id])->one();
+        $model = new Tagging();
+        if ($model->load(Yii::$app->request->post())) {
+            $start = $_POST['Tagging']['start_date'];
+            $end = $_POST['Tagging']['end_date'];
+
+
+            $Connection= Yii::$app->labdb;
+            $sql="UPDATE `tbl_tagging` SET `start_date`='$start' WHERE `end_date`=".$end;
+            $Command=$Connection->createCommand($sql);
+            $Command->execute();
+            
+            $samplesQuery = Sample::find()->where(['sample_id' =>$analysis->sample_id]);
+            $sampleDataProvider = new ActiveDataProvider([
+                    'query' => $samplesQuery,
+                    'pagination' => [
+                        'pageSize' => 10,
+                    ],
+                 
+            ]);
+            $analysisQuery = Analysis::find()->where(['sample_id' => $analysis->sample_id]);      
+            $analysisdataprovider = new ActiveDataProvider([
+                    'query' => $analysisQuery,
+                    'pagination' => [
+                        'pageSize' => 10,
+                    ],
+                 
+            ]);
+
+           // echo var_dump($end);
+            return $this->renderAjax('_viewAnalysis', [
+                'sampleDataProvider' => $sampleDataProvider,
+                'analysisdataprovider'=> $analysisdataprovider,
+                'analysis_id'=>$id,
+             ]);
+         
+           
+        }
+
+        return $this->renderAjax('updateanalysis', [
+            'taggingmodel' => $taggingmodel,
+        ]);
+    }
+
     /**
      * Deletes an existing Tagging model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

@@ -31,6 +31,12 @@ $neutral = "<img src='/uploads/csf/3-meh-regular.svg' />";
 $unsatisfied = "<img src='/uploads/csf/2-frown.svg' />";
 $extremely_unsatisfied = "<img src='/uploads/csf/1-angry-regular.svg' />";
 
+$legend_extremely_satisfied = "<img src='/uploads/csf/5-laugh-regular.svg' /><div style='font-size:140%;text-align:center;'><b>(5)<br>Extremely Satisfied</b></div>";
+$legend_satisfied = "<img src='/uploads/csf/4-smile-regular.svg' /><div style='font-size:140%;text-align:center;'><b>(4)<br><br>Satisfied</b></div>";
+$legend_neutral = "<img src='/uploads/csf/3-meh-regular.svg' /><div style='font-size:140%;text-align:center;'><b>(3)<br><br>Neutral</b></div>";
+$legend_unsatisfied = "<img src='/uploads/csf/2-frown.svg' /><div style='font-size:140%;text-align:center;'><b>(2)<br><br>Unsatisfied</b></div>";
+$legend_extremely_unsatisfied = "<img src='/uploads/csf/1-angry-regular.svg' /><div style='font-size:140%;text-align:center;'><b>(1)<br>Extremely Unsatisfied</b></div>";
+
 $requestlist= ArrayHelper::map(Businessnature::find()->orderBy(['nature' => SORT_DESC])->all(),'nature','nature');
 
                     //$btn_style = ';height: 45px;width: 45px; border-radius: 50%;display: inline-block;color:#0f096d;box-shadow: inset 0px 25px 0 rgba(255,255,255,0.3), 0 5px 5px rgba(0, 0, 0, 0.3);';
@@ -75,6 +81,20 @@ $requestlist= ArrayHelper::map(Businessnature::find()->orderBy(['nature' => SORT
                                                     ArrayHelper::map(Lab::find()->where(['active'=> 1])->all(),'lab_id','labname'),
                                                     ['itemOptions' => ['onchange'=>$js]]
                         ); ?>
+                      
+                    </div>
+                </div>
+
+                <div class="panel panel-info">
+                <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;"><b>Legends</b></div>
+                    <div class="panel-body">
+                    <?php echo Html::button($legend_extremely_satisfied, [ 'class' => 'd_deliverytime', 'value'=>'5', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?> 
+                    <?php echo Html::button($legend_satisfied, ['class' => 'd_deliverytime', 'value'=>'4', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>                 
+                    <?php echo Html::button($legend_neutral, [ 'class' => 'd_deliverytime', 'value'=>'3', 'style'=>'background-color: #F5DEB3 !important'.$btn_style]).$space ?>
+                    <?php echo Html::button($legend_unsatisfied, ['class' => 'd_deliverytime', 'value'=>'2', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>
+                    <?php echo Html::button($legend_extremely_unsatisfied, [ 'class' => 'd_deliverytime','value'=>'1', 'style'=>'background-color: #F5DEB3 !important;'.$btn_style]).$space ?>           
+                   
+                       
                       
                     </div>
                 </div>

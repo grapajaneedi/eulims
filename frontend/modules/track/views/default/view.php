@@ -242,16 +242,16 @@ use kartik\grid\GridView;
                     ],            
                 ],
             ],
-            [
-                'columns' => [
-                    [
-                        'label'=>'Paid',
-                        'format'=>'raw',
-                        'value'=>'',
-                        'displayOnly'=>true
-                    ],
-                ],         
-              ], 
+            // [
+            //     'columns' => [
+            //         [
+            //             'label'=>'Paid',
+            //             'format'=>'raw',
+            //             'value'=>'',
+            //             'displayOnly'=>true
+            //         ],
+            //     ],         
+            //   ], 
               [
                 'columns' => [
                     [
