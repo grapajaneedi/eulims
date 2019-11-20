@@ -1,11 +1,14 @@
 <?php
 
- /*$server = "localhost";
- $username = "eulims";
- $password = "eulims"; */
+//  $server = "localhost";
+//  $username = "eulims";
+//  $password = "eulims";xxx
+
 $server = "192.168.1.96";
 $username = "eulims";
-$password = "D05793ul1ms!@#$%"; 
+$password = "D05793ulims!@#$%";
+
+
 return [
     'db'=>[
         'class' => 'yii\db\Connection',  
