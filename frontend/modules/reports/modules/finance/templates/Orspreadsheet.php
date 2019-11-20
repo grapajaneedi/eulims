@@ -36,7 +36,7 @@ class Orspreadsheet extends Spreadsheet
 
     public function loaddoc()
     {
-        $this->setDocument(IOFactory::load($this->location."OR.xlsx"));
+        $this->setDocument(IOFactory::load($this->location."cash.xls"));
             
         $numbertowords=new NumbersToWords();
         
@@ -49,7 +49,7 @@ class Orspreadsheet extends Spreadsheet
         $this->getDocument()->getActiveSheet()->setCellValue('C3', date('F d, Y',strtotime($this->model->receiptDate)));
         $rstl= Rstl::find()->where(['rstl_id'=>$this->model->rstl_id])->one();
         $this->getDocument()->getActiveSheet()->setCellValue('B5', $rstl->name);
-        $this->getDocument()->getActiveSheet()->setCellValue('A6', $this->model->payor);
+        $this->getDocument()->getActiveSheet()->setCellValue('B6', $this->model->payor);
         $this->getDocument()->getActiveSheet()->setCellValue('A9', $this->model->collectiontype ? $this->model->collectiontype->natureofcollection : "");
         foreach ($paymentitem_Query as $i => $or) {
            $this->getDocument()->getActiveSheet()->setCellValue('A'.$row, $or['details']);
