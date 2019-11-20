@@ -373,5 +373,3 @@ frontend/modules/lab/views/request/index_20190708.php
 frontend/modules/pstc/views/pstcrequest/_formRequestDetails==.php
 
 frontend/views/admin-lte/layouts/left.php
-common/config/db.php
-common/config/db.php
