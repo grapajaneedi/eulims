@@ -123,10 +123,29 @@ class TaggingController extends Controller
 
 
             $Connection= Yii::$app->labdb;
-            $sql="UPDATE `tbl_tagging` SET `start_date`='$start' WHERE `end_date`=".$end;
+            $sql="UPDATE `tbl_tagging` SET `start_date`='$start', `end_date`='$end' WHERE `analysis_id`=".$id;
             $Command=$Connection->createCommand($sql);
             $Command->execute();
+
+            $searchModel = new TaggingSearch();
+            $model = new Sample();
             
+            $samplesQuery = Sample::find()->where(['sample_id' =>0]);
+            $dataProvider = new ActiveDataProvider([
+                    'query' => $samplesQuery,
+                    'pagination' => [
+                        'pageSize' => 10,
+                    ],
+                 
+            ]);
+
+           return $this->render('index', [
+               'searchModel' => $searchModel,
+               'dataProvider' => $dataProvider,
+               'model'=>$model,
+           ]);
+
+           ///////////////////////////////////////////////////////// 
             $samplesQuery = Sample::find()->where(['sample_id' =>$analysis->sample_id]);
             $sampleDataProvider = new ActiveDataProvider([
                     'query' => $samplesQuery,
@@ -144,7 +163,8 @@ class TaggingController extends Controller
                  
             ]);
 
-           // echo var_dump($end);
+          
+
             return $this->renderAjax('_viewAnalysis', [
                 'sampleDataProvider' => $sampleDataProvider,
                 'analysisdataprovider'=> $analysisdataprovider,
