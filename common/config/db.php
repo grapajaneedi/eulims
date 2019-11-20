@@ -8,6 +8,7 @@ $server = "192.168.1.96";
 $username = "eulims";
 $password = "D05793ulims!@#$%";
 
+
 return [
     'db'=>[
         'class' => 'yii\db\Connection',  
