@@ -11,6 +11,7 @@ use common\models\finance\Paymentmode;
 use common\models\finance\Collectiontype;
 use common\models\finance\Orseries;
 use common\components\Functions;
+use kartik\checkbox\CheckboxX;
 /* @var $this yii\web\View */
 /* @var $model common\models\finance\Receipt */
 /* @var $form yii\widgets\ActiveForm */
@@ -125,6 +126,8 @@ if($op_model == ""){
             <?php echo $form->field($model, 'payor')->textInput(['value'=>$customer_name])->label('Payor') ?>
             </div>
         </div>
+		
+		
         <div class="form-group pull-right">
             <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary',
                 'id'=>'createOP']) ?>

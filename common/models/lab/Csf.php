@@ -53,6 +53,7 @@ class Csf extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['name', 'ref_num', 'nob', 'tom', 'service', 'd_deliverytime', 'd_accuracy',  'd_speed', 'd_cost','d_attitude', 'd_overall','i_deliverytime',  'i_accuracy', 'i_speed', 'i_cost', 'i_attitude',  'i_overall', 'recommend', 'essay'], 'required'],
             [['d_deliverytime', 'd_accuracy', 'd_speed', 'd_cost', 'd_attitude', 'd_overall', 'i_deliverytime', 'i_accuracy', 'i_speed', 'i_cost', 'i_attitude', 'i_overall', 'recommend'], 'integer'],
             [['r_date'], 'safe'],
             [['name', 'essay', 'ref_num'], 'string', 'max' => 500],

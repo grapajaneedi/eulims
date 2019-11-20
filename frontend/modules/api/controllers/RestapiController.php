@@ -25,6 +25,7 @@ use common\models\lab\Booking;
 use common\models\system\Rstl;
 use common\models\auth\AuthAssignment;
 use common\components\Functions;
+use yii\web\UploadedFile;
 
 class RestapiController extends \yii\rest\Controller
 {
@@ -270,20 +271,29 @@ class RestapiController extends \yii\rest\Controller
     public function actionUpdatethumbnail(){
         $my_var = \Yii::$app->request->post();
         if($my_var){
-            $product = Products::find()->where(['product_code' => $my_var['product_code']]); //find product using the primarykey
+            $product = Products::find()->where(['product_id' => $my_var['product_id']])->one(); //find product using the primarykey
             if($product){
                 //fetch and save the picture, if (success) update the product
                 //$product->Image1 = my_var/** productname + product code + extension */
 
-                if($product->save()){
+                $image1 = UploadedFile::getInstanceByName('image');
+
+                
+
+                if(!empty($image1) && $image1->size !== 0) {
+                    $image1->saveAs('uploads/products/'.$product->product_code.$product->product_id.'1.'.$image1->extension);
+                    $product->Image1='uploads/products/'.$product->product_code.$product->product_id.'1.'.$image1->extension;
+                }
+
+                if($product->save(false)){
                     return $this->asJson([
                         'success' => true,
-                        'message' => 'Product ('.$product_code.') updated!',
+                        'message' => 'Product ('.$product->product_code.') updated!',
                     ]);
                 }else{
                     return $this->asJson([
                         'success' => false,
-                        'message' => 'Product ('.$product_code.') failed to update!',
+                        'message' => 'Product ('.$product->product_code.') failed to update!',
                     ]); 
                 }
                           

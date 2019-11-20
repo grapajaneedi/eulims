@@ -20,15 +20,36 @@ if($collectiontype_id == 1 || $collectiontype_id == 2){
 else{
    $displayy='display: none';
 }
-$print_button=Html::button('<span class="glyphicon glyphicon-download"></span> Print Receipt Excel', ['value'=>'/finance/cashier/printview?id='.$model->receipt_id, 'class' => 'btn btn-small btn-primary','title' => Yii::t('app', "Print Report"),'onclick'=>"location.href=this.value"]);
+$print_button=Html::button('<span class="glyphicon glyphicon-download"></span> Export Receipt Excel', ['value'=>'/finance/cashier/printview?id='.$model->receipt_id, 'class' => 'btn btn-small btn-success','title' => Yii::t('app', "Print Report"),'onclick'=>"location.href=this.value"]);
 $add_paymentitem=Html::button('<i class="glyphicon glyphicon-plus"></i> Add Paymentitem', ['value' => Url::to(['/finance/cashier/addpaymentitem','collectiontype_id'=>$model->collectiontype_id,'receiptid'=>$model->receipt_id]),'title'=>'Add Payment Item', 'onclick'=>'addPaymentitem(this.value,this.title)', 'class' => 'btn btn-primary','id' => 'modalBtn']);
-$add_extra=Html::button('<i class="glyphicon glyphicon-plus"></i> Excess Payment', ['value' => Url::to(['/finance/cashier/addextra','collectiontype_id'=>$model->collectiontype_id,'receiptid'=>$model->receipt_id]),'title'=>'Excess Payment', 'onclick'=>'addPaymentitem(this.value,this.title)', 'class' => 'btn btn-primary','id' => 'modalBtn','style'=>$displayy]);
+//$add_extra=Html::button('<i class="glyphicon glyphicon-plus"></i> Excess Payment', ['value' => Url::to(['/finance/cashier/addextra','collectiontype_id'=>$model->collectiontype_id,'receiptid'=>$model->receipt_id]),'title'=>'Excess Payment', 'onclick'=>'addPaymentitem(this.value,this.title)', 'class' => 'btn btn-primary','id' => 'modalBtn','style'=>$displayy]);
+
+$aftercontent="";
+$totaldue=0;
+$checksum=$check_sum ? $check_sum : 0;
+$walletpaysum=$walletpay_sum ? $walletpay_sum : 0;
+if($model->payment_mode_id == 2){
+	$customerwallet1=Html::checkbox('sample', false, ['label' => '&nbsp;Use Customer Wallet','value'=>'1','id'=>'chkwallet']);
+	$customerwallet2= Html::input('text','password1',$wallet ? $wallet->balance : 0,['disabled'=>true]);
+	$totaldue=($model->total - $checksum) - $walletpaysum;
+	//echo  $totaldue;
+	$customerwallet3= '<label>Amount Due:</label>&nbsp;'.Html::input('text','due',$totaldue,['disabled'=>true,'id' => 'txtdue']);
+	$cwbutton=Html::button('<span class="glyphicon glyphicon-save"></span> Confirm use of Customer Wallet', ['class' => 'btn btn-small btn-success','title' => Yii::t('app', "Print Report"),'onclick'=>'myFunction()','disabled'=>true,'id'=>'cwallet']);
+	if($totaldue > 0){
+		$aftercontent=$customerwallet1."&nbsp;&nbsp;&nbsp;".$customerwallet2."&nbsp;&nbsp;&nbsp;".$customerwallet3."&nbsp;&nbsp;&nbsp;".$cwbutton;
+	}
+	else{
+		$aftercontent='<label>E-Wallet Amount:</label>'.$customerwallet2. '&nbsp;&nbsp;&nbsp;<label>Amount Paid using E-Wallet:</label>&nbsp;'.Html::input('text','ewalletamount',$walletpay_sum ? $walletpay_sum : 0,['disabled'=>true,'id' => 'ewalletamount']);
+	}
+	
+}
 
 ?>
 <div class="receipt-view">
 
    <div class="container">
     <?= DetailView::widget([
+	 // echo $form->field($model, 'total')->textInput(['value'=>$wallet->balance,'readonly'=> true])->label('E-Wallet');
         'model'=>$model,
         'responsive'=>true,
         'hover'=>true,
@@ -122,8 +143,10 @@ $add_extra=Html::button('<i class="glyphicon glyphicon-plus"></i> Excess Payment
                 'panel' => [
                     'heading'=>'<h3 class="panel-title">Collection</h3>',
                     //remove add collection Html::button('<i class="glyphicon glyphicon-plus"></i> Add Collection', ['disabled'=>$enable, 'value' => Url::to(['add-collection','opid'=>$op_model->orderofpayment_id,'receiptid'=>$model->receipt_id]),'title'=>'Add Collection', 'onclick'=>'addCollection(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn'])." 
-                    'type'=>'primary', 'before'=>$add_paymentitem."&nbsp;&nbsp;&nbsp;".$add_extra."&nbsp;&nbsp;&nbsp;".Html::button('<i class="glyphicon glyphicon-print"></i> Print Receipt', ['disabled'=>$enable, 'onclick'=>"window.location.href = '" . \Yii::$app->urlManager->createUrl(['/reports/preview?url=/finance/cashier/print-or','or_number'=>$model->or_number]) . "';" ,'title'=>'Print Receipt',  'class' => 'btn btn-success'])."&nbsp;&nbsp;&nbsp;".$print_button,
-                    'after'=>false,
+                    //'type'=>'primary', 'before'=>$add_paymentitem."&nbsp;&nbsp;&nbsp;".Html::button('<i class="glyphicon glyphicon-print"></i> Print Receipt', ['disabled'=>$enable, 'onclick'=>"window.location.href = '" . \Yii::$app->urlManager->createUrl(['/reports/preview?url=/finance/cashier/print-or','or_number'=>$model->or_number]) . "';" ,'title'=>'Print Receipt',  'class' => 'btn btn-success'])."&nbsp;&nbsp;&nbsp;".$print_button,
+                    'type'=>'primary', 'before'=>$add_paymentitem."&nbsp;&nbsp;&nbsp;".$print_button,
+					'after'=> $aftercontent
+
                 ],
                 'columns' => $gridColumns,
                'toolbar' => [
@@ -215,18 +238,33 @@ $add_extra=Html::button('<i class="glyphicon glyphicon-plus"></i> Excess Payment
     
 </div>
 <script type="text/javascript">
+    $('#chkwallet').on('click',function() {
+       if ($(this).prop('checked')) {
+			   var total= <?php echo $totaldue ? $totaldue : 0 ?>;
+			   var customerwallet= <?php echo $wallet ? $wallet->balance : 0 ?>;
+			   var due= total - customerwallet;
+			   if (due < 0) { //means customer wallet is less
+				   due=0;
+			   }
+			   $('#txtdue').val(due);
+		   
+		   
+		   $("#cwallet").attr("disabled", false);
+        }
+        else {
+           // do what you need here         
+		   $('#txtdue').val(<?php echo $totaldue ? $totaldue : 0 ?>);
+		   $("#cwallet").attr("disabled", true);
+        }
+    });
    
     function addCollection(url,title){
-       //var url = 'Url::to(['sample/update']) . "?id=' + id;
-       //var url = '/lab/sample/update?id='+id;
         $(".modal-title").html(title);
         $('#modal').modal('show')
             .find('#modalContent')
             .load(url);
     }
     function addCheck(url,title){
-       //var url = 'Url::to(['sample/update']) . "?id=' + id;
-       //var url = '/lab/sample/update?id='+id;
         $(".modal-title").html(title);
         $('#modal').modal('show')
             .find('#modalContent')
@@ -236,9 +274,24 @@ $add_extra=Html::button('<i class="glyphicon glyphicon-plus"></i> Excess Payment
    $('#btnRemoveCheck').on('click',function() {
        alert('heheh');
    });
-   
+  function myFunction() {
+	  var txt;
+	  var r = confirm("Use E-Wallet?");
+	  if (r == true) {
+		//txt = "You pressed OK!";
+		$.post({
+            url: '/finance/cashier/usecustomerwallet?id='+<?php echo $model->receipt_id?>, // your controller action
+            success: function(data) {
+                
+            }
+        });
+	  } else {
+		//txt = "You pressed Cancel!";
+	  }
+	 //alert(txt);
+	}
    
     function addPaymentitem(url,title){
-        LoadModal(title,url,'true','1100px');
+        LoadModal(title,url,'true','600px');
     }
 </script>

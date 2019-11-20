@@ -8,6 +8,9 @@ use kartik\mpdf\Pdf;
 use common\models\system\RstlDetails;
 use common\components\Functions;
 use rmrevin\yii\fontawesome\FA;
+use common\models\lab\Sample;
+use common\models\lab\Request;
+use common\models\lab\Analysis;
 /**
  * Description of RequestPrinting
  *
@@ -56,7 +59,7 @@ class Printing {
         //$mPDF=$PDF->api;
         $mPDF->content = $mTemplate;
         $mPDF->orientation = Pdf::ORIENT_PORTRAIT;
-        $mPDF->defaultFontSize = 9;
+        $mPDF->defaultFontSize = 8;
         $mPDF->defaultFont = 'Arial';
         $mPDF->format =Pdf::FORMAT_A4;
         $mPDF->destination = Pdf::DEST_BROWSER;
@@ -75,7 +78,7 @@ class Printing {
         $RstlDetails = RstlDetails::find()->where(['rstl_id' => $rstl_id])->one();
         $border=0;//Border for adjustments
         if ($RstlDetails) {
-            $RequestTemplate = "<table border='$border' style='font-size: 12px' width=100%>";
+            $RequestTemplate = "<table border='$border' style='font-size: 8px' width=100%>";
             $RequestTemplate .= "<thead><tr><td colspan='7' style='height: 110px;text-align: center'>&nbsp;</td></tr></thead>";
             $RequestTemplate .= "<tr>";
             $RequestTemplate .= "<td style='width: 50px;height: 15px'>&nbsp;</td>";
@@ -146,7 +149,7 @@ class Printing {
             $RequestTemplate .= "<td valign='bottom' style='text-align: right;padding-right: 10px;height: 15px'>tot.am</td>";
             $RequestTemplate .= "</tr>";
             $RequestTemplate .= "<tr>";
-            $RequestTemplate .= "<td colspan='4' style='height: 10px;font-size: 8px;font-weight: bold'>";
+            $RequestTemplate .= "<td colspan='4' style='height: 10px;font-size: 7px;font-weight: bold'>";
             $RequestTemplate .= "<i class='fa fa-check'>/</i>";
             $RequestTemplate .= "</td>";
             $RequestTemplate .= "<td></td>";
@@ -224,7 +227,7 @@ class Printing {
         $RstlDetails = RstlDetails::find()->where(['rstl_id' => $rstl_id])->one();
         if ($RstlDetails) {
             
-            $RequestTemplate = "<table border='0' style='border-collapse: collapse;font-size: 12px' width=100%>";
+            $RequestTemplate = "<table border='0' style='border-collapse: collapse;font-size: 10px' width=100%>";
             $RequestTemplate .= "<thead>";
             $RequestTemplate .= "<tr>";
             $RequestTemplate .= "<td colspan='10' style='text-align: center;font-size: 12px'>$RstlDetails->name</td>";
@@ -294,6 +297,19 @@ class Printing {
             
             $CurSampleCode = "";
             $PrevSampleCode = "";
+//
+//             $samplesquery = Sample::find()->where(['request_id' => $id])->all();
+//             foreach($samplesquery as $sample){
+//             $RequestTemplate .= "<td class='text-left border-left-line border-top-line border-bottom-line padding-left-5' colspan='2'>$sample[samplename]</td>";
+//             $RequestTemplate .= "<td class='text-left border-left-line border-top-line border-right-line border-bottom-line padding-left-5'>$sample[sample_code]</td>";
+//             $analysisCount = 0;
+//             $analysisquery = Analysis::find()->where(['sample_id' => $sample['sample_id']])->all();
+//             foreach($analysisquery as $analysis){          
+//                 $RequestTemplate .= "<td class='text-left border-left-line border-top-line border-right-line border-bottom-line padding-left-5'>$analysis[testname]</td>";          
+//             }
+// }
+//
+
             foreach ($RequestRows as $RequestRow) {
                 $RequestRow = (object) $RequestRow;
                 $CurSampleCode = $RequestRow->sample_code;
@@ -355,7 +371,7 @@ class Printing {
                 $CurSampleCode2 = $RequestRow->sample_code;
                 if ($CurSampleCode2 != $PrevSampleCode2) {
                     $RequestTemplate .= "<tr>";
-                    $RequestTemplate .= "<td class='text-left border-left-line border-right-line padding-left-5' colspan='10'>$RequestRow->Remarks</td>";
+                    $RequestTemplate .= "<td class='text-left border-left-line border-right-line padding-left-5' colspan='10'> $RequestRow->Remarks</td>";
                     $RequestTemplate .= "</tr>";
                 }
                 $PrevSampleCode2 = $CurSampleCode2;
@@ -432,6 +448,11 @@ class Printing {
             $RequestTemplate .= "</table>";
         }
         return $RequestTemplate;
+        
     }
 
+
+
 }
+
+

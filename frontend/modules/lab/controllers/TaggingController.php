@@ -112,6 +112,73 @@ class TaggingController extends Controller
         ]);
     }
 
+    public function actionUpdateanalysis($id)
+    {
+        $taggingmodel = Tagging::find()->where(['analysis_id'=>$id])->one();
+        $analysis = Analysis::find()->where(['analysis_id'=>$id])->one();
+        $model = new Tagging();
+        if ($model->load(Yii::$app->request->post())) {
+            $start = $_POST['Tagging']['start_date'];
+            $end = $_POST['Tagging']['end_date'];
+
+
+            $Connection= Yii::$app->labdb;
+            $sql="UPDATE `tbl_tagging` SET `start_date`='$start', `end_date`='$end' WHERE `analysis_id`=".$id;
+            $Command=$Connection->createCommand($sql);
+            $Command->execute();
+
+            $searchModel = new TaggingSearch();
+            $model = new Sample();
+            
+            $samplesQuery = Sample::find()->where(['sample_id' =>0]);
+            $dataProvider = new ActiveDataProvider([
+                    'query' => $samplesQuery,
+                    'pagination' => [
+                        'pageSize' => 10,
+                    ],
+                 
+            ]);
+
+           return $this->render('index', [
+               'searchModel' => $searchModel,
+               'dataProvider' => $dataProvider,
+               'model'=>$model,
+           ]);
+
+           ///////////////////////////////////////////////////////// 
+            $samplesQuery = Sample::find()->where(['sample_id' =>$analysis->sample_id]);
+            $sampleDataProvider = new ActiveDataProvider([
+                    'query' => $samplesQuery,
+                    'pagination' => [
+                        'pageSize' => 10,
+                    ],
+                 
+            ]);
+            $analysisQuery = Analysis::find()->where(['sample_id' => $analysis->sample_id]);      
+            $analysisdataprovider = new ActiveDataProvider([
+                    'query' => $analysisQuery,
+                    'pagination' => [
+                        'pageSize' => 10,
+                    ],
+                 
+            ]);
+
+          
+
+            return $this->renderAjax('_viewAnalysis', [
+                'sampleDataProvider' => $sampleDataProvider,
+                'analysisdataprovider'=> $analysisdataprovider,
+                'analysis_id'=>$id,
+             ]);
+         
+           
+        }
+
+        return $this->renderAjax('updateanalysis', [
+            'taggingmodel' => $taggingmodel,
+        ]);
+    }
+
     /**
      * Deletes an existing Tagging model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -143,6 +210,9 @@ class TaggingController extends Controller
     }
 
     public function actionGetsamplecode($q = null, $id = null) {
+
+        //insert type of lab
+        $lab = Yii::$app->user->identity->profile->lab_id;
         $year = date("Y");
 
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
@@ -153,6 +223,7 @@ class TaggingController extends Controller
                     ->from('tbl_sample')
                     ->where(['like', 'sample_code', $q])
                     ->Andwhere(['sample_year'=>$year])
+                    ->orderBy(['sample_id'=>SORT_DESC])
                     ->limit(20);
             $command = $query->createCommand();
             $command->db= \Yii::$app->labdb;
@@ -349,5 +420,30 @@ class TaggingController extends Controller
             'id'=>$id,
          ]);
 	
-	 }
+     }
+     
+     public function actionSamplestatus($id)
+     {
+        $id = $_GET['id'];
+
+        $request = Request::find()->where(['request_id' => $id])->one();
+        $sample = Sample::find()->where(['request_id' => $id]);
+
+       // $samplesQuery = Sample::find()->where(['sample_id' =>$analysis_id]);
+
+        $sampledataprovider = new ActiveDataProvider([
+            'query' => $sample,
+            'pagination' => [
+                'pageSize' => false,
+                    ],                 
+        ]);
+
+        if(Yii::$app->request->isAjax){
+                 return $this->renderAjax('_samplestatus', [
+                'sampledataprovider'=>$sampledataprovider,
+                'request'=>$request,
+                ]);
+        }
+           
+     }
 }

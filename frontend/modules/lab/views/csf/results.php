@@ -16,23 +16,137 @@ use yii\helpers\Url;
 $this->title = 'Customer Satisfaction Feedback Survey';
 $this->params['breadcrumbs'][] = $this->title;
 
-
-
-
-
 $lablist= ArrayHelper::map(Lab::find()->all(),'lab_id','labname');
-
 $tomlist= ArrayHelper::map(Markettype::find()->all(),'id','type');
 
 ?>
+
+ 
+
+<div class="row">
+        <div class="col-sm-1">     
+                <div class="panel panel-info">
+                <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;text-align:center"><b>JAN</div>
+                <div class="panel-body" style="text-align:center;font-size:180%">
+                94.43%
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-1">     
+                <div class="panel panel-info">
+                <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;text-align:center"><b>FEB</div>
+                <div class="panel-body" style="text-align:center;font-size:180%">
+                94.43%
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-1">     
+                <div class="panel panel-info">
+                <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;text-align:center"><b>MAR</div>
+                <div class="panel-body" style="text-align:center;font-size:180%">
+                94.43%
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-1">     
+                <div class="panel panel-info">
+                <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;text-align:center"><b>APR</div>
+                <div class="panel-body" style="text-align:center;font-size:180%">
+                94.43%
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-1">     
+                <div class="panel panel-info">
+                <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;text-align:center"><b>MAY</div>
+                <div class="panel-body" style="text-align:center;font-size:180%">
+                94.43%
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-1">     
+                <div class="panel panel-info">
+                <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;text-align:center"><b>JUN</div>
+                <div class="panel-body" style="text-align:center;font-size:180%">
+                94.43%
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-1">     
+                <div class="panel panel-info">
+                <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;text-align:center"><b>JUL</div>
+                <div class="panel-body" style="text-align:center;font-size:180%">
+                94.43%
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-1">     
+                <div class="panel panel-info">
+                <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;text-align:center"><b>AUG</div>
+                <div class="panel-body" style="text-align:center;font-size:180%">
+                94.43%
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-1">     
+                <div class="panel panel-info">
+                <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;text-align:center"><b>SEP</div>
+                <div class="panel-body" style="text-align:center;font-size:180%">
+                94.43%
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-1">     
+                <div class="panel panel-info">
+                <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;text-align:center"><b>OCT</div>
+                <div class="panel-body" style="text-align:center;font-size:180%">
+                94.43%
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-1">     
+                <div class="panel panel-info">
+                <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;text-align:center"><b>NOV</div>
+                <div class="panel-body" style="text-align:center;font-size:180%">
+                94.43%
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-sm-1">     
+                <div class="panel panel-info">
+                <div class="panel-heading" style="color:#142142;font-family:Century Gothic;font-size:130%;text-align:center"><b>DEC</div>
+                <div class="panel-body" style="text-align:center;font-size:180%">
+                94.43%
+                </div>
+            </div>
+        </div>
+
+
+      
+</div>
 <?php $this->registerJsFile("/js/services/services.js"); ?>
 <div class="customer_satisfaction_feedback-index">
 
    
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    
-
+   
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

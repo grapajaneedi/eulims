@@ -4,7 +4,7 @@ use common\models\system\Package;
 use common\models\system\PackageDetails;
 use yii\helpers\Url;
 use yii\helpers\Html;
-
+$unseen = '';
 $Packages= Package::find()->all();
 
 $Request_URI=$_SERVER['REQUEST_URI'];
@@ -38,12 +38,12 @@ if(Yii::$app->user->isGuest){
        $UsernameDesignation=$CurrentUserName.'<br>'.$CurrentUserDesignation;
     }
   
-	$unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'),true);
+	/*$unresponded_notification = json_decode(Yii::$app->runAction('/referrals/notification/count_unresponded_notification'),true);
 	$unresponded = $unresponded_notification['num_notification'] > 0 ? $unresponded_notification['num_notification'] : ''; //no display if 0
 	
 	 $unseen_bid_notification = json_decode(Yii::$app->runAction('/referrals/bidnotification/count_unseen_bidnotification'),true);
 	 $unseen = $unseen_bid_notification['bid_notification'] > 0 ? $unseen_bid_notification['bid_notification'] : '';
-  
+  */
     //notification will run if the user is already logged in
 	$this->registerJs("
 		setInterval(function(e){
