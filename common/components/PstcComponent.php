@@ -72,6 +72,20 @@ class PstcComponent extends Component {
         }
     }
 
+    //get sample by sample ID
+    function getSampleOne($sampleId,$requestId,$rstlId,$pstcId) {
+        if($sampleId > 0 && $requestId > 0 && $rstlId > 0 && $pstcId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/pstcrequests/get_pstcsample?sample_id='.$sampleId.'&request_id='.$requestId.'&rstl_id='.$rstlId.'&pstc_id='.$pstcId;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return null;
+        }
+    }
+
     /**
      * FindOne Method reference
      * @param integer $methodrefId
