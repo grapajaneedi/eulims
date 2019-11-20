@@ -2,11 +2,11 @@
 
 //  $server = "localhost";
 //  $username = "eulims";
-//  $password = "eulims";xxx
+//  $password = "eulims";
 
 $server = "192.168.1.96";
 $username = "eulims";
-$password = "D05793ulims!@#$%";
+$password = "D05793ul1ms!@#$%";
 
 
 return [
