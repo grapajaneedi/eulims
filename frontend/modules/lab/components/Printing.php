@@ -8,6 +8,9 @@ use kartik\mpdf\Pdf;
 use common\models\system\RstlDetails;
 use common\components\Functions;
 use rmrevin\yii\fontawesome\FA;
+use common\models\lab\Sample;
+use common\models\lab\Request;
+use common\models\lab\Analysis;
 /**
  * Description of RequestPrinting
  *
@@ -294,6 +297,19 @@ class Printing {
             
             $CurSampleCode = "";
             $PrevSampleCode = "";
+//
+//             $samplesquery = Sample::find()->where(['request_id' => $id])->all();
+//             foreach($samplesquery as $sample){
+//             $RequestTemplate .= "<td class='text-left border-left-line border-top-line border-bottom-line padding-left-5' colspan='2'>$sample[samplename]</td>";
+//             $RequestTemplate .= "<td class='text-left border-left-line border-top-line border-right-line border-bottom-line padding-left-5'>$sample[sample_code]</td>";
+//             $analysisCount = 0;
+//             $analysisquery = Analysis::find()->where(['sample_id' => $sample['sample_id']])->all();
+//             foreach($analysisquery as $analysis){          
+//                 $RequestTemplate .= "<td class='text-left border-left-line border-top-line border-right-line border-bottom-line padding-left-5'>$analysis[testname]</td>";          
+//             }
+// }
+//
+
             foreach ($RequestRows as $RequestRow) {
                 $RequestRow = (object) $RequestRow;
                 $CurSampleCode = $RequestRow->sample_code;
@@ -355,7 +371,7 @@ class Printing {
                 $CurSampleCode2 = $RequestRow->sample_code;
                 if ($CurSampleCode2 != $PrevSampleCode2) {
                     $RequestTemplate .= "<tr>";
-                    $RequestTemplate .= "<td class='text-left border-left-line border-right-line padding-left-5' colspan='10'>$RequestRow->Remarks</td>";
+                    $RequestTemplate .= "<td class='text-left border-left-line border-right-line padding-left-5' colspan='10'> $RequestRow->Remarks</td>";
                     $RequestTemplate .= "</tr>";
                 }
                 $PrevSampleCode2 = $CurSampleCode2;
@@ -432,6 +448,11 @@ class Printing {
             $RequestTemplate .= "</table>";
         }
         return $RequestTemplate;
+        
     }
 
+
+
 }
+
+

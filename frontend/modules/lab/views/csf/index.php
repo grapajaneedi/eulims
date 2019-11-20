@@ -19,19 +19,26 @@ use kartik\widgets\DepDrop;
 ?>
 
 
-<h3 style="color:#142142;font-family:verdana;text-align:center;font-size:150%;text-shadow: 
-      4px 4px 0px #d5d5d5, 
-      7px 7px 0px rgba(0, 0, 0, 0.2);"><b>Department of Science and Technology</b></h3>
-<h3 style="color:#142142;font-family:verdana;text-align:center;font-size:150%;text-shadow: 
-      4px 4px 0px #d5d5d5, 
-      7px 7px 0px rgba(0, 0, 0, 0.2);"><b>REGIONAL STANDARDS AND TESTING LABORATORY</b></h3>
+<div class="row">
+<div class="col-sm-1">
+<img src='/uploads/dost.svg' style=' width: 90; height: 120px;margin-left:60px;margin-top:20px' /> 
+</div>
 
-<h1 style="color:#1a4c8f;font-family:Century Gothic;text-align:center;font-size:250%;text-shadow: 
-      4px 4px 0px #d5d5d5, 
-      7px 7px 0px rgba(0, 0, 0, 0.2);"><b>Customer Satisfaction Feedback Survey</b></h1><br>
+<div class="col-sm-11" >
+<h3 style="color:#1a4c8f;font-family:verdana;font-size:150%;, 
+      7px 7px 0px rgba(0, 0, 0, 0.2);"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Department of Science and Technology</b></h3>
+<h3 style="color:#142142;font-family:verdana;font-size:150%;, 
+      7px 7px 0px rgba(0, 0, 0, 0.2);"><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;REGIONAL STANDARDS AND TESTING LABORATORY</b></h3>
+
+<h1 style="color:#1a4c8f;font-family:Century Gothic;font-size:250%;, 
+      7px 7px 0px rgba(0, 0, 0, 0.2);"><b>&nbsp;&nbsp;&nbsp;&nbsp;Customer Satisfaction Feedback Survey</b></h1><br>
+</div>
+</div>
+
 
    
- 
+
+
                 
               
                 <?= $this->render('_form', [

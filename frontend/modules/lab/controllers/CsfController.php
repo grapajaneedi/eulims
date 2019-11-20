@@ -59,6 +59,17 @@ class CsfController extends Controller
         ]);
     }
 
+    public function actionCsi()
+    {
+        $searchModel = new CsfSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->render('csi', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     public function actionResultmodal($id)
     {
         if(Yii::$app->request->isAjax){
