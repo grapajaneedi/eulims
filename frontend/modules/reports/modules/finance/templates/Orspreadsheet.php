@@ -36,7 +36,12 @@ class Orspreadsheet extends Spreadsheet
 
     public function loaddoc()
     {
-        $this->setDocument(IOFactory::load($this->location."OR.xlsx"));
+		$paymentmode=$this->model->paymentMode->payment_mode;
+		if($paymentmode == 'Cash'){
+			$this->setDocument(IOFactory::load($this->location."cash.xls"));
+		} else if($paymentmode == 'Check'){
+			$this->setDocument(IOFactory::load($this->location."check.xls"));
+		}
             
         $numbertowords=new NumbersToWords();
         
@@ -49,7 +54,7 @@ class Orspreadsheet extends Spreadsheet
         $this->getDocument()->getActiveSheet()->setCellValue('C3', date('F d, Y',strtotime($this->model->receiptDate)));
         $rstl= Rstl::find()->where(['rstl_id'=>$this->model->rstl_id])->one();
         $this->getDocument()->getActiveSheet()->setCellValue('B5', $rstl->name);
-        $this->getDocument()->getActiveSheet()->setCellValue('A6', $this->model->payor);
+        $this->getDocument()->getActiveSheet()->setCellValue('B6', $this->model->payor);
         $this->getDocument()->getActiveSheet()->setCellValue('A9', $this->model->collectiontype ? $this->model->collectiontype->natureofcollection : "");
         foreach ($paymentitem_Query as $i => $or) {
            $this->getDocument()->getActiveSheet()->setCellValue('A'.$row, $or['details']);
@@ -77,7 +82,7 @@ class Orspreadsheet extends Spreadsheet
         $this->getDocument()->getActiveSheet()->setCellValue('D19', number_format($gtotal,2));
         $this->getDocument()->getActiveSheet()->setCellValue('A20','                                        '.$amountinwords);
         
-        $paymentmode=$this->model->paymentMode->payment_mode;
+        
         $cash='';
         $check='';
         $mo='';
@@ -89,8 +94,8 @@ class Orspreadsheet extends Spreadsheet
             $this->getDocument()->getActiveSheet()->setCellValue('A23', "/");
         }
         else if($paymentmode == 'Check'){
-            $row1=26;
-            $this->getDocument()->getActiveSheet()->setCellValue('A26', "/");
+            $row1=24;
+            $this->getDocument()->getActiveSheet()->setCellValue('A24', "/");
             $check_Query = Check::find()->where(['receipt_id' => $this->model->receipt_id])->all();
             foreach ($check_Query as $i => $check) {
                 $bnk=$check['bank'].'     '.$check['checknumber'] .'     '.$check['checkdate'];
