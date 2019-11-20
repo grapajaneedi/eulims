@@ -3,18 +3,16 @@
 namespace frontend\modules\inventory\controllers;
 
 use Yii;
-use common\models\inventory\Suppliers;
-use common\models\inventory\SuppliersSearch;
+use common\models\inventory\Fundings;
+use common\models\inventory\FundingsSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
-use console\controllers\HelloController;
-
 
 /**
- * SuppliersController implements the CRUD actions for Suppliers model.
+ * FundingController implements the CRUD actions for Fundings model.
  */
-class SuppliersController extends Controller
+class FundingController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -32,13 +30,12 @@ class SuppliersController extends Controller
     }
 
     /**
-     * Lists all Suppliers models.
+     * Lists all Fundings models.
      * @return mixed
      */
     public function actionIndex()
     {
-
-        $searchModel = new SuppliersSearch();
+        $searchModel = new FundingsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -48,7 +45,7 @@ class SuppliersController extends Controller
     }
 
     /**
-     * Displays a single Suppliers model.
+     * Displays a single Fundings model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -61,27 +58,32 @@ class SuppliersController extends Controller
     }
 
     /**
-     * Creates a new Suppliers model.
+     * Creates a new Fundings model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Suppliers();
+        $model = new Fundings();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            // return $this->redirect(['view', 'id' => $model->suppliers_id]);
-            Yii::$app->session->setFlash('success', 'New Supplier Successfully Added!');
+            // return $this->redirect(['view', 'id' => $model->id]);
+
+            Yii::$app->session->setFlash('success', 'New Funding Successfully Added!');
             return $this->redirect(['index']);
         }
 
         return $this->renderAjax('create', [
             'model' => $model,
         ]);
+
+        // return $this->render('create', [
+        //     'model' => $model,
+        // ]);
     }
 
     /**
-     * Updates an existing Suppliers model.
+     * Updates an existing Fundings model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -92,7 +94,7 @@ class SuppliersController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->suppliers_id]);
+            return $this->redirect(['view', 'id' => $model->id]);
         }
 
         return $this->render('update', [
@@ -101,7 +103,7 @@ class SuppliersController extends Controller
     }
 
     /**
-     * Deletes an existing Suppliers model.
+     * Deletes an existing Fundings model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -115,15 +117,15 @@ class SuppliersController extends Controller
     }
 
     /**
-     * Finds the Suppliers model based on its primary key value.
+     * Finds the Fundings model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Suppliers the loaded model
+     * @return Fundings the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Suppliers::findOne($id)) !== null) {
+        if (($model = Fundings::findOne($id)) !== null) {
             return $model;
         }
 

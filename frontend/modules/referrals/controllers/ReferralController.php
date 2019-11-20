@@ -28,7 +28,7 @@ use common\models\referral\Notification;
 use common\models\referral\Statuslogs;
 use common\models\referral\Referraltrackreceiving;
 use common\models\referral\Referraltracktesting;
-
+use frontend\modules\referrals\template\Printreferral;
 
 /**
  * ReferralController implements the CRUD actions for Referral model.
@@ -1594,4 +1594,27 @@ class ReferralController extends Controller
         return $trackingdetails;
         
     }
+
+    public function actionPrintref($id){
+        $referral_id = (int) $id;
+        $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
+
+        $refcomponent = new ReferralComponent();
+        $referralDetails = json_decode($refcomponent->getReferraldetails($referral_id,$rstlId),true);
+
+        $request = $referralDetails['request_data'];
+        $samples = $referralDetails['sample_data'];
+        $analyses = $referralDetails['analysis_data'];
+        $customer = $referralDetails['customer_data'];
+       // print_r($request);
+       // print_r($analyses);
+
+       // exit;
+        $Printing=new Printreferral();
+        $Printing->setReferral($request);
+        $Printing->setSamples($samples);
+        $Printing->setAnalyses($analyses);
+        $Printing->setCustomer($customer);
+        $Printing->Printing($id); 
+    }    
 }
