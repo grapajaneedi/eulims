@@ -519,14 +519,14 @@ class OpController extends Controller
       //find the record the testreport
       $op =$this->findModel($id);
       $var=$op->getBankAccount();
-      if($var['bank_name'] == ""){
+     /* if($var['bank_name'] == ""){
          Yii::$app->session->setFlash('warning', 'Please configure Bank Details!');
           return $this->redirect(['/finance/op/view?id='.$id]); 
-      }else{
+      }else{ */
           $exporter = new Opspreadsheet([
             'model'=>$op,
            ]);
-      }
+     // }
       //echo $id;
       //exit;
       

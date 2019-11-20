@@ -817,7 +817,11 @@ class CashierController extends \yii\web\Controller
                 $searchModel = new RequestSearch();
                 //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
                 //$dataProvider->pagination->pageSize=500;
-                  $query = Request::find()->where(['not', ['posted' => 1]]);
+				  $receipt=Receipt::find()->where(['receipt_id' => $receiptid])->one();
+				  $opid=$receipt->orderofpayment_id;
+				  $op=Op::find()->where(['orderofpayment_id' => $opid])->one();
+				  $customerid=$op->customer_id;
+                  $query = Request::find()->where(['not', ['posted' => 1]])->andWhere(['customer_id' =>$customerid]);
                     $dataProvider = new ActiveDataProvider([
                         'query' => $query,
                     ]); 
