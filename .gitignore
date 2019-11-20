@@ -374,3 +374,4 @@ frontend/modules/pstc/views/pstcrequest/_formRequestDetails==.php
 
 frontend/views/admin-lte/layouts/left.php
 common/config/db.php
+common/config/db.php

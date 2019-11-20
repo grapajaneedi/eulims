@@ -26,17 +26,20 @@ $add_paymentitem=Html::button('<i class="glyphicon glyphicon-plus"></i> Add Paym
 
 $aftercontent="";
 $totaldue=0;
+$checksum=$check_sum ? $check_sum : 0;
+$walletpaysum=$walletpay_sum ? $walletpay_sum : 0;
 if($model->payment_mode_id == 2){
 	$customerwallet1=Html::checkbox('sample', false, ['label' => '&nbsp;Use Customer Wallet','value'=>'1','id'=>'chkwallet']);
 	$customerwallet2= Html::input('text','password1',$wallet ? $wallet->balance : 0,['disabled'=>true]);
-	$totaldue=($model->total - $check_sum) - $walletpay_sum ? $walletpay_sum : 0;
+	$totaldue=($model->total - $checksum) - $walletpaysum;
+	//echo  $totaldue;
 	$customerwallet3= '<label>Amount Due:</label>&nbsp;'.Html::input('text','due',$totaldue,['disabled'=>true,'id' => 'txtdue']);
 	$cwbutton=Html::button('<span class="glyphicon glyphicon-save"></span> Confirm use of Customer Wallet', ['class' => 'btn btn-small btn-success','title' => Yii::t('app', "Print Report"),'onclick'=>'myFunction()','disabled'=>true,'id'=>'cwallet']);
 	if($totaldue > 0){
 		$aftercontent=$customerwallet1."&nbsp;&nbsp;&nbsp;".$customerwallet2."&nbsp;&nbsp;&nbsp;".$customerwallet3."&nbsp;&nbsp;&nbsp;".$cwbutton;
 	}
 	else{
-		$aftercontent= '<label>Amount Paid using E-Wallet:</label>&nbsp;'.Html::input('text','ewalletamount',$walletpay_sum ? $walletpay_sum : 0,['disabled'=>true,'id' => 'ewalletamount']);
+		$aftercontent='<label>E-Wallet Amount:</label>'.$customerwallet2. '&nbsp;&nbsp;&nbsp;<label>Amount Paid using E-Wallet:</label>&nbsp;'.Html::input('text','ewalletamount',$walletpay_sum ? $walletpay_sum : 0,['disabled'=>true,'id' => 'ewalletamount']);
 	}
 	
 }
@@ -237,10 +240,7 @@ if($model->payment_mode_id == 2){
 <script type="text/javascript">
     $('#chkwallet').on('click',function() {
        if ($(this).prop('checked')) {
-           // do what you need here     
-           alert("Checked");
-		   
-			   var total= <?php echo $totaldue ?>;
+			   var total= <?php echo $totaldue ? $totaldue : 0 ?>;
 			   var customerwallet= <?php echo $wallet ? $wallet->balance : 0 ?>;
 			   var due= total - customerwallet;
 			   if (due < 0) { //means customer wallet is less
@@ -253,8 +253,7 @@ if($model->payment_mode_id == 2){
         }
         else {
            // do what you need here         
-           alert("Unchecked");
-		   $('#txtdue').val(<?php echo $totaldue ?>);
+		   $('#txtdue').val(<?php echo $totaldue ? $totaldue : 0 ?>);
 		   $("#cwallet").attr("disabled", true);
         }
     });
@@ -277,7 +276,7 @@ if($model->payment_mode_id == 2){
    });
   function myFunction() {
 	  var txt;
-	  var r = confirm("Press a button!");
+	  var r = confirm("Use E-Wallet?");
 	  if (r == true) {
 		//txt = "You pressed OK!";
 		$.post({
@@ -287,12 +286,12 @@ if($model->payment_mode_id == 2){
             }
         });
 	  } else {
-		txt = "You pressed Cancel!";
+		//txt = "You pressed Cancel!";
 	  }
 	 //alert(txt);
 	}
    
     function addPaymentitem(url,title){
-        LoadModal(title,url,'true','1100px');
+        LoadModal(title,url,'true','600px');
     }
 </script>
