@@ -41,7 +41,7 @@ $Header.="Receipt";
         ],
         'panel' => [
                 'type' => GridView::TYPE_PRIMARY,
-                //'before'=>Html::button('<i class="glyphicon glyphicon-plus"></i> Create Receipt', ['value' => Url::to(['/finance/cashier/addreceipt']),'title'=>'Create Receipt', 'onclick'=>'addReceipt(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn']),
+                'before'=>Html::button('<i class="glyphicon glyphicon-plus"></i> Create Receipt', ['value' => Url::to(['/finance/cashier/addreceipt']),'title'=>'Create Receipt', 'onclick'=>'addReceipt(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn']),
 				
                 'heading' => '<span class="glyphicon glyphicon-book"></span>  ' . Html::encode($this->title),
                 
