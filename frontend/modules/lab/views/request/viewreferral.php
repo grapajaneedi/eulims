@@ -101,11 +101,11 @@ $requeststatus = $model->status_id; //get status value of referral request
 $notified = !empty($modelref_request->notified) ? $modelref_request->notified : 0; //get value if notified
 $hasTestingAgency = !empty($modelref_request->testing_agency_id) ? $modelref_request->testing_agency_id : 0; //get value if sent
 
-if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($model->request_ref_num) && $checkTesting == 0 && $checkSamplecode == 0){
+//if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($model->request_ref_num) && $checkTesting == 0 && $checkSamplecode == 0){
     $btnGetSamplecode = Html::button('<i class="glyphicon glyphicon-qrcode"></i> Get Sample Code', ['value' => Url::to(['/referrals/referral/get_samplecode','request_id'=>$model->request_id]),'title'=>'Get Sample Code', 'onclick'=>'getSamplecode(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn']);
-} else {
-    $btnGetSamplecode = "";
-}
+//} else {
+  //  $btnGetSamplecode = "";
+//}
 ?>
 <div class="section-request"> 
 <div id="cancelled-div" class="outer-div <?= $CancelClass ?>">
@@ -410,7 +410,7 @@ if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($mode
                 'panel' => [
                     'heading'=>'<h3 class="panel-title">Samples</h3>',
                     'type'=>'primary',
-                    'before'=>($requeststatus > 0 && $notified == 0 && $hasTestingAgency == 0 && trim($model->request_ref_num) == "" && $checkTesting == 0) ? Html::button('<i class="glyphicon glyphicon-plus"></i> Add Sample', ['disabled'=>$enableRequest, 'value' => Url::to(['sample/create','request_id'=>$model->request_id]),'title'=>'Add Sample', 'onclick'=>'addSample(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn']) : Html::button('<i class="glyphicon glyphicon-print"></i> Print Label', ['disabled'=>!$enablePrintLabel, 'onclick'=>"window.location.href = '" . \Yii::$app->urlManager->createUrl(['/reports/preview?url=/lab/request/printlabel','request_id'=>$model->request_id]) . "';" ,'title'=>'Print Label', 'class' => 'btn btn-success'])." ".$btnGetSamplecode,
+                    'before'=>($requeststatus > 0 && $notified == 0 && $hasTestingAgency == 0 && trim($model->request_ref_num) == "" && $checkTesting == 0) ? Html::button('<i class="glyphicon glyphicon-plus"></i> Add Sample', ['disabled'=>$enableRequest, 'value' => Url::to(['sample/create','request_id'=>$model->request_id]),'title'=>'Add Sample', 'onclick'=>'addSample(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn']) : (trim($model->request_ref_num) == "" ? '' : Html::button('<i class="glyphicon glyphicon-print"></i> Print Label', ['disabled'=>!$enablePrintLabel, 'onclick'=>"window.location.href = '" . \Yii::$app->urlManager->createUrl(['/reports/preview?url=/lab/request/printlabel','request_id'=>$model->request_id]) . "';" ,'title'=>'Print Label', 'class' => 'btn btn-success']))." ".$btnGetSamplecode,
                     'after'=>false,
                 ],
                 'columns' => $sampleGridColumns,
