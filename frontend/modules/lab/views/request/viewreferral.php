@@ -101,11 +101,11 @@ $requeststatus = $model->status_id; //get status value of referral request
 $notified = !empty($modelref_request->notified) ? $modelref_request->notified : 0; //get value if notified
 $hasTestingAgency = !empty($modelref_request->testing_agency_id) ? $modelref_request->testing_agency_id : 0; //get value if sent
 
-//if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($model->request_ref_num) && $checkTesting == 0 && $checkSamplecode == 0){
+if($requeststatus > 0 && $notified == 1 && $hasTestingAgency > 0 && !empty($model->request_ref_num) && $checkTesting == 0 && $checkSamplecode == 0){
     $btnGetSamplecode = Html::button('<i class="glyphicon glyphicon-qrcode"></i> Get Sample Code', ['value' => Url::to(['/referrals/referral/get_samplecode','request_id'=>$model->request_id]),'title'=>'Get Sample Code', 'onclick'=>'getSamplecode(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn']);
-//} else {
-  //  $btnGetSamplecode = "";
-//}
+} else {
+    $btnGetSamplecode = "";
+}
 ?>
 <div class="section-request"> 
 <div id="cancelled-div" class="outer-div <?= $CancelClass ?>">
@@ -395,6 +395,13 @@ $hasTestingAgency = !empty($modelref_request->testing_agency_id) ? $modelref_req
                 ],
             ];
 
+            //$btnSample = ($requeststatus > 0 && $notified == 0 && $hasTestingAgency == 0 && trim($model->request_ref_num) == "" && $checkTesting == 0 && empty($model->pstc_id) && empty($model->pstc_request_id)) ? Html::button('<i class="glyphicon glyphicon-plus"></i> Add Sample', ['disabled'=>$enableRequest, 'value' => Url::to(['sample/create','request_id'=>$model->request_id]),'title'=>'Add Sample', 'onclick'=>'addSample(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn']) : (trim($model->request_ref_num) == "" ? '' : Html::button('<i class="glyphicon glyphicon-print"></i> Print Label', ['disabled'=>!$enablePrintLabel, 'onclick'=>"window.location.href = '" . \Yii::$app->urlManager->createUrl(['/reports/preview?url=/lab/request/printlabel','request_id'=>$model->request_id]) . "';" ,'title'=>'Print Label', 'class' => 'btn btn-success']))." ".$btnGetSamplecode;
+            if($requeststatus > 0 && $notified == 0 && $hasTestingAgency == 0 && empty($model->request_ref_num) && $checkTesting == 0 && empty($model->pstc_id) && empty($model->pstc_request_id)) {
+                $btnSample = Html::button('<i class="glyphicon glyphicon-plus"></i> Add Sample', ['disabled'=>$enableRequest, 'value' => Url::to(['sample/create','request_id'=>$model->request_id]),'title'=>'Add Sample', 'onclick'=>'addSample(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn']);
+            }  else {
+                $btnSample = "";
+            }
+
             echo GridView::widget([
                 'id' => 'sample-grid',
                 'dataProvider'=> $sampleDataProvider,
@@ -410,8 +417,9 @@ $hasTestingAgency = !empty($modelref_request->testing_agency_id) ? $modelref_req
                 'panel' => [
                     'heading'=>'<h3 class="panel-title">Samples</h3>',
                     'type'=>'primary',
-                    'before'=>($requeststatus > 0 && $notified == 0 && $hasTestingAgency == 0 && trim($model->request_ref_num) == "" && $checkTesting == 0) ? Html::button('<i class="glyphicon glyphicon-plus"></i> Add Sample', ['disabled'=>$enableRequest, 'value' => Url::to(['sample/create','request_id'=>$model->request_id]),'title'=>'Add Sample', 'onclick'=>'addSample(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn']) : (trim($model->request_ref_num) == "" ? '' : Html::button('<i class="glyphicon glyphicon-print"></i> Print Label', ['disabled'=>!$enablePrintLabel, 'onclick'=>"window.location.href = '" . \Yii::$app->urlManager->createUrl(['/reports/preview?url=/lab/request/printlabel','request_id'=>$model->request_id]) . "';" ,'title'=>'Print Label', 'class' => 'btn btn-success']))." ".$btnGetSamplecode,
-                    'after'=>false,
+                    //'before'=>($requeststatus > 0 && $notified == 0 && $hasTestingAgency == 0 && trim($model->request_ref_num) == "" && $checkTesting == 0) ? Html::button('<i class="glyphicon glyphicon-plus"></i> Add Sample', ['disabled'=>$enableRequest, 'value' => Url::to(['sample/create','request_id'=>$model->request_id]),'title'=>'Add Sample', 'onclick'=>'addSample(this.value,this.title)', 'class' => 'btn btn-success','id' => 'modalBtn']) : (trim($model->request_ref_num) == "" ? '' : Html::button('<i class="glyphicon glyphicon-print"></i> Print Label', ['disabled'=>!$enablePrintLabel, 'onclick'=>"window.location.href = '" . \Yii::$app->urlManager->createUrl(['/reports/preview?url=/lab/request/printlabel','request_id'=>$model->request_id]) . "';" ,'title'=>'Print Label', 'class' => 'btn btn-success']))." ".$btnGetSamplecode,
+                    'before' => $btnSample.(empty($model->request_ref_num) || empty($data->sample_code) ? '' : Html::button('<i class="glyphicon glyphicon-print"></i> Print Label', ['disabled'=>!$enablePrintLabel, 'onclick'=>"window.location.href = '" . \Yii::$app->urlManager->createUrl(['/reports/preview?url=/lab/request/printlabel','request_id'=>$model->request_id]) . "';" ,'title'=>'Print Label', 'class' => 'btn btn-success'])).$btnGetSamplecode,
+                    'after' => false,
                 ],
                 'columns' => $sampleGridColumns,
                 'toolbar' => [
@@ -610,13 +618,18 @@ $hasTestingAgency = !empty($modelref_request->testing_agency_id) ? $modelref_req
                 'panel' => [
                     'heading'=>'<h3 class="panel-title">Analysis</h3>',
                     'type'=>'primary',
-                    'before'=>($requeststatus > 0 && $notified == 0 && $hasTestingAgency == 0 && trim($model->request_ref_num) == "") ? Html::button('<i class="glyphicon glyphicon-plus"></i> Add Analysis', ['disabled'=>$enableRequest,'value' => $model->request_type_id == 2 ? Url::to(['analysisreferral/create','request_id'=>$model->request_id]) : "",'title'=>'Add Analyses', 'onclick'=> $model->request_type_id == 2 ? $ClickButtonAnalysisReferral : "", 'class' => 'btn btn-success','id' => 'btn_add_analysis'])."   ".
-                    Html::button('<i class="glyphicon glyphicon-plus"></i> Add Package', ['disabled'=>$enablePackage,'value' => $model->discount > 0 ? '' : Url::to(['analysisreferral/package','request_id'=>$model->request_id]),'title'=>'Add Package', 'onclick'=>$model->discount > 0 ? 'BootstrapDialog.alert({type:BootstrapDialog.TYPE_DANGER,title:"Warning",message:"Add package not allowed for request with discount!"})' : $ClickButtonAnalysisReferral, 'class' => 'btn btn-success','id' => 'btn_add_package']) : null,
+                    'before'=>empty($model->pstc_id) && empty($model->pstc_request_id) ? (($requeststatus > 0 && $notified == 0 && $hasTestingAgency == 0 && trim($model->request_ref_num) == "") ? Html::button('<i class="glyphicon glyphicon-plus"></i> Add Analysis', ['disabled'=>$enableRequest,'value' => $model->request_type_id == 2 ? Url::to(['analysisreferral/create','request_id'=>$model->request_id]) : "",'title'=>'Add Analyses', 'onclick'=> $model->request_type_id == 2 ? $ClickButtonAnalysisReferral : "", 'class' => 'btn btn-success','id' => 'btn_add_analysis'])."   ".
+                    Html::button('<i class="glyphicon glyphicon-plus"></i> Add Package', ['disabled'=>$enablePackage,'value' => $model->discount > 0 ? '' : Url::to(['analysisreferral/package','request_id'=>$model->request_id]),'title'=>'Add Package', 'onclick'=>$model->discount > 0 ? 'BootstrapDialog.alert({type:BootstrapDialog.TYPE_DANGER,title:"Warning",message:"Add package not allowed for request with discount!"})' : $ClickButtonAnalysisReferral, 'class' => 'btn btn-success','id' => 'btn_add_package']) : null) : '',
                    'after'=>false,
                    'footer'=>(($model->request_type_id == 2 && $notified == 1 && $hasTestingAgency > 0 && trim($model->request_ref_num) != "") || $checkTesting == 1) ? "<div class='row' style='margin-left: 2px;padding-top: 5px'>".$EnablePrint."</div>" : null,
                 ],
                 'columns' => $analysisgridColumns,
                 'toolbar' => [
+                    'content'=> Html::a('<i class="glyphicon glyphicon-repeat"></i> Refresh Grid', [Url::to(['request/view','id'=>$model->request_id])], [
+                                'class' => 'btn btn-default', 
+                                'title' => 'Refresh Grid'
+                            ]),
+                    //'{toggleData}',
                 ],
             ]);
         ?>

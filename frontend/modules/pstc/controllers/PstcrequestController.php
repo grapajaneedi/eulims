@@ -436,7 +436,7 @@ class PstcrequestController extends Controller
 
             $sampleSave = 0;
             $analysisSave = 0;
-			$requestSave == 0;
+			$requestSave = 0;
             if($model->save(false)) {
                 $local_requestId = $model->request_id;
                 $psct_requestdetails = json_decode($function->getRequestDetails($requestId,$rstlId,$pstcId),true);
@@ -557,21 +557,21 @@ class PstcrequestController extends Controller
                                     'local_analysis_id' => $a_data['analysis_id'],
                                     'local_sample_id' => $a_data['sample_id'],
                                     'rstl_id' => $local_request->rstl_id,
-                                    //'test_id' => $a_data['test_id'],
-                                    //'testname' => $a_data['testname'],
-                                   // 'methodref_id' => $a_data['methodref_id'],
-                                    //'method' => $a_data['method'],
-                                    //'reference' => $a_data['references'],
-                                    //'package_id' => $a_data['package_id'],
-                                    //'package_name' => $a_data['package_name'],
-                                    //'quantity' => $a_data['quantity'],
-                                    //'fee' => $a_data['fee'],
-                                    //'pstc_id' => $pstcId,
-                                    //'date_analysis' => $a_data['date_analysis'],
-                                    //'is_package' => $a_data['is_package'],
-                                    //'is_package_name' => $a_data['is_package_name'],
-                                    //'sampletype_id' => $a_data['sample_type_id'],
-                                    //'testcategory_id' => $a_data['testcategory_id'],
+                                    'testname_id' => $a_data['test_id'],
+                                    'testname' => $a_data['testname'],
+                                    'method_id' => $a_data['methodref_id'],
+                                    'method' => $a_data['method'],
+                                    'reference' => $a_data['references'],
+                                    'package_id' => $a_data['package_id'],
+                                    'package_name' => $a_data['package_name'],
+                                    'quantity' => $a_data['quantity'],
+                                    'fee' => $a_data['fee'],
+                                    'pstc_id' => $pstcId,
+                                    'date_analysis' => $a_data['date_analysis'],
+                                    'is_package' => $a_data['is_package'],
+                                    'is_package_name' => $a_data['is_package_name'],
+                                    'sampletype_id' => $a_data['sample_type_id'],
+                                    'testcategory_id' => $a_data['testcategory_id'],
                                     'type_fee_id' => $a_data['type_fee_id'],
                                     'local_user_id' => (int) Yii::$app->user->identity->profile->user_id,
                                     'local_request_id' => $a_data['request_id'],
@@ -589,14 +589,6 @@ class PstcrequestController extends Controller
                                 'Content-Type' => 'application/json',
                                 'Content-Length' => strlen($pstc_request_details),
                             ])->post($pstcUrl);
-
-                            // echo "<pre>";
-                            // print_r(Json::decode($pstc_request_details,true));
-                            // echo "</pre>";
-                            // exit;
-
-                            //return $pstc_return;
-                            //exit;
 
                             if($pstc_return == 1) {
                                 $transaction->commit();
@@ -1265,6 +1257,14 @@ class PstcrequestController extends Controller
             $function = new PstcComponent();
             $sample_data = json_decode($function->getSampleOne($sampleId,$requestId,$rstlId,$pstcId),true);
 
+            if($sample_data[0]['is_referral'] == 1) {
+                $testcategories = [];
+                $sampletypes = ArrayHelper::map(json_decode($this->getreferralSampletype(),true),'sampletype_id','type');
+            } else {
+                $testcategories = ArrayHelper::map(Testcategory::find()->all(),'testcategory_id','category');
+                $sampletypes = ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','type');
+            }
+
             if (Yii::$app->request->post()) {
 
                 $post = Yii::$app->request->post();
@@ -1305,16 +1305,16 @@ class PstcrequestController extends Controller
                         //'model' => $model,
                         //'sampletemplate' => $this->listSampletemplate(),
                         'sample_data' => $sample_data[0],
-                        'testcategory' => ArrayHelper::map(Testcategory::find()->all(),'testcategory_id','category'), //data should be in synched in 
-                        'sampletype' => ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','type'), //data should be in synched in ulims 
+                        'testcategory' => $testcategories, //data should be in synched in 
+                        'sampletype' => $sampletypes, //data should be in synched in ulims 
                     ]);
                 } else {
                      return $this->renderAjax('_formSample', [
                         //'model' => $model,
                         //'sampletemplate' => $this->listSampletemplate(),
                         'sample_data' => $sample_data[0],
-                        'testcategory' => ArrayHelper::map(Testcategory::find()->all(),'testcategory_id','category'), //data should be in synched in 
-                        'sampletype' => ArrayHelper::map(Sampletype::find()->all(),'sampletype_id','type'), //data should be in synched in ulims 
+                        'testcategory' => $testcategories, //data should be in synched in 
+                        'sampletype' => $sampletypes, //data should be in synched in ulims 
                     ]);
                 }
             }
@@ -1397,5 +1397,16 @@ class PstcrequestController extends Controller
             $return="failed";
         }
         return $return;
+    }
+
+    //get referral sample type
+    protected function getreferralSampletype()
+    {
+        $apiUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/listdatas/sampletype';
+        $curl = new curl\Curl();
+        $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+        $curl->setOption(CURLOPT_TIMEOUT, 180);
+        $list = $curl->get($apiUrl);
+        return $list;
     }
 }
