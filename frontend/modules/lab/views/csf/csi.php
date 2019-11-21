@@ -1,3 +1,7 @@
+<?php
+use yii\helpers\Html;
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -12,6 +16,16 @@
       7px 7px 0px rgba(0, 0, 0, 0.2);text-align:center;"><b>&nbsp;&nbsp;&nbsp;&nbsp;Customer Satisfaction Index</b></h1><br>
 
 
+<div class="row" style="float: right;padding-right: 300px">
+      
+<?php 
+echo Html::button("<span class='glyphicon glyphicon-print'></span> Customer Satisfaction Measurement Report",['value' => '/lab/csf/printreport','onclick'=>'location.href=this.value', 'class' => 'btn btn-primary', 'title' => Yii::t('app', "View Request")]);
+echo "&nbsp;&nbsp;&nbsp;&nbsp;";
+echo Html::button("<span class='glyphicon glyphicon-print'></span> Customer Satisfaction Feedback",['value' => '/lab/csf/printmonthly','onclick'=>'location.href=this.value', 'class' => 'btn btn-primary', 'title' => Yii::t('app', "View Request")]);
+echo "<br><br>";
+?>
+
+</div>
 
 <!DOCTYPE html>
 <html>
@@ -586,5 +600,8 @@
       });
     </script>
     <!-- TO HERE -->
-  </body>
+  
+
+
+</body>
 </html>
