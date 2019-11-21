@@ -42,24 +42,29 @@ $sameSampletype = 0;
 
     <em style="color:#990000;">Note: Editing test category or sample type is not allowed. It might affect test names.</em>
     <br><br>
+    <?php
+
+        $testcategoryOptions = [
+            'language' => 'en-US',
+            'width' => '100%',
+            'theme' => Select2::THEME_KRAJEE,
+            'placeholder' => 'Select Test Category',
+            'allowClear' => true,
+        ];
+
+        $sampletypeOptions = [
+            'language' => 'en-US',
+            'width' => '100%',
+            'theme' => Select2::THEME_KRAJEE,
+            'placeholder' => 'Select Sample Type',
+            'allowClear' => true,
+        ];
+
+        if($sample_data['is_referral'] == 0):
+    ?>
     <div class="form-group required">
         <label class="control-label">Test Category</label>
         <?php
-            $testcategoryOptions = [
-                'language' => 'en-US',
-                'width' => '100%',
-                'theme' => Select2::THEME_KRAJEE,
-                'placeholder' => 'Select Test Category',
-                'allowClear' => true,
-            ];
-
-            $sampletypeOptions = [
-                'language' => 'en-US',
-                'width' => '100%',
-                'theme' => Select2::THEME_KRAJEE,
-                'placeholder' => 'Select Sample Type',
-                'allowClear' => true,
-            ];
 
             echo Select2::widget([
                 'name'=>'testcategory_id',
@@ -109,6 +114,7 @@ $sameSampletype = 0;
             ]);
         ?>
     </div>
+    <?php endif; ?>
     <div class="form-group required">
         <label class="control-label">Sample Type</label>
         <?php
@@ -122,7 +128,7 @@ $sameSampletype = 0;
                 'options' => $sampletypeOptions,
                 'value' => $sample_data['sampletype_id'],
                 'pluginOptions' => [
-                    'allowClear' => true,
+                    //'allowClear' => true,
                     'disabled'=>true,
                 ],
             ]);

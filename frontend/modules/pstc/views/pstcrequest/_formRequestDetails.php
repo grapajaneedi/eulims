@@ -698,7 +698,7 @@ echo Dialog::widget([
         var met_date3 = $('#erequest-est_date_completion').val();
         var met_date4 = $('#erequest-certificate_release_date').val();
 
-        if (request_type == '' || lab == '' || customer == '' || discount == '' || purpose == '' || conforme == '' || request_datetime == '' || modeofrelease == '' || due == '' || received == '' || test_category == '') {
+        if (request_type == '' || lab == '' || customer == '' || discount == '' || purpose == '' || conforme == '' || request_datetime == '' || modeofrelease == '' || due == '' || received == '') {
             alertWarning.alert("<p class='text-danger' style='font-weight:bold;'>Field with * is required!</p>");
             return false;
         } else if (lab == 3 && (met_date1 == '' || met_date2 == '' || met_date3 == '' || met_date4 == '')) {
