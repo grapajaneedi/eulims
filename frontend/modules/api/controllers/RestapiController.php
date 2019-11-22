@@ -2,12 +2,14 @@
 
 namespace frontend\modules\api\controllers;
 
+use Yii;
 use common\models\lab\Sample;
 use common\models\lab\Analysis;
 use common\models\lab\Workflow;
 use common\models\lab\Request;
-use common\models\lab\Procedure;
 use common\models\lab\Tagging;
+use common\models\lab\Procedure;
+//use common\models\lab\Tagging;
 use common\models\lab\Customer;
 use common\models\lab\Customeraccount;
 use common\models\lab\LogincForm;
@@ -157,6 +159,7 @@ class RestapiController extends \yii\rest\Controller
      if (isset($_GET['samplecode'])) {
         //limit for this year only
         $samplecode = Sample::find()->select(['sample_id','sample_code'])
+       // ->Where(['tbl_sample.sample_code'=>$_GET['samplecode']])
         ->where(['LIKE', 'tbl_sample.sample_code', $_GET['samplecode']])
         ->AndWhere(['LIKE', 'sample_year', $year])
         ->all();
@@ -170,30 +173,173 @@ class RestapiController extends \yii\rest\Controller
 
             $code = $_GET['id'];
             $year = date("Y");
-            $sample = Sample::find()->select(['sample_id','sample_code', 'samplename', 'description'])
-            ->where(['LIKE', 'tbl_sample.sample_code', $_GET['id']])
-            ->AndWhere(['LIKE', 'sample_year', $year])->one();
 
+            $sample = Sample::find()->select(['sample_id','sample_code', 'samplename', 'description'])
+            ->where(['tbl_sample.sample_code'=> $_GET['id']])
+            ->AndWhere(['sample_year'=>$year])->one();
+
+          
+      
             $analysis = Analysis::find()->select(['tbl_analysis.analysis_id','tbl_analysis.testname', 'tbl_analysis.method', 'tbl_tagging.tagging_status_id', 'tbl_tagging.start_date', 'tbl_tagging.end_date'])
             ->leftJoin('tbl_tagging', 'tbl_tagging.analysis_id=tbl_analysis.analysis_id')
-            ->where(['LIKE', 'tbl_analysis.sample_id', $sample->sample_id])->all();
+            ->where([ 'tbl_analysis.sample_id'=>$sample->sample_id])->all();
 
-          
-           
+            $tagging = Tagging::find()->select(['tbl_tagging.analysis_id', 'tbl_tagging.tagging_status_id', 'tbl_tagging.start_date', 'tbl_tagging.end_date'])
+            ->leftJoin('tbl_analysis', 'tbl_tagging.analysis_id=tbl_analysis.analysis_id')
+            ->where([ 'tbl_analysis.sample_id'=>$sample->sample_id])->all();
+
             if ($sample){
                 return $this->asJson(['sampleCode'=>$sample->sample_code, 
-                'samples'=>['name'=>$sample->samplename, 
-                'description'=>$sample->description], 
-                'tests'=>$analysis]);
+                'samples'=>$sample, 
+                'tests'=>$analysis,
+                'tagging'=>$tagging]);           
+            }                    
+        }
+    }
 
-                //echo print_r($analysis);
-            }else{
-                return $this->asJson(['sampleCode'=>'Not found']);
-            }
-          
+    public function actionStartanalysis()
+    {  
+        if (isset($_GET['id'])) {
 
-       
-                   
+            $analysis_id = $_GET['id'];
+            $year = date("Y");
+
+            $analysis = Analysis::find()->where(['analysis_id'=>$analysis_id])->one();
+
+
+            $sample = Sample::find()->select(['sample_id','sample_code', 'samplename', 'description'])
+            ->where(['tbl_sample.sample_id'=> $analysis->sample_id])
+            ->AndWhere(['sample_year'=>$year])->one();
+
+            $now = date("Y-m-d");
+            $Connection= Yii::$app->labdb;
+            $sql="UPDATE `tbl_tagging` SET `tagging_status_id`=1, `start_date`='$now' WHERE `analysis_id`=".$analysis_id;
+            $Command=$Connection->createCommand($sql);
+            $Command->execute();
+      
+            $analysis = Analysis::find()->select(['tbl_analysis.analysis_id','tbl_analysis.testname', 'tbl_analysis.method', 'tbl_tagging.tagging_status_id', 'tbl_tagging.start_date', 'tbl_tagging.end_date'])
+            ->leftJoin('tbl_tagging', 'tbl_tagging.analysis_id=tbl_analysis.analysis_id')
+            ->where([ 'tbl_analysis.sample_id'=>$sample->sample_id])->all();
+
+            $tagging = Tagging::find()->select(['tbl_tagging.analysis_id', 'tbl_tagging.tagging_status_id', 'tbl_tagging.start_date', 'tbl_tagging.end_date'])
+            ->leftJoin('tbl_analysis', 'tbl_tagging.analysis_id=tbl_analysis.analysis_id')
+            ->where([ 'tbl_analysis.sample_id'=>$sample->sample_id])->all();
+
+            if ($sample){
+                return $this->asJson(['sampleCode'=>$sample->sample_code, 
+                'samples'=>$sample, 
+                'tests'=>$analysis,
+                'tagging'=>$tagging]);           
+            }                    
+        }
+    }
+
+    public function actionCompletedanalysis()
+    {  
+        if (isset($_GET['id'])) {
+
+            $analysis_id = $_GET['id'];
+            $year = date("Y");
+
+            $analysis = Analysis::find()->where(['analysis_id'=>$analysis_id])->one();
+
+
+            $sample = Sample::find()->select(['sample_id','sample_code', 'samplename', 'description'])
+            ->where(['tbl_sample.sample_id'=> $analysis->sample_id])
+            ->AndWhere(['sample_year'=>$year])->one();
+
+            $now = date("Y-m-d");
+            $Connection= Yii::$app->labdb;
+            $sql="UPDATE `tbl_tagging` SET `tagging_status_id`=2, `end_date`='$now' WHERE `analysis_id`=".$analysis_id;
+            $Command=$Connection->createCommand($sql);
+            $Command->execute();
+
+            //tracking
+            $taggingcount= Tagging::find()
+            ->leftJoin('tbl_analysis', 'tbl_tagging.analysis_id=tbl_analysis.analysis_id')
+            ->leftJoin('tbl_sample', 'tbl_analysis.sample_id=tbl_sample.sample_id')    
+            ->where(['tbl_tagging.tagging_status_id'=>2, 'tbl_sample.sample_id'=>$analysis->sample_id ])
+            ->all();   
+
+            if ($taggingcount){
+                $counttag = count($taggingcount); 
+             } 
+              $sql="UPDATE `tbl_sample` SET `completed`='$counttag' WHERE `sample_id`=".$analysis->sample_id;
+              $Command=$Connection->createCommand($sql);
+              $Command->execute();                 
+              $samplesq = Sample::find()->where(['sample_id' =>$analysis->sample_id])->one();             
+              $samcount = $samplesq->completed;
+
+              $sampletagged= Sample::find()
+              ->leftJoin('tbl_analysis', 'tbl_sample.sample_id=tbl_analysis.sample_id')
+              ->leftJoin('tbl_tagging', 'tbl_analysis.analysis_id=tbl_tagging.analysis_id') 
+              ->leftJoin('tbl_request', 'tbl_request.request_id=tbl_analysis.request_id')    
+              ->where(['tbl_tagging.tagging_status_id'=>2, 'tbl_request.request_id'=>$samplesq->request_id ])
+              ->all();  
+
+              $st = count($sampletagged);
+
+              if ($samcount==$counttag){
+                $sql="UPDATE `tbl_request` SET `completed`='$st' WHERE `request_id`=".$samplesq->request_id;
+                $Command=$Connection->createCommand($sql);
+                $Command->execute(); 
+              }
+
+              //end of tracking
+      
+            $analysis = Analysis::find()->select(['tbl_analysis.analysis_id','tbl_analysis.testname', 'tbl_analysis.method', 'tbl_tagging.tagging_status_id', 'tbl_tagging.start_date', 'tbl_tagging.end_date'])
+            ->leftJoin('tbl_tagging', 'tbl_tagging.analysis_id=tbl_analysis.analysis_id')
+            ->where([ 'tbl_analysis.sample_id'=>$sample->sample_id])->all();
+
+            $tagging = Tagging::find()->select(['tbl_tagging.analysis_id', 'tbl_tagging.tagging_status_id', 'tbl_tagging.start_date', 'tbl_tagging.end_date'])
+            ->leftJoin('tbl_analysis', 'tbl_tagging.analysis_id=tbl_analysis.analysis_id')
+            ->where([ 'tbl_analysis.sample_id'=>$sample->sample_id])->all();
+
+            if ($sample){
+                return $this->asJson(['sampleCode'=>$sample->sample_code, 
+                'samples'=>$sample, 
+                'tests'=>$analysis,
+                'tagging'=>$tagging]);           
+            }                    
+        }
+    }
+
+    public function actionUpdateanalysis()
+    {  
+        if (isset($_GET['id'])) {
+
+            $analysis_id = $_GET['id'];
+            $start = $_GET['start_date'];
+            $end = $_GET['end_date'];
+
+            $year = date("Y");
+
+            $analysis = Analysis::find()->where(['analysis_id'=>$analysis_id])->one();
+
+
+            $sample = Sample::find()->select(['sample_id','sample_code', 'samplename', 'description'])
+            ->where(['tbl_sample.sample_id'=> $analysis->sample_id])
+            ->AndWhere(['sample_year'=>$year])->one();
+
+            $Connection= Yii::$app->labdb;
+            $sql="UPDATE `tbl_tagging` SET `start_date`='$start', `end_date`='$end' WHERE `analysis_id`=".$analysis_id;
+            $Command=$Connection->createCommand($sql);
+            $Command->execute();
+      
+            $analysis = Analysis::find()->select(['tbl_analysis.analysis_id','tbl_analysis.testname', 'tbl_analysis.method', 'tbl_tagging.tagging_status_id', 'tbl_tagging.start_date', 'tbl_tagging.end_date'])
+            ->leftJoin('tbl_tagging', 'tbl_tagging.analysis_id=tbl_analysis.analysis_id')
+            ->where([ 'tbl_analysis.sample_id'=>$sample->sample_id])->all();
+
+            $tagging = Tagging::find()->select(['tbl_tagging.analysis_id', 'tbl_tagging.tagging_status_id', 'tbl_tagging.start_date', 'tbl_tagging.end_date'])
+            ->leftJoin('tbl_analysis', 'tbl_tagging.analysis_id=tbl_analysis.analysis_id')
+            ->where([ 'tbl_analysis.sample_id'=>$sample->sample_id])->all();
+
+            if ($sample){
+                return $this->asJson(['sampleCode'=>$sample->sample_code, 
+                'samples'=>$sample, 
+                'tests'=>$analysis,
+                'tagging'=>$tagging]);           
+            }                    
         }
     }
 

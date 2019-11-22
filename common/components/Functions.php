@@ -308,6 +308,9 @@ SCRIPT;
                 };
             }
 SCRIPT;
+
+
+
                 $url = \yii\helpers\Url::to(['/lab/tagging/getsamplecode']);
               //  $url = '';
                 // Get the initial city description

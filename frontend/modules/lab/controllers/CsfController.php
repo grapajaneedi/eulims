@@ -64,7 +64,7 @@ class CsfController extends Controller
         ]);
     }
 
-    public function actionDaily()
+    public function actionCustomer()
     {
         $model = new Csf();
 
@@ -232,6 +232,11 @@ class CsfController extends Controller
   public function actionPrintmonthly(){
     $Printing=new Printing();
     $Printing->PrintReportmonthly(20);
+}
+
+public function actionPrintcustomer(){
+    $Printing=new Printing();
+    $Printing->PrintReportdaily(20);
 }
 
     
