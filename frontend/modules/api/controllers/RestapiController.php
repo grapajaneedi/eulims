@@ -201,11 +201,12 @@ class RestapiController extends \yii\rest\Controller
     {  
         if (isset($_GET['id'])) {
 
+            $date = $_GET['date'];
+
             $analysis_id = $_GET['id'];
             $year = date("Y");
 
             $analysis = Analysis::find()->where(['analysis_id'=>$analysis_id])->one();
-
 
             $sample = Sample::find()->select(['sample_id','sample_code', 'samplename', 'description'])
             ->where(['tbl_sample.sample_id'=> $analysis->sample_id])
@@ -213,7 +214,7 @@ class RestapiController extends \yii\rest\Controller
 
             $now = date("Y-m-d");
             $Connection= Yii::$app->labdb;
-            $sql="UPDATE `tbl_tagging` SET `tagging_status_id`=1, `start_date`='$now' WHERE `analysis_id`=".$analysis_id;
+            $sql="UPDATE `tbl_tagging` SET `tagging_status_id`=1, `start_date`='$date' WHERE `analysis_id`=".$analysis_id;
             $Command=$Connection->createCommand($sql);
             $Command->execute();
       
@@ -240,7 +241,7 @@ class RestapiController extends \yii\rest\Controller
 
             $analysis_id = $_GET['id'];
             $year = date("Y");
-
+            $date = $_GET['date'];
             $analysis = Analysis::find()->where(['analysis_id'=>$analysis_id])->one();
 
 
@@ -250,7 +251,7 @@ class RestapiController extends \yii\rest\Controller
 
             $now = date("Y-m-d");
             $Connection= Yii::$app->labdb;
-            $sql="UPDATE `tbl_tagging` SET `tagging_status_id`=2, `end_date`='$now' WHERE `analysis_id`=".$analysis_id;
+            $sql="UPDATE `tbl_tagging` SET `tagging_status_id`=2, `end_date`='$date' WHERE `analysis_id`=".$analysis_id;
             $Command=$Connection->createCommand($sql);
             $Command->execute();
 
