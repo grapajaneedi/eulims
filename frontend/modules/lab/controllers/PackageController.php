@@ -85,7 +85,7 @@ class PackageController extends Controller
                     $model->rate= $post['Package']['rate'];
                     $model->tests= $post['Package']['tests'];
                     $model->save(false); 
-                    Yii::$app->session->setFlash('success', 'Package Successfully Created'); 
+                   // Yii::$app->session->setFlash('success', 'Package Successfully Created'); 
                     return $this->runAction('index');
                 }          
                 if(Yii::$app->request->isAjax){
@@ -111,7 +111,7 @@ class PackageController extends Controller
         $model = $this->findModel($id);
         $sampletype = [];
                 if ($model->load(Yii::$app->request->post()) && $model->save()) {
-                    Yii::$app->session->setFlash('success', 'Package Successfully Updated'); 
+                 //   Yii::$app->session->setFlash('success', 'Package Successfully Updated'); 
                     return $this->redirect(['index']);
 
                 } else if (Yii::$app->request->isAjax) {
@@ -133,7 +133,7 @@ class PackageController extends Controller
     {
         $model = $this->findModel($id); 
         if($model->delete()) {            
-            Yii::$app->session->setFlash('success', 'Package Successfully Deleted'); 
+          //  Yii::$app->session->setFlash('success', 'Package Successfully Deleted'); 
             return $this->redirect(['index']);
         } else {
             return $model->error();
@@ -154,7 +154,6 @@ class PackageController extends Controller
 
         $testnamemethod = Testnamemethod::find();
 
-
          $testnamedataprovider = new ActiveDataProvider([
                  'query' => $testnamemethod,
                  'pagination' => [
@@ -168,12 +167,9 @@ class PackageController extends Controller
                  'allModels' => $package,
                  'pagination' => [
                      'pageSize' => false,
-                 ],
-              
+                 ],       
          ]);
 
-
-    
          return $this->renderAjax('_method', [
             'testnamedataprovider' => $testnamedataprovider,
             'packagedataprovider'=>$packagedataprovider,

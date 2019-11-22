@@ -2,6 +2,9 @@
 
 namespace frontend\modules\lab\controllers;
 
+use common\models\lab\Sample;
+use common\models\lab\Analysis;
+use frontend\modules\lab\components\Printing;
 use Yii;
 use common\models\lab\Csf;
 use common\models\lab\CsfSearch;
@@ -44,6 +47,32 @@ class CsfController extends Controller
         }
 
         return $this->render('index', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionReports()
+    {
+        $model = new Csf();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('reports', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionCustomer()
+    {
+        $model = new Csf();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('day', [
             'model' => $model,
         ]);
     }
@@ -192,4 +221,24 @@ class CsfController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    
+
+     public function actionPrintreport(){
+      $Printing=new Printing();
+      $Printing->PrintReportcsi(20);
+  }
+
+  public function actionPrintmonthly(){
+    $Printing=new Printing();
+    $Printing->PrintReportmonthly(20);
+}
+
+public function actionPrintcustomer(){
+    $Printing=new Printing();
+    $Printing->PrintReportdaily(20);
+}
+
+    
+
 }

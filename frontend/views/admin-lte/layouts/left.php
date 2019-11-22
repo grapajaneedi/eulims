@@ -122,7 +122,7 @@ if(Yii::$app->user->isGuest){
 				if($mItem->extra_element == 1){
 					$numNotification = '&nbsp;&nbsp;<span class="label label-danger" id="count_noti_sub_referral">'.$unresponded.'</span>';
 					$showURL = '#';
-					$template = '<a href="{url}" onclick="showNotifications()" id="btn_unresponded">{label}</a>';
+					$template = '<a href="{url}" onclick="showNotifications()" id="btn_unresponded_referral">{label}</a>';
 				} elseif ($mItem->extra_element == 2) {
 					$numNotification = '&nbsp;&nbsp;<span class="label label-danger" id="count_noti_sub_bid">'.$unseen.'</span>';
 					$showURL = '#';
@@ -231,6 +231,8 @@ if(Yii::$app->user->isGuest){
 				$('.content-image-loader').addClass('content-img-loader');
 			}
 		});
+
+        return false;
 	}
 	//bid notifications
 	function showBidNotifications(){
@@ -251,6 +253,8 @@ if(Yii::$app->user->isGuest){
 				$('.content-image-loader').addClass('content-img-loader');
 			}
 		});
+
+        return false;
 	}
 	$("#btn_unresponded_referral").on('click', function(e) {
 		e.preventDefault();
