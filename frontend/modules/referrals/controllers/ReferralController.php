@@ -1528,47 +1528,53 @@ class ReferralController extends Controller
             }
             if($requestSave == 1 && $sampleSave == 1 && $analysisSave == 1 && $samplecodeSave == 1) {
 
-                $local_samples = Sample::find()->where(['request_id'=>$requestId])->asArray()->all();
-                $local_request = Request::findOne($requestId);
-                $pstc_sample_data = [];
+                if($request->pstc_request_id > 0 && $request->pstc_id > 0) {
+                    $local_samples = Sample::find()->where(['request_id'=>$requestId])->asArray()->all();
+                    $local_request = Request::findOne($requestId);
+                    $pstc_sample_data = [];
 
-                $pstc_requestData = [
-                    'pstc_id' => $local_request->pstc_id,
-                    'rstl_id' => $local_request->rstl_id,
-                    'request_id' => $local_request->request_id,
-                    'pstc_request_id' => $local_request->pstc_request_id,
-                ];
-
-                foreach ($local_samples as $s_data) {
-                    $pstcsampleData = [
-                        'pstc_sample_id' => $s_data['pstcsample_id'],
-                        'sample_code' => $s_data['sample_code'],
-                        'sample_id' => $s_data['sample_id'],
+                    $pstc_requestData = [
+                        'pstc_id' => $local_request->pstc_id,
                         'rstl_id' => $local_request->rstl_id,
-                        'local_sample_id' => $s_data['sample_id'],
-                        'local_request_id' => $s_data['request_id'],
+                        'request_id' => $local_request->request_id,
+                        'pstc_request_id' => $local_request->pstc_request_id,
                     ];
-                    array_push($pstc_sample_data, $pstcsampleData);
-                }
 
-                $pstc_request_details = Json::encode(['sample_data'=>$pstc_sample_data,'request_data'=>$pstc_requestData],JSON_NUMERIC_CHECK);
-                //$pstcUrl='https://eulimsapi.onelab.ph/api/web/referral/pstcrequests/update_samplecode';
-                $pstcUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/pstcrequests/update_samplecode';
-           
-                $curl = new curl\Curl();
-                $pstc_return = $curl->setRequestBody($pstc_request_details)
-                ->setHeaders([
-                    'Content-Type' => 'application/json',
-                    'Content-Length' => strlen($pstc_request_details),
-                ])->post($pstcUrl);
+                    foreach ($local_samples as $s_data) {
+                        $pstcsampleData = [
+                            'pstc_sample_id' => $s_data['pstcsample_id'],
+                            'sample_code' => $s_data['sample_code'],
+                            'sample_id' => $s_data['sample_id'],
+                            'rstl_id' => $local_request->rstl_id,
+                            'local_sample_id' => $s_data['sample_id'],
+                            'local_request_id' => $s_data['request_id'],
+                        ];
+                        array_push($pstc_sample_data, $pstcsampleData);
+                    }
 
-                if($pstc_return == 1) {
+                    $pstc_request_details = Json::encode(['sample_data'=>$pstc_sample_data,'request_data'=>$pstc_requestData],JSON_NUMERIC_CHECK);
+                    //$pstcUrl='https://eulimsapi.onelab.ph/api/web/referral/pstcrequests/update_samplecode';
+                    $pstcUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/pstcrequests/update_samplecode';
+               
+                    $curl = new curl\Curl();
+                    $pstc_return = $curl->setRequestBody($pstc_request_details)
+                    ->setHeaders([
+                        'Content-Type' => 'application/json',
+                        'Content-Length' => strlen($pstc_request_details),
+                    ])->post($pstcUrl);
+
+                    if($pstc_return == 1) {
+                        $transaction->commit();
+                        Yii::$app->session->setFlash('success', 'Sample code updated!');
+                        return $this->redirect(['/lab/request/view', 'id' => $requestId]);
+                    } else {
+                        $transaction->rollBack();
+                        return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Fail to update sample code!</div>";
+                    }
+                } else {
                     $transaction->commit();
                     Yii::$app->session->setFlash('success', 'Sample code updated!');
                     return $this->redirect(['/lab/request/view', 'id' => $requestId]);
-                } else {
-                    $transaction->rollBack();
-                    return "<div class='alert alert-danger'><span class='glyphicon glyphicon-exclamation-sign' style='font-size:18px;'></span>&nbsp;Fail to update sample code!</div>";
                 }
             } else {
                 $transaction->rollBack();
