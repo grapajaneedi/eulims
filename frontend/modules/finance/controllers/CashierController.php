@@ -958,7 +958,7 @@ class CashierController extends \yii\web\Controller
 		 $wallet=Customerwallet::find()->where(['customer_id'=>$customer_id])->sum('balance');
 		 $total=0;
 		 
-		 if($wallet > $totaldue){
+		 if($wallet >= $totaldue){
 			$func->SetWallet($customer_id, $totaldue, $id,1); 
 			Yii::$app->session->setFlash('info','Transaction Saved!');
             return $this->redirect(['/finance/cashier/viewreceipt', 'receiptid' => $id]);
