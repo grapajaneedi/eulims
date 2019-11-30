@@ -149,7 +149,7 @@ class Request extends \yii\db\ActiveRecord
             'report_due' => 'Report Due',
             'conforme' => 'Conforme',
             'receivedBy' => 'Received By',
-            'created_at' => 'Code',
+            'created_at' => 'Tracking code',
             'posted' => 'Posted',
             'status_id' => 'Status',
             //'customer_name'=>'Customer Name',

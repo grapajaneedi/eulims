@@ -19,10 +19,10 @@ use yii\helpers\Html;
 <div class="row" style="float: right;padding-right: 300px">
       
 <?php 
-echo Html::button("<span class='glyphicon glyphicon-print'></span> Customer Satisfaction Measurement Report",['value' => '/lab/csf/printreport','onclick'=>'location.href=this.value', 'class' => 'btn btn-primary', 'title' => Yii::t('app', "View Request")]);
-echo "&nbsp;&nbsp;&nbsp;&nbsp;";
-echo Html::button("<span class='glyphicon glyphicon-print'></span> Customer Satisfaction Feedback",['value' => '/lab/csf/printmonthly','onclick'=>'location.href=this.value', 'class' => 'btn btn-primary', 'title' => Yii::t('app', "View Request")]);
-echo "<br><br>";
+// echo Html::button("<span class='glyphicon glyphicon-print'></span> Customer Satisfaction Measurement Report",['value' => '/lab/csf/printreport','onclick'=>'location.href=this.value', 'class' => 'btn btn-primary', 'title' => Yii::t('app', "View Request")]);
+// echo "&nbsp;&nbsp;&nbsp;&nbsp;";
+// echo Html::button("<span class='glyphicon glyphicon-print'></span> Customer Satisfaction Feedback",['value' => '/lab/csf/printmonthly','onclick'=>'location.href=this.value', 'class' => 'btn btn-primary', 'title' => Yii::t('app', "View Request")]);
+// echo "<br><br>";
 ?>
 
 </div>

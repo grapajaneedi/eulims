@@ -223,6 +223,7 @@ class TaggingController extends Controller
 
         
         $GLOBALS['user_id']=Yii::$app->user->identity->profile->user_id;
+        $GLOBALS['rstl_id']=Yii::$app->user->identity->profile->rstl_id;
         $profile = Profile::find()->where(['user_id'=> $GLOBALS['user_id']])->one();
 
         $lab = Yii::$app->user->identity->profile->lab_id;
@@ -237,6 +238,7 @@ class TaggingController extends Controller
                     ->from('tbl_sample')
                     ->where(['like', 'sample_code', $q])
                     ->Andwhere(['sample_year'=>$year])
+                    ->Andwhere(['rstl_id'=>$GLOBALS['rstl_id']])
                     ->Andwhere(['tbl_request.lab_id'=>$profile->lab_id])
                     ->orderBy(['sample_id'=>SORT_DESC])
                     ->limit(5);
