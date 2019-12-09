@@ -630,7 +630,8 @@ class CashierController extends \yii\web\Controller
                    if ($sum > $total_collection){
                        Yii::$app->session->setFlash('info','Excess amount will be credited to customer wallet!');
                        $total= $sum - $total_collection;
-                       $source= "From Receipt #:".$receipt->or_number.", Check #:".$model->checknumber;
+                      // $source= "From Receipt #:".$receipt->or_number.", Check #:".$model->checknumber;
+                       $source=$receiptid;
                        $func->SetWallet($customer_id, $total, $source,0);
 					   
 					   $model_excess = new ExcessPayment();
