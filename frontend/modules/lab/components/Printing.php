@@ -380,9 +380,7 @@ class Printing {
                 <td>
                   <ol>
                     <!-- LOOP THROUGH EACH COMMENT -->
-                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam dicta error vel ducimus tempore distinctio saepe velit exercitationem minima ipsum ullam id porro totam ipsam, quae cumque adipisci! Dicta, in.</li>
-                    <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse consequatur recusandae voluptates animi repudiandae facere earum cum veniam suscipit nulla dolores sapiente sed adipisci maiores, alias culpa, facilis modi libero?</li>
-                    <li>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Iste esse nesciunt, aspernatur unde veritatis autem! Iusto fuga, voluptas consequuntur dolorem vero recusandae, eius earum sint soluta eaque, autem aspernatur est?</li>
+                
                   </ol>
                 </td>
               </tr>
@@ -764,7 +762,7 @@ class Printing {
         <tbody>
           <tr>
             <td>
-              Customer Name: <strong>Lorem Ipsum</strong><!-- Customer Name -->
+              Customer Name: <strong></strong><!-- Customer Name -->
             </td>
           </tr>
           <tr>
@@ -1010,7 +1008,7 @@ class Printing {
             margin: 0 10px 0 5px;
             padding: 0 2px;
           ">
-            Lorem ipsum
+           
           </div>
         </div>
         <div style="flex: 1; display: flex;">

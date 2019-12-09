@@ -238,7 +238,7 @@ class TaggingController extends Controller
                     ->from('tbl_sample')
                     ->where(['like', 'sample_code', $q])
                     ->Andwhere(['sample_year'=>$year])
-                    ->Andwhere(['rstl_id'=>$GLOBALS['rstl_id']])
+                    ->Andwhere(['tbl_sample.rstl_id'=>$GLOBALS['rstl_id']])
                     ->Andwhere(['tbl_request.lab_id'=>$profile->lab_id])
                     ->orderBy(['sample_id'=>SORT_DESC])
                     ->limit(5);

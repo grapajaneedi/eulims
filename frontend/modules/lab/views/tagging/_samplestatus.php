@@ -257,7 +257,9 @@ if ($rcount==0){
             echo GridView::widget([
                 'id'=>'testname-grid',
                 'dataProvider' => $sampledataprovider,
+                'toolbar' => false,
                 'pjax'=>true,
+                
                 'pjaxSettings' => [
                     'options' => [
                         'enablePushState' => false,

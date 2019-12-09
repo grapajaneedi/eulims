@@ -89,17 +89,17 @@ $samplesQuery = Sample::find()->where(['request_id' =>$request->request_id])->on
 $analysis= Analysis::find()->where(['sample_id'=> $samplesQuery->sample_id])->one();
 $tagging= Tagging::find()->where(['analysis_id'=> $analysis->analysis_id])->one();
 
-if ($tagging->tagging_status_id==1){
-  $analysis_started = "done";
-}else{
+// if ($tagging->tagging_status_id==1){
+//   $analysis_started = "done";
+// }else{
   $analysis_started = "";
-}
+//}
 
-if ($tagging->tagging_status_id==2){
-  $done_analyzing = "done";
-}else{
+// if ($tagging->tagging_status_id==2){
+//   $done_analyzing = "done";
+//}else{
   $done_started = "";
-}
+//}
 
 
 
