@@ -13,6 +13,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\lab\Request;
 use common\models\lab\Customer;
+use yii\web\Response;
 
 /**
  * CsfController implements the CRUD actions for Csf model.
@@ -49,6 +50,12 @@ class CsfController extends Controller
         return $this->render('index', [
             'model' => $model,
         ]);
+    }
+
+    public function actionCsf()
+    {  
+        $csf = Csf::find()->all();
+        return $this->asJson([$csf]);             
     }
 
     public function actionReports()
@@ -93,6 +100,7 @@ class CsfController extends Controller
         $searchModel = new CsfSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+
         return $this->render('csireport', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -104,9 +112,13 @@ class CsfController extends Controller
         $searchModel = new CsfSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $csf = Csf::find()->all();
+        $count = count($csf);
         return $this->render('csi', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'csf'=>$csf,
+            'count'=>$count
         ]);
     }
 
