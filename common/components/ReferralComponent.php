@@ -644,6 +644,18 @@ class ReferralComponent extends Component {
             return 'false';
         }
     }
+    function getSentReferral($rstlId) {
+        if($rstlId > 0) {
+            $apiUrl=$this->source.'/api/web/referral/referrals/sent_referral?rstl_id='.$rstlId;
+            $curl = new curl\Curl();
+            $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
+            $curl->setOption(CURLOPT_TIMEOUT, 180);
+            $list = $curl->get($apiUrl);
+            return $list;
+        } else {
+            return 'false';
+        }
+    }
     //offer service
     function offerService($data){
         $referralUrl=$this->source.'/api/web/referral/services/offer';

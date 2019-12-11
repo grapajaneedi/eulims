@@ -186,6 +186,18 @@ $accepted = $request['accepted'];
                         'style'=>'max-width:180px; overflow: auto; white-space: normal; word-wrap: break-word;'
                     ],
                 ],
+                [
+                    'attribute'=>'customer_description',
+                    'header'=>'Description provided by Customer',
+                    'format' => 'raw',
+                    'enableSorting' => false,
+                    'value' => function($data){
+                        return empty($data['customer_description']) ? "<span style='color:#444444;font-size:11px;'><i>No information provided</i></span>" : $data['customer_description'];
+                    },
+                   'contentOptions' => [
+                        'style'=>'max-width:180px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                    ],
+                ],
                 /* [
                     'class' => 'kartik\grid\ActionColumn',
                     'template' => '{update} {remove}',
