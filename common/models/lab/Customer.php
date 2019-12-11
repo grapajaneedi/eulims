@@ -169,7 +169,7 @@ class Customer extends \yii\db\ActiveRecord
          if($address)
             return $address->municipalityCity->province->region->reg_desc.', '.$address->municipalityCity->province->prov_desc.', '.$address->municipalityCity->citymun_desc.', '.$address->brgy_desc;
         else
-            return "none";
+            return $this->address;
 
     }
 }
