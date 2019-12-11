@@ -300,7 +300,7 @@ if(empty($request['referral_code'])){
                 ],
                 [
                     'attribute'=>'customer_description',
-                    'header'=>'Description provided by Customer',
+                    'header'=>'Description provided e by Customer',
                     'format' => 'raw',
                     'enableSorting' => false,
                     'value' => function($data){
