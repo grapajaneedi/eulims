@@ -186,7 +186,7 @@ class SampleController extends Controller
             }
 
         } elseif (Yii::$app->request->isAjax) {
-			$model->sampling_date = date('m/d/Y h:i:s A');
+		//	$model->sampling_date = date('m/d/Y h:i:s A');
 			return $this->renderAjax('_form', [
 				'model' => $model,
 				//'testcategory' => $testcategory,
