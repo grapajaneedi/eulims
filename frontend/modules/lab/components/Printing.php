@@ -1185,7 +1185,7 @@ class Printing {
         $Func = new Functions();
         $Proc = "spGetRequestServices(:nRequestID)";
         $Params = [':nRequestID' => $id];
-        $Form="OP-007-F1"."<br>"."Rev. 05 | 10.01.14";
+        $Form="OP-007-F1"."<br>"."Rev. 06 | 11.04.19";
         $Connection = \Yii::$app->labdb;
         
         $RequestRows = $Func->ExecuteStoredProcedureRows($Proc, $Params, $Connection);
