@@ -227,7 +227,7 @@ $this->registerJs($PrintEvent);
                         [
                             'label'=>'Address',
                             'format'=>'raw',
-                            'value'=>$model->customer ? $model->customer->address : "",
+                            'value'=>$model->customer ? $model->customer->completeaddress : "",
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
                         ],
