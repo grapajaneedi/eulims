@@ -375,3 +375,7 @@ frontend/modules/pstc/views/pstcrequest/_formRequestDetails_20191112_bk.php
 frontend/modules/referrals/controllers/ReferralController_20191111.php
 frontend/modules/referrals/controllers/ReferralController_20191120.php
 frontend/modules/pstc/views/pstcrequest/_formRequestDetails_with_dropdown.php
+common/config/db.php
+common/models/lab/Sample_20190514.php
+frontend/modules/lab/components/eRequest - Copy.php
+frontend/modules/lab/controllers/SampleController_20191120.php

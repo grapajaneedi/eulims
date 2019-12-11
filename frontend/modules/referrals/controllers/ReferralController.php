@@ -88,6 +88,41 @@ class ReferralController extends Controller
         ]);
     }
 
+    public function actionSentreferral() 
+    {
+        //$searchModel = new ReferralSearch();
+        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $refcomponent = new ReferralComponent();
+
+        $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
+
+        if($rstlId > 0) {
+            $referrals = json_decode($refcomponent->getSentReferral($rstlId),true);
+        } else {
+            $referrals = 0;
+            return $this->redirect(['/site/login']);
+        }
+
+        if($referrals == 0 || $referrals == 'false'){
+            $referralDataprovider = new ArrayDataProvider([
+                'allModels' => [],
+                'pagination'=> ['pageSize' => 10],
+            ]);
+        } else {
+            $referralDataprovider = new ArrayDataProvider([
+                'allModels' => $referrals,
+                'pagination'=> ['pageSize' => 10],
+            ]);
+        }
+
+        return $this->render('index', [
+            //'searchModel' => $searchModel,
+            'dataProvider' => $referralDataprovider,
+        ]);
+    }
+
+
     /**
      * Displays a single Referral model.
      * @param integer $id
@@ -436,6 +471,7 @@ class ReferralController extends Controller
                             'sample_code' => $sample['sample_code'],
                             'samplename' => $sample['samplename'],
                             'description' => $sample['description'],
+                            'customer_description' => $sample['customer_description'],
                             'sampling_date' => $sample['sampling_date'],
                             'remarks' => $sample['remarks'],
                             'request_id' => $sample['request_id'],
@@ -882,6 +918,7 @@ class ReferralController extends Controller
                                             'sample_year' => $s_data['sample_year'],
                                             'rstl_id' => $local_request->rstl_id,
                                             'sample_description' => $s_data['description'],
+                                            'customer_description' => $s_data['customer_description'],
                                             'sample_name' => $s_data['samplename'],
                                             'local_sample_id' => $s_data['sample_id'],
                                             'local_request_id' => $s_data['request_id'],
@@ -1043,6 +1080,7 @@ class ReferralController extends Controller
                         'sample_code' => $sample['sample_code'],
                         'samplename' => $sample['samplename'],
                         'description' => $sample['description'],
+                        'customer_description' => $sample['customer_description'],
                         'sampling_date' => $sample['sampling_date'],
                         'remarks' => $sample['remarks'],
                         'request_id' => $sample['request_id'],
@@ -1225,6 +1263,7 @@ class ReferralController extends Controller
                         $modelSample->sampletype_id = $sample['sample_type_id'];
                         $modelSample->samplename = $sample['sample_name'];
                         $modelSample->description = $sample['description'];
+                        $modelSample->customer_description = $sample['customer_description'];
                         $modelSample->sampling_date = $sample['sampling_date'];
                         $modelSample->referral_sample_id = $sample['sample_id'];
 

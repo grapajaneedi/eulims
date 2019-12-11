@@ -161,8 +161,9 @@ class SampleController extends Controller
                     //$sample->testcategory_id = (int) $_POST['Sample']['testcategory_id'];
                     //$sample->testcategory_id = 0;
                     $sample->sampletype_id = (int) $_POST['Sample']['sampletype_id'];
-                    $sample->samplename = $_POST['Sample']['samplename'];
+                    $sample->samplename = $_POST['Sample']['samplename'].' #'.$i;
                     $sample->description = $_POST['Sample']['description'];
+                    $sample->customer_description = $_POST['Sample']['customer_description'];
                     $sample->request_id = $request->request_id;
                     //$sample->sample_month = date('m', strtotime($request->request_datetime));
                     //$sample->sample_year = date('Y', strtotime($request->request_datetime));
