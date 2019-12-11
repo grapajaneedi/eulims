@@ -53,7 +53,7 @@ class DepositSearch extends Deposit
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort'=> ['defaultOrder' => ['deposit_date'=>SORT_DESC]],
+            'sort'=> ['defaultOrder' => ['deposit_id'=>SORT_DESC]],
         ]);
         $this->load($params);
 
