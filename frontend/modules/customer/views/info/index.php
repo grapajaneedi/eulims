@@ -68,7 +68,7 @@ if(Yii::$app->user->can('allow-create-op')){
                 //'tel',
                 //'fax',
                 'email:email',
-                'address',
+                'Completeaddress',
                 //'latitude',
                 //'longitude',
                 //'customer_type_id',
