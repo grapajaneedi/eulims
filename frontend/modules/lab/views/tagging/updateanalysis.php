@@ -11,6 +11,7 @@ use yii\helpers\ArrayHelper;
 $GLOBALS['user_id']=Yii::$app->user->identity->profile->user_id;
 $profile = Profile::find()->where(['user_id'=> $GLOBALS['user_id']])->one();
 $analyst= ArrayHelper::map(Profile::find()->where(['lab_id'=>$profile->lab_id])->all(),'user_id','fullname');
+$manner= ArrayHelper::map(Profile::find()->where(['lab_id'=>$profile->lab_id])->all(),'user_id','fullname');
 ?>
 <?php $form = ActiveForm::begin(); ?> 
                     <?= $form->field($taggingmodel,'user_id')->widget(Select2::classname(),[
@@ -45,6 +46,26 @@ $analyst= ArrayHelper::map(Profile::find()->where(['lab_id'=>$profile->lab_id])-
                         ]
                     ]);
                     ?>
+
+                <?php
+                    echo $form->field($taggingmodel, 'disposed_date')->widget(DatePicker::classname(), [
+                    'options' => ['placeholder' => 'Select Date ...',
+                    'autocomplete'=>'off'],
+                    'type' => DatePicker::TYPE_COMPONENT_APPEND,
+                        'pluginOptions' => [
+                            'format' => 'yyyy-mm-dd',
+                            'todayHighlight' => true,
+                            'autoclose'=>true,
+                        ]
+                    ]);
+                    ?>
+                     <?= $form->field($taggingmodel,'manner')->widget(Select2::classname(),[
+                                        'data' => $manner,
+                                        'theme' => Select2::THEME_KRAJEE,
+                                        'options' => ['id'=>'tagging-manner'],
+                                        'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Analyst'],
+                                ])->label('Manner')
+                        ?>
                     <div class="row" style="float: right;padding-right: 15px">
                     <?php  echo Html::button('<i class="glyphicon glyphicon-pencil"></i> Update Analysis', ['disabled'=>false,'value' => Url::to(['tagging/updateana']), 'onclick'=>'updateanalysis()','title'=>'Update Analysis', 'class' => 'btn btn-primary','id' => 'btn_start_analysis']); ?>
                     </div>
