@@ -192,6 +192,7 @@ class PstcrequestController extends Controller
             $respond = $details['respond_data'];
             $pstc = $details['pstc_data'];
             $customer = $details['customer_data'];
+            $attachment = $details['attachment_data'];
             $subtotal = $details['subtotal'];
             $discount = $details['discount'];
             $total = $details['total'];
@@ -204,6 +205,11 @@ class PstcrequestController extends Controller
             $analysisDataprovider = new ArrayDataProvider([
                 'allModels' => $analyses,
                 'pagination'=>false,
+            ]);
+
+            $attachmentDataprovider = new ArrayDataProvider([
+                'allModels' => $attachment,
+                'pagination' => false,
             ]);
            
             //$query = new Query;
@@ -224,6 +230,7 @@ class PstcrequestController extends Controller
                 //'sample' => $samples,
                 'sampleDataProvider' => $sampleDataProvider,
                 'analysisDataprovider'=> $analysisDataprovider,
+                'attachmentDataprovider'=> $attachmentDataprovider,
                 'respond' => $respond,
                 'pstc' => $pstc,
                 'subtotal' => $subtotal,
@@ -234,7 +241,7 @@ class PstcrequestController extends Controller
             ]);
         } else {
             Yii::$app->session->setFlash('error', "Invalid request!");
-            return $this->redirect(['/pstc/pstcrequest']);
+            return $this->redirect(['/pstc/pstcrequest/accepted']);
         }
     }
 
