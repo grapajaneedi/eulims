@@ -218,7 +218,7 @@ class SiteController extends Controller
      //   $listLabCode = array("Chemical", "Microbiology", "Metrology", "Rubber", "TestLab", "TestLab2", "TestLab3","","");
      //   $listLabCount = array(400, 500, 600, 700, 800, 900, 1000,6,8);
      //   $listLabColor = array("red", "green", "blue", "orange", "aqua", "purple", "orange","gray","gray");
-        $listLabIcons = array("fa fa-comments-o", "fa fa-thumbs-o-up", "fa fa-bookmark-o", "fa fa-comments-o", "fa fa-bookmark-o", "fa fa-comments-o", "fa fa-bookmark-o","fa fa-bookmark-o","fa fa-bookmark-o");
+        $listLabIcons = array("fa fa-flask", "fa fa-flask", "fa fa-flask", "fa fa-comments-o", "fa fa-bookmark-o", "fa fa-comments-o", "fa fa-bookmark-o","fa fa-bookmark-o","fa fa-bookmark-o");
    //     $listYear = array("2015","2016","2017");
        
         $listColumn = array("Rank", "Test Name", "No. of Tests");

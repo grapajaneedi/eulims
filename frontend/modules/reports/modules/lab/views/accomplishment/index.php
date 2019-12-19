@@ -37,7 +37,24 @@ $pdfFooter="{PAGENO}";
 				'method' => 'get',
 			])
     	?>
-    	
+    		<div class="row">
+		        <div id="lab-name" style="width:25%;position: relative; float:left;margin-right: 20px;">
+		            <?php
+		            	echo '<label class="control-label">Laboratory </label>';
+						echo Select2::widget([
+						    'name' => 'lab_id',
+						    'id' => 'lab_id',
+						    'value' => (!isset($_GET['lab_id'])) ? 1 : (int) $_GET['lab_id'],
+						    'data' => $laboratories,
+						    'theme' => Select2::THEME_KRAJEE,
+						    'options' => ['placeholder' => 'Select Laboratory '],
+						    'pluginOptions' => [
+						        'allowClear' => true,
+						    ],
+						]);
+		            ?>
+		            <span class="error-lab text-danger" style="position:fixed;"></span>
+		         </div>
 		         <div id="date_range" style="position: relative; float: left;margin-left: 20px;">
     				<?php
 				        echo '<label class="control-label">Request Date </label>';

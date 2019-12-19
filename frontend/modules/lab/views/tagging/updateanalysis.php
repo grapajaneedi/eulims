@@ -3,6 +3,7 @@
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use common\models\lab\Sampledisposal;
 use kartik\widgets\DatePicker;
 use kartik\widgets\Select2;
 use common\models\system\Profile;
@@ -11,7 +12,7 @@ use yii\helpers\ArrayHelper;
 $GLOBALS['user_id']=Yii::$app->user->identity->profile->user_id;
 $profile = Profile::find()->where(['user_id'=> $GLOBALS['user_id']])->one();
 $analyst= ArrayHelper::map(Profile::find()->where(['lab_id'=>$profile->lab_id])->all(),'user_id','fullname');
-$manner= ArrayHelper::map(Profile::find()->where(['lab_id'=>$profile->lab_id])->all(),'user_id','fullname');
+$manner= ArrayHelper::map(Sampledisposal::find()->where(['status'=>1])->all(),'disposal_id','disposal');
 ?>
 <?php $form = ActiveForm::begin(); ?> 
                     <?= $form->field($taggingmodel,'user_id')->widget(Select2::classname(),[
@@ -63,7 +64,7 @@ $manner= ArrayHelper::map(Profile::find()->where(['lab_id'=>$profile->lab_id])->
                                         'data' => $manner,
                                         'theme' => Select2::THEME_KRAJEE,
                                         'options' => ['id'=>'tagging-manner'],
-                                        'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select Analyst'],
+                                        'pluginOptions' => ['allowClear' => true,'placeholder' => 'Select type of disposal'],
                                 ])->label('Manner')
                         ?>
                     <div class="row" style="float: right;padding-right: 15px">
@@ -76,7 +77,12 @@ $manner= ArrayHelper::map(Profile::find()->where(['lab_id'=>$profile->lab_id])->
          jQuery.ajax( {
             type: 'POST',
             url: 'tagging/updateana',
-            data: { start_date: $('#tagging-start_date').val(), end_date: $('#tagging-end_date').val(), id: $('#tagging-analysis_id').val(), user_id: $('#select2-tagging-user_id-container').attr('title')},
+            data: { start_date: $('#tagging-start_date').val(),
+             end_date: $('#tagging-end_date').val(), 
+             id: $('#tagging-analysis_id').val(),
+             user_id: $('#select2-tagging-user_id-container').attr('title'),
+             disposed_date: $('#tagging-disposed_date').val(),
+             manner: $('#select2-tagging-manner-container').attr('title') },
             success: function (response) {
                  $("#xyz").html(response);
                  $(".modal").modal('hide');

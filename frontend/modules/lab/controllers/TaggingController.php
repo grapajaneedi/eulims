@@ -138,19 +138,25 @@ class TaggingController extends Controller
             $start = $_POST['start_date'];
             $end = $_POST['end_date'];
             $user_id = $_POST['user_id'];
+
+            $manner = $_POST['manner'];
+            $disposed = $_POST['disposed_date'];
             $profile = Profile::find()->where(['fullname'=> $user_id])->one();
 
             $name = $profile->user_id;
 
-// $fullname = $profile->firstname.' '. strtoupper(substr($profile->middleinitial,0,1)).'. '.$profile->lastname;
-
-// echo $fullname;
             $id = $_POST['id'];
             $analysis_id = $_POST['id'];
 
 
             $Connection= Yii::$app->labdb;
-            $sql="UPDATE `tbl_tagging` SET `start_date`='$start', `end_date`='$end', `user_id`='$name' WHERE `analysis_id`=".$id;
+            $sql="UPDATE `tbl_tagging` SET 
+            `start_date`='$start', 
+            `end_date`='$end', 
+            `user_id`='$name',
+            `disposed_date`='$disposed',
+            `manner`='$manner'
+             WHERE `analysis_id`=".$id;
             $Command=$Connection->createCommand($sql);
             $Command->execute();
 
