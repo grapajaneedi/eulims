@@ -965,4 +965,18 @@ class CashierController extends \yii\web\Controller
             return $this->redirect(['/finance/cashier/viewreceipt', 'receiptid' => $id]);
 		 } 
     }
+	
+	public function actionUpdate($id)
+    {
+		 $model=$this->findModelReceipt($id);	
+		  if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success','Successfully updated!');
+            return $this->redirect(['/finance/cashier/viewreceipt', 'receiptid' => $id]);
+          }
+          $op_model=$this->findModel($model->orderofpayment_id);
+        return $this->renderAjax('receipt/update', [
+            'model' => $model,
+            'op_model'=> $op_model,
+        ]);
+	}
 }
