@@ -143,14 +143,14 @@ if(Yii::$app->user->can('allow-cancel-request')){
                     ->leftJoin('tbl_request', 'tbl_request.request_id=tbl_sample.request_id')    
                     ->where(['tbl_request.request_id'=>$model->request_id ])
                     ->all();              
-                    $requestcount= Sample::find()
-                    ->leftJoin('tbl_request', 'tbl_sample.request_id=tbl_request.request_id')
+                    $sampletagged= Sample::find()
                     ->leftJoin('tbl_analysis', 'tbl_sample.sample_id=tbl_analysis.sample_id')
-                    ->leftJoin('tbl_tagging_analysis', 'tbl_analysis.analysis_id=tbl_tagging_analysis.cancelled_by')
-                    ->where(['tbl_tagging_analysis.tagging_status_id'=>2, 'tbl_request.request_id'=>$model->request_id ])   
-                    ->all();                  
+                    ->leftJoin('tbl_tagging', 'tbl_analysis.analysis_id=tbl_tagging.analysis_id') 
+                    ->leftJoin('tbl_request', 'tbl_request.request_id=tbl_analysis.request_id')    
+                    ->where(['tbl_tagging.tagging_status_id'=>2, 'tbl_request.request_id'=>$model->request_id ])
+                    ->all();                 
                     $scount = count($samples_count); 
-                    $rcount = count($requestcount); 
+                    $rcount = count($sampletagged); 
                     
                     if ($rcount==0){
                         return Html::button('<span"><b>PENDING</span>', ['value'=>Url::to(['/lab/tagging/samplestatus','id'=>$model->request_id]),'onclick'=>'LoadModal(this.title, this.value, true, 1200);', 'class' => 'btn btn-default','title' => Yii::t('app', "Analyses Monitoring"), 'style'=>'width:110px;']);

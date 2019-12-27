@@ -2,6 +2,9 @@
 
 namespace frontend\modules\lab\controllers;
 
+use common\models\lab\Sample;
+use common\models\lab\Analysis;
+use frontend\modules\lab\components\Printing;
 use Yii;
 use common\models\lab\Csf;
 use common\models\lab\CsfSearch;
@@ -10,6 +13,7 @@ use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\models\lab\Request;
 use common\models\lab\Customer;
+use yii\web\Response;
 
 /**
  * CsfController implements the CRUD actions for Csf model.
@@ -48,14 +52,62 @@ class CsfController extends Controller
         ]);
     }
 
+    public function actionCsf()
+    {  
+        $csf = Csf::find()->all();
+        return $this->asJson([$csf]);             
+    }
+
+    public function actionReports()
+    {
+        $model = new Csf();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('reports', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionMonthlyreport()
+    {
+        $model = new Csf();
+
+        // if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        //     return $this->redirect(['view', 'id' => $model->id]);
+        // }
+
+        return $this->render('day', [
+            'model' => $model,
+        ]);
+    }
+
+    public function actionCustomer()
+    {
+        $model = new Csf();
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        }
+
+        return $this->render('day', [
+            'model' => $model,
+        ]);
+    }
+
     public function actionResult()
     {
+        $model = new Csf();
+
         $searchModel = new CsfSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('results', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'model'=>$model,
         ]);
     }
 
@@ -63,6 +115,7 @@ class CsfController extends Controller
     {
         $searchModel = new CsfSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
 
         return $this->render('csireport', [
             'searchModel' => $searchModel,
@@ -75,9 +128,13 @@ class CsfController extends Controller
         $searchModel = new CsfSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
+        $csf = Csf::find()->all();
+        $count = count($csf);
         return $this->render('csi', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'csf'=>$csf,
+            'count'=>$count
         ]);
     }
 
@@ -192,4 +249,24 @@ class CsfController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
+    
+
+     public function actionPrintreport(){
+      $Printing=new Printing();
+      $Printing->PrintReportcsi(20);
+  }
+
+  public function actionPrintmonthly(){
+    $Printing=new Printing();
+    $Printing->PrintReportmonthly(20);
+}
+
+public function actionPrintcustomer(){
+    $Printing=new Printing();
+    $Printing->PrintReportdaily(20);
+}
+
+    
+
 }

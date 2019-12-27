@@ -227,7 +227,7 @@ $this->registerJs($PrintEvent);
                         [
                             'label'=>'Address',
                             'format'=>'raw',
-                            'value'=>$model->customer ? $model->customer->address : "",
+                            'value'=>$model->customer ? $model->customer->completeaddress : "",
                             'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
                         ],
@@ -335,17 +335,18 @@ $this->registerJs($PrintEvent);
                 ],
                 [
                     'columns' => [
-                        // [
-                        //     'attribute'=>'receivedBy', 
-                        //     'format'=>'raw',
-                        //     'displayOnly'=>true,
-                        //     'valueColOptions'=>['style'=>'width:30%']
-                        // ],
+                      
                         [
                             'attribute'=>'contact_num',
                             'format'=>'raw',
-                            'valueColOptions'=>['style'=>'width:90%'], 
+                            'valueColOptions'=>['style'=>'width:30%'], 
                             'displayOnly'=>true
+                        ],
+                        [
+                            'attribute'=>'created_at', 
+                            'format'=>'raw',
+                            'displayOnly'=>true,
+                            'valueColOptions'=>['style'=>'width:30%']
                         ],
                     ],
                     

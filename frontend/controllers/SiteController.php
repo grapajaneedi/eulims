@@ -25,6 +25,8 @@ use yii\data\ActiveDataProvider;
 use yii\data\SqlDataProvider;
 use DateTime;
 use common\models\lab\Loginlogs;
+use common\models\lab\Request;
+use common\models\lab\RequestSearch;
 
 use yii\base\Model;
 use mysqli;
@@ -81,6 +83,9 @@ class SiteController extends Controller
             ],
         ];
     }
+
+
+
     public function actionQuery(){
         $inventorydb= Yii::$app->get('inventorydb');
         /*$query=new Query();
@@ -102,6 +107,8 @@ class SiteController extends Controller
         print_r($products);
         echo "</pre>";
     }
+
+
     /**
      * Displays homepage.
      *
@@ -212,7 +219,7 @@ class SiteController extends Controller
      //   $listLabCode = array("Chemical", "Microbiology", "Metrology", "Rubber", "TestLab", "TestLab2", "TestLab3","","");
      //   $listLabCount = array(400, 500, 600, 700, 800, 900, 1000,6,8);
      //   $listLabColor = array("red", "green", "blue", "orange", "aqua", "purple", "orange","gray","gray");
-        $listLabIcons = array("fa fa-comments-o", "fa fa-thumbs-o-up", "fa fa-bookmark-o", "fa fa-comments-o", "fa fa-bookmark-o", "fa fa-comments-o", "fa fa-bookmark-o","fa fa-bookmark-o","fa fa-bookmark-o");
+        $listLabIcons = array("fa fa-flask", "fa fa-flask", "fa fa-flask", "fa fa-comments-o", "fa fa-bookmark-o", "fa fa-comments-o", "fa fa-bookmark-o","fa fa-bookmark-o","fa fa-bookmark-o");
    //     $listYear = array("2015","2016","2017");
        
         $listColumn = array("Rank", "Test Name", "No. of Tests");
@@ -342,6 +349,72 @@ class SiteController extends Controller
         return $this->render('index', array('data'=>$datainitial,'curYearValue'=>$curYearValue));
      
      //   return $this->render('index');
+    }
+
+    public function actionTrack()
+    {
+        if (!Yii::$app->user->isGuest) {
+            $model = new Request();
+        $post= Yii::$app->request->post();
+        if ($model->load(Yii::$app->request->post())) {
+
+            // $searchModel = new RequestSearch();
+            // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+           
+            $req = $_POST['Request']['request_ref_num'];
+            $created = $_POST['Request']['created_at'];
+
+            $request = Request::find()->where(['request_ref_num' => $req, 'created_at'=>$created])->one();     
+
+            if ($request){
+                return $this->render('viewtrack', [
+                    'model' => $model,
+                    // 'searchModel' => $searchModel,
+                    // 'dataProvider' => $dataProvider,
+                    'request'=>$request,
+                ]);
+            }else{
+                return $this->redirect(['track']);
+            }
+           
+        }
+
+
+        return $this->render('createtrack', [
+            'model' => $model,
+        ]);
+        }
+
+        $model = new Request();
+        $post= Yii::$app->request->post();
+        if ($model->load(Yii::$app->request->post())) {
+
+            // $searchModel = new RequestSearch();
+            // $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+           
+            $req = $_POST['Request']['request_ref_num'];
+            $created = $_POST['Request']['created_at'];
+
+            $request = Request::find()->where(['request_ref_num' => $req, 'created_at'=>$created])->one();     
+
+            if ($request){
+                return $this->render('viewtrack', [
+                    'model' => $model,
+                    // 'searchModel' => $searchModel,
+                    // 'dataProvider' => $dataProvider,
+                    'request'=>$request,
+                ]);
+            }else{
+                return $this->redirect(['track']);
+            }
+           
+        }
+
+
+        return $this->render('createtrack', [
+            'model' => $model,
+        ]);
+       
     }
 
     /**
@@ -1065,7 +1138,6 @@ class SiteController extends Controller
     
     
 }
-
 
 class DashboardDetails extends Model
 {

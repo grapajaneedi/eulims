@@ -164,12 +164,16 @@ class Customer extends \yii\db\ActiveRecord
          // return $this->hasOne(Classification::className(), ['classification_id' => 'classification_id']);
          // $address = Barangay::findOne($this->barangay_id);
          // return $address->cityMunicipality->province->region->region.' '.$address->cityMunicipality->province->province.' '.$address->cityMunicipality->city_municipality.' '.$address->barangay;
-
-         $address = Barangay::findOne($this->barangay_id);
-         if($address)
-            return $address->municipalityCity->province->region->reg_desc.', '.$address->municipalityCity->province->prov_desc.', '.$address->municipalityCity->citymun_desc.', '.$address->brgy_desc;
-        else
-            return "none";
+        if($this->address){
+            return $this->address;
+        }
+        else{
+            $address = Barangay::findOne($this->barangay_id);
+            if($address)
+                return $address->municipalityCity->province->region->reg_desc.', '.$address->municipalityCity->province->prov_desc.', '.$address->municipalityCity->citymun_desc.', '.$address->brgy_desc;
+            else
+                return "none";
+        }
 
     }
 }

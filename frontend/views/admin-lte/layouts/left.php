@@ -71,7 +71,14 @@ if(Yii::$app->user->isGuest){
                             $imagename = "no-image.png";
                         }else{
                             $CurrentUser = User::findOne(['user_id'=> Yii::$app->user->identity->user_id]);
-                            $imagename = $CurrentUser->profile->image_url;
+                        
+                                $imagename = $CurrentUser->profile->image_url;
+                           
+                             if ($imagename){
+                                $imagename = $CurrentUser->profile->image_url;
+                            }else{
+                                $imagename = "no-image.png";
+                            }
                         }
                      ?>  
                          <?= Html::img("/uploads/user/photo/".$imagename, [ 
@@ -112,7 +119,9 @@ if(Yii::$app->user->isGuest){
                 //'url'=>["/".strtolower($Item->PackageName)],
                 'visible'=>true
             ];
-            $unresponded=""; //comment this
+            $unresponded = '';
+	        $unseen = '';
+            //$unresponded=""; //comment this
             //$ItemSubMenu[]=[];
             foreach ($MenuItems as $MenuItem => $mItem){
                 $icon=substr($mItem->icon,6,strlen($mItem->icon)-6);

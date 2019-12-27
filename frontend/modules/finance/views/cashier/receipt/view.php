@@ -4,6 +4,9 @@ use kartik\detail\DetailView;
 use kartik\grid\GridView;
 use common\models\finance\Collection;
 use yii\helpers\Url;
+use common\models\finance\CancelledOr;
+use common\models\system\Profile;
+
 /* @var $this yii\web\View */
 /* @var $model common\models\finance\Op */
 $this->title = 'Receipt';
@@ -20,6 +23,7 @@ if($collectiontype_id == 1 || $collectiontype_id == 2){
 else{
    $displayy='display: none';
 }
+
 $print_button=Html::button('<span class="glyphicon glyphicon-download"></span> Export Receipt Excel', ['value'=>'/finance/cashier/printview?id='.$model->receipt_id, 'class' => 'btn btn-small btn-success','title' => Yii::t('app', "Print Report"),'onclick'=>"location.href=this.value"]);
 $add_paymentitem=Html::button('<i class="glyphicon glyphicon-plus"></i> Add Paymentitem', ['value' => Url::to(['/finance/cashier/addpaymentitem','collectiontype_id'=>$model->collectiontype_id,'receiptid'=>$model->receipt_id]),'title'=>'Add Payment Item', 'onclick'=>'addPaymentitem(this.value,this.title)', 'class' => 'btn btn-primary','id' => 'modalBtn']);
 //$add_extra=Html::button('<i class="glyphicon glyphicon-plus"></i> Excess Payment', ['value' => Url::to(['/finance/cashier/addextra','collectiontype_id'=>$model->collectiontype_id,'receiptid'=>$model->receipt_id]),'title'=>'Excess Payment', 'onclick'=>'addPaymentitem(this.value,this.title)', 'class' => 'btn btn-primary','id' => 'modalBtn','style'=>$displayy]);
@@ -44,9 +48,59 @@ if($model->payment_mode_id == 2){
 	
 }
 
-?>
-<div class="receipt-view">
 
+
+if ($model->cancelled){
+	$CancelButton='';
+	
+	$Cancelledor= CancelledOr::find()->where(['receipt_id'=>$model->receipt_id])->one();
+	if($Cancelledor){
+		$Reasons=$Cancelledor->reason;
+		$DateCancelled=date('m/d/Y h:i A', strtotime($Cancelledor->cancel_date));
+		// Query Profile Name
+		$Profile= Profile::find()->where(['user_id'=> Yii::$app->user->id])->one();
+		$UserCancell=$Profile->fullname;
+		$CancelledBy=$UserCancell;
+	}
+	$CancelClass='request-cancelled';
+	$BackClass='background-cancel';
+}else {
+	 $Func="LoadModal('Cancel Receipt','/finance/cancelledor/create?id=".$model->receipt_id."',true,500)";
+     $CancelButton='&nbsp;&nbsp;&nbsp;<button id="btnCancel" onclick="'.$Func.'" type="button"  class="btn btn-danger"><i class="fa fa-remove"></i> Cancel Receipt</button>';
+
+	 $CancelClass='cancelled-hide';
+	 $BackClass='';
+	 $Reasons='&nbsp;';
+	 $DateCancelled='';
+	 $CancelledBy='';
+}
+
+
+?>
+<div class="receipt-view" style="position:relative;">
+   <div id="cancelled-div" class="outer-div <?= $CancelClass ?>">
+        <div class="inner-div">
+        <img src="/images/cancelled.png" alt="" style="width: 300px;margin-left: 80px"/>
+        <div class="panel panel-primary">
+            <div class="panel-heading"></div>
+            <table class="table table-condensed table-hover table-striped table-responsive">
+                 <tr>
+                    <th style="background-color: lightgray">Date Cancelled</th>
+                    <td><?= $DateCancelled ?></td>
+                </tr>
+                <tr>
+                    <th style="width: 120px;background-color: lightgray">Reason of Cancellation</th>
+                    <td style="width: 230px"><?= $Reasons ?></td>
+                </tr>
+                <tr>
+                    <th style="background-color: lightgray">Cancelled By</th>
+                    <td><?= $CancelledBy ?></td>
+                </tr>
+            </table>
+        </div>
+        </div>
+    </div> 
+   <div class="<?= $BackClass ?>"></div>
    <div class="container">
     <?= DetailView::widget([
 	 // echo $form->field($model, 'total')->textInput(['value'=>$wallet->balance,'readonly'=> true])->label('E-Wallet');
@@ -55,11 +109,12 @@ if($model->payment_mode_id == 2){
         'hover'=>true,
         'mode'=>DetailView::MODE_VIEW,
         'panel'=>[
-            'heading'=>'<i class="glyphicon glyphicon-book"></i> Receipt#: ' . $model->or_number,
+            'heading'=>'<i class="glyphicon glyphicon-book"></i> Receipt#: ' . $model->or_number .$CancelButton,
             'type'=>DetailView::TYPE_PRIMARY,
          ],
         'buttons1' => '',
         'attributes' => [
+          
             [
                 'columns' => [
                     [

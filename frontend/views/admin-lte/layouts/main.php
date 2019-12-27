@@ -5,7 +5,19 @@ use common\models\lab\Visitedpage;
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-if (Yii::$app->controller->action->id === 'login') { 
+// if(Yii::$app->controller->module->id === 'track'){
+//     //echo 'GG';
+//     return Yii::$app->controller->redirect(['/track']);
+//     //return Yii::$app->controller->redirect(['/site']);
+// }
+if (Yii::$app->controller->action->id === 'track') { 
+    //echo Yii::$app->controller->redirect(['/track']);
+    echo $this->render(
+        'main-login',
+        ['content' => $content]
+    );
+}
+elseif (Yii::$app->controller->action->id === 'login') { 
 /**
  * Do not use this code in your template. Remove it. 
  * Instead, use the code  $this->layout = '//main-login'; in your controller.
