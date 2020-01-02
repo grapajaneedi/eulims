@@ -107,7 +107,7 @@ use yii\helpers\Html;
                 <tbody>
                   <tr>
                     <td>For the period of</td>
-                    <td>: <strong></strong></td>
+                    <td>: <strong>December</strong></td>
                   </tr>
                   <tr>
                     <td>Total no. of Respondents</td>

@@ -22,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
 $pdfHeader="OneLab-Enhanced ULIMS";
 $pdfFooter="{PAGENO}";
 ?>
-
+ <?php $this->registerJsFile("/js/services/services.js"); ?>
 <div class="accomplishment-index">
 <div class="panel panel-default col-xs-12">
         <div class="panel-heading"><i class="fa fa-adn"></i> </div>
@@ -90,7 +90,7 @@ $pdfFooter="{PAGENO}";
 		    <?php ActiveForm::end(); ?>
        </div>
 		    <div class="row">
-		  
+			<?php $this->registerJsFile("/js/services/services.js"); ?>
 		    <?php //\yii\widgets\Pjax::begin(); ?>
         	<?php
         		$startDate = Yii::$app->request->get('from_date', date('Y-01-01'));
@@ -99,10 +99,23 @@ $pdfFooter="{PAGENO}";
         		$labCode = Lab::findOne($labId)->labcode;
 
 				$gridColumns = [
+					['class' => 'kartik\grid\ActionColumn',
+					'contentOptions' => ['style' => 'width: 8.7%'],
+					'template' => '{view}',
+					'buttons'=>[
+						'view'=>function ($url, $model) {
+							return Html::button('<span class="glyphicon glyphicon-print"></span>', ['value'=>Url::to(['/lab/tagging/monthlyreport','month'=>Yii::$app->formatter->asDate($model->request_datetime, 'php:M'), 'year'=>Yii::$app->formatter->asDate($model->request_datetime, 'php:Y')]), 'class' => 'btn btn-primary modal_method','onclick'=>'LoadModal(this.title, this.value ,true, 1850);','title' => Yii::t('app', "Monthly Report")]);
+						},
+					   
+					],
+					],
 	    		    [
 			            'attribute'=>'request_datetime', 
 			            'header' => 'Year',
-			            //'width'=>'310px',
+						//'width'=>'310px',
+						// 'value'=>function ($model, $key, $index, $widget) {
+						// 	return "ito yun";
+						// },
 			            'value'=>function ($model, $key, $index, $widget) {
 		                    return Yii::$app->formatter->asDate($model->request_datetime, 'php:Y');
 		                },
@@ -279,7 +292,8 @@ $pdfFooter="{PAGENO}";
 		                'pageSummary'=>true,
         				'pageSummaryFunc'=>GridView::F_SUM,
         				'pageSummaryOptions'=>['class'=>'text-right text-primary'],
-		            ],
+					],
+					
 			    ];
 
 				    echo GridView::widget([

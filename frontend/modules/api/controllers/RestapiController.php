@@ -29,6 +29,14 @@ use common\models\auth\AuthAssignment;
 use common\components\Functions;
 use yii\web\UploadedFile;
 
+use common\models\rental\Application;
+use common\models\rental\Billing;
+//use common\models\rental\Customer;
+use common\models\rental\Item_type;
+use common\models\rental\Item;
+//use common\models\rental\Profile;
+
+
 class RestapiController extends \yii\rest\Controller
 {
     
@@ -101,14 +109,6 @@ class RestapiController extends \yii\rest\Controller
                 }
     }
 
-
-
-    // public function actionLogout(){
-    //     \Yii::$app->user->logout();
-    //     return "Logout";
-    // }
-
-
     public function actionUser()
     {  
         $user_id =\Yii::$app->user->identity->profile->user_id;
@@ -136,8 +136,7 @@ class RestapiController extends \yii\rest\Controller
                 'lastname' => $profile->lastname,
                 'type' => $role->item_name]),
                 'user_id'=> $users->user_id
-            ]);
-                   
+            ]);               
     }
 
     public function actionChangestatus()
@@ -177,9 +176,7 @@ class RestapiController extends \yii\rest\Controller
             $sample = Sample::find()->select(['sample_id','sample_code', 'samplename', 'description'])
             ->where(['tbl_sample.sample_code'=> $_GET['id']])
             ->AndWhere(['sample_year'=>$year])->one();
-
-          
-      
+ 
             $analysis = Analysis::find()->select(['tbl_analysis.analysis_id','tbl_analysis.testname', 'tbl_analysis.method', 'tbl_tagging.tagging_status_id', 'tbl_tagging.start_date', 'tbl_tagging.end_date'])
             ->leftJoin('tbl_tagging', 'tbl_tagging.analysis_id=tbl_analysis.analysis_id')
             ->where([ 'tbl_analysis.sample_id'=>$sample->sample_id])->all();

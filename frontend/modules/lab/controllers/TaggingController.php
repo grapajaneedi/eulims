@@ -131,6 +131,33 @@ class TaggingController extends Controller
       
     }
 
+    public function actionMonthlyreport($month, $year)
+    {
+      $nmonth = date('m', strtotime($month));
+        
+        $request_query = Request::find()
+        ->where(['between', 'request_datetime', $year."-".$nmonth."-01", $year."-".$nmonth.-"31" ]);
+
+        $requestdataprovider = new ActiveDataProvider([
+                'query' => $request_query,
+                'pagination' => [
+                    'pageSize' => false,
+                ],
+             
+        ]); 
+
+
+            return $this->renderAjax('monthlyreport', [
+               'requestdataprovider' => $requestdataprovider,
+                'month'=>$month,
+                'year'=>$year,
+                'nmonth'=>$nmonth
+            ]);
+        
+
+      
+    }
+
     public function actionUpdateana()
     {      
         if(isset($_POST['id'])){
