@@ -180,6 +180,24 @@ if ($model->cancelled){
                     'format' => ['decimal', 2],
                     'pageSummary' => true
                 ],
+                [
+                    'class' => 'kartik\grid\ActionColumn',
+                    'urlCreator' => function ($action, $model, $key, $index) {
+                        if ($action === 'delete') {
+                            $url ='/finance/cashier/remove-paymentitem?paymentitemid='.$model->paymentitem_id;
+                            return $url;
+                        }
+                    },
+                    'template' => '{delete}',
+                    'buttons'=>[
+                       'delete' => function ($url, $model) {
+                            return Html::a('<span class="glyphicon glyphicon-trash"></span>', $url,['data-confirm'=>"Are you sure you want to remove this item?",'data-method'=>'post','class'=>'btn btn-danger','title'=>'Delete','data-pjax'=>'0']);
+                        },
+                    ],
+                    'dropdown' => false,
+                    'dropdownOptions' => ['class' => 'pull-right'],
+                    'headerOptions' => ['class' => 'kartik-sheet-style'],
+                ],
               
             ];
             echo GridView::widget([
