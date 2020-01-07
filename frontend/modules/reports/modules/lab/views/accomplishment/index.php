@@ -37,6 +37,7 @@ $pdfFooter="{PAGENO}";
 				'method' => 'get',
 			])
     	?>
+    
     		<div class="row">
 		        <div id="lab-name" style="width:25%;position: relative; float:left;margin-right: 20px;">
 		            <?php

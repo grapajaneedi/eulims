@@ -630,7 +630,8 @@ class CashierController extends \yii\web\Controller
                    if ($sum > $total_collection){
                        Yii::$app->session->setFlash('info','Excess amount will be credited to customer wallet!');
                        $total= $sum - $total_collection;
-                       $source= "From Receipt #:".$receipt->or_number.", Check #:".$model->checknumber;
+                      // $source= "From Receipt #:".$receipt->or_number.", Check #:".$model->checknumber;
+                       $source=$receiptid;
                        $func->SetWallet($customer_id, $total, $source,0);
 					   
 					   $model_excess = new ExcessPayment();
@@ -958,10 +959,24 @@ class CashierController extends \yii\web\Controller
 		 $wallet=Customerwallet::find()->where(['customer_id'=>$customer_id])->sum('balance');
 		 $total=0;
 		 
-		 if($wallet > $totaldue){
+		 if($wallet >= $totaldue){
 			$func->SetWallet($customer_id, $totaldue, $id,1); 
 			Yii::$app->session->setFlash('info','Transaction Saved!');
             return $this->redirect(['/finance/cashier/viewreceipt', 'receiptid' => $id]);
 		 } 
     }
+	
+	public function actionUpdate($id)
+    {
+		 $model=$this->findModelReceipt($id);	
+		  if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success','Successfully updated!');
+            return $this->redirect(['/finance/cashier/viewreceipt', 'receiptid' => $id]);
+          }
+          $op_model=$this->findModel($model->orderofpayment_id);
+        return $this->renderAjax('receipt/update', [
+            'model' => $model,
+            'op_model'=> $op_model,
+        ]);
+	}
 }

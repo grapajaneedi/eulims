@@ -177,7 +177,7 @@ class OpController extends Controller
     {
         $model = $this->findModel($id);
         $paymentitem_model= new Paymentitem();
-        
+       
         $query = Paymentitem::find()->where(['orderofpayment_id' => $model->orderofpayment_id]);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -222,10 +222,14 @@ class OpController extends Controller
             return $this->redirect(['/finance/op']);  
          
         } else {
+            $collectiontype=ArrayHelper::map(Collectiontype::find()->all(), 'collectiontype_id', 'natureofcollection');
+            $customer=ArrayHelper::map(Customer::find()->all(),'customer_id','customer_name');
             return $this->renderAjax('update', [
                 'model' => $model,
                 'dataProvider'=>$dataProvider,
-                'paymentitem_model'=>$paymentitem_model
+                'paymentitem_model'=>$paymentitem_model,
+                'collection_type' => $collectiontype,
+                'customers' => $customer
             ]);
         }
         

@@ -88,7 +88,7 @@ class Sample extends \yii\db\ActiveRecord
             'rstl_id' => 'Rstl ID',
             'pstcsample_id' => 'Pstcsample ID',
             'testcategory_id' => 'Testcategory ID',
-            'sampletype_id' => 'Sampletype',
+            'sampletype_id' => 'Sample Type',
             'sample_code' => 'Sample Code',
             'samplename' => 'Samplename',
             'description' => 'Description',
