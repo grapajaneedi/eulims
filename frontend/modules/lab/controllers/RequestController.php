@@ -859,8 +859,8 @@ class RequestController extends Controller
     public function actionReferralcustomerlist($query = null, $id = null)
     {
         if (!is_null($query)) {
-            //$apiUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/customers/searchname?keyword='.$query;
-            $apiUrl='https://eulimsapi.onelab.ph/api/web/referral/customers/searchname?keyword='.$query;
+            $apiUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/customers/searchname?keyword='.$query;
+            //$apiUrl='https://eulimsapi.onelab.ph/api/web/referral/customers/searchname?keyword='.$query;
             $curl = new curl\Curl();
             $curl->setOption(CURLOPT_CONNECTTIMEOUT, 180);
             $curl->setOption(CURLOPT_TIMEOUT, 180);
