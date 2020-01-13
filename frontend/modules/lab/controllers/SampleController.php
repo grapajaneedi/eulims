@@ -327,7 +327,7 @@ class SampleController extends Controller
 		$connection= Yii::$app->labdb;
         $checkForPayment = $model->request->payment_status_id;
 
-		if($checkForPayment < 2){
+		if($checkForPayment != 1){
 			Yii::$app->session->setFlash('error', "Cancel not allowed.\nOrder of Payment already created for\n".$model->request->request_ref_num.".");
 			return $this->redirect(['/lab/request/view', 'id' => $model->request_id]);
 		} elseif($checkForPayment > 1 && $model->active > 0) {
