@@ -1,5 +1,6 @@
 <?php
 
+
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use kartik\select2\Select2;
@@ -89,6 +90,8 @@ $model->modeofreleaseids=$model->modeofrelease_ids;
     ])->label('Request Type'); ?>
     </div>
     <div class="col-md-6">
+
+
     <?= $form->field($model, 'request_datetime')->widget(DateTimePicker::classname(), [
         'readonly'=>true,
         'disabled' => $disabled,
@@ -103,7 +106,7 @@ $model->modeofreleaseids=$model->modeofrelease_ids;
             'todayHighlight' => true,
             'todayBtn' => true,
             'format' => 'php:Y-m-d H:i:s',
-            'startDate'=>$RequestStartDate,
+            //'startDate'=>$RequestStartDate,
 	],
         'pluginEvents'=>[
             "changeDate" => "function(e) { 
@@ -323,6 +326,9 @@ $model->modeofreleaseids=$model->modeofrelease_ids;
     ])->label('Purpose'); ?>
     </div>
     <div class="col-md-6">
+
+ 
+
     <?= $form->field($model, 'report_due')->widget(DatePicker::classname(), [
         'readonly'=>true,
         'disabled' => $disabled,
@@ -330,8 +336,11 @@ $model->modeofreleaseids=$model->modeofrelease_ids;
         'value'=>function($model){
              return date("m/d/Y",$model->report_due);
         },
+       //'setOnEmpty' => true, 
+        'value' => '',
 	'pluginOptions' => [
             'autoclose' => true,
+            // 'setOnEmpty' => true,
             'removeButton' => false,
             'format' => 'yyyy-mm-dd'
 	],

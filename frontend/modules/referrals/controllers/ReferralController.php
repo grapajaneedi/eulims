@@ -88,6 +88,41 @@ class ReferralController extends Controller
         ]);
     }
 
+    public function actionSentreferral() 
+    {
+        //$searchModel = new ReferralSearch();
+        //$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $refcomponent = new ReferralComponent();
+
+        $rstlId = (int) Yii::$app->user->identity->profile->rstl_id;
+
+        if($rstlId > 0) {
+            $referrals = json_decode($refcomponent->getSentReferral($rstlId),true);
+        } else {
+            $referrals = 0;
+            return $this->redirect(['/site/login']);
+        }
+
+        if($referrals == 0 || $referrals == 'false'){
+            $referralDataprovider = new ArrayDataProvider([
+                'allModels' => [],
+                'pagination'=> ['pageSize' => 10],
+            ]);
+        } else {
+            $referralDataprovider = new ArrayDataProvider([
+                'allModels' => $referrals,
+                'pagination'=> ['pageSize' => 10],
+            ]);
+        }
+
+        return $this->render('index', [
+            //'searchModel' => $searchModel,
+            'dataProvider' => $referralDataprovider,
+        ]);
+    }
+
+
     /**
      * Displays a single Referral model.
      * @param integer $id
@@ -436,6 +471,7 @@ class ReferralController extends Controller
                             'sample_code' => $sample['sample_code'],
                             'samplename' => $sample['samplename'],
                             'description' => $sample['description'],
+                            'customer_description' => $sample['customer_description'],
                             'sampling_date' => $sample['sampling_date'],
                             'remarks' => $sample['remarks'],
                             'request_id' => $sample['request_id'],
@@ -472,8 +508,8 @@ class ReferralController extends Controller
 
                     $data = Json::encode(['request_data'=>$requestData,'sample_data'=>$sample_data,'analysis_data'=>$analysis_data,'agency_id'=>$agency_id],JSON_NUMERIC_CHECK);
 
-                    //$referralUrl='https://eulimsapi.onelab.ph/api/web/referral/referrals/insertreferraldata';
-                    $referralUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/referrals/insertreferraldata';
+                    $referralUrl='https://eulimsapi.onelab.ph/api/web/referral/referrals/insertreferraldata';
+                    //$referralUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/referrals/insertreferraldata';
                    
                     $curl = new curl\Curl();
                     $referralreturn = $curl->setRequestBody($data)
@@ -516,8 +552,8 @@ class ReferralController extends Controller
                             ];
                             $notificationData = Json::encode(['notice_details'=>$details],JSON_NUMERIC_CHECK);
 
-                            //$notificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/notifications/notify';
-                            $notificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/notifications/notify';
+                            $notificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/notifications/notify';
+                            //$notificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/notifications/notify';
 
                             $curlNoti = new curl\Curl();
                             $notificationResponse = $curlNoti->setRequestBody($notificationData)
@@ -595,8 +631,8 @@ class ReferralController extends Controller
                     ];
                     $notificationData = Json::encode(['notice_details'=>$details],JSON_NUMERIC_CHECK);
 
-                    //$notificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/notifications/confirm';
-                    $notificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/notifications/confirm';
+                    $notificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/notifications/confirm';
+                    //$notificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/notifications/confirm';
 
                     $curlNoti = new curl\Curl();
                     $notificationResponse = $curlNoti->setRequestBody($notificationData)
@@ -701,8 +737,8 @@ class ReferralController extends Controller
                             }
                             $data = Json::encode(['request_data'=>$requestData,'sample_data'=>$sample_data,'agency_id'=>$agency_id],JSON_NUMERIC_CHECK);
 
-                            //$referralUrl='https://eulimsapi.onelab.ph/api/web/referral/referrals/sendbidreferral';
-                            $referralUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/referrals/sendbidreferral';
+                            $referralUrl='https://eulimsapi.onelab.ph/api/web/referral/referrals/sendbidreferral';
+                            //$referralUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/referrals/sendbidreferral';
                         } else {
                             $requestData = [
                                 'request_id' => $request->request_id,
@@ -737,8 +773,8 @@ class ReferralController extends Controller
                             }
                             $data = Json::encode(['request_data'=>$requestData,'sample_data'=>$sample_data,'agency_id'=>$agency_id],JSON_NUMERIC_CHECK);
 
-                            //$referralUrl='https://eulimsapi.onelab.ph/api/web/referral/referrals/sendreferral';
-                            $referralUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/referrals/sendreferral';
+                            $referralUrl='https://eulimsapi.onelab.ph/api/web/referral/referrals/sendreferral';
+                            //$referralUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/referrals/sendreferral';
                         }
                        
                         $curl = new curl\Curl();
@@ -833,11 +869,11 @@ class ReferralController extends Controller
                                 $notificationData = Json::encode(['notice_details'=>$details],JSON_NUMERIC_CHECK);
 
                                 if(Yii::$app->request->get('bidding') == 1){
-                                    //$notificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/notifications/sendbid';
-                                    $notificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/notifications/sendbid';
+                                    $notificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/notifications/sendbid';
+                                    //$notificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/notifications/sendbid';
                                 } else {
-                                    $notificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/notifications/send';
-                                    //$notificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/notifications/send';
+                                    //$notificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/notifications/send';
+                                    $notificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/notifications/send';
                                 }
 
                                 $curlNoti = new curl\Curl();
@@ -882,6 +918,7 @@ class ReferralController extends Controller
                                             'sample_year' => $s_data['sample_year'],
                                             'rstl_id' => $local_request->rstl_id,
                                             'sample_description' => $s_data['description'],
+                                            'customer_description' => $s_data['customer_description'],
                                             'sample_name' => $s_data['samplename'],
                                             'local_sample_id' => $s_data['sample_id'],
                                             'local_request_id' => $s_data['request_id'],
@@ -918,8 +955,8 @@ class ReferralController extends Controller
                                     }
 
                                     $pstc_request_details = Json::encode(['request_data'=>$pstc_requestData,'sample_data'=>$pstc_sample_data,'analysis_data'=>$pstc_analysis_data,'rstl_id'=>$rstlId,'pstc_id'=>$local_request->pstc_id],JSON_NUMERIC_CHECK);
-                                    //$pstcUrl='https://eulimsapi.onelab.ph/api/web/referral/pstcrequests/updaterequest_details';
-                                    $pstcUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/pstcrequests/updaterequest_details';
+                                    $pstcUrl='https://eulimsapi.onelab.ph/api/web/referral/pstcrequests/updaterequest_details';
+                                    //$pstcUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/pstcrequests/updaterequest_details';
 
                                     $curlPstc = new curl\Curl();
                                     $pstcResponse = $curlPstc->setRequestBody($pstc_request_details)
@@ -945,8 +982,8 @@ class ReferralController extends Controller
                                             if($stat == 0){
                                                 $received=['referralid'=>$refid,'statusid'=>1];
                                                 $receivedData = Json::encode(['data'=>$received]);
-                                                //$receivedUrl ='https://eulimsapi.onelab.ph/api/web/referral/statuslogs/insertdata';
-                                                $receivedUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/statuslogs/insertdata';
+                                                $receivedUrl ='https://eulimsapi.onelab.ph/api/web/referral/statuslogs/insertdata';
+                                                //$receivedUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/statuslogs/insertdata';
 
                                                 $curlTesting = new curl\Curl();
                                                 $receivedResponse = $curlTesting->setRequestBody($receivedData)
@@ -1043,6 +1080,7 @@ class ReferralController extends Controller
                         'sample_code' => $sample['sample_code'],
                         'samplename' => $sample['samplename'],
                         'description' => $sample['description'],
+                        'customer_description' => $sample['customer_description'],
                         'sampling_date' => $sample['sampling_date'],
                         'remarks' => $sample['remarks'],
                         'request_id' => $sample['request_id'],
@@ -1079,8 +1117,8 @@ class ReferralController extends Controller
 
                 $data = Json::encode(['request_data'=>$requestData,'sample_data'=>$sample_data,'analysis_data'=>$analysis_data],JSON_NUMERIC_CHECK);
 
-                //$referralUrl='https://eulimsapi.onelab.ph/api/web/referral/referrals/insertreferraldata';
-                $referralUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/referrals/insertreferraldata';
+                $referralUrl='https://eulimsapi.onelab.ph/api/web/referral/referrals/insertreferraldata';
+                //$referralUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/referrals/insertreferraldata';
                
                 $curl = new curl\Curl();
                 $referralreturn = $curl->setRequestBody($data)
@@ -1117,8 +1155,8 @@ class ReferralController extends Controller
                         ];
                         $bidnotificationData = Json::encode(['notice_details'=>$details],JSON_NUMERIC_CHECK);
 
-                        //$bidnotificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/bidnotifications/notify';
-                        $bidnotificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/bidnotifications/notify';
+                        $bidnotificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/bidnotifications/notify';
+                        //$bidnotificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/bidnotifications/notify';
 
                         $curlNoti = new curl\Curl();
                         $notificationResponse = $curlNoti->setRequestBody($bidnotificationData)
@@ -1225,6 +1263,7 @@ class ReferralController extends Controller
                         $modelSample->sampletype_id = $sample['sample_type_id'];
                         $modelSample->samplename = $sample['sample_name'];
                         $modelSample->description = $sample['description'];
+                        $modelSample->customer_description = $sample['customer_description'];
                         $modelSample->sampling_date = $sample['sampling_date'];
                         $modelSample->referral_sample_id = $sample['sample_id'];
 
@@ -1275,8 +1314,8 @@ class ReferralController extends Controller
                             }
 
                             $sampledata = Json::encode(['sample_data'=>$sample_data,'referral_id'=>$referralId,'receiving_agency'=>$referral['receiving_agency_id']],JSON_NUMERIC_CHECK);
-                            //$referralUrl='https://eulimsapi.onelab.ph/api/web/referral/referrals/updatesamplecode';
-                            $referralUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/referrals/updatesamplecode';
+                            $referralUrl='https://eulimsapi.onelab.ph/api/web/referral/referrals/updatesamplecode';
+                            //$referralUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/referrals/updatesamplecode';
                        
                             $curl = new curl\Curl();
                             $referralreturn = $curl->setRequestBody($sampledata)
@@ -1294,8 +1333,8 @@ class ReferralController extends Controller
                                 ];
 
                                 $notificationData = Json::encode(['notice_details'=>$details],JSON_NUMERIC_CHECK);
-                                //$notificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/notifications/updateresponse';
-                                $notificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/notifications/updateresponse';
+                                $notificationUrl ='https://eulimsapi.onelab.ph/api/web/referral/notifications/updateresponse';
+                                //$notificationUrl ='http://localhost/eulimsapi.onelab.ph/api/web/referral/notifications/updateresponse';
 
                                 $curlNoti = new curl\Curl();
                                 $notificationResponse = $curlNoti->setRequestBody($notificationData)
@@ -1553,8 +1592,8 @@ class ReferralController extends Controller
                     }
 
                     $pstc_request_details = Json::encode(['sample_data'=>$pstc_sample_data,'request_data'=>$pstc_requestData],JSON_NUMERIC_CHECK);
-                    //$pstcUrl='https://eulimsapi.onelab.ph/api/web/referral/pstcrequests/update_samplecode';
-                    $pstcUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/pstcrequests/update_samplecode';
+                    $pstcUrl='https://eulimsapi.onelab.ph/api/web/referral/pstcrequests/update_samplecode';
+                    //$pstcUrl='http://localhost/eulimsapi.onelab.ph/api/web/referral/pstcrequests/update_samplecode';
                
                     $curl = new curl\Curl();
                     $pstc_return = $curl->setRequestBody($pstc_request_details)

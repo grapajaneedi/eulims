@@ -84,8 +84,7 @@ class PackageController extends Controller
                     $model->testcategory_id= $post['Package']['testcategory_id'];
                     $model->rate= $post['Package']['rate'];
                     $model->tests= $post['Package']['tests'];
-                    $model->save(false); 
-                   // Yii::$app->session->setFlash('success', 'Package Successfully Created'); 
+                    $model->save(false);  
                     return $this->runAction('index');
                 }          
                 if(Yii::$app->request->isAjax){

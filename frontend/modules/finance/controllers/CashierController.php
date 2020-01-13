@@ -965,4 +965,47 @@ class CashierController extends \yii\web\Controller
             return $this->redirect(['/finance/cashier/viewreceipt', 'receiptid' => $id]);
 		 } 
     }
+	
+	public function actionUpdate($id)
+    {
+       
+		 $model=$this->findModelReceipt($id);	
+		  if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            Yii::$app->session->setFlash('success','Successfully updated!');
+            return $this->redirect(['/finance/cashier/viewreceipt', 'receiptid' => $id]);
+          }
+          if($model->orderofpayment_id == 0 || $model->orderofpayment_id == NULL){
+            $op_model ="";
+          }
+          else{
+            $op_model=$this->findModel($model->orderofpayment_id); 
+          }
+        return $this->renderAjax('receipt/update', [
+            'model' => $model,
+            'op_model'=> $op_model,
+        ]);
+    }
+    
+    public function actionRemovePaymentitem($paymentitemid)
+    {
+        $model = $this->findModelPaymentitem($paymentitemid);
+        $session = Yii::$app->session;
+       
+        if($model->delete()) {
+            Yii::$app->session->setFlash('success','Successfully Removed!');
+            return $this->redirect(['/finance/cashier/viewreceipt?receiptid='.$model->receipt_id]);
+        }else {
+            return $model->error();
+        }
+    }
+
+    protected function findModelPaymentitem($paymentitemid)
+   {
+       if (($model = Paymentitem::findOne($paymentitemid)) !== null) {
+           return $model;
+       } else {
+           throw new NotFoundHttpException('The requested page does not exist.');
+       }
+   }
+    
 }

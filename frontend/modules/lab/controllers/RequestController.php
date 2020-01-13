@@ -330,7 +330,7 @@ class RequestController extends Controller
        if(isset($_GET['request_id'])){
         $id = $_GET['request_id'];
         $mpdf = new \Mpdf\Mpdf([
-            'format' => [50,66], 
+            'format' => [60,66], 
             'orientation' => 'L',
         ]);
         $request = Request::find()->where(['request_id' => $id]);
@@ -522,7 +522,7 @@ class RequestController extends Controller
             $profile= Profile::find()->where(['user_id'=> Yii::$app->user->id])->one();
             date_add($date2,date_interval_create_from_date_string("1 day"));
             $model->request_datetime=date("Y-m-d H:i:s");
-            $model->report_due=date_format($date2,"Y-m-d");
+            //$model->report_due=date_format($date2,"Y-m-d");
             $model->created_at=date('U');
             $model->rstl_id= Yii::$app->user->identity->profile->rstl_id;//$GLOBALS['rstl_id'];
             $model->payment_type_id=1;

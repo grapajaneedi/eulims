@@ -123,7 +123,7 @@ if($op_model == ""){
         <div class="row">
             <div class="col-sm-12">
              
-            <?php echo $form->field($model, 'payor')->textInput(['value'=>$customer_name])->label('Payor') ?>
+            <?php echo $form->field($model, 'payor')->textInput(['value'=>$customer_name ? $customer_name : $model->payor])->label('Payor') ?>
             </div>
         </div>
 		

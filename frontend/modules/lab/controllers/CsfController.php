@@ -71,6 +71,19 @@ class CsfController extends Controller
         ]);
     }
 
+    public function actionMonthlyreport()
+    {
+        $model = new Csf();
+
+        // if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        //     return $this->redirect(['view', 'id' => $model->id]);
+        // }
+
+        return $this->render('day', [
+            'model' => $model,
+        ]);
+    }
+
     public function actionCustomer()
     {
         $model = new Csf();
@@ -86,12 +99,15 @@ class CsfController extends Controller
 
     public function actionResult()
     {
+        $model = new Csf();
+
         $searchModel = new CsfSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('results', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'model'=>$model,
         ]);
     }
 

@@ -192,6 +192,7 @@ class PstcrequestController extends Controller
             $respond = $details['respond_data'];
             $pstc = $details['pstc_data'];
             $customer = $details['customer_data'];
+            $attachment = $details['attachment_data'];
             $subtotal = $details['subtotal'];
             $discount = $details['discount'];
             $total = $details['total'];
@@ -204,6 +205,11 @@ class PstcrequestController extends Controller
             $analysisDataprovider = new ArrayDataProvider([
                 'allModels' => $analyses,
                 'pagination'=>false,
+            ]);
+
+            $attachmentDataprovider = new ArrayDataProvider([
+                'allModels' => $attachment,
+                'pagination' => false,
             ]);
            
             //$query = new Query;
@@ -224,6 +230,7 @@ class PstcrequestController extends Controller
                 //'sample' => $samples,
                 'sampleDataProvider' => $sampleDataProvider,
                 'analysisDataprovider'=> $analysisDataprovider,
+                'attachmentDataprovider'=> $attachmentDataprovider,
                 'respond' => $respond,
                 'pstc' => $pstc,
                 'subtotal' => $subtotal,
@@ -234,7 +241,7 @@ class PstcrequestController extends Controller
             ]);
         } else {
             Yii::$app->session->setFlash('error', "Invalid request!");
-            return $this->redirect(['/pstc/pstcrequest']);
+            return $this->redirect(['/pstc/pstcrequest/accepted']);
         }
     }
 
@@ -455,6 +462,7 @@ class PstcrequestController extends Controller
                     //$modelSample->sampletype_id = 0; //pstc request, sample type id is in analysis
                     $modelSample->samplename = $sample['sample_name'];
                     $modelSample->description = $sample['sample_description'];
+                    $modelSample->customer_description = $sample['customer_description'];
                     // $modelSample->sampling_date = $sample['sampling_date']; //to be updated
                     $modelSample->sampling_date = empty($sample['sampling_date']) ? date('Y-m-d H:i:s') : date('Y-m-d H:i:s',strtotime($sample['sampling_date'])); //to be updated
                     $modelSample->pstcsample_id = $sample['pstc_sample_id'];
@@ -540,6 +548,7 @@ class PstcrequestController extends Controller
                                     'rstl_id' => $local_request->rstl_id,
                                     'pstc_id' => $pstcId,
                                     'sample_description' => $s_data['description'],
+                                    'customer_description' => $s_data['customer_description'],
                                     'sample_name' => $s_data['samplename'],
                                     'local_sample_id' => $s_data['sample_id'],
                                     'local_request_id' => $local_requestId,
@@ -888,6 +897,7 @@ class PstcrequestController extends Controller
                     //$modelSample->sampletype_id = 0; //pstc request, sample type id is in analysis
                     $modelSample->samplename = $sample['sample_name'];
                     $modelSample->description = $sample['sample_description'];
+                    $modelSample->customer_description = $sample['customer_description'];
                     // $modelSample->sampling_date = $sample['sampling_date']; //to be updated
                     $modelSample->sampling_date = empty($sample['sampling_date']) ? date('Y-m-d H:i:s') : date('Y-m-d H:i:s',strtotime($sample['sampling_date'])); //to be updated
                     $modelSample->pstcsample_id = $sample['pstc_sample_id'];
@@ -966,6 +976,7 @@ class PstcrequestController extends Controller
                                 'rstl_id' => $local_request->rstl_id,
                                 'pstc_id' => $pstcId,
                                 'sample_description' => $s_data['description'],
+                                'customer_description' => $s_data['customer_description'],
                                 'sample_name' => $s_data['samplename'],
                                 'local_sample_id' => $s_data['sample_id'],
                                 'local_request_id' => $local_requestId,
@@ -1275,6 +1286,7 @@ class PstcrequestController extends Controller
                     'sampling_date' => empty($post['sampling_date']) ? null : date('Y-m-d H:i:s',strtotime($post['sampling_date'])),
                     'sample_name' => $post['sample_name'],
                     'sample_description' => $post['sample_description'],
+                    'customer_description' => $post['customer_description'],
                     'rstl_id' => $rstlId,
                     'pstc_id' => $pstcId,
                     'pstc_request_id' => $requestId,

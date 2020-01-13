@@ -8,7 +8,7 @@ use yii\bootstrap\Modal;
 use kartik\dialog\Dialog;
 //use yii\web\JsExpression;
 //use yii\widgets\ListView;
-//use kartik\tabs\TabsX;
+use kartik\tabs\TabsX;
 
 /* @var $this yii\web\View */
 /* @var $request common\models\referral\Pstcrequest */
@@ -182,6 +182,18 @@ $accepted = $request['accepted'];
                     //'value' => function($data) use ($request){
                     //    return ($request->lab_id == 2) ? "Sampling Date: <span style='color:#000077;'><b>".date("Y-m-d h:i A",strtotime($data->sampling_date))."</b></span>,&nbsp;".$data->description : $data->description;
                     //},
+                   'contentOptions' => [
+                        'style'=>'max-width:180px; overflow: auto; white-space: normal; word-wrap: break-word;'
+                    ],
+                ],
+                [
+                    'attribute'=>'customer_description',
+                    'header'=>'Description provided by Customer',
+                    'format' => 'raw',
+                    'enableSorting' => false,
+                    'value' => function($data){
+                        return empty($data['customer_description']) ? "<span style='color:#444444;font-size:11px;'><i>No information provided</i></span>" : $data['customer_description'];
+                    },
                    'contentOptions' => [
                         'style'=>'max-width:180px; overflow: auto; white-space: normal; word-wrap: break-word;'
                     ],
@@ -431,6 +443,33 @@ $accepted = $request['accepted'];
             ]);
         ?>
     </div>
+    <?php if(!empty($respond['request_ref_num']) && $request['accepted'] == 1 && $request['local_request_id'] > 0): ?>
+    <div class="container">
+        <div class="panel panel-primary">
+        <div class="panel-body">
+        <!--<div class="table-responsive">-->
+        <?php
+            $items = [
+                [
+                    'label'=>'<i class="glyphicon glyphicon-save-file"></i> Uploaded Request Form',
+                    'content'=> $this->renderAjax('_attachment',['ref_num'=>$respond['request_ref_num'],'request'=>$request,'attachmentDataprovider'=>$attachmentDataprovider]),
+                    'active'=>true,
+                    //'linkOptions'=>['data-url'=>Url::to(['/pstcrequest/show_attachment?id='.$model->pstc_request_id])]
+                ],
+            ];
+
+            echo TabsX::widget([
+                'items'=>$items,
+                'position'=>TabsX::POS_ABOVE,
+                //'bordered'=>true,
+                'encodeLabels'=>false
+            ]);
+        ?>
+        <!--</div>-->
+        </div>
+        </div>
+    </div>
+    <?php endif; ?>
 </div>
 <?php
     Modal::begin([
@@ -524,6 +563,28 @@ $accepted = $request['accepted'];
         $('#modalAnalysis').modal('show')
             .find('#modalContent')
             .load(url);
+    }
+
+    function uploadRequest(title) {
+        var _replace = "<div style='text-align:center;'><img src='/images/img-loader64.gif' alt=''></div>";
+        var url = "<?= Url::to(['/pstc/pstcattachment/upload','local_request_id'=>$request['local_request_id']]) ?>";
+        $('#modalContent').html(_replace);
+        $('.modal-title').html(title);
+        $('#modal').modal('show')
+            .find('#modalContent')
+            .load(url);
+    }
+
+    function downloadRequest(url) {
+        $.ajax({
+            url: url,
+            success: function (data) {
+                $('.image-loader').removeClass('img-loader');
+            },
+            beforeSend: function (xhr) {
+                $('.image-loader').addClass('img-loader');
+            }
+        });
     }
 </script>
 <style type="text/css">
